@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { email } from '@config';
+// import { email } from '@config';
 import styled from 'styled-components';
 import { theme, mixins, media, Section } from '@styles';
 const { colors, fontSizes, fonts } = theme;
@@ -75,7 +75,7 @@ const Hero = ({ data }) => {
   const { frontmatter, html } = data[0].node;
 
   const one = () => <Hi style={{ transitionDelay: '100ms' }}>{frontmatter.title}</Hi>;
-  const two = () => <Name style={{ transitionDelay: '200ms' }}>{frontmatter.name}.</Name>;
+  const two = () => <Name style={{ transitionDelay: '200ms' }}>{frontmatter.name}</Name>;
   const three = () => (
     <Subtitle style={{ transitionDelay: '300ms' }}>{frontmatter.subtitle}</Subtitle>
   );
@@ -85,7 +85,7 @@ const Hero = ({ data }) => {
   const five = () => (
     // <div style={{ transitionDelay: '500ms' }}>
     <ResumeLink href="/resume.pdf" target="_blank" rel="nofollow noopener noreferrer">
-        View Resume
+      View Resume
     </ResumeLink>
     // </div>
   );

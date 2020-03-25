@@ -1,8 +1,12 @@
 ---
-title: 'Hello, World! I am'
+title: 'Namaste, World! I am'
 name: 'Ayush Gupta'
 subtitle: 'I build things for the web & mobile.'
 contactText: 'View Resume'
 ---
 
-I'm a [Developer](https://github.com/gupta-ji6), [Photographer](https://www.instagram.com/_.guptaji._/), [Blogger](https://medium.com/@guptaji), occasionally [Designer](https://www.canva.com/guptaji) and an [IT Engineer](https://skit.ac.in) graduate.
+I'm a [developer](https://github.com/gupta-ji6) and a passionate mobile [photographer](https://www.instagram.com/_.guptaji._/).
+
+I enjoy building, learning & exploring things that live on the web.
+
+I often [write](https://medium.com/@guptaji) blogs and [design](https://www.canva.com/guptaji) things.

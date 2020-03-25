@@ -55,8 +55,37 @@ const PicContainer = styled.div`
 `;
 const Avatar = styled(Img)`
   position: relative;
-  mix-blend-mode: multiply;
+  mix-blend-mode: screen;
   filter: grayscale(100%) contrast(1);
+  ${media.tablet`
+    mix-blend-mode: normal; 
+    filter:grayscale(100%) contrast(1);
+    &:hover,
+    &:focus {
+      background: transparent;
+      filter: none;
+      mix-blend-mode: nomral;
+      &:after {
+        top: 15px;
+        left: 15px;
+        background: transparent;
+        filter: none;
+    }`};
+  ${media.phablet`
+    mix-blend-mode: normal; 
+    filter:grayscale(100%) contrast(1);
+    &:hover,
+    &:focus {
+      background: transparent;
+      filter: none;
+      mix-blend-mode: nomral;
+      &:after {
+        top: 15px;
+        left: 15px;
+        background: transparent;
+        filter: none;
+      }
+    `};
   border-radius: ${theme.borderRadius};
   transition: ${theme.transition};
 `;
@@ -70,9 +99,13 @@ const AvatarContainer = styled.a`
   &:hover,
   &:focus {
     background: transparent;
+    filter: none;
+    mix-blend-mode: nomral;
     &:after {
       top: 15px;
       left: 15px;
+      background: transparent;
+      filter: none;
     }
     ${Avatar} {
       filter: none;
@@ -95,7 +128,7 @@ const AvatarContainer = styled.a`
     right: 0;
     bottom: 0;
     background-color: ${colors.navy};
-    mix-blend-mode: screen;
+    mix-blend-mode: normal;
   }
   &:after {
     border: 2px solid ${colors.green};

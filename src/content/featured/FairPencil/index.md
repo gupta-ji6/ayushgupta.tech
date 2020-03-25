@@ -1,7 +1,7 @@
 ---
 date: '1'
 title: 'FairPencil'
-cover: './halcyon.png'
+cover: './fairpencil.png'
 # github: 'https://github.com/bchiang7/halcyon-site'
 external: 'http://bit.ly/fpiOSapp'
 tech:

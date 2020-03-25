@@ -1,16 +1,16 @@
 module.exports = {
-  siteTitle: 'Hello, I am Ayush gupta',
+  siteTitle: 'Ayush Gupta - Developer, Photographer, Blogger & Designer | GuptaJi',
   siteDescription:
-    'Ayush Gupta is a Web & Mobile Application Developer, Photographer, Blogger, (occasionally) Designer and an IT Engineer graduate',
+    'Ayush Gupta is a Web & Mobile Application Developer, Photographer, Blogger, Designer and an IT Engineer graduate. Popularly known as GuptaJi.',
   siteKeywords:
-    'Ayush Gupta, Ayush, Gupta, guptaji, software engineer, front-end engineer, web developer, javascript, gupta ji, ',
+    'Ayush Gupta, Ayush, Gupta, guptaji, software engineer, front end engineer, web developer, javascript, gupta ji, developer, mobile photographer, kota ',
   siteUrl: 'http://ayushgupta.tech',
   siteLanguage: 'en_US',
 
   googleVerification: 'YSmK_1bLGe-6FRuzC7f3Qww3eSH2AHd2UC35Lrn8iEM',
 
   name: 'Ayush Gupta',
-  location: 'Jaipur, IND',
+  location: 'Bangalore, IND',
   email: 'ayushgupta197@gmail.com',
   github: 'https://github.com/gupta-ji6',
   socialMedia: [
@@ -34,6 +34,10 @@ module.exports = {
       name: 'Twitter',
       url: 'https://twitter.com/_guptaji_',
     },
+    {
+      name: 'Facebook',
+      url: 'https://www.facebook.com/guptaji.6',
+    },
   ],
 
   navLinks: [
@@ -46,8 +50,16 @@ module.exports = {
       url: '#jobs',
     },
     {
-      name: 'Work',
+      name: 'Projects',
       url: '#projects',
+    },
+    {
+      name: 'Blog',
+      url: '#blog',
+    },
+    {
+      name: 'Education',
+      url: '#education',
     },
     {
       name: 'Contact',
@@ -56,7 +68,7 @@ module.exports = {
   ],
 
   twitterHandle: '@_guptaji_',
-  googleAnalyticsID: 'UA-45666519-2',
+  googleAnalyticsID: 'UA-101925600-2',
 
   navHeight: 100,
 

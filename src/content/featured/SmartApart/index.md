@@ -1,7 +1,7 @@
 ---
 date: '2'
 title: 'Smart Apart'
-cover: './pin-simple.png'
+cover: './smart-apart.png'
 github: 'https://github.com/gupta-ji6/Smart-Apart-Prototype'
 external: 'https://goo.gl/keu19f'
 tech:
@@ -12,4 +12,4 @@ tech:
 show: 'true'
 ---
 
-Deployed an informative knowledge gaining application with 480+ organic installations on the Google Play Store.
+Deployed an informative knowledge gaining application with 500+ organic installations on the Google Play Store.

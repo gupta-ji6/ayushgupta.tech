@@ -58,7 +58,7 @@ const theme = {
 
   gradient: `linear-gradient(0.4turn, #64d6ff, #64ffda)`,
 
-  loaderDelay: `6`,
+  loaderDelay: `5`,
 
   hamburgerWidth: 30,
   hamBefore: `top 0.1s ease-in 0.25s, opacity 0.1s ease-in`,

@@ -2,4 +2,4 @@
 title: 'Get In Touch'
 ---
 
-Although I'm not currently looking for freelance opportunities, my inbox is always open. Whether for a potential project or just to say hi, I'll try my best to answer your email!
+I'm an email away for all your constructive feedback, improvement suggestions, remarkable ideas, fun collaboration, tech discussions, mutual networking or to meet over a coffee.

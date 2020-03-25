@@ -1,5 +1,7 @@
 import About from './about';
+import Blog from './blog';
 import Contact from './contact';
+import Education from './education';
 import Email from './email';
 import Featured from './featured';
 import Footer from './footer';
@@ -15,7 +17,9 @@ import Social from './social';
 
 export {
   About,
+  Blog,
   Contact,
+  Education,
   Email,
   Featured,
   Footer,

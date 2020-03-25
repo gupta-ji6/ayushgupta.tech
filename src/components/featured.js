@@ -46,6 +46,7 @@ const ProjectDescription = styled.div`
   ${mixins.boxShadow};
   background-color: ${colors.lightNavy};
   color: ${colors.lightSlate};
+  text-align: left;
   padding: 25px;
   border-radius: ${theme.borderRadius};
   font-size: ${fontSizes.large};
@@ -107,6 +108,14 @@ const FeaturedImg = styled(Img)`
     object-fit: cover;
     width: auto;
     height: 100%;
+    mix-blend-mode: normal;
+    filter: grayscale(100%) contrast(1) brightness(80%);
+  `};
+  ${media.phablet`
+    object-fit: cover;
+    width: auto;
+    height: 100%;
+    mix-blend-mode: normal;
     filter: grayscale(100%) contrast(1) brightness(80%);
   `};
 `;
@@ -119,7 +128,32 @@ const ImgContainer = styled.a`
   background-color: ${colors.green};
   border-radius: ${theme.radius + 1}px;
   transition: ${theme.transition};
-  ${media.tablet`height: 100%;`};
+  ${media.tablet`
+    height: 100%;
+    filter:grayscale(100%) contrast(1) brightness(80%);
+    &:hover,
+  &:focus {
+    background: transparent;
+    &:before,
+    ${FeaturedImg} {
+      background: transparent;
+      filter: grayscale(100%) contrast(1) brightness(80%);
+    }
+  }
+  `};
+  ${media.phablet`
+    height: 100%;
+    filter:grayscale(100%) contrast(1) brightness(80%);
+    &:hover,
+  &:focus {
+    background: transparent;
+    &:before,
+    ${FeaturedImg} {
+      background: transparent;
+      filter: grayscale(100%) contrast(1) brightness(80%);
+    }
+  }
+  `};
   ${media.thone`
     grid-column: 1 / -1;
     opacity: 0.25;
@@ -203,7 +237,7 @@ const Featured = ({ data }) => {
 
   return (
     <FeaturedContainer id="projects">
-      <Heading ref={revealTitle}>Some Things I&apos;ve Built</Heading>
+      <Heading ref={revealTitle}>Featured Projects</Heading>
 
       <div>
         {featuredProjects &&

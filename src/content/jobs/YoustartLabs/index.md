@@ -9,4 +9,3 @@ url: 'https://youstart.in/'
 
 - Polished foundations of web and mobile application development.
 - Cultivated the ability of iterative debug & development by self-learning and research on the web.
-

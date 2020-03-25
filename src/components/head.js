@@ -29,6 +29,8 @@ const Head = ({ metadata }) => (
     <meta name="description" content={metadata.description} />
     <meta name="keywords" content={config.siteKeywords} />
     <meta name="google-site-verification" content={config.googleVerification} />
+    <meta name="yandex-verification" content="cc2cfdc322abe716" />
+    <meta name="msvalidate.01" content="7E3E59B623CADFC4110A588C0E91DC65" />
     <meta property="og:title" content={metadata.title} />
     <meta property="og:description" content={metadata.description} />
     <meta property="og:type" content="website" />

@@ -169,6 +169,17 @@ const JobDetails = styled.h5`
   font-weight: normal;
   letter-spacing: 0.5px;
   color: ${colors.lightSlate};
+  margin-bottom: 10px;
+  svg {
+    width: 15px;
+  }
+`;
+const JobLocation = styled.h5`
+  font-family: ${fonts.SFMono};
+  font-size: ${fontSizes.smallish};
+  font-weight: normal;
+  letter-spacing: 0.5px;
+  color: ${colors.lightSlate};
   margin-bottom: 30px;
   svg {
     width: 15px;
@@ -182,7 +193,7 @@ const Jobs = ({ data }) => {
 
   return (
     <JobsContainer id="jobs" ref={revealContainer}>
-      <Heading>Where I&apos;ve Worked</Heading>
+      <Heading>Work Experience</Heading>
       <TabsContainer>
         <Tabs role="tablist">
           {data &&
@@ -209,7 +220,7 @@ const Jobs = ({ data }) => {
           {data &&
             data.map(({ node }, i) => {
               const { frontmatter, html } = node;
-              const { title, url, company, range } = frontmatter;
+              const { title, url, company, range, location } = frontmatter;
               return (
                 <TabContent
                   key={i}
@@ -231,6 +242,9 @@ const Jobs = ({ data }) => {
                   <JobDetails>
                     <span>{range}</span>
                   </JobDetails>
+                  <JobLocation>
+                    <span>{location}</span>
+                  </JobLocation>
                   <div dangerouslySetInnerHTML={{ __html: html }} />
                 </TabContent>
               );

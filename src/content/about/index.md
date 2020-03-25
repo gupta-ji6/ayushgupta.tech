@@ -2,18 +2,16 @@
 title: 'About Me'
 avatar: './me.jpg'
 skills:
-  - React Native  
+  - React
+  - React Native
+  - Angular
   - JavaScript
-  - ReactJS
-  - HTML & CSS
-  - Firebase Tools
-  - Ionic Framework
-  - AngularJS
-  - Git
+  - Firebase
+  - HTML5 & CSS3
 ---
 
-Howdy! I'm Ayush Gupta. A Mobile & Web App Developer, who enjoys building, learning and exploring things that live on the web.
+Howdy! I'm Ayush Gupta. A web & mobile app developer, who enjoys building, learning and exploring things that live on the web. Popularly known as GuptaJi.
 
-After graduating as an IT Engineer, I'm currently seeking a job as a Junior Developer at en emerging startup/company.
+I'm currently working as a React Native Developer at [FirstCry](https://www.firstcry.com/), Asia's largest online shopping store for kids & baby products.
 
-Here are  a few technologies I've worked on:
+Here are a few technologies I love working on:

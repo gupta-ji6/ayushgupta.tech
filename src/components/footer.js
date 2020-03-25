@@ -6,6 +6,7 @@ import {
   IconMedium,
   IconInstagram,
   IconTwitter,
+  IconFacebook,
   // IconStar,
   // IconFork,
 } from '@components/icons';
@@ -17,7 +18,7 @@ const { colors, fontSizes, fonts } = theme;
 const FooterContainer = styled.footer`
   ${mixins.flexCenter};
   flex-direction: column;
-  padding: 15px;
+  padding: 5px;
   background-color: ${colors.darkNavy};
   color: ${colors.slate};
   text-align: center;
@@ -43,6 +44,8 @@ const SocialLink = styled.a`
   }
 `;
 const Copy = styled.div`
+  ${mixins.flexCenter};
+  flex-direction: column;
   margin: 5px 0;
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.xsmall};
@@ -50,6 +53,7 @@ const Copy = styled.div`
 `;
 const GithubLink = styled.a`
   color: ${colors.slate};
+  margin-bottom: 5px;
 `;
 // const GithubInfo = styled.div`
 //   margin-top: 10px;
@@ -67,7 +71,7 @@ const GithubLink = styled.a`
 //   }
 // `;
 
-const Footer = ({ githubInfo }) => (
+const Footer = () => (
   <FooterContainer>
     <SocialContainer>
       <SocialItemList>
@@ -89,6 +93,8 @@ const Footer = ({ githubInfo }) => (
                   <IconInstagram />
                 ) : name === 'Twitter' ? (
                   <IconTwitter />
+                ) : name === 'Facebook' ? (
+                  <IconFacebook />
                 ) : (
                   <IconGithub />
                 )}
@@ -102,27 +108,23 @@ const Footer = ({ githubInfo }) => (
         href="https://github.com/gupta-ji6"
         target="_blank"
         rel="nofollow noopener noreferrer">
-        <div>Customized by Ayush Gupta</div>
+        <div>
+          Customized with{' '}
+          <span role="img" aria-label="Coffee">
+            ☕
+          </span>
+          and{' '}
+          <span role="img" aria-label="Heart">
+            ♥
+          </span>{' '}
+          by Ayush Gupta
+        </div>
         {/* <div>Template by Brittany Chiang</div> */}
-
-        {/* {githubInfo.stars && githubInfo.forks && (
-          <GithubInfo>
-            <span>
-              <IconStar />
-              <span>{githubInfo.stars}</span>
-            </span>
-            <span>
-              <IconFork />
-              <span>{githubInfo.forks}</span>
-            </span>
-          </GithubInfo>
-        )} */}
       </GithubLink>
       <GithubLink
-        href="https://github.com/bchiang7/v4"
+        href="https://github.com/bchiang7"
         target="_blank"
         rel="nofollow noopener noreferrer">
-        {/* <div>Customized by Ayush Gupta</div> */}
         <div>Template by Brittany Chiang</div>
       </GithubLink>
     </Copy>

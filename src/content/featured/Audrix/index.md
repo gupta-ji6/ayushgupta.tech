@@ -1,7 +1,7 @@
 ---
 date: '3'
 title: 'Audrix'
-cover: './demo.png'
+cover: './audrix.png'
 # github: 'https://github.com/bchiang7/spotify-profile'
 external: 'http://bit.ly/audrixapp'
 tech:
@@ -12,4 +12,4 @@ tech:
 show: 'true'
 ---
 
-Online music streaming app starter template with cross-platform tested proficient UI having authentication, storage & real-time database connectivity; sold ~15 times.
+Online music streaming app starter template with cross-platform tested proficient UI having authentication, storage & real-time database connectivity; sold 110+ times.

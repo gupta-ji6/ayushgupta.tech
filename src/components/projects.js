@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
-import { IconGithub, IconExternal, IconFolder } from '@components/icons';
+import { IconGithub, IconExternal, IconFolder, IconGooglePlay } from '@components/icons';
 import styled from 'styled-components';
-import { theme, mixins, media, Section, Button } from '@styles';
+import { theme, mixins, media, Section } from '@styles';
 const { colors, fontSizes, fonts } = theme;
 
 const ProjectsContainer = styled(Section)`
@@ -24,7 +24,7 @@ const ProjectsTitle = styled.h4`
 const ProjectsGrid = styled.div`
   .projects {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     grid-gap: 15px;
     position: relative;
     ${media.desktop`grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));`};
@@ -74,8 +74,8 @@ const IconLink = styled.a`
   padding: 10px;
 
   svg {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
   }
 `;
 const ProjectName = styled.h5`
@@ -111,7 +111,7 @@ const TechList = styled.ul`
 // `;
 
 const Projects = ({ data }) => {
-  const [showMore, setShowMore] = useState(false);
+  // const [showMore, setShowMore] = useState(false);
   const revealTitle = useRef(null);
   const revealProjects = useRef([]);
   useEffect(() => {
@@ -121,18 +121,18 @@ const Projects = ({ data }) => {
 
   const GRID_LIMIT = 6;
   const projects = data.filter(({ node }) => node.frontmatter.show === 'true');
-  const firstSix = projects.slice(0, GRID_LIMIT);
-  const projectsToShow = showMore ? projects : firstSix;
+  // const firstSix = projects.slice(0, GRID_LIMIT);
+  // const projectsToShow = showMore ? projects : firstSix;
 
   return (
     <ProjectsContainer>
       <ProjectsTitle ref={revealTitle}>Other Projects</ProjectsTitle>
       <ProjectsGrid>
         <TransitionGroup className="projects">
-          {projectsToShow &&
-            projectsToShow.map(({ node }, i) => {
+          {projects &&
+            projects.map(({ node }, i) => {
               const { frontmatter, html } = node;
-              const { github, external, title, tech } = frontmatter;
+              const { github, external, title, tech, googleplay } = frontmatter;
               return (
                 <CSSTransition
                   key={i}
@@ -160,6 +160,15 @@ const Projects = ({ data }) => {
                                 rel="nofollow noopener noreferrer"
                                 aria-label="Github Link">
                                 <IconGithub />
+                              </IconLink>
+                            )}
+                            {googleplay && (
+                              <IconLink
+                                href={googleplay}
+                                target="_blank"
+                                rel="nofollow noopener noreferrer"
+                                aria-label="Google Play Store Link">
+                                <IconGooglePlay />
                               </IconLink>
                             )}
                             {external && (

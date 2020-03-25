@@ -1,41 +1,70 @@
 import React from 'react';
+// import { styles } from 'ansi-colors';
 
 const IconLoader = () => (
-  <svg
-    version="1.1"
-    id="logo"
-    xmlns="http://www.w3.org/2000/svg"
-    x="0px"
-    y="0px"
-    viewBox="0 0 100 100"
-    enableBackground="new 0 0 0 0">
-    <circle fill="#64FFDA" stroke="none" cx="6" cy="50" r="6">
-      <animate
-        attributeName="opacity"
-        dur="1s"
-        values="0;1;0"
-        repeatCount="indefinite"
-        begin="0.1"
-      />
-    </circle>
-    <circle fill="#64FFDA" stroke="none" cx="26" cy="50" r="6">
-      <animate
-        attributeName="opacity"
-        dur="1s"
-        values="0;1;0"
-        repeatCount="indefinite"
-        begin="0.2"
-      />
-    </circle>
-    <circle fill="#64FFDA" stroke="none" cx="46" cy="50" r="6">
-      <animate
-        attributeName="opacity"
-        dur="1s"
-        values="0;1;0"
-        repeatCount="indefinite"
-        begin="0.3"
-      />
-    </circle>
+  <svg width="57" height="57" xmlns="http://www.w3.org/2000/svg" stroke="#64ffda">
+    <g transform="translate(1 1)" strokeWidth="2" fill="none" fillRule="evenodd">
+      <circle cx="5" cy="50" r="5">
+        <animate
+          attributeName="cy"
+          begin="0s"
+          dur="1.5s"
+          values="50;5;50;50"
+          calcMode="linear"
+          repeatCount="indefinite"
+        />
+        <animate
+          attributeName="cx"
+          begin="0s"
+          dur="1.5s"
+          values="5;27;49;5"
+          calcMode="linear"
+          repeatCount="indefinite"
+        />
+      </circle>
+      <circle cx="27" cy="5" r="5">
+        <animate
+          attributeName="cy"
+          begin="0s"
+          dur="1.5s"
+          from="5"
+          to="5"
+          values="5;50;50;5"
+          calcMode="linear"
+          repeatCount="indefinite"
+        />
+        <animate
+          attributeName="cx"
+          begin="0s"
+          dur="1.5s"
+          from="27"
+          to="27"
+          values="27;49;5;27"
+          calcMode="linear"
+          repeatCount="indefinite"
+        />
+      </circle>
+      <circle cx="49" cy="50" r="5">
+        <animate
+          attributeName="cy"
+          begin="0s"
+          dur="1.5s"
+          values="50;50;5;50"
+          calcMode="linear"
+          repeatCount="indefinite"
+        />
+        <animate
+          attributeName="cx"
+          from="49"
+          to="49"
+          begin="0s"
+          dur="1.5s"
+          values="49;5;27;49"
+          calcMode="linear"
+          repeatCount="indefinite"
+        />
+      </circle>
+    </g>
   </svg>
 );
 
