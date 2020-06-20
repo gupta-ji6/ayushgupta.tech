@@ -52,17 +52,17 @@ const Blurb = styled.div`
   }
 `;
 
-const ResumeLink = styled.a`
-  ${mixins.bigButton};
-  padding: 18px 50px;
-  margin: 10% auto 0;
-  width: max-content;
-`;
-
-// const EmailLink = styled.a`
+// const ResumeLink = styled.a`
 //   ${mixins.bigButton};
-//   margin-top: 50px;
+//   padding: 18px 50px;
+//   margin: 10% auto 0;
+//   width: max-content;
 // `;
+
+const EmailLink = styled.a`
+  ${mixins.bigButton};
+  margin-top: 50px;
+`;
 
 const Hero = ({ data }) => {
   const [isMounted, setIsMounted] = useState(false);
@@ -83,11 +83,19 @@ const Hero = ({ data }) => {
     <Blurb style={{ transitionDelay: '400ms' }} dangerouslySetInnerHTML={{ __html: html }} />
   );
   const five = () => (
-    // <div style={{ transitionDelay: '500ms' }}>
-    <ResumeLink href="/resume.pdf" target="_blank" rel="nofollow noopener noreferrer">
-      View Resume
-    </ResumeLink>
-    // </div>
+    <div style={{ transitionDelay: '500ms' }}>
+      {/* <ResumeLink href="/resume.pdf" target="_blank" rel="nofollow noopener noreferrer">
+        View Resume
+      </ResumeLink> */}
+      <EmailLink
+        href="mailto:ayushgupta197+hire@gmail.com"
+        target="_blank"
+        rel="nofollow noopener noreferrer">
+        Hire Me {/* <span role="img" aria-label="man technologist">
+          👨🏻‍💻
+        </span> */}
+      </EmailLink>
+    </div>
   );
 
   const items = [one, two, three, four, five];

@@ -112,7 +112,7 @@ const Footer = () => (
           Customized with{' '}
           <span role="img" aria-label="Coffee">
             ☕
-          </span>
+          </span>{' '}
           and{' '}
           <span role="img" aria-label="Heart">
             ♥
