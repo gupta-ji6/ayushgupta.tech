@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
-import { IconExternal, IconFolder } from '@components/icons';
+import { IconExternal, IconArticle } from '@components/icons';
 import styled from 'styled-components';
 import { theme, mixins, media, Section, Heading } from '@styles';
 const { colors, fontSizes, fonts } = theme;
@@ -157,7 +157,7 @@ const Blog = ({ data }) => {
                       <header>
                         <BlogHeader>
                           <Folder>
-                            <IconFolder />
+                            <IconArticle />
                           </Folder>
                           <Links>
                             {url && (

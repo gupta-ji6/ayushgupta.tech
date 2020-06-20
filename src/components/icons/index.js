@@ -9,6 +9,7 @@ import IconFacebook from './facebook';
 import IconExternal from './external';
 import IconGooglePlay from './googleplay';
 import IconFolder from './folder';
+import IconArticle from './article';
 import IconLocation from './location';
 import IconStar from './star';
 import IconFork from './fork';
@@ -26,6 +27,7 @@ export {
   IconExternal,
   IconGooglePlay,
   IconFolder,
+  IconArticle,
   IconLocation,
   IconStar,
   IconFork,
