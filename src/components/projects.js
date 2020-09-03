@@ -13,7 +13,7 @@ const { colors, fontSizes, fonts } = theme;
 const ProjectsContainer = styled(Section)`
   ${mixins.flexCenter};
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
 `;
 const ProjectsTitle = styled.h4`
   margin: 0 auto 50px;
