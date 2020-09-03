@@ -1,9 +1,9 @@
 ---
-date: '2020-10-01'
+date: '2020-08-20'
 title: 'Panda'
 image: ''
 github: 'https://github.com/gupta-ji6/panda'
-external: 'https://ayushgupta.tech/panda'
+external: 'https://panda.ayushgupta.tech/'
 tech:
   - JavaScript
   - REST API
