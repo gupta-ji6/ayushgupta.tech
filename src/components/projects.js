@@ -1,11 +1,13 @@
-import React, { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
+import { Button, Section, media, mixins, theme } from '@styles';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { IconExternal, IconFolder, IconGithub, IconGooglePlay } from '@components/icons';
+import React, { useEffect, useRef, useState } from 'react';
+
+import PropTypes from 'prop-types';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
-import { IconGithub, IconExternal, IconFolder, IconGooglePlay } from '@components/icons';
 import styled from 'styled-components';
-import { theme, mixins, media, Section } from '@styles';
+
 const { colors, fontSizes, fonts } = theme;
 
 const ProjectsContainer = styled(Section)`
@@ -106,12 +108,12 @@ const TechList = styled.ul`
     }
   }
 `;
-// const ShowMoreButton = styled(Button)`
-//   margin: 100px auto 0;
-// `;
+const ShowMoreButton = styled(Button)`
+  margin: 100px auto 0;
+`;
 
 const Projects = ({ data }) => {
-  // const [showMore, setShowMore] = useState(false);
+  const [showMore, setShowMore] = useState(false);
   const revealTitle = useRef(null);
   const revealProjects = useRef([]);
   useEffect(() => {
@@ -119,10 +121,10 @@ const Projects = ({ data }) => {
     revealProjects.current.forEach((ref, i) => sr.reveal(ref, srConfig(i * 100)));
   }, []);
 
-  const GRID_LIMIT = 6;
+  const GRID_LIMIT = 4;
   const projects = data.filter(({ node }) => node.frontmatter.show === 'true');
-  // const firstSix = projects.slice(0, GRID_LIMIT);
-  // const projectsToShow = showMore ? projects : firstSix;
+  const firstSix = projects.slice(0, GRID_LIMIT);
+  const projectsToShow = showMore ? projects : firstSix;
 
   return (
     <ProjectsContainer>
@@ -130,7 +132,7 @@ const Projects = ({ data }) => {
       <ProjectsGrid>
         <TransitionGroup className="projects">
           {projects &&
-            projects.map(({ node }, i) => {
+            projectsToShow.map(({ node }, i) => {
               const { frontmatter, html } = node;
               const { github, external, title, tech, googleplay } = frontmatter;
               return (
@@ -200,9 +202,9 @@ const Projects = ({ data }) => {
         </TransitionGroup>
       </ProjectsGrid>
 
-      {/* <ShowMoreButton onClick={() => setShowMore(!showMore)}>
+      <ShowMoreButton onClick={() => setShowMore(!showMore)}>
         {showMore ? 'Fewer' : 'More'} Projects
-      </ShowMoreButton> */}
+      </ShowMoreButton>
     </ProjectsContainer>
   );
 };
