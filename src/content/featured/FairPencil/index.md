@@ -2,8 +2,9 @@
 date: '1'
 title: 'FairPencil'
 cover: './fairpencil.png'
-# github: 'https://github.com/bchiang7/halcyon-site'
-external: 'http://bit.ly/fpiOSapp'
+googleplay: 'http://bit.ly/fpAndroid'
+appstore: 'http://bit.ly/fpiOSapp'
+# external: 'http://bit.ly/fpiOSapp'
 tech:
   - Ionic Framework(v1)
   - AngularJS

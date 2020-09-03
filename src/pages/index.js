@@ -1,19 +1,20 @@
+import {
+  About,
+  Blog,
+  Contact,
+  Education,
+  Featured,
+  Hero,
+  Jobs,
+  Layout,
+  Projects,
+} from '@components';
+import { Main, mixins } from '@styles';
+
+import PropTypes from 'prop-types';
 import React from 'react';
 import { graphql } from 'gatsby';
-import PropTypes from 'prop-types';
-import {
-  Layout,
-  Hero,
-  About,
-  Jobs,
-  Blog,
-  Featured,
-  Projects,
-  Education,
-  Contact,
-} from '@components';
 import styled from 'styled-components';
-import { mixins, Main } from '@styles';
 
 const MainContainer = styled(Main)`
   ${mixins.sidePadding};
@@ -109,6 +110,8 @@ export const pageQuery = graphql`
             tech
             github
             external
+            googleplay
+            appstore
             show
           }
           html
@@ -127,6 +130,7 @@ export const pageQuery = graphql`
             tech
             github
             external
+            googleplay
             show
           }
           html

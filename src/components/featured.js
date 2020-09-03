@@ -1,11 +1,13 @@
+import { Heading, Section, media, mixins, theme } from '@styles';
+import { IconAppStore, IconExternal, IconGithub, IconGooglePlay } from '@components/icons';
 import React, { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
+
 import Img from 'gatsby-image';
+import PropTypes from 'prop-types';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
-import { IconGithub, IconExternal } from '@components/icons';
 import styled from 'styled-components';
-import { theme, mixins, media, Section, Heading } from '@styles';
+
 const { colors, fontSizes, fonts } = theme;
 
 const FeaturedContainer = styled(Section)`
@@ -91,8 +93,8 @@ const Links = styled.div`
   a {
     padding: 10px;
     svg {
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
     }
   }
 `;
@@ -243,7 +245,7 @@ const Featured = ({ data }) => {
         {featuredProjects &&
           featuredProjects.map(({ node }, i) => {
             const { frontmatter, html } = node;
-            const { external, title, tech, github, cover } = frontmatter;
+            const { external, title, tech, github, googleplay, appstore, cover } = frontmatter;
 
             return (
               <Project key={i} ref={el => (revealProjects.current[i] = el)}>
@@ -278,6 +280,24 @@ const Featured = ({ data }) => {
                         rel="nofollow noopener noreferrer"
                         aria-label="Github Link">
                         <IconGithub />
+                      </a>
+                    )}
+                    {googleplay && (
+                      <a
+                        href={googleplay}
+                        target="_blank"
+                        rel="nofollow noopener noreferrer"
+                        aria-label="Google Play Store Link">
+                        <IconGooglePlay />
+                      </a>
+                    )}
+                    {appstore && (
+                      <a
+                        href={appstore}
+                        target="_blank"
+                        rel="nofollow noopener noreferrer"
+                        aria-label="Apple App Store Link">
+                        <IconAppStore />
                       </a>
                     )}
                     {external && (
