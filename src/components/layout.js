@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { StaticQuery, graphql } from 'gatsby';
-import PropTypes from 'prop-types';
-import { Head, Loader, Nav, Social, Email, Footer } from '@components';
-import styled from 'styled-components';
+import { Email, Footer, Head, Loader, Nav, Social } from '@components';
 import { GlobalStyle, theme } from '@styles';
+import React, { useEffect, useState } from 'react';
+import { StaticQuery, graphql } from 'gatsby';
+
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
 const { colors, fontSizes, fonts } = theme;
 
 const SkipToContent = styled.a`
@@ -39,24 +41,25 @@ const SkipToContent = styled.a`
   }
 `;
 
-const Layout = ({ children }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [githubInfo, setGithubInfo] = useState({
-    stars: null,
-    forks: null,
-  });
+const Layout = ({ children, location }) => {
+  const isHome = location.pathname === '/';
+  const [isLoading, setIsLoading] = useState(isHome);
 
   useEffect(() => {
-    fetch('https://api.github.com/repos/bchiang7/v4')
-      .then(response => response.json())
-      .then(json => {
-        const { stargazers_count, forks_count } = json;
-        setGithubInfo({
-          stars: stargazers_count,
-          forks: forks_count,
-        });
-      });
-  }, []);
+    if (isLoading) {
+      return;
+    }
+    if (location.hash) {
+      const id = location.hash.substring(1); // location.hash without the '#'
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView();
+          el.focus();
+        }
+      }, 0);
+    }
+  }, [isLoading]);
 
   return (
     <StaticQuery
@@ -83,11 +86,11 @@ const Layout = ({ children }) => {
             <Loader finishLoading={() => setIsLoading(false)} />
           ) : (
             <div className="container">
-              <Nav />
+              <Nav isHome={isHome} />
               <Social />
               <Email />
               {children}
-              <Footer githubInfo={githubInfo} />
+              <Footer />
             </div>
           )}
         </div>
@@ -98,6 +101,7 @@ const Layout = ({ children }) => {
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 export default Layout;
