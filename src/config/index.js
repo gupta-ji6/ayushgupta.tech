@@ -57,9 +57,13 @@ module.exports = {
       name: 'Blog',
       url: '/#blog',
     },
+    // {
+    //   name: 'Education',
+    //   url: '/#education',
+    // },
     {
-      name: 'Education',
-      url: '/#education',
+      name: 'Uses',
+      url: '/uses',
     },
     {
       name: 'Contact',
