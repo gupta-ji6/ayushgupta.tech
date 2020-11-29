@@ -1,12 +1,14 @@
-import React from 'react';
+import { media, mixins, theme } from '@styles';
+
+import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
-import AnchorLink from 'react-anchor-link-smooth-scroll';
+import React from 'react';
 import { navLinks } from '@config';
 import styled from 'styled-components';
-import { theme, mixins, media } from '@styles';
+
 const { colors, fontSizes, fonts } = theme;
 
-const MenuContainer = styled.div`
+const StyledContainer = styled.div`
   position: fixed;
   top: 0;
   bottom: 0;
@@ -21,7 +23,7 @@ const MenuContainer = styled.div`
   display: none;
   ${media.tablet`display: block;`};
 `;
-const Sidebar = styled.div`
+const Sidebar = styled.aside`
   ${mixins.flexCenter};
   flex-direction: column;
   background-color: ${colors.lightNavy};
@@ -42,29 +44,33 @@ const NavLinks = styled.nav`
   width: 100%;
   flex-direction: column;
   text-align: center;
+  color: ${colors.lightestSlate};
 `;
 const NavList = styled.ol`
+  padding: 0;
+  margin: 0;
+  list-style: none;
   width: 100%;
 `;
 const NavListItem = styled.li`
   margin: 0 auto 20px;
   position: relative;
-  font-size: ${fontSizes.large};
+  font-size: ${fontSizes.lg};
   counter-increment: item 1;
   ${media.thone`
     margin: 0 auto 10px;
-    font-size: ${fontSizes.medium};
+    font-size: ${fontSizes.md};
   `};
-  ${media.tiny`font-size: ${fontSizes.smallish};`};
+  ${media.tiny`font-size: ${fontSizes.smish};`};
   &:before {
     display: block;
     content: '0' counter(item) '.';
     color: ${colors.green};
-    font-size: ${fontSizes.small};
+    font-size: ${fontSizes.sm};
     margin-bottom: 5px;
   }
 `;
-const NavLink = styled(AnchorLink)`
+const NavLink = styled(Link)`
   ${mixins.link};
   padding: 3px 20px 20px;
   width: 100%;
@@ -88,7 +94,7 @@ const Menu = ({ menuOpen, toggleMenu }) => {
   };
 
   return (
-    <MenuContainer
+    <StyledContainer
       menuOpen={menuOpen}
       onClick={handleMenuClick}
       aria-hidden={!menuOpen}
@@ -99,7 +105,7 @@ const Menu = ({ menuOpen, toggleMenu }) => {
             {navLinks &&
               navLinks.map(({ url, name }, i) => (
                 <NavListItem key={i}>
-                  <NavLink href={url}>{name}</NavLink>
+                  <NavLink to={url}>{name}</NavLink>
                 </NavListItem>
               ))}
           </NavList>
@@ -108,7 +114,7 @@ const Menu = ({ menuOpen, toggleMenu }) => {
           </ResumeLink>
         </NavLinks>
       </Sidebar>
-    </MenuContainer>
+    </StyledContainer>
   );
 };
 

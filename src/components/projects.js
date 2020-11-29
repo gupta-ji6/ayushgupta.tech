@@ -128,7 +128,7 @@ const Projects = ({ data }) => {
 
   return (
     <ProjectsContainer>
-      <ProjectsTitle ref={revealTitle}>Other Projects</ProjectsTitle>
+      <ProjectsTitle ref={revealTitle}>Other Noteworthy Projects</ProjectsTitle>
       <ProjectsGrid>
         <TransitionGroup className="projects">
           {projects &&
@@ -203,7 +203,7 @@ const Projects = ({ data }) => {
       </ProjectsGrid>
 
       <ShowMoreButton onClick={() => setShowMore(!showMore)}>
-        {showMore ? 'Fewer' : 'More'} Projects
+        {`Show ${showMore ? 'Fewer' : 'More'} Projects`}
       </ShowMoreButton>
     </ProjectsContainer>
   );
