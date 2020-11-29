@@ -297,6 +297,25 @@ const GlobalStyle = createGlobalStyle`
     opacity: 1;
     transition: opacity 1000ms ${theme.easing};
   }
+  
+  .big-heading {
+    margin: 0;
+    font-size: clamp(40px, 8vw, 80px);
+  }
+
+  .medium-heading {
+    margin: 0;
+    font-size: clamp(40px, 8vw, 60px);
+  }
+
+  .subtitle {
+    color: ${colors.green};
+    font-family: ${fonts.SFMono};
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0 0 20px 0;
+  }
 
 `;
 
