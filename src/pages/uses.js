@@ -136,7 +136,7 @@ const UsesPage = ({ data, location }) => {
     <Layout location={location}>
       <Helmet>
         <title>Uses - Ayush Gupta</title>
-        <link rel="canonical" href="http://ayushgupta.tech/uses" />
+        <link rel="canonical" href="https://ayushgupta.tech/uses" />
         <meta name="description" content={metaConfig.description} />
         <meta property="og:title" content={metaConfig.title} />
         <meta property="og:description" content={metaConfig.description} />
