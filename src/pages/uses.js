@@ -106,6 +106,10 @@ const StyledSummary = styled.summary`
   span {
     color: ${colors.white};
     font-weight: 600;
+
+    &:hover {
+      color: ${colors.green};
+    }
   }
 
   p {
@@ -175,7 +179,7 @@ const UsesPage = ({ data, location }) => {
                     <span className="medium-heading">{title}</span>
                     <p>{subtitle}</p>
                   </StyledSummary>
-                  <p dangerouslySetInnerHTML={{ __html: html }} />
+                  <div dangerouslySetInnerHTML={{ __html: html }} itemProp="usesContent" />
                 </StyledDetails>
               );
             })}
