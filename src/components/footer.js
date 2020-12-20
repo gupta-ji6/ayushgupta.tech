@@ -19,7 +19,7 @@ const FooterContainer = styled.footer`
   ${mixins.flexCenter};
   flex-direction: column;
   padding: 5px;
-  background-color: ${colors.darkNavy};
+  background-color: ${colors.navy};
   color: ${colors.slate};
   text-align: center;
   height: auto;
@@ -115,7 +115,7 @@ const Footer = () => (
           </span>{' '}
           and{' '}
           <span role="img" aria-label="Heart">
-            ♥
+            ❤
           </span>{' '}
           by Ayush Gupta
         </div>
