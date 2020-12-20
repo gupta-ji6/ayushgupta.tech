@@ -13,6 +13,7 @@ import IconLoader from './loader';
 import IconLocation from './location';
 import IconLogo from './logo';
 import IconMedium from './medium';
+import IconSpotify from './spotify';
 import IconStar from './star';
 import IconTwitter from './twitter';
 
@@ -31,6 +32,7 @@ export {
   IconFolder,
   IconArticle,
   IconLocation,
+  IconSpotify,
   IconStar,
   IconFork,
   FormattedIcon,
