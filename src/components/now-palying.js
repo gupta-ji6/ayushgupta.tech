@@ -88,8 +88,8 @@ const NowPlaying = () => {
       },
       body: urlencoded,
     });
-    const jsooon = await response.json();
-    console.log(jsooon);
+    // const jsooon = await response.json();
+    // console.log(jsooon);
 
     return response.json();
   };
@@ -108,11 +108,12 @@ const NowPlaying = () => {
       });
       if (response.status === 200) {
         const jsonResponse = await response.json();
+        console.log('track response');
         console.log(jsonResponse);
         setTrack(jsonResponse);
       }
-      const res = await response.json();
-      console.log(res);
+      // const res = await response.json();
+      // console.log(res);
     } catch (err) {
       console.error(err);
       console.error(err.response);
@@ -125,7 +126,7 @@ const NowPlaying = () => {
     console.log(process.env.GATSBY_SPOTIFY_CLIENT_ID);
     console.log(process.env.GATSBY_SPOTIFY_CLIENT_SECRET);
     console.log(process.env.GATSBY_SPOTIFY_REFRESH_TOKEN);
-    console.log({ track });
+    // console.log({ track });
   }, []);
 
   return (
