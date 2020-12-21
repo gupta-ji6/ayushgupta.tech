@@ -7,19 +7,18 @@ import {
   IconInstagram,
   IconTwitter,
   IconFacebook,
-  // IconStar,
-  // IconFork,
 } from '@components/icons';
 import { socialMedia } from '@config';
 import styled from 'styled-components';
 import { theme, mixins, media } from '@styles';
+import NowPlaying from './now-palying';
 const { colors, fontSizes, fonts } = theme;
 
 const FooterContainer = styled.footer`
   ${mixins.flexCenter};
   flex-direction: column;
   padding: 5px;
-  background-color: ${colors.darkNavy};
+  background-color: ${colors.navy};
   color: ${colors.slate};
   text-align: center;
   height: auto;
@@ -55,24 +54,10 @@ const GithubLink = styled.a`
   color: ${colors.slate};
   margin-bottom: 5px;
 `;
-// const GithubInfo = styled.div`
-//   margin-top: 10px;
-
-//   & > span {
-//     display: inline-flex;
-//     align-items: center;
-//     margin: 0 7px;
-//   }
-//   svg {
-//     display: inline-block;
-//     height: 15px;
-//     width: auto;
-//     margin-right: 5px;
-//   }
-// `;
 
 const Footer = () => (
   <FooterContainer>
+    <NowPlaying />
     <SocialContainer>
       <SocialItemList>
         {socialMedia &&
@@ -115,7 +100,7 @@ const Footer = () => (
           </span>{' '}
           and{' '}
           <span role="img" aria-label="Heart">
-            ♥
+            ❤
           </span>{' '}
           by Ayush Gupta
         </div>
