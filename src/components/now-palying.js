@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { theme } from '@styles';
@@ -87,12 +88,15 @@ const NowPlaying = () => {
       },
       body: urlencoded,
     });
+    const jsooon = await response.json();
+    console.log(jsooon);
 
     return response.json();
   };
 
   const fetchCurrentTrack = async () => {
     const { access_token } = await getAccessToken();
+    console.log({ access_token });
 
     try {
       const response = await fetch(NOW_PLAYING_URL, {
@@ -104,17 +108,24 @@ const NowPlaying = () => {
       });
       if (response.status === 200) {
         const jsonResponse = await response.json();
-        // console.log(jsonResponse);
+        console.log(jsonResponse);
         setTrack(jsonResponse);
       }
+      const res = await response.json();
+      console.log(res);
     } catch (err) {
       console.error(err);
+      console.error(err.response);
     }
   };
 
   useEffect(() => {
     sr.reveal(revealContainer.current, srConfig());
     fetchCurrentTrack();
+    console.log(process.env.SPOTIFY_CLIENT_ID);
+    console.log(process.env.SPOTIFY_CLIENT_SECRET);
+    console.log(process.env.SPOTIFY_REFRESH_TOKEN);
+    console.log({ track });
   }, []);
 
   return (
