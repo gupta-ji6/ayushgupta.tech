@@ -9,7 +9,7 @@ import { IconSpotify } from '@components/icons';
 const { colors } = theme;
 
 const basic = Buffer.from(
-  `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`,
+  `${process.env.GATSBY_SPOTIFY_CLIENT_ID}:${process.env.GATSBY_SPOTIFY_CLIENT_SECRET}`,
 ).toString('base64');
 
 const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
@@ -78,7 +78,7 @@ const NowPlaying = () => {
   const getAccessToken = async () => {
     const urlencoded = new URLSearchParams();
     urlencoded.append('grant_type', 'refresh_token');
-    urlencoded.append('refresh_token', process.env.SPOTIFY_REFRESH_TOKEN);
+    urlencoded.append('refresh_token', process.env.GATSBY_SPOTIFY_REFRESH_TOKEN);
 
     const response = await fetch(TOKEN_ENDPOINT, {
       method: 'POST',
@@ -122,9 +122,9 @@ const NowPlaying = () => {
   useEffect(() => {
     sr.reveal(revealContainer.current, srConfig());
     fetchCurrentTrack();
-    console.log(process.env.SPOTIFY_CLIENT_ID);
-    console.log(process.env.SPOTIFY_CLIENT_SECRET);
-    console.log(process.env.SPOTIFY_REFRESH_TOKEN);
+    console.log(process.env.GATSBY_SPOTIFY_CLIENT_ID);
+    console.log(process.env.GATSBY_SPOTIFY_CLIENT_SECRET);
+    console.log(process.env.GATSBY_SPOTIFY_REFRESH_TOKEN);
     console.log({ track });
   }, []);
 
