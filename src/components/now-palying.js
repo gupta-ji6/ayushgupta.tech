@@ -3,49 +3,44 @@ import styled from 'styled-components';
 import { theme } from '@styles';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
-import { IconSpotify } from '@components/icons';
+import { IconSpotify, IconPlay, IconPause } from '@components/icons';
+import { fetchCurrentTrack } from '../utils/spotify';
 
 // ========================= CONSTANTS ===========================
 
 const { colors } = theme;
 
-const basic = Buffer.from(
-  `${process.env.GATSBY_SPOTIFY_CLIENT_ID}:${process.env.GATSBY_SPOTIFY_CLIENT_SECRET}`,
-).toString('base64');
-
-const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
-const NOW_PLAYING_URL = 'https://api.spotify.com/v1/me/player/currently-playing';
 const SPOTIFY_PROFILE = 'https://open.spotify.com/user/31yuvamoxkbmkpvhpunh6xwoshii';
 
-const NowPlayingContext = {
+export const NowPlayingContext = {
   playing: [
     {
       emoji: '💫',
-      copy: 'vibing to',
+      copy: 'Vibing to',
     },
     {
       emoji: '🎵',
-      copy: 'currently listening to',
+      copy: 'Listening to',
     },
     {
       emoji: '😇',
-      copy: 'tripping on',
+      copy: 'Tripping on',
     },
     {
       emoji: '🥰',
-      copy: 'mushing over',
+      copy: 'Mushing over',
     },
     {
       emoji: '🙈',
-      copy: 'gushing over',
+      copy: 'Gushing over',
     },
     {
       emoji: '🗣',
-      copy: 'lip syncing to',
+      copy: 'Lip syncing to',
     },
     {
       emoji: '👻',
-      copy: 'quietly murmuring',
+      copy: 'Quietly murmuring',
     },
   ],
   notPlaying: [
@@ -89,6 +84,7 @@ const randomArrayIndex = arr => Math.floor(Math.random() * arr.length);
 const TrackContext = styled.div`
   font-size: smaller;
   margin-bottom: 10px;
+  text-transform: lowercase;
 
   span {
     font-size: small;
@@ -99,7 +95,7 @@ const NowPlayingWidget = styled.div`
   border: 1px solid ${colors.green};
   border-radius: 3px;
   padding: 9px;
-  margin: 0 16px 16px 16px;
+  margin: 0 16px 24px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -150,68 +146,67 @@ const AlbumName = styled.div`
 `;
 
 const SpotifyIcon = styled.div`
-  width: 1.5rem;
-  height: 1.5rem;
+  width: ${props => (props.playing ? '3rem' : '2.5rem')};
+  height: ${props => (props.playing ? '3rem' : '2.5rem')};
   display: flex;
   justify-content: flex-end;
+  background-color: ${colors.navy};
+
+  button {
+    background-color: ${colors.navy};
+    margin: 0;
+    border: 0;
+    outline: 0;
+  }
 `;
 
 // ========================= COMPONENT ===========================
 
 const NowPlaying = () => {
   const [track, setTrack] = useState({});
-  const revealContainer = useRef(null);
+  const [isAyushListeningToAnything, setIsAyushListeningToAnything] = useState(false);
+  const [audio, setAudio] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  // get OAuth access token from Spotify Web API
-  const getAccessToken = async () => {
-    const urlencoded = new URLSearchParams();
-    urlencoded.append('grant_type', 'refresh_token');
-    urlencoded.append('refresh_token', process.env.GATSBY_SPOTIFY_REFRESH_TOKEN);
+  const revealContainer = useRef(null);
 
-    const response = await fetch(TOKEN_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        Authorization: `Basic ${basic}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: urlencoded,
-    });
-
-    return response.json();
-  };
+  const toggleAudio = () => setIsPlaying(!isPlaying);
 
   // fetch the current playing track, if any
-  const fetchCurrentTrack = async () => {
-    const { access_token } = await getAccessToken();
-
-    try {
-      const response = await fetch(NOW_PLAYING_URL, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      if (response.status === 200) {
-        const jsonResponse = await response.json();
-        setTrack(jsonResponse);
-        setIsPlaying(true);
+  const fetchNowPlaying = async () => {
+    const trackData = await fetchCurrentTrack();
+    if (trackData !== undefined) {
+      setTrack(trackData);
+      if (trackData?.preview_url !== null) {
+        setAudio(new Audio(trackData?.preview_url));
       }
-    } catch (err) {
-      console.error(err);
-      console.error(err.response);
+      setIsAyushListeningToAnything(true);
     }
   };
 
   useEffect(() => {
     sr.reveal(revealContainer.current, srConfig());
-    fetchCurrentTrack();
+    fetchNowPlaying();
   }, []);
+
+  useEffect(() => {
+    if (audio !== null) {
+      isPlaying ? audio.play() : audio.pause();
+    }
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (audio !== null) {
+      audio.addEventListener('ended', () => setIsPlaying(false));
+      return () => {
+        audio.removeEventListener('ended', () => setIsPlaying(false));
+      };
+    }
+  }, [isPlaying, toggleAudio]);
 
   // function which returns a custom copy to show above now playing widget
   const fetchNowPlayingCopy = () => {
-    if (isPlaying) {
+    if (isAyushListeningToAnything) {
       const index = randomArrayIndex(NowPlayingContext.playing);
       return (
         <Fragment>
@@ -243,25 +238,35 @@ const NowPlaying = () => {
       <TrackContext>{fetchNowPlayingCopy()}</TrackContext>
       <NowPlayingWidget>
         <a
-          href={track?.item?.external_urls?.spotify || SPOTIFY_PROFILE}
+          href={track?.external_urls?.spotify || SPOTIFY_PROFILE}
           target="_blank"
           rel="nofollow noopener noreferrer">
           <AlbumImage
-            src={track?.item?.album?.images[0].url || 'https://source.unsplash.com/128x128/?music'}
+            src={track?.album?.images[0].url || 'https://source.unsplash.com/128x128/?music'}
             loading="lazy"
           />
         </a>
         <a
-          href={track?.item?.external_urls?.spotify || SPOTIFY_PROFILE}
+          href={track?.external_urls?.spotify || SPOTIFY_PROFILE}
           target="_blank"
           rel="nofollow noopener noreferrer">
           <TrackInfo>
-            <TrackName>{track?.item?.name || 'Not Playing'}</TrackName>
-            <AlbumName>{track?.item?.album?.name || 'Spotify'}</AlbumName>
+            <TrackName>{track?.name || 'Not Playing'}</TrackName>
+            <AlbumName>{track?.album?.name || 'View Spotify Profile'}</AlbumName>
           </TrackInfo>
         </a>
-        <SpotifyIcon>
-          <IconSpotify />
+        <SpotifyIcon playing={isAyushListeningToAnything}>
+          <button onClick={toggleAudio} disabled={!isAyushListeningToAnything}>
+            {isAyushListeningToAnything && track?.preview_url !== null ? (
+              isPlaying ? (
+                <IconPause />
+              ) : (
+                <IconPlay />
+              )
+            ) : (
+              <IconSpotify />
+            )}
+          </button>
         </SpotifyIcon>
       </NowPlayingWidget>
     </div>
