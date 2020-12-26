@@ -13,6 +13,8 @@ import IconLoader from './loader';
 import IconLocation from './location';
 import IconLogo from './logo';
 import IconMedium from './medium';
+import IconPause from './pause';
+import IconPlay from './play';
 import IconSpotify from './spotify';
 import IconStar from './star';
 import IconTwitter from './twitter';
@@ -32,6 +34,8 @@ export {
   IconFolder,
   IconArticle,
   IconLocation,
+  IconPause,
+  IconPlay,
   IconSpotify,
   IconStar,
   IconFork,
