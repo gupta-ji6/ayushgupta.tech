@@ -54,8 +54,7 @@ const Blurb = styled.div`
   }
 `;
 
-const NowPlayingTrack = styled.div`
-  margin-top: 25px;
+const NowPlayingTrack = styled.p`
   width: 50%;
   max-width: 500px;
   a {
