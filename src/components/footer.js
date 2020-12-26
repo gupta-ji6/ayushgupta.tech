@@ -93,7 +93,7 @@ const Footer = () => (
         href="https://github.com/gupta-ji6"
         target="_blank"
         rel="nofollow noopener noreferrer">
-        <div>
+        <small>
           Customized with{' '}
           <span role="img" aria-label="Coffee">
             ☕
@@ -103,14 +103,14 @@ const Footer = () => (
             ❤
           </span>{' '}
           by Ayush Gupta
-        </div>
+        </small>
         {/* <div>Template by Brittany Chiang</div> */}
       </GithubLink>
       <GithubLink
         href="https://github.com/bchiang7"
         target="_blank"
         rel="nofollow noopener noreferrer">
-        <div>Template by Brittany Chiang</div>
+        <small>Template by Brittany Chiang</small>
       </GithubLink>
     </Copy>
   </FooterContainer>
