@@ -4,7 +4,9 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 // import { email } from '@config';
 import styled from 'styled-components';
 import { theme, mixins, media, Section } from '@styles';
+import { fetchCurrentTrack } from '../utils/spotify';
 const { colors, fontSizes, fonts } = theme;
+import { NowPlayingContext } from './now-palying';
 
 const HeroContainer = styled(Section)`
   ${mixins.flexCenter};
@@ -52,6 +54,21 @@ const Blurb = styled.div`
   }
 `;
 
+const NowPlayingTrack = styled.div`
+  margin-top: 25px;
+  width: 50%;
+  max-width: 500px;
+  a {
+    ${mixins.inlineLink};
+  }
+`;
+
+const TrackCopy = styled.span`
+  &:first-letter {
+    text-transform: uppercase;
+  }
+`;
+
 // const ResumeLink = styled.a`
 //   ${mixins.bigButton};
 //   padding: 18px 50px;
@@ -66,24 +83,54 @@ const EmailLink = styled.a`
 
 const Hero = ({ data }) => {
   const [isMounted, setIsMounted] = useState(false);
+  const [track, setTrack] = useState({});
+
+  const trackCopy =
+    NowPlayingContext.playing[Math.floor(Math.random() * NowPlayingContext.playing.length)].copy;
+
+  // fetch the current playing track, if any
+  const fetchNowPlaying = async () => {
+    const trackData = await fetchCurrentTrack();
+    // console.log(trackData);
+    if (trackData !== undefined) {
+      setTrack(trackData);
+    }
+  };
 
   useEffect(() => {
-    const timeout = setTimeout(() => setIsMounted(true), 1000);
+    const timeout = setTimeout(() => {
+      setIsMounted(true);
+      fetchNowPlaying();
+    }, 1000);
+
     return () => clearTimeout(timeout);
   }, []);
 
   const { frontmatter, html } = data[0].node;
 
   const one = () => <Hi style={{ transitionDelay: '100ms' }}>{frontmatter.title}</Hi>;
+
   const two = () => <Name style={{ transitionDelay: '200ms' }}>{frontmatter.name}</Name>;
+
   const three = () => (
     <Subtitle style={{ transitionDelay: '300ms' }}>{frontmatter.subtitle}</Subtitle>
   );
+
   const four = () => (
     <Blurb style={{ transitionDelay: '400ms' }} dangerouslySetInnerHTML={{ __html: html }} />
   );
-  const five = () => (
-    <div style={{ transitionDelay: '500ms' }}>
+
+  const five = () =>
+    Object.keys(track).length !== 0 ? (
+      <NowPlayingTrack style={{ transitionDelay: '500ms' }}>
+        <TrackCopy>{`${trackCopy} `}</TrackCopy>
+        <a href={track.external_urls.spotify}>{track.name}</a>
+        <span>{` at the moment.`}</span>
+      </NowPlayingTrack>
+    ) : null;
+
+  const six = () => (
+    <div style={{ transitionDelay: '600ms' }}>
       {/* <ResumeLink href="/resume.pdf" target="_blank" rel="nofollow noopener noreferrer">
         View Resume
       </ResumeLink> */}
@@ -98,7 +145,7 @@ const Hero = ({ data }) => {
     </div>
   );
 
-  const items = [one, two, three, four, five];
+  const items = [one, two, three, four, five, six];
 
   return (
     <HeroContainer>
