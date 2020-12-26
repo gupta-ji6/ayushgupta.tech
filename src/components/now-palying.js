@@ -119,7 +119,8 @@ const AlbumImage = styled.img`
 `;
 
 const TrackInfo = styled.div`
-  width: 270px;
+  min-width: 200px;
+  max-width: 270px;
   padding: 0 9px;
   display: flex;
   flex-direction: column;
