@@ -11,7 +11,7 @@ module.exports = {
 
   name: 'Ayush Gupta',
   location: 'Pune, IND',
-  email: 'ayushgupta197@gmail.com',
+  email: 'hello@ayushgupta.tech',
   github: 'https://github.com/gupta-ji6',
   socialMedia: [
     {

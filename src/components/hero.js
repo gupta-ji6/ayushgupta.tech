@@ -134,7 +134,7 @@ const Hero = ({ data }) => {
         View Resume
       </ResumeLink> */}
       <EmailLink
-        href="mailto:ayushgupta197+hire@gmail.com"
+        href="mailto:hire@ayushgupta.tech"
         target="_blank"
         rel="nofollow noopener noreferrer">
         Hire Me {/* <span role="img" aria-label="man technologist">
