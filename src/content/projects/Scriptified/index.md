@@ -6,6 +6,7 @@ github: 'https://github.com/scriptified/scriptified'
 # external: 'https://scriptified.dev'
 tech:
   - NextJS
+  - TypeScript
   - Tailwind CSS
   - React
   - Vercel
