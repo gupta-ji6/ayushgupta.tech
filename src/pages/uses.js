@@ -4,12 +4,13 @@ const { colors, fontSizes } = theme;
 import ogImage from '@images/og-uses.png';
 
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { graphql } from 'gatsby';
 import styled from 'styled-components';
 import { srConfig, siteUrl } from '@config';
 import sr from '@utils/sr';
 import { Helmet } from 'react-helmet';
+import ExternalLink from '../components/externalLink';
 
 const StyledMainContainer = styled.main`
   padding: 200px 200px;
@@ -189,13 +190,7 @@ const UsesPage = ({ data, location }) => {
           <h2>Have more questions?</h2>
           <p>
             Feel free to ask away on{' '}
-            <a
-              href="https://twitter.com/_guptaji_"
-              target="_blank"
-              rel="nofollow noopener noreferrer">
-              twitter
-            </a>
-            .
+            <ExternalLink url="https://twitter.com/_guptaji_">twitter</ExternalLink>.
           </p>
           <small>Last Updated: November, 2020</small>
         </MoreQuestionsSection>

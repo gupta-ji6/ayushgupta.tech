@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { email } from '@config';
 import styled from 'styled-components';
 import { theme, media } from '@styles';
+import ExternalLink from './externalLink';
 const { colors, fontSizes, fonts } = theme;
 
 const EmailContainer = styled.div`
@@ -32,10 +33,10 @@ const EmailLinkWrapper = styled.div`
     background-color: ${colors.lightSlate};
   }
 `;
-const EmailLink = styled.a`
+const EmailLink = styled(ExternalLink)`
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.xsmall};
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
   writing-mode: vertical-rl;
   margin: 20px auto;
   padding: 10px;
@@ -60,7 +61,7 @@ const Email = () => {
         {isMounted && (
           <CSSTransition timeout={3000} classNames="fade">
             <EmailLinkWrapper>
-              <EmailLink href={`mailto:${email}`}>{email}</EmailLink>
+              <EmailLink url={`mailto:${email}`}>{email}</EmailLink>
             </EmailLinkWrapper>
           </CSSTransition>
         )}

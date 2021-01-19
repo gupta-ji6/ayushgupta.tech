@@ -2,9 +2,9 @@ import { media, mixins, theme } from '@styles';
 
 import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { navLinks } from '@config';
 import styled from 'styled-components';
+import ExternalLink from './externalLink';
 
 const { colors, fontSizes, fonts } = theme;
 
@@ -75,7 +75,7 @@ const NavLink = styled(Link)`
   padding: 3px 20px 20px;
   width: 100%;
 `;
-const ResumeLink = styled.a`
+const ResumeLink = styled(ExternalLink)`
   ${mixins.bigButton};
   padding: 18px 50px;
   margin: 10% auto 0;
@@ -109,9 +109,7 @@ const Menu = ({ menuOpen, toggleMenu }) => {
                 </NavListItem>
               ))}
           </NavList>
-          <ResumeLink href="/resume.pdf" target="_blank" rel="nofollow noopener noreferrer">
-            Resume
-          </ResumeLink>
+          <ResumeLink url="/resume">Resume</ResumeLink>
         </NavLinks>
       </Sidebar>
     </StyledContainer>

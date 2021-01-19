@@ -12,7 +12,6 @@ import {
 import { Main, mixins } from '@styles';
 
 import PropTypes from 'prop-types';
-import React from 'react';
 import { graphql } from 'gatsby';
 import styled from 'styled-components';
 

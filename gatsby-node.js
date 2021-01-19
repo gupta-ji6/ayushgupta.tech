@@ -31,13 +31,23 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
       alias: {
         '@components': path.resolve(__dirname, 'src/components'),
         '@config': path.resolve(__dirname, 'src/config'),
-        '@content': path.resolve(__dirname, 'src/content'),
         '@fonts': path.resolve(__dirname, 'src/fonts'),
         '@images': path.resolve(__dirname, 'src/images'),
         '@pages': path.resolve(__dirname, 'src/pages'),
         '@styles': path.resolve(__dirname, 'src/styles'),
         '@utils': path.resolve(__dirname, 'src/utils'),
       },
+    },
+  });
+};
+
+// added bc Gatsby doesn't support React 17 by default since ecosystem hasn't updated yet.
+// ref - https://github.com/gatsbyjs/gatsby/pull/27615#issuecomment-746293147
+exports.onCreateBabelConfig = ({ actions }) => {
+  actions.setBabelPlugin({
+    name: '@babel/plugin-transform-react-jsx',
+    options: {
+      runtime: 'automatic',
     },
   });
 };

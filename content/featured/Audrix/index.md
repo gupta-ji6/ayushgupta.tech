@@ -3,7 +3,7 @@ date: '3'
 title: 'Audrix'
 cover: './audrix.png'
 # github: 'https://github.com/bchiang7/spotify-profile'
-external: 'http://bit.ly/audrixapp'
+external: 'https://ayushgupta.tech/audrix'
 tech:
   - React Native
   - React Navigation

@@ -1,0 +1,21 @@
+# Redirects from what the browser requests to what we serve
+/resume              /resume.pdf
+
+# Social
+/gh                  https://github.com/gupta-ji6
+/twitter             https://twitter.com/_guptaji_
+/ig                  https://www.instagram.com/_.guptaji._/
+/li                  https://www.linkedin.com/in/guptaji6/
+/medium              https://medium.com/@guptaji
+
+# Projects
+/panda               https://panda.ayushgupta.tech/
+/js30                https://javascript30.ayushgupta.tech/
+/mod                 https://mentorondemand.ayushgupta.tech/
+/smartapart          https://play.google.com/store/apps/details?id=com.smartapart.technetium&hl=en
+/audrix              https://store.enappd.com/product/spotify-style-music-app-starter/
+
+# Blogs
+
+/grid-flex           https://medium.com/youstart-labs/beginners-guide-to-choose-between-css-grid-and-flexbox-783005dd2412
+/gif                 https://medium.com/youstart-labs/how-to-play-gif-in-your-terminal-d7657578e717

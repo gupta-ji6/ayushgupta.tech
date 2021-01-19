@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
 import styled from 'styled-components';
 import { theme, mixins, media, Section, Heading } from '@styles';
+import ExternalLink from './externalLink';
 const { colors, fontSizes, fonts } = theme;
 
 const EduContainer = styled(Section)`
@@ -234,9 +235,7 @@ const Education = ({ data }) => {
                     <span>{title}</span>
                     <School>
                       <span>&nbsp;@&nbsp;</span>
-                      <a href={url} target="_blank" rel="nofollow noopener noreferrer">
-                        {company}
-                      </a>
+                      <ExternalLink url={url}>{company}</ExternalLink>
                     </School>
                   </EduTitle>
                   <EduDetails>

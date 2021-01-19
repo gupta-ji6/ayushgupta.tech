@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import {
   IconGithub,
@@ -12,6 +11,7 @@ import { socialMedia } from '@config';
 import styled from 'styled-components';
 import { theme, mixins, media } from '@styles';
 import NowPlaying from './now-palying';
+import ExternalLink from './externalLink';
 const { colors, fontSizes, fonts } = theme;
 
 const FooterContainer = styled.footer`
@@ -35,7 +35,7 @@ const SocialContainer = styled.div`
 const SocialItemList = styled.ul`
   ${mixins.flexBetween};
 `;
-const SocialLink = styled.a`
+const SocialLink = styled(ExternalLink)`
   padding: 10px;
   svg {
     width: 20px;
@@ -50,7 +50,7 @@ const Copy = styled.div`
   font-size: ${fontSizes.xsmall};
   line-height: 1;
 `;
-const GithubLink = styled.a`
+const GithubLink = styled(ExternalLink)`
   color: ${colors.slate};
   margin-bottom: 5px;
 `;
@@ -63,11 +63,7 @@ const Footer = () => (
         {socialMedia &&
           socialMedia.map(({ name, url }, i) => (
             <li key={i}>
-              <SocialLink
-                href={url}
-                target="_blank"
-                rel="nofollow noopener noreferrer"
-                aria-label={name}>
+              <SocialLink url={url} aria-label={name}>
                 {name === 'Github' ? (
                   <IconGithub />
                 ) : name === 'Linkedin' ? (
@@ -89,10 +85,7 @@ const Footer = () => (
       </SocialItemList>
     </SocialContainer>
     <Copy>
-      <GithubLink
-        href="https://github.com/gupta-ji6"
-        target="_blank"
-        rel="nofollow noopener noreferrer">
+      <GithubLink url="https://github.com/gupta-ji6">
         <small>
           Customized with{' '}
           <span role="img" aria-label="Coffee">
@@ -106,10 +99,7 @@ const Footer = () => (
         </small>
         {/* <div>Template by Brittany Chiang</div> */}
       </GithubLink>
-      <GithubLink
-        href="https://github.com/bchiang7"
-        target="_blank"
-        rel="nofollow noopener noreferrer">
+      <GithubLink url="https://github.com/bchiang7">
         <small>Template by Brittany Chiang</small>
       </GithubLink>
     </Copy>

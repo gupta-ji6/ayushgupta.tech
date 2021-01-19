@@ -1,12 +1,14 @@
 import { Button, Section, media, mixins, theme } from '@styles';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { IconExternal, IconFolder, IconGithub, IconGooglePlay } from '@components/icons';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { trackCustomEvent } from 'gatsby-plugin-google-analytics';
 
 import PropTypes from 'prop-types';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
 import styled from 'styled-components';
+import ExternalLink from './externalLink';
 
 const { colors, fontSizes, fonts } = theme;
 
@@ -70,7 +72,7 @@ const Links = styled.div`
   margin-right: -10px;
   color: ${colors.lightSlate};
 `;
-const IconLink = styled.a`
+const IconLink = styled(ExternalLink)`
   position: relative;
   top: -10px;
   padding: 10px;
@@ -126,6 +128,21 @@ const Projects = ({ data }) => {
   const firstSix = projects.slice(0, GRID_LIMIT);
   const projectsToShow = showMore ? projects : firstSix;
 
+  const onShowMoreClick = e => {
+    e.preventDefault();
+    setShowMore(!showMore);
+    trackCustomEvent({
+      // string - required - The object that was interacted with (e.g.video)
+      category: 'Show More Projects Button',
+      // string - required - Type of interaction (e.g. 'play')
+      action: 'Click',
+      // string - optional - Useful for categorizing events (e.g. 'Spring Campaign')
+      label: 'Portfolio Click Events',
+      // number - optional - Numeric value associated with the event. (e.g. A product ID)
+      // value: 43
+    });
+  };
+
   return (
     <ProjectsContainer>
       <ProjectsTitle ref={revealTitle}>Other Noteworthy Projects</ProjectsTitle>
@@ -156,29 +173,17 @@ const Projects = ({ data }) => {
                           </Folder>
                           <Links>
                             {github && (
-                              <IconLink
-                                href={github}
-                                target="_blank"
-                                rel="nofollow noopener noreferrer"
-                                aria-label="Github Link">
+                              <IconLink url={github} aria-label="Github Link">
                                 <IconGithub />
                               </IconLink>
                             )}
                             {googleplay && (
-                              <IconLink
-                                href={googleplay}
-                                target="_blank"
-                                rel="nofollow noopener noreferrer"
-                                aria-label="Google Play Store Link">
+                              <IconLink url={googleplay} aria-label="Google Play Store Link">
                                 <IconGooglePlay />
                               </IconLink>
                             )}
                             {external && (
-                              <IconLink
-                                href={external}
-                                target="_blank"
-                                rel="nofollow noopener noreferrer"
-                                aria-label="External Link">
+                              <IconLink url={external} aria-label="External Link">
                                 <IconExternal />
                               </IconLink>
                             )}
@@ -202,7 +207,7 @@ const Projects = ({ data }) => {
         </TransitionGroup>
       </ProjectsGrid>
 
-      <ShowMoreButton onClick={() => setShowMore(!showMore)}>
+      <ShowMoreButton onClick={e => onShowMoreClick(e)}>
         {`Show ${showMore ? 'Fewer' : 'More'} Projects`}
       </ShowMoreButton>
     </ProjectsContainer>

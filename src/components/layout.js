@@ -1,6 +1,6 @@
 import { Email, Footer, Head, Loader, Nav, Social } from '@components';
 import { GlobalStyle, theme } from '@styles';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StaticQuery, graphql } from 'gatsby';
 
 import PropTypes from 'prop-types';

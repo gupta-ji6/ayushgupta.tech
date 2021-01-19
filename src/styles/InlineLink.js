@@ -1,8 +1,9 @@
 import styled from 'styled-components';
+import ExternalLink from '../components/externalLink';
 import theme from './theme';
 const { colors } = theme;
 
-const InlineLink = styled.a`
+const InlineLink = styled(ExternalLink)`
   display: inline-block;
   text-decoration: none;
   text-decoration-skip-ink: auto;

@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Img from 'gatsby-image';
 import sr from '@utils/sr';
 import { srConfig, github } from '@config';
 import styled from 'styled-components';
 import { theme, mixins, media, Section, Heading } from '@styles';
+import ExternalLink from './externalLink';
 const { colors, fontSizes, fonts } = theme;
 
 const AboutContainer = styled(Section)`
@@ -89,7 +90,7 @@ const Avatar = styled(Img)`
   border-radius: ${theme.borderRadius};
   transition: ${theme.transition};
 `;
-const AvatarContainer = styled.a`
+const AvatarContainer = styled(ExternalLink)`
   ${mixins.boxShadow};
   width: 100%;
   position: relative;
@@ -155,7 +156,7 @@ const About = ({ data }) => {
           </SkillsContainer>
         </ContentContainer>
         <PicContainer>
-          <AvatarContainer href={github}>
+          <AvatarContainer url={github}>
             <Avatar fluid={avatar.childImageSharp.fluid} alt="Avatar" />
           </AvatarContainer>
         </PicContainer>
