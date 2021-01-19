@@ -36,7 +36,7 @@ const EmailLinkWrapper = styled.div`
 const EmailLink = styled(ExternalLink)`
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.xsmall};
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
   writing-mode: vertical-rl;
   margin: 20px auto;
   padding: 10px;

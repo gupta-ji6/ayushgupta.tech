@@ -188,7 +188,7 @@ const Blog = ({ data }) => {
       {/* <ShowMoreButton onClick={() => setShowMore(!showMore)}>
         {showMore ? 'Fewer' : 'More'} Projects
       </ShowMoreButton> */}
-      <ReadMore url="https://medium.com/@guptaji">Read More</ReadMore>
+      <ReadMore url="https://ayushgupta.tech/medium">Read More</ReadMore>
     </BlogContainer>
   );
 };
