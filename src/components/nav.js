@@ -1,5 +1,5 @@
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { media, mixins, theme } from '@styles';
 import { navHeight, navLinks } from '@config';
 

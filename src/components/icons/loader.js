@@ -1,6 +1,3 @@
-import React from 'react';
-// import { styles } from 'ansi-colors';
-
 const IconLoader = () => (
   <svg width="57" height="57" xmlns="http://www.w3.org/2000/svg" stroke="#64ffda">
     <g transform="translate(1 1)" strokeWidth="2" fill="none" fillRule="evenodd">

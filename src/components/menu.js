@@ -2,7 +2,6 @@ import { media, mixins, theme } from '@styles';
 
 import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { navLinks } from '@config';
 import styled from 'styled-components';
 import ExternalLink from './externalLink';

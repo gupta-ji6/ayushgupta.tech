@@ -1,7 +1,7 @@
 import { Button, Section, media, mixins, theme } from '@styles';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { IconExternal, IconFolder, IconGithub, IconGooglePlay } from '@components/icons';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { trackCustomEvent } from 'gatsby-plugin-google-analytics';
 
 import PropTypes from 'prop-types';

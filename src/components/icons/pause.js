@@ -1,7 +1,5 @@
 // Reference - https://tablericons.com/
 
-import React from 'react';
-
 const IconPause = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

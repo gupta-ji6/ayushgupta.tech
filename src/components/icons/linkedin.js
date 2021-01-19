@@ -1,5 +1,3 @@
-import React from 'react';
-
 const IconLinkedin = () => (
   <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 430.117 430.117">
     <title>LinkedIn</title>
