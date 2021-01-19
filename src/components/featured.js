@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
 import styled from 'styled-components';
+import ExternalLink from '@components/externalLink';
 
 const { colors, fontSizes, fonts } = theme;
 
@@ -121,7 +122,7 @@ const FeaturedImg = styled(Img)`
     filter: grayscale(100%) contrast(1) brightness(80%);
   `};
 `;
-const ImgContainer = styled.a`
+const ImgContainer = styled(ExternalLink)`
   ${mixins.boxShadow};
   grid-column: 6 / -1;
   grid-row: 1 / -1;
@@ -253,13 +254,9 @@ const Featured = ({ data }) => {
                   <FeaturedLabel>Featured Project</FeaturedLabel>
                   <ProjectName>
                     {external ? (
-                      <a
-                        href={external}
-                        target="_blank"
-                        rel="nofollow noopener noreferrer"
-                        aria-label="External Link">
+                      <ExternalLink url={external} aria-label="External Link">
                         {title}
-                      </a>
+                      </ExternalLink>
                     ) : (
                       title
                     )}
@@ -274,48 +271,29 @@ const Featured = ({ data }) => {
                   )}
                   <Links>
                     {github && (
-                      <a
-                        href={github}
-                        target="_blank"
-                        rel="nofollow noopener noreferrer"
-                        aria-label="Github Link">
+                      <ExternalLink url={github} aria-label="Github Link">
                         <IconGithub />
-                      </a>
+                      </ExternalLink>
                     )}
                     {googleplay && (
-                      <a
-                        href={googleplay}
-                        target="_blank"
-                        rel="nofollow noopener noreferrer"
-                        aria-label="Google Play Store Link">
+                      <ExternalLink url={googleplay} aria-label="Google Play Store Link">
                         <IconGooglePlay />
-                      </a>
+                      </ExternalLink>
                     )}
                     {appstore && (
-                      <a
-                        href={appstore}
-                        target="_blank"
-                        rel="nofollow noopener noreferrer"
-                        aria-label="Apple App Store Link">
+                      <ExternalLink url={appstore} aria-label="Apple App Store Link">
                         <IconAppStore />
-                      </a>
+                      </ExternalLink>
                     )}
                     {external && (
-                      <a
-                        href={external}
-                        target="_blank"
-                        rel="nofollow noopener noreferrer"
-                        aria-label="External Link">
+                      <ExternalLink url={external} aria-label="External Link">
                         <IconExternal />
-                      </a>
+                      </ExternalLink>
                     )}
                   </Links>
                 </ContentContainer>
 
-                <ImgContainer
-                  href={external ? external : github ? github : '#'}
-                  target="_blank"
-                  rel="nofollow noopener noreferrer">
+                <ImgContainer url={external ? external : github ? github : '#'}>
                   <FeaturedImg fluid={cover.childImageSharp.fluid} />
                 </ImgContainer>
               </Project>

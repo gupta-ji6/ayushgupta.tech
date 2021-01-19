@@ -5,6 +5,7 @@ import sr from '@utils/sr';
 import { srConfig } from '@config';
 import { IconSpotify, IconPlay, IconPause } from '@components/icons';
 import { fetchCurrentTrack } from '../utils/spotify';
+import ExternalLink from './externalLink';
 
 // ========================= CONSTANTS ===========================
 
@@ -237,24 +238,18 @@ const NowPlaying = () => {
     <div>
       <TrackContext>{fetchNowPlayingCopy()}</TrackContext>
       <NowPlayingWidget>
-        <a
-          href={track?.external_urls?.spotify || SPOTIFY_PROFILE}
-          target="_blank"
-          rel="nofollow noopener noreferrer">
+        <ExternalLink url={track?.external_urls?.spotify || SPOTIFY_PROFILE}>
           <AlbumImage
             src={track?.album?.images[0].url || 'https://source.unsplash.com/128x128/?music'}
             loading="lazy"
           />
-        </a>
-        <a
-          href={track?.external_urls?.spotify || SPOTIFY_PROFILE}
-          target="_blank"
-          rel="nofollow noopener noreferrer">
+        </ExternalLink>
+        <ExternalLink url={track?.external_urls?.spotify || SPOTIFY_PROFILE}>
           <TrackInfo>
             <TrackName>{track?.name || 'Not Playing'}</TrackName>
             <AlbumName>{track?.album?.name || 'View Spotify Profile'}</AlbumName>
           </TrackInfo>
-        </a>
+        </ExternalLink>
         <SpotifyIcon playing={isAyushListeningToAnything}>
           <button onClick={toggleAudio} disabled={!isAyushListeningToAnything}>
             {isAyushListeningToAnything && track?.preview_url !== null ? (

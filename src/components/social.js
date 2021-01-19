@@ -4,6 +4,7 @@ import { socialMedia } from '@config';
 import { FormattedIcon } from '@components/icons';
 import styled from 'styled-components';
 import { theme, media } from '@styles';
+import ExternalLink from './externalLink';
 const { colors } = theme;
 
 const SocialContainer = styled.div`
@@ -33,7 +34,7 @@ const SocialItem = styled.li`
     margin-bottom: 20px;
   }
 `;
-const SocialLink = styled.a`
+const SocialLink = styled(ExternalLink)`
   padding: 10px;
   &:hover,
   &:focus {
@@ -62,11 +63,7 @@ const Social = () => {
               {socialMedia &&
                 socialMedia.map(({ url, name }, i) => (
                   <SocialItem key={i}>
-                    <SocialLink
-                      href={url}
-                      target="_blank"
-                      rel="nofollow noopener noreferrer"
-                      aria-label={name}>
+                    <SocialLink url={url} aria-label={name}>
                       <FormattedIcon name={name} />
                     </SocialLink>
                   </SocialItem>

@@ -4,6 +4,7 @@ import sr from '@utils/sr';
 import { srConfig } from '@config';
 import styled from 'styled-components';
 import { theme, mixins, media, Section, Heading } from '@styles';
+import ExternalLink from './externalLink';
 const { colors, fontSizes, fonts } = theme;
 
 const ContactContainer = styled(Section)`
@@ -38,7 +39,7 @@ const Title = styled.h4`
   ${media.desktop`font-size: 50px;`};
   ${media.tablet`font-size: 40px;`};
 `;
-const EmailLink = styled.a`
+const EmailLink = styled(ExternalLink)`
   ${mixins.bigButton};
   margin-top: 50px;
 `;
@@ -57,10 +58,7 @@ const Contact = ({ data }) => {
 
       <div dangerouslySetInnerHTML={{ __html: html }} />
 
-      <EmailLink
-        href="mailto:hello@ayushgupta.tech"
-        target="_blank"
-        rel="nofollow noopener noreferrer">
+      <EmailLink url="mailto:hello@ayushgupta.tech">
         Say Hello{' '}
         <span role="img" aria-label="wave">
           👋🏻

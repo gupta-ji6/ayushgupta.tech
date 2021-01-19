@@ -7,6 +7,7 @@ import { theme, mixins, media, Section } from '@styles';
 import { fetchCurrentTrack } from '../utils/spotify';
 const { colors, fontSizes, fonts } = theme;
 import { NowPlayingContext } from './now-palying';
+import ExternalLink from './externalLink';
 
 const HeroContainer = styled(Section)`
   ${mixins.flexCenter};
@@ -75,7 +76,7 @@ const TrackCopy = styled.span`
 //   width: max-content;
 // `;
 
-const EmailLink = styled.a`
+const EmailLink = styled(ExternalLink)`
   ${mixins.bigButton};
   margin-top: 50px;
 `;
@@ -123,7 +124,7 @@ const Hero = ({ data }) => {
     Object.keys(track).length !== 0 ? (
       <NowPlayingTrack style={{ transitionDelay: '500ms' }}>
         <TrackCopy>{`${trackCopy} `}</TrackCopy>
-        <a href={track.external_urls.spotify}>{track.name}</a>
+        <ExternalLink url={track.external_urls.spotify}>{track.name}</ExternalLink>
         <span>{` at the moment.`}</span>
       </NowPlayingTrack>
     ) : null;
@@ -133,10 +134,7 @@ const Hero = ({ data }) => {
       {/* <ResumeLink href="/resume.pdf" target="_blank" rel="nofollow noopener noreferrer">
         View Resume
       </ResumeLink> */}
-      <EmailLink
-        href="mailto:hire@ayushgupta.tech"
-        target="_blank"
-        rel="nofollow noopener noreferrer">
+      <EmailLink url="mailto:hire@ayushgupta.tech">
         Hire Me {/* <span role="img" aria-label="man technologist">
           👨🏻‍💻
         </span> */}

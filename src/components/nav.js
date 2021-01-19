@@ -10,6 +10,7 @@ import { Menu } from '@components';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { throttle } from '@utils';
+import ExternalLink from './externalLink';
 
 const { colors, fontSizes, fonts, loaderDelay } = theme;
 
@@ -155,7 +156,7 @@ const StyledListItem = styled.li`
 const StyledListLink = styled(Link)`
   padding: 12px 10px;
 `;
-const StyledResumeButton = styled.a`
+const StyledResumeButton = styled(ExternalLink)`
   ${mixins.smallButton};
   margin-left: 10px;
   font-size: ${fontSizes.smallish};
@@ -297,12 +298,7 @@ class Nav extends Component {
               {isMounted && (
                 <CSSTransition classNames={fadeDownClass} timeout={timeout}>
                   <div style={{ transitionDelay: `${isHome ? navLinks.length * 100 : 0}ms` }}>
-                    <StyledResumeButton
-                      href="/resume.pdf"
-                      target="_blank"
-                      rel="nofollow noopener noreferrer">
-                      Resume
-                    </StyledResumeButton>
+                    <StyledResumeButton url="/resume">Resume</StyledResumeButton>
                   </div>
                 </CSSTransition>
               )}

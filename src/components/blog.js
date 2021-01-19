@@ -6,6 +6,7 @@ import { srConfig } from '@config';
 import { IconExternal, IconArticle } from '@components/icons';
 import styled from 'styled-components';
 import { theme, mixins, media, Section, Heading } from '@styles';
+import ExternalLink from './externalLink';
 const { colors, fontSizes, fonts } = theme;
 
 const BlogContainer = styled(Section)`
@@ -68,7 +69,7 @@ const Links = styled.div`
   margin-right: -10px;
   color: ${colors.lightSlate};
 `;
-const IconLink = styled.a`
+const IconLink = styled(ExternalLink)`
   position: relative;
   top: -10px;
   padding: 10px;
@@ -106,7 +107,7 @@ const TagList = styled.ul`
     }
   }
 `;
-const ReadMore = styled.a`
+const ReadMore = styled(ExternalLink)`
   ${mixins.bigButton};
   margin: auto;
   margin-top: 50px;
@@ -161,11 +162,7 @@ const Blog = ({ data }) => {
                           </Folder>
                           <Links>
                             {url && (
-                              <IconLink
-                                href={url}
-                                target="_blank"
-                                rel="nofollow noopener noreferrer"
-                                aria-label="External Link">
+                              <IconLink url={url} aria-label="External Link">
                                 <IconExternal />
                               </IconLink>
                             )}
@@ -191,12 +188,7 @@ const Blog = ({ data }) => {
       {/* <ShowMoreButton onClick={() => setShowMore(!showMore)}>
         {showMore ? 'Fewer' : 'More'} Projects
       </ShowMoreButton> */}
-      <ReadMore
-        href={`https://medium.com/@guptaji`}
-        target="_blank"
-        rel="nofollow noopener noreferrer">
-        Read More
-      </ReadMore>
+      <ReadMore url="https://medium.com/@guptaji">Read More</ReadMore>
     </BlogContainer>
   );
 };
