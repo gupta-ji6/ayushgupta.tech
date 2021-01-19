@@ -4,9 +4,9 @@ avatar: './me.jpg'
 skills:
   - React
   - React Native
-  - Angular
+  - TypeScript
   - JavaScript
-  - Firebase
+  - NextJS/Gatsby
   - HTML5 & CSS3
 ---
 
