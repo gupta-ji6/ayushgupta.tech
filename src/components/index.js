@@ -1,4 +1,5 @@
 import About from './about';
+import Author from './author';
 import Blog from './blog';
 import Contact from './contact';
 import Education from './education';
@@ -18,6 +19,7 @@ import SocialShare from './socialShare';
 
 export {
   About,
+  Author,
   Blog,
   Contact,
   Education,

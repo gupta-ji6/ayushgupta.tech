@@ -3,7 +3,7 @@ import kebabCase from 'lodash/kebabCase';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
-import { Layout } from '@components';
+import { Author, Layout } from '@components';
 import { IconArticle } from '@components/icons';
 import { mixins, theme, media } from '@styles';
 
@@ -64,8 +64,8 @@ const StyledPostInner = styled.div`
 const StyledPost = styled.div`
   width: 65vw;
   ${media.desktop`width: 75vw;`};
-  ${media.tablet`width: 70vw;`};
-  ${media.phone`width: 80vw;`};
+  ${media.tablet`width: 100%`};
+  ${media.phone`width: 90vw;`};
   max-width: 1200px;
   transition: ${theme.transition};
   cursor: default;
@@ -142,6 +142,8 @@ const BlogPage = ({ location, data }) => {
           <h1 className="big-heading">thoughts</h1>
           <p className="subtitle">a collection of memories</p>
         </header>
+
+        <Author />
 
         <StyledGrid>
           <div className="posts">
