@@ -3,11 +3,12 @@ import kebabCase from 'lodash/kebabCase';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
-import { Layout } from '@components';
+import { Layout, SocialShare } from '@components';
 import { theme, media, mixins } from '@styles';
-import { IconTwitter, IconCopy, IconFacebook } from '@components/icons';
 
 const { colors, fontSizes } = theme;
+
+// ======================= STYLED COMPONENTS ========================
 
 const StyledPostContainer = styled.main`
   padding: 200px 200px;
@@ -32,8 +33,15 @@ const StledArticleDescription = styled.h2`
   font-weight: 500;
   margin: 1.2rem auto;
 `;
+const StyledDate = styled.time`
+  color: ${colors.slate};
+`;
 const StyledArticleTags = styled.p`
-  font-style: 'italic';
+  color: ${colors.slate};
+  a {
+    ${mixins.inlineLink};
+    color: ${colors.slate};
+  }
 `;
 const StyledPostContent = styled.div`
   h1,
@@ -111,31 +119,22 @@ const StyledPostContent = styled.div`
     border-bottom: 2px dashed ${colors.slate};
   }
 `;
-const SocialShareContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  ${media.phone`flex-direction: column;`};
-  font-size: ${fontSizes.xxlarge};
-`;
-const StyledSocialPlatform = styled.div`
-  margin-right: 20px;
-  margin-bottom: 20px;
-  svg {
-    width: 20px;
-    height: 20px;
-    margin-right: 6px;
-  }
-`;
+
 const StyledAuthorContainer = styled.div`
   margin-top: 2rem;
   display: flex;
   flex-direction: row;
   align-items: center;
-  ${media.desktop`flex-direction: row ;`}
-  ${media.tablet`flex-direction: column ;`}
-  ${media.phone`flex-direction: column ;`}
+  justify-content: center;
+  ${media.desktop`flex-direction: row;`}
+  ${media.tablet`flex-direction: column;`}
+  ${media.phone`flex-direction: column;`}
+  background-color: ${colors.lightNavy};
+  border-radius: ${theme.borderRadius};
+  padding: 1.5rem;
+  box-shadow: ${mixins.boxShadow};
 `;
+
 const StyledAuthorImg = styled.img`
   align-self: flex-start;
   width: 6.5rem;
@@ -147,11 +146,16 @@ const StyledAuthorImg = styled.img`
   object-fit: cover;
   border: 1px solid ${colors.green};
   margin-right: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
+  ${media.tablet`margin-bottom: 1rem;`}
+  ${media.phone`margin-bottom: 1rem;`}
 `;
-const StyledAuthorDescription = styled.p`
+
+const StyledAuthorDescription = styled.div`
   color: ${colors.slate};
 `;
+
+// ======================= COMPONENT ========================
 
 const PostTemplate = ({ data, location }) => {
   const { frontmatter, html } = data.markdownRemark;
@@ -171,13 +175,13 @@ const PostTemplate = ({ data, location }) => {
           <h1 className="medium-heading">{title}</h1>
           <StledArticleDescription>{description}</StledArticleDescription>
           <p className="subtitle">
-            <time>
+            <StyledDate>
               {new Date(date).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
               })}
-            </time>
+            </StyledDate>
           </p>
           <StyledArticleTags className="subtitle">
             {tags &&
@@ -188,33 +192,20 @@ const PostTemplate = ({ data, location }) => {
                 </Link>
               ))}
           </StyledArticleTags>
+          <SocialShare />
         </StyledPostHeader>
 
         <StyledPostContent dangerouslySetInnerHTML={{ __html: html }} />
 
-        <SocialShareContainer>
-          <StyledSocialPlatform>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer">
-              <IconTwitter />
-              <span>Share to Twitter</span>
-            </a>
-          </StyledSocialPlatform>
-          <StyledSocialPlatform>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer">
-              <IconCopy />
-              <span>Copy Link</span>
-            </a>
-          </StyledSocialPlatform>
-          <StyledSocialPlatform>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer">
-              <IconFacebook />
-              <span>Share to Facebook</span>
-            </a>
-          </StyledSocialPlatform>
-        </SocialShareContainer>
+        <SocialShare showText />
 
         <StyledAuthorContainer>
-          <StyledAuthorImg src="https://github.com/gupta-ji6.png" loading="lazy" />
+          <StyledAuthorImg
+            width="6rem"
+            height="6rem"
+            src="https://github.com/gupta-ji6.png"
+            loading="lazy"
+          />
           <StyledAuthorDescription>
             <strong>{`Ayush Gupta `}</strong>
             <span>

@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { theme } from '@styles';
+import { theme, mixins } from '@styles';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
 import { IconSpotify, IconPlay, IconPause } from '@components/icons';
@@ -101,6 +101,7 @@ const NowPlayingWidget = styled.div`
   justify-content: space-between;
   align-items: center;
   transition: all 0.3s ease-in-out;
+  box-shadow: ${mixins.boxShadow};
 
   &:hover {
     transform: scale3d(0.95, 0.95, 0.95);

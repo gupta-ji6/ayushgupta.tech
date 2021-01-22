@@ -14,6 +14,7 @@ import Menu from './menu';
 import Nav from './nav';
 import Projects from './projects';
 import Social from './social';
+import SocialShare from './socialShare';
 
 export {
   About,
@@ -32,4 +33,5 @@ export {
   Nav,
   Projects,
   Social,
+  SocialShare,
 };

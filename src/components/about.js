@@ -65,7 +65,7 @@ const Avatar = styled(Img)`
     &:focus {
       background: transparent;
       filter: none;
-      mix-blend-mode: nomral;
+      mix-blend-mode: normal;
       &:after {
         top: 15px;
         left: 15px;
@@ -79,7 +79,7 @@ const Avatar = styled(Img)`
     &:focus {
       background: transparent;
       filter: none;
-      mix-blend-mode: nomral;
+      mix-blend-mode: normal;
       &:after {
         top: 15px;
         left: 15px;
