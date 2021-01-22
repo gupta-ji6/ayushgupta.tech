@@ -120,11 +120,37 @@ const SocialShareContainer = styled.div`
 `;
 const StyledSocialPlatform = styled.div`
   margin-right: 20px;
+  margin-bottom: 20px;
   svg {
     width: 20px;
     height: 20px;
     margin-right: 6px;
   }
+`;
+const StyledAuthorContainer = styled.div`
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  ${media.desktop`flex-direction: row ;`}
+  ${media.tablet`flex-direction: column ;`}
+  ${media.phone`flex-direction: column ;`}
+`;
+const StyledAuthorImg = styled.img`
+  align-self: flex-start;
+  width: 6.5rem;
+  height: 6.5rem;
+  background-color: ${colors.lightNavy};
+  border-radius: ${theme.borderRadius};
+  border-radius: 50%;
+  padding: 4px;
+  object-fit: cover;
+  border: 1px solid ${colors.green};
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+`;
+const StyledAuthorDescription = styled.p`
+  color: ${colors.slate};
 `;
 
 const PostTemplate = ({ data, location }) => {
@@ -186,6 +212,18 @@ const PostTemplate = ({ data, location }) => {
             </a>
           </StyledSocialPlatform>
         </SocialShareContainer>
+
+        <StyledAuthorContainer>
+          <StyledAuthorImg src="https://github.com/gupta-ji6.png" loading="lazy" />
+          <StyledAuthorDescription>
+            <strong>{`Ayush Gupta `}</strong>
+            <span>
+              is a Web & Mobile Application Developer who is passionate about photography, writes
+              blogs and occasionaly designs. Currently working as a React & React Native Developer
+              at FirstCry. Fondly known as GuptaJi.
+            </span>
+          </StyledAuthorDescription>
+        </StyledAuthorContainer>
       </StyledPostContainer>
     </Layout>
   );

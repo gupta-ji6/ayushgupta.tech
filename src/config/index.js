@@ -1,7 +1,7 @@
 module.exports = {
   siteTitle: 'Ayush Gupta - Developer, Photographer, Blogger & Designer | GuptaJi',
   siteDescription:
-    'Ayush Gupta is a Web & Mobile Application Developer who is passionate about photographey, writes blogs and occasionaly designs. React Native Developer at FirstCry. Fondly known as GuptaJi.',
+    'Ayush Gupta is a Web & Mobile Application Developer who is passionate about photography, writes blogs and occasionaly designs. React Native Developer at FirstCry. Fondly known as GuptaJi.',
   siteKeywords:
     'Ayush Gupta, Ayush, Gupta, guptaji, software engineer, front end engineer, web developer, react, reactjs, react native, react native developer, javascript, gupta ji, developer, mobile photographer, kota ',
   siteUrl: 'https://ayushgupta.tech',
