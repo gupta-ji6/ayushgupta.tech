@@ -1,10 +1,14 @@
 import { createGlobalStyle } from 'styled-components';
 import theme from './theme';
 import media from './media';
+import mixins from './mixins';
+import PrismStyles from './PrismStyles';
 import * as fontFamilies from './fonts';
 const { colors, fontSizes, fonts } = theme;
 
 const GlobalStyle = createGlobalStyle`
+  ${PrismStyles};
+  
   @font-face {
     font-family: 'Calibre';
     src: url(${fontFamilies.CalibreLightWOFF2}) format('woff2'),
@@ -315,6 +319,27 @@ const GlobalStyle = createGlobalStyle`
     font-weight: 400;
     line-height: 1.5;
     margin: 0 0 20px 0;
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+    color: ${colors.green};
+    .arrow {
+      display: block;
+      margin-right: 10px;
+      padding-top: 4px;
+    }
+    a {
+      ${mixins.inlineLink};
+      font-family: ${fonts.SFMono};
+      font-size: ${fontSizes.small};
+      font-weight: 600;
+      line-height: 1.5;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
   }
 
 `;

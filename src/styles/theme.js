@@ -5,6 +5,7 @@ const theme = {
     darkNavy: '#020c1b',
     navy: '#0a192f',
     lightNavy: '#172a45',
+    lightestNavy: '#303C55',
     darkGrey: '#333f58',
     mediumGrey: '#2d3952',
     blueGrey: '#293d5a',
