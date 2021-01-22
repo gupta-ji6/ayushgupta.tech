@@ -41,6 +41,12 @@ const SkipToContent = styled.a`
   }
 `;
 
+const StyledContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+
 const Layout = ({ children, location }) => {
   const isHome = location.pathname === '/';
   const [isLoading, setIsLoading] = useState(isHome);
@@ -85,13 +91,13 @@ const Layout = ({ children, location }) => {
           {isLoading ? (
             <Loader finishLoading={() => setIsLoading(false)} />
           ) : (
-            <div className="container">
+            <StyledContent>
               <Nav isHome={isHome} />
               <Social />
               <Email />
               {children}
               <Footer />
-            </div>
+            </StyledContent>
           )}
         </div>
       )}
