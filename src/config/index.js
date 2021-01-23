@@ -72,7 +72,7 @@ module.exports = {
   ],
 
   twitterHandle: '@_guptaji_',
-  googleAnalyticsID: 'UA-101925600-2',
+  googleAnalyticsID: 'G-XYDGVM2S3D',
 
   navHeight: 100,
 
