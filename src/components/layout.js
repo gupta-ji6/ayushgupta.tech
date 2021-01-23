@@ -1,4 +1,4 @@
-import { Email, Footer, Head, Loader, Nav, Social } from '@components';
+import { Email, Footer, Head, Nav, Social } from '@components';
 import { GlobalStyle, theme } from '@styles';
 import { useEffect, useState } from 'react';
 import { StaticQuery, graphql } from 'gatsby';
@@ -49,7 +49,7 @@ const StyledContent = styled.div`
 
 const Layout = ({ children, location }) => {
   const isHome = location.pathname === '/';
-  const [isLoading, setIsLoading] = useState(isHome);
+  const [isLoading] = useState(isHome);
 
   useEffect(() => {
     if (isLoading) {
@@ -88,17 +88,17 @@ const Layout = ({ children, location }) => {
 
           <SkipToContent href="#content">Skip to Content</SkipToContent>
 
-          {isLoading ? (
+          {/* {isLoading ? (
             <Loader finishLoading={() => setIsLoading(false)} />
-          ) : (
-            <StyledContent>
-              <Nav isHome={isHome} />
-              <Social />
-              <Email />
-              {children}
-              <Footer />
-            </StyledContent>
-          )}
+          ) : ( */}
+          <StyledContent>
+            <Nav isHome={isHome} />
+            <Social />
+            <Email />
+            {children}
+            <Footer />
+          </StyledContent>
+          {/*  )} */}
         </div>
       )}
     />
