@@ -2,7 +2,6 @@ import { Button, Section, media, mixins, theme } from '@styles';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { IconExternal, IconFolder, IconGithub, IconGooglePlay } from '@components/icons';
 import { useEffect, useRef, useState } from 'react';
-import { trackCustomEvent } from 'gatsby-plugin-google-analytics';
 
 import PropTypes from 'prop-types';
 import sr from '@utils/sr';
@@ -131,16 +130,15 @@ const Projects = ({ data }) => {
   const onShowMoreClick = e => {
     e.preventDefault();
     setShowMore(!showMore);
-    trackCustomEvent({
-      // string - required - The object that was interacted with (e.g.video)
-      category: 'Show More Projects Button',
-      // string - required - Type of interaction (e.g. 'play')
-      action: 'Click',
-      // string - optional - Useful for categorizing events (e.g. 'Spring Campaign')
-      label: 'Portfolio Click Events',
-      // number - optional - Numeric value associated with the event. (e.g. A product ID)
-      // value: 43
-    });
+    typeof window !== 'undefined' &&
+      window.gtag('event', 'click', {
+        // string - The category of the event.
+        event_category: 'Show More Projects Button',
+        // string - The label of the event.
+        event_label: 'Portfolio Click Events',
+        // number - optional - A non-negative integer that will appear as the vent value.
+        // value: 43
+      });
   };
 
   return (
