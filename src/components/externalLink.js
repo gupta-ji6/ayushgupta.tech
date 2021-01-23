@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { OutboundLink } from 'gatsby-plugin-google-analytics';
+import { OutboundLink } from 'gatsby-plugin-google-gtag';
 
 const ExternalLink = ({ url, children, className, ...otherProps }) => (
   <OutboundLink
