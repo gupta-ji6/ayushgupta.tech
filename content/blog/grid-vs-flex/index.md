@@ -4,6 +4,7 @@ description: An overview and comparison between CSS Grid and Flexbox layout tech
 date: '2018-06-15'
 draft: false
 slug: '/blog/grid-vs-flex'
+popular: true
 tags:
   - Layout
   - CSS Grid

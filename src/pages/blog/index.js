@@ -221,6 +221,7 @@ export const pageQuery = graphql`
             date
             tags
             draft
+            popular
           }
           html
         }
