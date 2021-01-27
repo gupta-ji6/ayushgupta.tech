@@ -22,6 +22,17 @@ const StyledPostContainer = styled.main`
   /* align-items: center; */
   max-width: 1200px;
 `;
+const StyledDraftWarning = styled.blockquote`
+  margin: 25px 0;
+  text-align: left;
+  font-style: italic;
+  font-weight: 500;
+  padding: 0.5em;
+  background-color: ${colors.lightNavy};
+  border: 0.1rem solid ${colors.green};
+  border-radius: ${theme.borderRadius};
+`;
+
 const StyledPostHeader = styled.header`
   margin-bottom: 50px;
   .tag {
@@ -124,17 +135,24 @@ const StyledPostContent = styled.div`
 
 const PostTemplate = ({ data, location }) => {
   const { frontmatter, html } = data.markdownRemark;
-  const { title, date, tags, description } = frontmatter;
+  const { title, date, tags, description, draft } = frontmatter;
 
   return (
     <Layout location={location}>
-      <Helmet title={title} />
+      <Helmet title={`${title} - Ayush Gupta`} />
 
       <StyledPostContainer>
         <span className="breadcrumb">
           <span className="arrow">&larr;</span>
           <Link to="/blog">All articles</Link>
         </span>
+
+        {draft && (
+          <StyledDraftWarning>
+            Note: This is a draft preview of the article yet to be published. Kindly do not share it
+            on social media. Use this link for review purpose only.
+          </StyledDraftWarning>
+        )}
 
         <StyledPostHeader>
           <h1 className="medium-heading">{title}</h1>
@@ -188,6 +206,7 @@ export const pageQuery = graphql`
         slug
         image
         tags
+        draft
       }
     }
   }
