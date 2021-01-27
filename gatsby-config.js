@@ -170,10 +170,17 @@ module.exports = {
         ],
       },
     },
+    // https://gatsbyjs.com/plugins/gatsby-plugin-google-gtag/
     {
-      resolve: `gatsby-plugin-google-analytics`,
+      resolve: `gatsby-plugin-google-gtag`,
       options: {
-        trackingId: config.googleAnalyticsID,
+        trackingIds: [config.googleAnalyticsID],
+        pluginConfig: {
+          // Puts tracking script in the head instead of the body
+          head: false,
+          // Setting this parameter is also optional
+          respectDNT: false,
+        },
       },
     },
   ],
