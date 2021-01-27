@@ -76,6 +76,14 @@ module.exports = {
               withAvif: true,
             },
           },
+          // https://www.gatsbyjs.com/plugins/gatsby-remark-copy-linked-files
+          {
+            resolve: `gatsby-remark-copy-linked-files`,
+            options: {
+              destinationDir: f => `${f.name}`,
+              ignoreFileExtensions: [`png`, `jpg`, `jpeg`],
+            },
+          },
           {
             // https://www.gatsbyjs.org/packages/gatsby-remark-code-titles/
             resolve: 'gatsby-remark-code-titles',
