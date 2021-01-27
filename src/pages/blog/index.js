@@ -27,6 +27,12 @@ const StyledMainContainer = styled.main`
   }
 `;
 
+const StyledLatestArticles = styled.h2`
+  font-size: ${fontSizes.h3};
+  text-align: center;
+  margin-top: 50px;
+`;
+
 const StyledGrid = styled.div`
   margin-top: 50px;
   .posts {
@@ -67,6 +73,7 @@ const StyledPost = styled.div`
   ${media.tablet`width: 100%`};
   ${media.phone`width: 90vw;`};
   max-width: 1200px;
+  margin-bottom: 25px;
   transition: ${theme.transition};
   cursor: default;
   &:hover,
@@ -135,7 +142,7 @@ const BlogPage = ({ location, data }) => {
 
   return (
     <Layout location={location}>
-      <Helmet title="Blog" />
+      <Helmet title="Blog - Ayush Gupta" />
 
       <StyledMainContainer>
         <header>
@@ -144,6 +151,8 @@ const BlogPage = ({ location, data }) => {
         </header>
 
         <Author />
+
+        <StyledLatestArticles>Latest Articles</StyledLatestArticles>
 
         <StyledGrid>
           <div className="posts">
