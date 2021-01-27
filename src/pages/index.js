@@ -28,7 +28,7 @@ const IndexPage = ({ data, location }) => (
       <Jobs data={data.jobs.edges} />
       <Featured data={data.featured.edges} />
       <Projects data={data.projects.edges} />
-      <Blog data={data.popularArticles.edges} />
+      <Blog data={data.blog.edges} />
       <Education data={data.education.edges} />
       <Contact data={data.contact.edges} />
     </MainContainer>
@@ -137,18 +137,23 @@ export const pageQuery = graphql`
         }
       }
     }
-    popularArticles: allMarkdownRemark(
-      filter: { fileAbsolutePath: { regex: "/popularArticles/" } }
-      sort: { fields: [frontmatter___date], order: DESC }
+    blog: allMarkdownRemark(
+      filter: {
+        fileAbsolutePath: { regex: "/blog/" }
+        frontmatter: { draft: { ne: true }, popular: { eq: true } }
+      }
+      sort: { fields: [frontmatter___date], order: ASC }
     ) {
       edges {
         node {
           frontmatter {
-            date
             title
+            description
+            slug
+            date
             tags
-            url
-            show
+            draft
+            popular
           }
           html
         }
