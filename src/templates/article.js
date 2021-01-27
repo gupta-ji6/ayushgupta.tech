@@ -139,7 +139,10 @@ const PostTemplate = ({ data, location }) => {
 
   return (
     <Layout location={location}>
-      <Helmet title={`${title} - Ayush Gupta`} />
+      <Helmet>
+        <title>{title} - Ayush Gupta</title>
+        <link rel="canonical" href={location.href} />
+      </Helmet>
 
       <StyledPostContainer>
         <span className="breadcrumb">
@@ -175,12 +178,12 @@ const PostTemplate = ({ data, location }) => {
                 </Link>
               ))}
           </StyledArticleTags>
-          <SocialShare />
+          <SocialShare title={title} tags={tags} url={location.href} />
         </StyledPostHeader>
 
         <StyledPostContent dangerouslySetInnerHTML={{ __html: html }} />
 
-        <SocialShare showText />
+        <SocialShare showText title={title} tags={tags} url={location.href} />
 
         <Author showBg />
       </StyledPostContainer>
