@@ -6,19 +6,16 @@ import IconCopy from './copy';
 import IconExternal from './external';
 import IconFacebook from './facebook';
 import IconFolder from './folder';
-import IconFork from './fork';
 import IconGithub from './github';
 import IconGooglePlay from './googleplay';
 import IconInstagram from './instagram';
 import IconLinkedin from './linkedin';
 import IconLoader from './loader';
-import IconLocation from './location';
 import IconLogo from './logo';
 import IconMedium from './medium';
 import IconPause from './pause';
 import IconPlay from './play';
 import IconSpotify from './spotify';
-import IconStar from './star';
 import IconTwitter from './twitter';
 
 export {
@@ -37,11 +34,8 @@ export {
   IconAppStore,
   IconFolder,
   IconArticle,
-  IconLocation,
   IconPause,
   IconPlay,
   IconSpotify,
-  IconStar,
-  IconFork,
   FormattedIcon,
 };

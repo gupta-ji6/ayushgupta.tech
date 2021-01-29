@@ -130,15 +130,6 @@ const Projects = ({ data }) => {
   const onShowMoreClick = e => {
     e.preventDefault();
     setShowMore(!showMore);
-    typeof window !== 'undefined' &&
-      window.gtag('event', 'click', {
-        // string - The category of the event.
-        event_category: 'Show More Projects Button',
-        // string - The label of the event.
-        event_label: 'Portfolio Click Events',
-        // number - optional - A non-negative integer that will appear as the vent value.
-        // value: 43
-      });
   };
 
   return (
