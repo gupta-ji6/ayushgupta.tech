@@ -105,7 +105,7 @@ const Menu = ({ menuOpen, toggleMenu }) => {
             {navLinks &&
               navLinks.map(({ url, name }, i) => (
                 <NavListItem key={i}>
-                  <NavLink to={url}>{name}</NavLink>
+                  <NavLink to={name === 'Blog' ? '/blog' : url}>{name}</NavLink>
                 </NavListItem>
               ))}
           </NavList>

@@ -9,4 +9,4 @@ I'm a [developer](https://github.com/gupta-ji6) and a passionate mobile [photogr
 
 I enjoy building, learning & exploring things that live on the web.
 
-I often [write](https://medium.com/@guptaji) blogs and design things.
+I often [write](/blog) blogs and design things.
