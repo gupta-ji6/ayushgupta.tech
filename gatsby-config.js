@@ -22,7 +22,7 @@ module.exports = {
         start_url: '/',
         background_color: config.darkNavyColor,
         theme_color: config.navyColor,
-        display: 'minimal-ui',
+        display: 'standalone',
         // cache_busting_mode: 'none',
         icon: 'src/images/logo.png',
         icons: [
