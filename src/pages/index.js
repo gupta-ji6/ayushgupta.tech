@@ -138,17 +138,22 @@ export const pageQuery = graphql`
       }
     }
     blog: allMarkdownRemark(
-      filter: { fileAbsolutePath: { regex: "/blog/" } }
-      sort: { fields: [frontmatter___date], order: DESC }
+      filter: {
+        fileAbsolutePath: { regex: "/blog/" }
+        frontmatter: { draft: { ne: true }, popular: { eq: true } }
+      }
+      sort: { fields: [frontmatter___date], order: ASC }
     ) {
       edges {
         node {
           frontmatter {
-            date
             title
+            description
+            slug
+            date
             tags
-            url
-            show
+            draft
+            popular
           }
           html
         }

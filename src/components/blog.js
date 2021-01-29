@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'gatsby';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
-import { IconExternal, IconArticle } from '@components/icons';
+import { IconArticle } from '@components/icons';
 import styled from 'styled-components';
 import { theme, mixins, media, Section, Heading } from '@styles';
-import ExternalLink from './externalLink';
 const { colors, fontSizes, fonts } = theme;
 
 const BlogContainer = styled(Section)`
@@ -65,20 +65,20 @@ const Folder = styled.div`
     height: 40px;
   }
 `;
-const Links = styled.div`
-  margin-right: -10px;
-  color: ${colors.lightSlate};
-`;
-const IconLink = styled(ExternalLink)`
-  position: relative;
-  top: -10px;
-  padding: 10px;
+// const Links = styled.div`
+//   margin-right: -10px;
+//   color: ${colors.lightSlate};
+// `;
+// const IconLink = styled.a`
+//   position: relative;
+//   top: -10px;
+//   padding: 10px;
 
-  svg {
-    width: 24px;
-    height: 24px;
-  }
-`;
+//   svg {
+//     width: 24px;
+//     height: 24px;
+//   }
+// `;
 const BlogName = styled.h5`
   margin: 0 0 10px;
   font-size: ${fontSizes.xxlarge};
@@ -86,6 +86,7 @@ const BlogName = styled.h5`
 `;
 const BlogDescription = styled.div`
   font-size: 17px;
+  color: ${colors.lightSlate};
   a {
     ${mixins.inlineLink};
   }
@@ -107,7 +108,7 @@ const TagList = styled.ul`
     }
   }
 `;
-const ReadMore = styled(ExternalLink)`
+const ReadMore = styled(Link)`
   ${mixins.bigButton};
   margin: auto;
   margin-top: 50px;
@@ -127,20 +128,21 @@ const Blog = ({ data }) => {
   }, []);
 
   const GRID_LIMIT = 2;
-  const blog = data.filter(({ node }) => node.frontmatter.show === 'true');
+  const blog = data.filter(({ node }) => node.frontmatter.popular && !node.frontmatter.draft);
   // const firstSix = blog.slice(0, GRID_LIMIT);
   // const blogsToShow = showMore ? blog : firstSix;
   // console.log(data);
+  // console.log(blog);
 
   return (
     <BlogContainer id="blog" ref={revealContainer}>
-      <Heading>Recent Articles</Heading>
+      <Heading>Popular Articles</Heading>
       <BlogGrid>
         <TransitionGroup className="blogs">
           {blog &&
             blog.map(({ node }, i) => {
-              const { frontmatter, html } = node;
-              const { title, tags, url } = frontmatter;
+              const { frontmatter } = node;
+              const { title, tags, slug, description } = frontmatter;
               return (
                 <CSSTransition
                   key={i}
@@ -155,29 +157,24 @@ const Blog = ({ data }) => {
                       transitionDelay: `${i >= GRID_LIMIT ? (i - GRID_LIMIT) * 100 : 0}ms`,
                     }}>
                     <BlogInner>
-                      <header>
-                        <BlogHeader>
-                          <Folder>
-                            <IconArticle />
-                          </Folder>
-                          <Links>
-                            {url && (
-                              <IconLink url={url} aria-label="External Link">
-                                <IconExternal />
-                              </IconLink>
-                            )}
-                          </Links>
-                        </BlogHeader>
-                        <BlogName>{title}</BlogName>
-                        <BlogDescription dangerouslySetInnerHTML={{ __html: html }} />
-                      </header>
-                      <footer>
-                        <TagList>
-                          {tags.map((tag, i) => (
-                            <li key={i}>{tag}</li>
-                          ))}
-                        </TagList>
-                      </footer>
+                      <Link to={slug}>
+                        <header>
+                          <BlogHeader>
+                            <Folder>
+                              <IconArticle />
+                            </Folder>
+                          </BlogHeader>
+                          <BlogName>{title}</BlogName>
+                          <BlogDescription>{description}</BlogDescription>
+                        </header>
+                        <footer>
+                          <TagList>
+                            {tags.map((tag, i) => (
+                              <li key={i}>{tag}</li>
+                            ))}
+                          </TagList>
+                        </footer>
+                      </Link>
                     </BlogInner>
                   </Article>
                 </CSSTransition>
@@ -188,7 +185,7 @@ const Blog = ({ data }) => {
       {/* <ShowMoreButton onClick={() => setShowMore(!showMore)}>
         {showMore ? 'Fewer' : 'More'} Projects
       </ShowMoreButton> */}
-      <ReadMore url="https://ayushgupta.tech/medium">Read More</ReadMore>
+      <ReadMore to="/blog">Read More</ReadMore>
     </BlogContainer>
   );
 };

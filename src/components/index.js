@@ -1,4 +1,5 @@
 import About from './about';
+import Author from './author';
 import Blog from './blog';
 import Contact from './contact';
 import Education from './education';
@@ -14,9 +15,11 @@ import Menu from './menu';
 import Nav from './nav';
 import Projects from './projects';
 import Social from './social';
+import SocialShare from './socialShare';
 
 export {
   About,
+  Author,
   Blog,
   Contact,
   Education,
@@ -32,4 +35,5 @@ export {
   Nav,
   Projects,
   Social,
+  SocialShare,
 };

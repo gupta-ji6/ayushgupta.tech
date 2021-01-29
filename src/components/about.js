@@ -65,7 +65,7 @@ const Avatar = styled(Img)`
     &:focus {
       background: transparent;
       filter: none;
-      mix-blend-mode: nomral;
+      mix-blend-mode: normal;
       &:after {
         top: 15px;
         left: 15px;
@@ -79,7 +79,7 @@ const Avatar = styled(Img)`
     &:focus {
       background: transparent;
       filter: none;
-      mix-blend-mode: nomral;
+      mix-blend-mode: normal;
       &:after {
         top: 15px;
         left: 15px;
@@ -97,6 +97,9 @@ const AvatarContainer = styled(ExternalLink)`
   border-radius: ${theme.borderRadius};
   background-color: ${colors.green};
   margin-left: -20px;
+  ${Avatar} {
+    border-radius: ${theme.borderRadius};
+  }
   &:hover,
   &:focus {
     background: transparent;
@@ -109,6 +112,7 @@ const AvatarContainer = styled(ExternalLink)`
       filter: none;
     }
     ${Avatar} {
+      border-radius: ${theme.borderRadius};
       filter: none;
       mix-blend-mode: normal;
     }
