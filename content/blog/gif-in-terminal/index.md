@@ -76,7 +76,7 @@ fi
 
 I’ll be using my favorite [Slackmoji](https://slackmojis.com/) — [Party Parrot](http://cultofthepartyparrot.com/) for playing in the terminal.
 
-![Party Parrot](./images/party-parrot.gif)
+![Party Parrot](./images/party-parrot-gif.gif)
 
 Don’t know about Party Parrot? It’s quite an interesting story. Read it out [here](https://mashable.com/2017/07/13/cult-of-the-party-parrot-slack-reddit-meme/).
 
