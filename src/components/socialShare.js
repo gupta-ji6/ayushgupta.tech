@@ -16,9 +16,9 @@ const SocialShareContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-start;
-  ${media.phone`flex-direction: column;`};
-  ${media.phablet`flex-direction: column;`};
-  ${media.tablet`flex-direction: column;`};
+  ${media.phone`flex-direction: ${props => (props.showText ? 'column' : 'row')};`};
+  ${media.phablet`flex-direction: ${props => (props.showText ? 'column' : 'row')};`};
+  ${media.tablet`flex-direction: ${props => (props.showText ? 'column' : 'row')};`};
   font-size: ${fontSizes.xxlarge};
 `;
 const StyledSocialPlatform = styled.button`

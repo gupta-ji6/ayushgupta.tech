@@ -30,6 +30,8 @@ const StyledMainContainer = styled.main`
 const StyledLatestArticles = styled.h2`
   font-size: ${fontSizes.h3};
   text-align: center;
+  ${media.phone`text-align: left;`}
+  ${media.phablet`text-align: left;`}
   margin-top: 50px;
 `;
 
