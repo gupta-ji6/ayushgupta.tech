@@ -25,14 +25,14 @@ module.exports = {
         display: 'standalone',
         // cache_busting_mode: 'none',
         icon: 'src/images/logo.png',
-        icons: [
-          {
-            src: 'src/images/favicons/maskable-icon-512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'maskable',
-          },
-        ],
+        // icons: [
+        //   {
+        //     src: 'src/images/favicons/maskable-icon-512.png',
+        //     sizes: '512x512',
+        //     type: 'image/png',
+        //     purpose: 'maskable',
+        //   },
+        // ],
       },
     },
     `gatsby-plugin-offline`,
