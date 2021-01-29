@@ -1,4 +1,5 @@
 // Reference - https://tablericons.com/
+import React from 'react';
 
 const IconPlay = () => (
   <svg

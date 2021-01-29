@@ -1,10 +1,10 @@
+import React, { useEffect, useRef } from 'react';
 import { Layout } from '@components';
 import { theme, mixins, media } from '@styles';
 const { colors, fontSizes } = theme;
 import ogImage from '@images/og-uses.png';
 
 import PropTypes from 'prop-types';
-import { useEffect, useRef } from 'react';
 import { graphql } from 'gatsby';
 import styled from 'styled-components';
 import { srConfig, siteUrl } from '@config';

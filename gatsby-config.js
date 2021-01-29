@@ -23,27 +23,28 @@ module.exports = {
         background_color: config.darkNavyColor,
         theme_color: config.navyColor,
         display: 'minimal-ui',
-        cache_busting_mode: 'none',
+        // cache_busting_mode: 'none',
         icon: 'src/images/logo.png',
-        icons: [
-          {
-            src: 'src/images/favicons/maskable-icon-512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'maskable',
-          },
-        ],
+        // icons: [
+        //   {
+        //     src: 'src/images/favicons/maskable-icon-512.png',
+        //     sizes: '512x512',
+        //     type: 'image/png',
+        //     purpose: 'maskable',
+        //   },
+        // ],
       },
     },
+    `gatsby-plugin-offline`,
     // gatsby-plugin-manifest should be listed before gatsby-plugin-offline
-    {
-      resolve: 'gatsby-plugin-offline',
-      options: {
-        workboxConfig: {
-          globPatterns: ['**/icon-path*'],
-        },
-      },
-    },
+    // {
+    //   resolve: 'gatsby-plugin-offline',
+    //   options: {
+    //     workboxConfig: {
+    //       globPatterns: ['**/icon-path*'],
+    //     },
+    //   },
+    // },
     {
       resolve: 'gatsby-source-filesystem',
       options: {

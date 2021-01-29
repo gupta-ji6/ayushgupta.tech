@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { theme, mixins } from '@styles';
 import sr from '@utils/sr';

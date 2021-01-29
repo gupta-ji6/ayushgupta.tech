@@ -1,4 +1,5 @@
 // Reference - https://mobiriseicons.com/cheatsheet.html
+import React from 'react';
 
 const IconArticle = () => (
   <svg height="512" viewBox="0 0 24 24" width="512" xmlns="http://www.w3.org/2000/svg">

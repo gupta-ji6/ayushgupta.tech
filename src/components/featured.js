@@ -1,6 +1,6 @@
 import { Heading, Section, media, mixins, theme } from '@styles';
 import { IconAppStore, IconExternal, IconGithub, IconGooglePlay } from '@components/icons';
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import Img from 'gatsby-image';
 import PropTypes from 'prop-types';

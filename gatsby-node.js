@@ -103,11 +103,11 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
 
 // added bc Gatsby doesn't support React 17 by default since ecosystem hasn't updated yet.
 // ref - https://github.com/gatsbyjs/gatsby/pull/27615#issuecomment-746293147
-exports.onCreateBabelConfig = ({ actions }) => {
-  actions.setBabelPlugin({
-    name: '@babel/plugin-transform-react-jsx',
-    options: {
-      runtime: 'automatic',
-    },
-  });
-};
+// exports.onCreateBabelConfig = ({ actions }) => {
+//   actions.setBabelPlugin({
+//     name: '@babel/plugin-transform-react-jsx',
+//     options: {
+//       runtime: 'automatic',
+//     },
+//   });
+// };

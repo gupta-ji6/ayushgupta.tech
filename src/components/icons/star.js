@@ -1,3 +1,5 @@
+import React from 'react';
+
 const IconStar = () => (
   <svg aria-label="stars" viewBox="0 0 14 16" version="1.1" width="14" height="16" role="img">
     <path

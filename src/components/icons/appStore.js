@@ -1,3 +1,5 @@
+import React from 'react';
+
 const IconAppStore = () => (
   <svg
     version="1.1"
