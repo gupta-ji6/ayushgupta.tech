@@ -1,9 +1,8 @@
 ---
-date: '2019-12-21'
-title: 'Bachelor of Technology'
-company: 'Swami Keshvanand Institute of Technology'
+level: 'Bachelor of Technology'
+school: 'Swami Keshvanand Institute of Technology'
 location: 'Jaipur, IND'
-range: '2015 - 2019'
+passingYear: '2015 - 2019'
 url: 'https://skit.ac.in/'
 ---
 

@@ -168,11 +168,10 @@ export const pageQuery = graphql`
       edges {
         node {
           frontmatter {
-            date
-            title
-            company
+            level
+            school
             location
-            range
+            passingYear
             url
           }
           html
