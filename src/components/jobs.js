@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
+import { KEY_CODES } from '@utils';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
 import styled from 'styled-components';
@@ -189,14 +191,50 @@ const JobLocation = styled.h5`
 
 const Jobs = ({ data }) => {
   const [activeTabId, setActiveTabId] = useState(0);
+  const [tabFocus, setTabFocus] = useState(null);
+  const tabs = useRef([]);
+
   const revealContainer = useRef(null);
   useEffect(() => sr.reveal(revealContainer.current, srConfig()), []);
+
+  const focusTab = () => {
+    if (tabs.current[tabFocus]) {
+      tabs.current[tabFocus].focus();
+      return;
+    }
+    // If we're at the end, go to the start
+    if (tabFocus >= tabs.current.length) {
+      setTabFocus(0);
+    }
+    // If we're at the start, move to the end
+    if (tabFocus < 0) {
+      setTabFocus(tabs.current.length - 1);
+    }
+  };
+
+  // Only re-run the effect if tabFocus changes
+  useEffect(() => focusTab(), [tabFocus]);
+
+  // Focus on tabs when using up & down arrow keys
+  const onKeyDown = e => {
+    if (e.key === KEY_CODES.ARROW_UP || e.key === KEY_CODES.ARROW_DOWN) {
+      e.preventDefault();
+      // Move up
+      if (e.key === KEY_CODES.ARROW_UP) {
+        setTabFocus(tabFocus - 1);
+      }
+      // Move down
+      if (e.key === KEY_CODES.ARROW_DOWN) {
+        setTabFocus(tabFocus + 1);
+      }
+    }
+  };
 
   return (
     <JobsContainer id="jobs" ref={revealContainer}>
       <Heading>Work Experience</Heading>
       <TabsContainer>
-        <Tabs role="tablist">
+        <Tabs aria-label="Job tabs" onKeyDown={onKeyDown}>
           {data &&
             data.map(({ node }, i) => {
               const { company } = node.frontmatter;
@@ -205,10 +243,11 @@ const Jobs = ({ data }) => {
                   <Tab
                     isActive={activeTabId === i}
                     onClick={() => setActiveTabId(i)}
+                    ref={el => (tabs.current[i] = el)}
+                    id={`tab-${i}`}
                     role="tab"
-                    aria-selected={activeTabId === i ? 'true' : 'false'}
-                    aria-controls={`tab${i}`}
-                    id={`tab${i}`}
+                    aria-selected={activeTabId === i ? true : false}
+                    aria-controls={`panel-${i}`}
                     tabIndex={activeTabId === i ? '0' : '-1'}>
                     <span>{company}</span>
                   </Tab>
@@ -223,29 +262,30 @@ const Jobs = ({ data }) => {
               const { frontmatter, html } = node;
               const { title, url, company, range, location } = frontmatter;
               return (
-                <TabContent
-                  key={i}
-                  isActive={activeTabId === i}
-                  id={`job${i}`}
-                  role="tabpanel"
-                  tabIndex="0"
-                  aria-labelledby={`job${i}`}
-                  aria-hidden={activeTabId !== i}>
-                  <JobTitle>
-                    <span>{title}</span>
-                    <Company>
-                      <span>&nbsp;@&nbsp;</span>
-                      <ExternalLink url={url}>{company}</ExternalLink>
-                    </Company>
-                  </JobTitle>
-                  <JobDetails>
-                    <span>{range}</span>
-                  </JobDetails>
-                  <JobLocation>
-                    <span>{location}</span>
-                  </JobLocation>
-                  <div dangerouslySetInnerHTML={{ __html: html }} />
-                </TabContent>
+                <CSSTransition key={i} in={activeTabId === i} timeout={250} classNames="fade">
+                  <TabContent
+                    id={`panel-${i}`}
+                    role="tabpanel"
+                    tabIndex={activeTabId === i ? '0' : '-1'}
+                    aria-labelledby={`tab-${i}`}
+                    aria-hidden={activeTabId !== i}
+                    hidden={activeTabId !== i}>
+                    <JobTitle>
+                      <span>{title}</span>
+                      <Company>
+                        <span>&nbsp;@&nbsp;</span>
+                        <ExternalLink url={url}>{company}</ExternalLink>
+                      </Company>
+                    </JobTitle>
+                    <JobDetails>
+                      <span>{range}</span>
+                    </JobDetails>
+                    <JobLocation>
+                      <span>{location}</span>
+                    </JobLocation>
+                    <div dangerouslySetInnerHTML={{ __html: html }} />
+                  </TabContent>
+                </CSSTransition>
               );
             })}
         </ContentContainer>

@@ -79,7 +79,7 @@ const Folder = styled.div`
 //     height: 24px;
 //   }
 // `;
-const BlogName = styled.h5`
+const BlogName = styled.h4`
   margin: 0 0 10px;
   font-size: ${fontSizes.xxlarge};
   color: ${colors.lightestSlate};
@@ -157,7 +157,7 @@ const Blog = ({ data }) => {
                       transitionDelay: `${i >= GRID_LIMIT ? (i - GRID_LIMIT) * 100 : 0}ms`,
                     }}>
                     <BlogInner>
-                      <Link to={slug}>
+                      <Link to={slug} aria-label={title}>
                         <header>
                           <BlogHeader>
                             <Folder>
@@ -185,7 +185,7 @@ const Blog = ({ data }) => {
       {/* <ShowMoreButton onClick={() => setShowMore(!showMore)}>
         {showMore ? 'Fewer' : 'More'} Projects
       </ShowMoreButton> */}
-      <ReadMore to="/blog">Read More</ReadMore>
+      <ReadMore to="/blog">Read More Articles</ReadMore>
     </BlogContainer>
   );
 };

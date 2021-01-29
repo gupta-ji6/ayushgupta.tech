@@ -293,7 +293,7 @@ const Featured = ({ data }) => {
                   </Links>
                 </ContentContainer>
 
-                <ImgContainer url={external ? external : github ? github : '#'}>
+                <ImgContainer url={external ? external : github ? github : '#'} aria-label={title}>
                   <FeaturedImg fluid={cover.childImageSharp.fluid} />
                 </ImgContainer>
               </Project>

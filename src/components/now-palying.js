@@ -242,6 +242,8 @@ const NowPlaying = () => {
         <ExternalLink url={track?.external_urls?.spotify || SPOTIFY_PROFILE}>
           <AlbumImage
             src={track?.album?.images[0].url || 'https://source.unsplash.com/128x128/?music'}
+            width="48"
+            height="48"
             loading="lazy"
             alt="music"
           />
