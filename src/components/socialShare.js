@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { IconTwitter, IconCopy, IconFacebook } from '@components/icons';
+import { IconTwitter, IconCopy, IconFacebook, IconCheckbox } from '@components/icons';
 import { theme, media, mixins } from '@styles';
 import config from '../config/index';
 
@@ -15,7 +15,10 @@ const SocialShareContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  align-items: flex-start;
   ${media.phone`flex-direction: column;`};
+  ${media.phablet`flex-direction: column;`};
+  ${media.tablet`flex-direction: column;`};
   font-size: ${fontSizes.xxlarge};
 `;
 const StyledSocialPlatform = styled.button`
@@ -83,7 +86,7 @@ const SocialShare = ({
   facebook = true,
 }) => {
   // const [blogTitle, setBlogTitle] = useState(() => title);
-  // const [hashtags, setHashtags] = useState(() => tags.toString());
+  const [copyBtn, setCopyBtn] = useState({ text: 'Copy Link', icon: <IconCopy /> });
   const [socialMediaConfig, setSocialMediaConfig] = useState({});
 
   // console.log(Object.keys(socialMediaConfig).length);
@@ -102,6 +105,12 @@ const SocialShare = ({
     }
   }, [title, tags]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setCopyBtn({ text: 'Copy Link', icon: <IconCopy /> }), 1500);
+
+    return () => clearTimeout(timer);
+  }, [copyBtn]);
+
   if (Object.keys(socialMediaConfig).length === 0) {
     return null;
   }
@@ -109,6 +118,7 @@ const SocialShare = ({
   const copyLinkToClipBoard = async link => {
     try {
       await navigator.clipboard.writeText(link);
+      setCopyBtn({ text: 'Copied!', icon: <IconCheckbox /> });
     } catch (error) {
       console.error(error);
     }
@@ -129,8 +139,8 @@ const SocialShare = ({
       )}
       {copyLink && (
         <StyledCopyButton onClick={() => copyLinkToClipBoard(url)}>
-          <IconCopy />
-          {showText && <div>Copy Link</div>}
+          {copyBtn.icon}
+          {showText && <div>{copyBtn.text}</div>}
         </StyledCopyButton>
       )}
       {facebook && (
