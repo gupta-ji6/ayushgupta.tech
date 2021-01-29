@@ -33,7 +33,7 @@ const StyledAuthorImg = styled(Img)`
   background-color: ${colors.lightNavy};
   padding: 4px;
   object-fit: cover;
-  border: 1px solid ${colors.green};
+  border: 0.15rem solid ${colors.green};
   margin-right: 1rem;
   margin-bottom: 1rem;
   /* ${media.tablet`margin-bottom: 1rem;`}

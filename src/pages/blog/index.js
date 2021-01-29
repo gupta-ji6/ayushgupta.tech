@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { Author, Layout } from '@components';
-import { IconArticle } from '@components/icons';
+// import { IconArticle } from '@components/icons';
 import { mixins, theme, media } from '@styles';
 
 const { colors, fontSizes, fonts } = theme;
@@ -68,7 +68,11 @@ const StyledPostInner = styled.div`
     width: 100%;
   }
 `;
-
+const StyledPostName = styled.h5`
+  margin: 0 0 10px;
+  color: ${colors.lightestSlate};
+  font-size: ${fontSizes.h3};
+`;
 const StyledPost = styled.div`
   width: 65vw;
   ${media.desktop`width: 75vw;`};
@@ -84,26 +88,25 @@ const StyledPost = styled.div`
     ${StyledPostInner} {
       transform: translateY(-5px);
     }
+    ${StyledPostName} {
+      color: ${colors.green};
+      text-decoration: wavy;
+    }
   }
 `;
 
-const StyledPostHeader = styled.div`
-  ${mixins.flexBetween};
-  margin-bottom: 30px;
-`;
+// const StyledPostHeader = styled.div`
+//   ${mixins.flexBetween};
+//   margin-bottom: 30px;
+// `;
 
-const StyledFolder = styled.div`
-  color: ${colors.green};
-  svg {
-    width: 40px;
-    height: 40px;
-  }
-`;
-const StyledPostName = styled.h5`
-  margin: 0 0 10px;
-  color: ${colors.lightestSlate};
-  font-size: ${fontSizes.h3};
-`;
+// const StyledFolder = styled.div`
+//   color: ${colors.green};
+//   svg {
+//     width: 40px;
+//     height: 40px;
+//   }
+// `;
 const StyledPostDescription = styled.div`
   color: ${colors.lightSlate};
   font-size: ${fontSizes.xlarge};
@@ -169,11 +172,11 @@ const BlogPage = ({ location, data }) => {
                     <StyledPostInner>
                       <header>
                         <Link to={slug}>
-                          <StyledPostHeader>
+                          {/* <StyledPostHeader>
                             <StyledFolder>
                               <IconArticle />
                             </StyledFolder>
-                          </StyledPostHeader>
+                          </StyledPostHeader> */}
                           <StyledPostName>{title}</StyledPostName>
                           <StyledPostDescription>{description}</StyledPostDescription>
                         </Link>
