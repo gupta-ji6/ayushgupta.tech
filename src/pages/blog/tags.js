@@ -63,7 +63,7 @@ const TagsPage = ({
   <Layout location={location}>
     <Helmet title="Tags" />
 
-    <StyledTagsContainer>
+    <StyledTagsContainer id="#content">
       <span className="breadcrumb">
         <span className="arrow">&larr;</span>
         <Link to="/blog">All Articles</Link>

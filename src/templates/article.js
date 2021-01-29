@@ -145,7 +145,7 @@ const PostTemplate = ({ data, location }) => {
         <link rel="canonical" href={location.href} />
       </Helmet>
 
-      <StyledPostContainer>
+      <StyledPostContainer id="#content">
         <span className="breadcrumb">
           <span className="arrow">&larr;</span>
           <Link to="/blog">All articles</Link>
