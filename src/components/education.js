@@ -193,6 +193,7 @@ const Education = ({ data }) => {
   const [activeTabId, setActiveTabId] = useState(0);
   const [tabFocus, setTabFocus] = useState(null);
   const tabs = useRef([]);
+
   const revealContainer = useRef(null);
   useEffect(() => sr.reveal(revealContainer.current, srConfig()), []);
 
@@ -243,10 +244,10 @@ const Education = ({ data }) => {
                     isActive={activeTabId === i}
                     onClick={() => setActiveTabId(i)}
                     ref={el => (tabs.current[i] = el)}
-                    id={`tab-${i}`}
+                    id={`education-tab-${i}`}
                     role="tab"
                     aria-selected={activeTabId === i ? true : false}
-                    aria-controls={`panel-${i}`}
+                    aria-controls={`education-panel-${i}`}
                     tabIndex={activeTabId === i ? '0' : '-1'}>
                     <span>{school}</span>
                   </Tab>
@@ -263,13 +264,14 @@ const Education = ({ data }) => {
               return (
                 <CSSTransition key={i} in={activeTabId === i} timeout={250} classNames="fade">
                   <TabContent
-                    key={i}
                     isActive={activeTabId === i}
-                    id={`education-${i}`}
-                    role="tabpanel"
-                    tabIndex={activeTabId === i ? '0' : '-1'}
-                    aria-labelledby={`education-${i}`}
-                    aria-hidden={activeTabId !== i}>
+                    onClick={() => setActiveTabId(i)}
+                    ref={el => (tabs.current[i] = el)}
+                    id={`education-tab-${i}`}
+                    role="tab"
+                    aria-selected={activeTabId === i ? true : false}
+                    aria-controls={`education-panel-${i}`}
+                    tabIndex={activeTabId === i ? '0' : '-1'}>
                     <EduTitle>
                       <span>{level}</span>
                       <School>
