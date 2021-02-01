@@ -234,7 +234,7 @@ const Jobs = ({ data }) => {
     <JobsContainer id="jobs" ref={revealContainer}>
       <Heading>Work Experience</Heading>
       <TabsContainer>
-        <Tabs aria-label="Job tabs" onKeyDown={onKeyDown}>
+        <Tabs aria-label="Job tabs" onKeyDown={onKeyDown} role="tablist">
           {data &&
             data.map(({ node }, i) => {
               const { company } = node.frontmatter;
@@ -265,11 +265,12 @@ const Jobs = ({ data }) => {
                 <CSSTransition key={i} in={activeTabId === i} timeout={250} classNames="fade">
                   <TabContent
                     id={`panel-${i}`}
+                    isActive={activeTabId === i}
+                    key={i}
                     role="tabpanel"
                     tabIndex={activeTabId === i ? '0' : '-1'}
                     aria-labelledby={`tab-${i}`}
-                    aria-hidden={activeTabId !== i}
-                    hidden={activeTabId !== i}>
+                    aria-hidden={activeTabId !== i}>
                     <JobTitle>
                       <span>{title}</span>
                       <Company>

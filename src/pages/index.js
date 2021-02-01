@@ -163,16 +163,15 @@ export const pageQuery = graphql`
     }
     education: allMarkdownRemark(
       filter: { fileAbsolutePath: { regex: "/education/" } }
-      sort: { fields: [frontmatter___range], order: DESC }
+      sort: { fields: [frontmatter___passingYear], order: DESC }
     ) {
       edges {
         node {
           frontmatter {
-            date
-            title
-            company
+            level
+            school
             location
-            range
+            passingYear
             url
           }
           html

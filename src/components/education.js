@@ -193,6 +193,7 @@ const Education = ({ data }) => {
   const [activeTabId, setActiveTabId] = useState(0);
   const [tabFocus, setTabFocus] = useState(null);
   const tabs = useRef([]);
+
   const revealContainer = useRef(null);
   useEffect(() => sr.reveal(revealContainer.current, srConfig()), []);
 
@@ -236,19 +237,19 @@ const Education = ({ data }) => {
         <Tabs aria-label="Education tabs" onKeyDown={onKeyDown} role="tablist">
           {data &&
             data.map(({ node }, i) => {
-              const { company } = node.frontmatter;
+              const { school } = node.frontmatter;
               return (
                 <li key={i}>
                   <Tab
                     isActive={activeTabId === i}
                     onClick={() => setActiveTabId(i)}
                     ref={el => (tabs.current[i] = el)}
-                    id={`tab-${i}`}
+                    id={`education-tab-${i}`}
                     role="tab"
                     aria-selected={activeTabId === i ? true : false}
-                    aria-controls={`panel-${i}`}
+                    aria-controls={`education-panel-${i}`}
                     tabIndex={activeTabId === i ? '0' : '-1'}>
-                    <span>{company}</span>
+                    <span>{school}</span>
                   </Tab>
                 </li>
               );
@@ -259,26 +260,27 @@ const Education = ({ data }) => {
           {data &&
             data.map(({ node }, i) => {
               const { frontmatter, html } = node;
-              const { title, url, company, range, location } = frontmatter;
+              const { level, url, school, passingYear, location } = frontmatter;
               return (
                 <CSSTransition key={i} in={activeTabId === i} timeout={250} classNames="fade">
                   <TabContent
-                    key={i}
                     isActive={activeTabId === i}
-                    id={`job${i}`}
-                    role="tabpanel"
-                    tabIndex="0"
-                    aria-labelledby={`job${i}`}
-                    aria-hidden={activeTabId !== i}>
+                    onClick={() => setActiveTabId(i)}
+                    ref={el => (tabs.current[i] = el)}
+                    id={`education-tab-${i}`}
+                    role="tab"
+                    aria-selected={activeTabId === i ? true : false}
+                    aria-controls={`education-panel-${i}`}
+                    tabIndex={activeTabId === i ? '0' : '-1'}>
                     <EduTitle>
-                      <span>{title}</span>
+                      <span>{level}</span>
                       <School>
                         <span>&nbsp;@&nbsp;</span>
-                        <ExternalLink url={url}>{company}</ExternalLink>
+                        <ExternalLink url={url}>{school}</ExternalLink>
                       </School>
                     </EduTitle>
                     <EduDetails>
-                      <span>{range}</span>
+                      <span>{passingYear}</span>
                     </EduDetails>
                     <EduLocation>
                       <span>{location}</span>

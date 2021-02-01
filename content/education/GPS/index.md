@@ -1,9 +1,8 @@
 ---
-date: '2019-12-21'
-title: 'Secondary Eduacation'
-company: 'Global Public School'
+level: 'Secondary Eduacation'
+school: 'Global Public School'
 location: 'Kota, IND'
-range: '2013'
+passingYear: '2013'
 url: 'http://www.globalpublicschool.com/'
 ---
 
