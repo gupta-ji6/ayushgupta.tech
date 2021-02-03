@@ -239,7 +239,10 @@ const NowPlaying = () => {
     <div>
       <TrackContext>{fetchNowPlayingCopy()}</TrackContext>
       <NowPlayingWidget>
-        <ExternalLink url={track?.external_urls?.spotify || SPOTIFY_PROFILE}>
+        <ExternalLink
+          url={track?.external_urls?.spotify || SPOTIFY_PROFILE}
+          eventName="Spotify"
+          eventType="Open Spotify Link">
           <AlbumImage
             src={track?.album?.images[0].url || 'https://source.unsplash.com/128x128/?music'}
             width="48"
@@ -248,7 +251,10 @@ const NowPlaying = () => {
             alt="music"
           />
         </ExternalLink>
-        <ExternalLink url={track?.external_urls?.spotify || SPOTIFY_PROFILE}>
+        <ExternalLink
+          url={track?.external_urls?.spotify || SPOTIFY_PROFILE}
+          eventName="Spotify"
+          eventType="Open Spotify Link">
           <TrackInfo>
             <TrackName>{track?.name || 'Not Playing'}</TrackName>
             <AlbumName>{track?.album?.name || 'View Spotify Profile'}</AlbumName>
@@ -258,7 +264,8 @@ const NowPlaying = () => {
           <button
             onClick={toggleAudio}
             disabled={!isAyushListeningToAnything}
-            data-splitbee-event="Play Spotify Song Preview">
+            eventName="Spotify"
+            eventType="Play Spotify Song Preview">
             {isAyushListeningToAnything && track?.preview_url !== null ? (
               isPlaying ? (
                 <IconPause />

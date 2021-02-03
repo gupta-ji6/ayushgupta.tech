@@ -58,7 +58,7 @@ const Contact = ({ data }) => {
 
       <div dangerouslySetInnerHTML={{ __html: html }} />
 
-      <EmailLink url="mailto:hello@ayushgupta.tech" data-splitbee-event="Say Hello">
+      <EmailLink url="mailto:hello@ayushgupta.tech" eventName="Mail" eventType="Hello">
         Say Hello{' '}
         <span role="img" aria-label="wave">
           👋🏻

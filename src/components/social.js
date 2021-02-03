@@ -63,7 +63,7 @@ const Social = () => {
               {socialMedia &&
                 socialMedia.map(({ url, name }, i) => (
                   <SocialItem key={i}>
-                    <SocialLink url={url} aria-label={name}>
+                    <SocialLink url={url} aria-label={name} eventType={name}>
                       <FormattedIcon name={name} />
                     </SocialLink>
                   </SocialItem>

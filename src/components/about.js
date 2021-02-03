@@ -160,7 +160,7 @@ const About = ({ data }) => {
           </SkillsContainer>
         </ContentContainer>
         <PicContainer>
-          <AvatarContainer url={github}>
+          <AvatarContainer url={github} eventType="Github">
             <Avatar fluid={avatar.childImageSharp.fluid} alt="Avatar" />
           </AvatarContainer>
         </PicContainer>

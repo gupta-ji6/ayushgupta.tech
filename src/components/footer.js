@@ -64,7 +64,7 @@ const Footer = () => (
         {socialMedia &&
           socialMedia.map(({ name, url }, i) => (
             <li key={i}>
-              <SocialLink url={url} aria-label={name}>
+              <SocialLink url={url} aria-label={name} eventType={name}>
                 {name === 'Github' ? (
                   <IconGithub />
                 ) : name === 'Linkedin' ? (
@@ -86,7 +86,7 @@ const Footer = () => (
       </SocialItemList>
     </SocialContainer>
     <Copy>
-      <GithubLink url="https://github.com/gupta-ji6">
+      <GithubLink url="https://github.com/gupta-ji6" eventType="Github">
         <small>
           Customized with{' '}
           <span role="img" aria-label="Coffee">
