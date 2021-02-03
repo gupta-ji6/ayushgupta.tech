@@ -190,7 +190,10 @@ const UsesPage = ({ data, location }) => {
           <h2>Have more questions?</h2>
           <p>
             Feel free to ask away on{' '}
-            <ExternalLink url="https://twitter.com/_guptaji_">twitter</ExternalLink>.
+            <ExternalLink url="https://twitter.com/_guptaji_" eventType="Twitter">
+              twitter
+            </ExternalLink>
+            .
           </p>
           <small>Last Updated: November, 2020</small>
         </MoreQuestionsSection>

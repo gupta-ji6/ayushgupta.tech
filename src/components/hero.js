@@ -124,7 +124,12 @@ const Hero = ({ data }) => {
     Object.keys(track).length !== 0 ? (
       <NowPlayingTrack style={{ transitionDelay: '500ms' }}>
         <TrackCopy>{`${trackCopy} `}</TrackCopy>
-        <ExternalLink url={track.external_urls.spotify}>{track.name}</ExternalLink>
+        <ExternalLink
+          url={track.external_urls.spotify}
+          eventName="Spotify"
+          eventType="Open Spotify Link">
+          {track.name}
+        </ExternalLink>
         <span>{` at the moment.`}</span>
       </NowPlayingTrack>
     ) : null;
@@ -134,7 +139,7 @@ const Hero = ({ data }) => {
       {/* <ResumeLink href="/resume.pdf" target="_blank" rel="nofollow noopener noreferrer">
         View Resume
       </ResumeLink> */}
-      <EmailLink url="mailto:hire@ayushgupta.tech" data-splitbee-event="Hire Me">
+      <EmailLink url="mailto:hire@ayushgupta.tech" eventName="Hire Me">
         Hire Me {/* <span role="img" aria-label="man technologist">
           👨🏻‍💻
         </span> */}

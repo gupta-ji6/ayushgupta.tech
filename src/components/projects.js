@@ -198,7 +198,8 @@ const Projects = ({ data }) => {
 
       <ShowMoreButton
         onClick={e => onShowMoreClick(e)}
-        data-splitbee-event={`Show ${showMore ? 'Fewer' : 'More'} Projects`}>
+        data-splitbee-event="Show Projects"
+        data-splitbee-event-type={showMore ? 'Fewer' : 'More'}>
         {`Show ${showMore ? 'Fewer' : 'More'} Projects`}
       </ShowMoreButton>
     </ProjectsContainer>

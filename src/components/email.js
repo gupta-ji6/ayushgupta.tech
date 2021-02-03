@@ -61,7 +61,9 @@ const Email = () => {
         {isMounted && (
           <CSSTransition timeout={3000} classNames="fade">
             <EmailLinkWrapper>
-              <EmailLink url={`mailto:${email}`}>{email}</EmailLink>
+              <EmailLink url={`mailto:${email}`} eventName="Mail" eventType="Hello">
+                {email}
+              </EmailLink>
             </EmailLinkWrapper>
           </CSSTransition>
         )}

@@ -298,7 +298,7 @@ class Nav extends Component {
               {isMounted && (
                 <CSSTransition classNames={fadeDownClass} timeout={timeout}>
                   <div style={{ transitionDelay: `${isHome ? navLinks.length * 100 : 0}ms` }}>
-                    <StyledResumeButton url="/resume" data-splitbee-event="View Resume">
+                    <StyledResumeButton url="/resume" eventName="View Resume">
                       Resume
                     </StyledResumeButton>
                   </div>

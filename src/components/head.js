@@ -70,7 +70,7 @@ const Head = ({ metadata }) => (
     <meta name="msapplication-TileImage" content={msIcon144x144} />
     <meta name="theme-color" content={config.navyColor} />
 
-    <script async src="https://cdn.splitbee.io/sb.js"></script>
+    <script async data-api="/_hive" src="/bee.js"></script>
   </Helmet>
 );
 
