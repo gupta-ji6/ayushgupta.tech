@@ -130,15 +130,6 @@ const Projects = ({ data }) => {
   const onShowMoreClick = e => {
     e.preventDefault();
     setShowMore(!showMore);
-    typeof window !== 'undefined' &&
-      window.gtag('event', 'click', {
-        // string - The category of the event.
-        event_category: 'Show More Projects Button',
-        // string - The label of the event.
-        event_label: 'Portfolio Click Events',
-        // number - optional - A non-negative integer that will appear as the vent value.
-        // value: 43
-      });
   };
 
   return (
@@ -205,7 +196,9 @@ const Projects = ({ data }) => {
         </TransitionGroup>
       </ProjectsGrid>
 
-      <ShowMoreButton onClick={e => onShowMoreClick(e)}>
+      <ShowMoreButton
+        onClick={e => onShowMoreClick(e)}
+        data-splitbee-event={`Show ${showMore ? 'Fewer' : 'More'} Projects`}>
         {`Show ${showMore ? 'Fewer' : 'More'} Projects`}
       </ShowMoreButton>
     </ProjectsContainer>

@@ -109,7 +109,9 @@ const Menu = ({ menuOpen, toggleMenu }) => {
                 </NavListItem>
               ))}
           </NavList>
-          <ResumeLink url="/resume">Resume</ResumeLink>
+          <ResumeLink url="/resume" data-splitbee-event="View Resume">
+            Resume
+          </ResumeLink>
         </NavLinks>
       </Sidebar>
     </StyledContainer>

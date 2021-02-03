@@ -23,16 +23,16 @@ module.exports = {
       url: 'https://www.linkedin.com/in/guptaji6/',
     },
     {
-      name: 'Medium',
-      url: 'https://medium.com/@guptaji',
-    },
-    {
       name: 'Instagram',
       url: 'https://www.instagram.com/_.guptaji._/',
     },
     {
       name: 'Twitter',
       url: 'https://twitter.com/_guptaji_',
+    },
+    {
+      name: 'Medium',
+      url: 'https://medium.com/@guptaji',
     },
     {
       name: 'Facebook',
