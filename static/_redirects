@@ -19,3 +19,8 @@
 
 /grid-flex           https://medium.com/youstart-labs/beginners-guide-to-choose-between-css-grid-and-flexbox-783005dd2412
 /gif                 https://medium.com/youstart-labs/how-to-play-gif-in-your-terminal-d7657578e717
+
+# Splitbee Redirects - https://splitbee.io/docs/netlify-proxy
+
+/bee.js  https://cdn.splitbee.io/sb.js  200
+/_hive/*  https://hive.splitbee.io/:splat  200
