@@ -134,7 +134,7 @@ const Hero = ({ data }) => {
       {/* <ResumeLink href="/resume.pdf" target="_blank" rel="nofollow noopener noreferrer">
         View Resume
       </ResumeLink> */}
-      <EmailLink url="mailto:hire@ayushgupta.tech">
+      <EmailLink url="mailto:hire@ayushgupta.tech" data-splitbee-event="Hire Me">
         Hire Me {/* <span role="img" aria-label="man technologist">
           👨🏻‍💻
         </span> */}

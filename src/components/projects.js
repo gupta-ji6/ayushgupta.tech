@@ -196,7 +196,9 @@ const Projects = ({ data }) => {
         </TransitionGroup>
       </ProjectsGrid>
 
-      <ShowMoreButton onClick={e => onShowMoreClick(e)}>
+      <ShowMoreButton
+        onClick={e => onShowMoreClick(e)}
+        data-splitbee-event={`Show ${showMore ? 'Fewer' : 'More'} Projects`}>
         {`Show ${showMore ? 'Fewer' : 'More'} Projects`}
       </ShowMoreButton>
     </ProjectsContainer>
