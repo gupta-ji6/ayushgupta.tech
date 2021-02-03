@@ -153,7 +153,7 @@ const BlogPage = ({ location, data }) => {
       <StyledMainContainer id="#content">
         <header>
           <h1 className="big-heading">thoughts</h1>
-          <p className="subtitle">a collection of memories</p>
+          <p className="subtitle">documenting my learning journey, faliures & wins</p>
         </header>
 
         <Author />
