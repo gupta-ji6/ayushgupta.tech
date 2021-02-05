@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { IconTwitter, IconCopy, IconFacebook, IconCheckbox } from '@components/icons';
+import { IconTwitter, IconCopy, IconFacebook, IconCheckbox, IconShare } from '@components/icons';
 import { theme, media, mixins } from '@styles';
 import config from '../config/index';
+import toast from 'react-hot-toast';
 
 // ====================== CONSTANTS =============================
 
@@ -84,10 +85,12 @@ const SocialShare = ({
   twitter = true,
   copyLink = true,
   facebook = true,
+  // share = false,
 }) => {
   // const [blogTitle, setBlogTitle] = useState(() => title);
   const [copyBtn, setCopyBtn] = useState({ text: 'Copy Link', icon: <IconCopy /> });
   const [socialMediaConfig, setSocialMediaConfig] = useState({});
+  const [showShareBtn, setShowShareBtn] = useState(false);
 
   // console.log(Object.keys(socialMediaConfig).length);
   useEffect(() => {
@@ -111,16 +114,42 @@ const SocialShare = ({
     return () => clearTimeout(timer);
   }, [copyBtn]);
 
+  useEffect(() => {
+    if (navigator.share) {
+      setShowShareBtn(true);
+    } else {
+      setShowShareBtn(false);
+    }
+  }, []);
+
   if (Object.keys(socialMediaConfig).length === 0) {
     return null;
   }
 
-  const copyLinkToClipBoard = async link => {
+  const copyLinkToClipBoard = async () => {
     try {
-      await navigator.clipboard.writeText(link);
-      setCopyBtn({ text: 'Copied!', icon: <IconCheckbox /> });
+      await navigator.clipboard.writeText(url);
+      setCopyBtn({ text: 'Copy Link', icon: <IconCheckbox /> });
+      toast.success('Copied to clipboard!');
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const shareExternal = async () => {
+    if (navigator.share) {
+      // Web Share API is supported
+      setShowShareBtn(true);
+      const shareData = { title, url };
+      navigator
+        .share(shareData)
+        .then(() => {
+          // console.log('Thanks for sharing!');
+        })
+        .catch(console.error);
+    } else {
+      // Fallback
+      setShowShareBtn(false);
     }
   };
 
@@ -138,7 +167,7 @@ const SocialShare = ({
         </StyledSocialPlatform>
       )}
       {copyLink && (
-        <StyledCopyButton onClick={() => copyLinkToClipBoard(url)}>
+        <StyledCopyButton onClick={() => copyLinkToClipBoard()}>
           {copyBtn.icon}
           {showText && <div>{copyBtn.text}</div>}
         </StyledCopyButton>
@@ -154,6 +183,12 @@ const SocialShare = ({
           </StyledLink>
         </StyledSocialPlatform>
       )}
+      {showShareBtn && (
+        <StyledCopyButton onClick={() => shareExternal()}>
+          <IconShare />
+          {showText && <div>Share</div>}
+        </StyledCopyButton>
+      )}
     </SocialShareContainer>
   );
 };
@@ -165,6 +200,7 @@ SocialShare.propTypes = {
   twitter: PropTypes.bool,
   copyLink: PropTypes.bool,
   facebook: PropTypes.bool,
+  share: PropTypes.bool,
   url: PropTypes.string,
   title: PropTypes.string,
   tags: PropTypes.array,

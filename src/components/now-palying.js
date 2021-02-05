@@ -264,8 +264,8 @@ const NowPlaying = () => {
           <button
             onClick={toggleAudio}
             disabled={!isAyushListeningToAnything}
-            eventName="Spotify"
-            eventType="Play Spotify Song Preview">
+            data-splitbee-event="Spotify"
+            data-splitbee-event-type="Play Spotify Song Preview">
             {isAyushListeningToAnything && track?.preview_url !== null ? (
               isPlaying ? (
                 <IconPause />
