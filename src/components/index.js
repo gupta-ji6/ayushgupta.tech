@@ -13,6 +13,7 @@ import Layout from './layout';
 import Loader from './loader';
 import Menu from './menu';
 import Nav from './nav';
+import Notifications from './notifications';
 import Projects from './projects';
 import Social from './social';
 import SocialShare from './socialShare';
@@ -33,6 +34,7 @@ export {
   Loader,
   Menu,
   Nav,
+  Notifications,
   Projects,
   Social,
   SocialShare,

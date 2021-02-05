@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Email, Footer, Head, Nav, Social } from '@components';
+import { Email, Footer, Head, Nav, Social, Notifications } from '@components';
 import { GlobalStyle, theme } from '@styles';
 import { StaticQuery, graphql } from 'gatsby';
 
@@ -87,6 +87,8 @@ const Layout = ({ children, location }) => {
           <GlobalStyle />
 
           <SkipToContent href="#content">Skip to Content</SkipToContent>
+
+          <Notifications />
 
           {/* {isLoading ? (
             <Loader finishLoading={() => setIsLoading(false)} />
