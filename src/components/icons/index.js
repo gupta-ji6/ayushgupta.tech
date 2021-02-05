@@ -15,6 +15,7 @@ import IconLogo from './logo';
 import IconMedium from './medium';
 import IconPause from './pause';
 import IconPlay from './play';
+import IconShare from './share';
 import IconSpotify from './spotify';
 import IconTwitter from './twitter';
 
@@ -36,6 +37,7 @@ export {
   IconArticle,
   IconPause,
   IconPlay,
+  IconShare,
   IconSpotify,
   FormattedIcon,
 };
