@@ -24,7 +24,7 @@ module.exports = {
         theme_color: config.navyColor,
         display: 'standalone',
         // cache_busting_mode: 'none',
-        icon: 'src/images/logo.png',
+        icon: 'src/images/pwa-logo.png',
         // icons: [
         //   {
         //     src: 'src/images/favicons/maskable-icon-512.png',

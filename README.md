@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://ayushgupta.tech">
-        <img src="src/images/logo.png" alt="Panda Logo" height="150">
+        <img src="src/images/pwa-logo.png" alt="Panda Logo" height="150">
     </a>
 </p>
 
