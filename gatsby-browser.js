@@ -40,13 +40,18 @@ exports.onClientEntry = () => {
 
 // Inform plugins when a service worker has been updated in the background and the page is ready to reload to apply changes.
 exports.onServiceWorkerUpdateReady = () => {
-  // eslint-disable-next-line no-unused-vars
-  toast(t => (
-    <span>
-      A new version is available!
-      <button onClick={() => window.location.reload()} style={updateButtonStyles}>
-        Update
-      </button>
-    </span>
-  ));
+  toast(
+    // eslint-disable-next-line no-unused-vars
+    t => (
+      <span>
+        A new version is available!
+        <button onClick={() => window.location.reload()} style={updateButtonStyles}>
+          Update
+        </button>
+      </span>
+    ),
+    {
+      duration: 5000,
+    },
+  );
 };

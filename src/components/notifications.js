@@ -19,10 +19,10 @@ const Notifications = () => (
         display: 'flex',
         alignItems: 'center',
       },
-      duration: 5000,
+      // duration: 5000,
       // Default options for specific types
       success: {
-        duration: 5000,
+        duration: 2000,
         // theme: {
         //   primary: 'green',
         //   secondary: 'black',

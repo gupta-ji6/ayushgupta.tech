@@ -114,6 +114,14 @@ const SocialShare = ({
     return () => clearTimeout(timer);
   }, [copyBtn]);
 
+  useEffect(() => {
+    if (navigator.share) {
+      setShowShareBtn(true);
+    } else {
+      setShowShareBtn(false);
+    }
+  }, []);
+
   if (Object.keys(socialMediaConfig).length === 0) {
     return null;
   }
