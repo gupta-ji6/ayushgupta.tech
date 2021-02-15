@@ -30,8 +30,8 @@ exports.onClientEntry = () => {
   // console.log('client has entered the chat!');
   splitbee.default.init({
     disableCookie: true, // will disable the cookie usage
-    scriptUrl: '/bee',
-    apiUrl: '/_hive',
+    scriptUrl: 'https://ayushgupta.tech/bee.js',
+    apiUrl: 'https://ayushgupta.tech/_hive',
   });
 };
 
