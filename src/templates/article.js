@@ -4,7 +4,7 @@ import kebabCase from 'lodash/kebabCase';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
-import { Author, Layout, SocialShare } from '@components';
+import { Author, Layout, SocialShare, Comments } from '@components';
 import { theme, media, mixins } from '@styles';
 
 const { colors, fontSizes } = theme;
@@ -136,7 +136,7 @@ const StyledPostContent = styled.div`
 
 const PostTemplate = ({ data, location }) => {
   const { frontmatter, html } = data.markdownRemark;
-  const { title, date, tags, description, draft } = frontmatter;
+  const { title, date, tags, description, draft, slug } = frontmatter;
 
   return (
     <Layout location={location}>
@@ -187,6 +187,8 @@ const PostTemplate = ({ data, location }) => {
         <SocialShare showText title={title} tags={tags} url={location.href} />
 
         <Author showBg />
+
+        <Comments slug={slug} />
       </StyledPostContainer>
     </Layout>
   );
