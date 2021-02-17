@@ -1020,6 +1020,11 @@
     ts-node "^9"
     tslib "^2"
 
+"@github/time-elements@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@github/time-elements/-/time-elements-3.1.1.tgz#b52be933a87a0b585a5df6fd2dea6ccda5d776b9"
+  integrity sha512-95TquDedxMpNb8BUrVIt9NEfdNBw4DRjdcECDPx4Ix6gkksI2npKRJBOV9XJMYjEIBo50iAiJzUuwL/fh3ptFw==
+
 "@graphql-tools/batch-execute@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@graphql-tools/batch-execute/-/batch-execute-7.0.0.tgz#e79d11bd5b39f29172f6ec2eafa71103c6a6c85b"
