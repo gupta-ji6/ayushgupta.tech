@@ -14595,6 +14595,11 @@ url@^0.11.0:
     punycode "1.3.2"
     querystring "0.2.0"
 
+use-comments@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/use-comments/-/use-comments-1.0.1.tgz#b7cd5d6299ce4058782963f69215a9071b17cc35"
+  integrity sha512-kIM6m0PVCMcfr3wklsCmXtM2oQmnjoCa8qL6vtvmUH07F1raXF/x2ywoowHV0CbXvpqRr6PfAk0MimTOn6za1Q==
+
 use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
