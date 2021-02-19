@@ -171,6 +171,10 @@ const Comments = ({ slug = 'defaultSlug' }) => {
       content: commentData.comment,
       author: commentData.authorName,
     });
+    setCommentData({
+      authorName: '',
+      comment: '',
+    });
     toast.success('Your comment is waiting for approval!');
   };
 
