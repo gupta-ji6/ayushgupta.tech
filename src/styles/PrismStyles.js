@@ -33,6 +33,7 @@ const PrismStyles = css`
     position: relative;
     font-family: ${fonts.SFMono};
     font-size: ${fontSizes.medium};
+    max-width: 75vw;
   }
   .gatsby-highlight code[class*='language-'],
   .gatsby-highlight pre[class*='language-'] {
