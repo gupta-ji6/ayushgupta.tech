@@ -138,7 +138,7 @@ const Comment = ({ data }) => {
 };
 
 const Comments = ({ slug = 'defaultSlug' }) => {
-  const { comments, count, loading, addComment } = useComments(hasuraURL, slug);
+  const { comments, count, loading, addComment, error, refetch } = useComments(hasuraURL, slug);
   const [commentData, setCommentData] = useState({
     authorName: '',
     comment: '',
@@ -173,14 +173,27 @@ const Comments = ({ slug = 'defaultSlug' }) => {
       authorName: '',
       comment: '',
     });
-    toast.success('Your comment is waiting for approval!');
+    toast.success('Your comment is waiting for approval!', {
+      duration: 5000,
+    });
   };
 
   const renderComments = () => {
     if (loading) {
       return <div>Loading comments...</div>;
+    } else if (error !== null) {
+      console.error(error);
+      toast.error(error.error);
+      return (
+        <Fragment>
+          <StyledCommentCount>Failed to load comments.</StyledCommentCount>
+          <StyledAddCommentBtn type="button" onClick={refetch}>
+            Re-fetch Comments
+          </StyledAddCommentBtn>
+        </Fragment>
+      );
     } else if (count === 0) {
-      return <StyledCommentCount>No comments yet</StyledCommentCount>;
+      return <StyledCommentCount>No comments yet.</StyledCommentCount>;
     } else {
       return (
         <Fragment>
