@@ -14,8 +14,8 @@ const { colors, fontSizes } = theme;
 const StyledPostContainer = styled.main`
   padding: 200px 200px;
   ${media.desktop`padding: 200px 100px;`};
-  ${media.tablet`padding: 150px 50px;`};
-  ${media.phone`padding: 125px 25px;`};
+  ${media.tablet`padding: 150px 40px;`};
+  ${media.phone`padding: 125px 20px;`};
   margin: 0 auto;
   display: flex;
   flex-direction: column;
