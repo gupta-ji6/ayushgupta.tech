@@ -162,7 +162,7 @@ const UsesPage = ({ data, location }) => {
         <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
         <meta name="twitter:image:alt" content={metaConfig.title} />
       </Helmet>
-      <StyledMainContainer id="#content">
+      <StyledMainContainer id="content">
         <header>
           <h1 className="big-heading">Uses</h1>
           <p className="subtitle">a living document of my setup with apps I use daily</p>
