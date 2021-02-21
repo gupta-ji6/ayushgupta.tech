@@ -111,15 +111,15 @@ const StyledCommentContent = styled.div`
 const formatStatus = status => {
   switch (status) {
     case 'sending':
-      return 'sending';
+      return 'adding comment...';
     case 'added':
-      return 'added';
+      return 'your comment is added';
     case 'delivered-awaiting-approval':
-      return 'waiting for approval';
+      return 'waiting for author approval';
     case 'failed':
-      return 'failed';
+      return 'failed to add comment, try again';
     default:
-      return 'sending';
+      return 'adding comment...';
   }
 };
 
