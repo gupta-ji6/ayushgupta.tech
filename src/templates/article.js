@@ -126,9 +126,7 @@ const StyledPostContent = styled.div`
     border-bottom-right-radius: ${theme.borderRadius};
   }
   hr {
-    margin: 30px 0;
-    border: 0;
-    border-bottom: 2px dashed ${colors.slate};
+    ${mixins.hr};
   }
 `;
 

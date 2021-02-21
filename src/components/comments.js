@@ -14,9 +14,7 @@ const { colors, fontSizes, fonts } = theme;
 const StyledCommentsContainer = styled.section`
   padding: 5vh 0;
   hr {
-    margin: 30px 0;
-    border: 0;
-    border-bottom: 2px dashed ${colors.slate};
+    ${mixins.hr};
   }
 `;
 
