@@ -191,7 +191,10 @@ const Comments = ({ slug = 'defaultSlug' }) => {
       return (
         <Fragment>
           <StyledCommentCount>Failed to load comments.</StyledCommentCount>
-          <StyledAddCommentBtn type="button" onClick={refetch}>
+          <StyledAddCommentBtn
+            type="button"
+            data-splitbee-event="Re-fetch comments"
+            onClick={refetch}>
             Re-fetch Comments
           </StyledAddCommentBtn>
         </Fragment>
@@ -243,7 +246,9 @@ const Comments = ({ slug = 'defaultSlug' }) => {
             required
           />
         </StyledFormEntry>
-        <StyledAddCommentBtn type="submit">Add Comment</StyledAddCommentBtn>
+        <StyledAddCommentBtn type="submit" data-splitbee-event="Add Comment">
+          Add Comment
+        </StyledAddCommentBtn>
       </StyledForm>
 
       <hr />
