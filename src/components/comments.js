@@ -144,6 +144,7 @@ const Comments = ({ slug = 'defaultSlug' }) => {
     comment: '',
   });
 
+  /* handle change in Full Name input */
   const onNameChange = event => {
     event.preventDefault();
     event.persist();
@@ -153,6 +154,7 @@ const Comments = ({ slug = 'defaultSlug' }) => {
     }));
   };
 
+  /* handle change in Comment input */
   const onCommentChange = event => {
     event.preventDefault();
     event.persist();
@@ -162,6 +164,7 @@ const Comments = ({ slug = 'defaultSlug' }) => {
     }));
   };
 
+  /* on Add Comment button press */
   const onSubmitComment = event => {
     event.preventDefault();
     event.persist();
@@ -178,6 +181,7 @@ const Comments = ({ slug = 'defaultSlug' }) => {
     });
   };
 
+  /* render comments with loading & error handling */
   const renderComments = () => {
     if (loading) {
       return <div>Loading comments...</div>;
