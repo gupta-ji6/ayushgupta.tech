@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 // ====================== CONSTANTS =============================
 
 const { fontSizes, colors } = theme;
+const eventName = 'Share';
 
 // ===================== STYLED COMPONENTS =======================
 
@@ -160,14 +161,19 @@ const SocialShare = ({
           <StyledLink
             href={`https://twitter.com/intent/tweet?text=${socialMediaConfig.twitter.text}&hashtags=${socialMediaConfig.twitter.tags}`}
             target="_blank"
-            rel="noreferrer">
+            rel="noreferrer"
+            data-splitbee-event={eventName}
+            data-splitbee-event-type={'Twitter'}>
             <IconTwitter />
             {showText && <div>Share to Twitter</div>}
           </StyledLink>
         </StyledSocialPlatform>
       )}
       {copyLink && (
-        <StyledCopyButton onClick={() => copyLinkToClipBoard()}>
+        <StyledCopyButton
+          onClick={() => copyLinkToClipBoard()}
+          data-splitbee-event={eventName}
+          data-splitbee-event-type={'Copy To Clipboard'}>
           {copyBtn.icon}
           {showText && <div>{copyBtn.text}</div>}
         </StyledCopyButton>
@@ -177,14 +183,19 @@ const SocialShare = ({
           <StyledLink
             href={`https://www.facebook.com/dialog/share?app_id=${process.env.GATSBY_FACEBOOK_APP_ID}&display=popup&href=${url}&redirect_uri=${url}`}
             target="_blank"
-            rel="noreferrer">
+            rel="noreferrer"
+            data-splitbee-event={eventName}
+            data-splitbee-event-type={'Facebook'}>
             <IconFacebook />
             {showText && <div>Share to Facebook</div>}
           </StyledLink>
         </StyledSocialPlatform>
       )}
       {showShareBtn && (
-        <StyledCopyButton onClick={() => shareExternal()}>
+        <StyledCopyButton
+          onClick={() => shareExternal()}
+          data-splitbee-event={eventName}
+          data-splitbee-event-type={'External'}>
           <IconShare />
           {showText && <div>Share</div>}
         </StyledCopyButton>

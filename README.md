@@ -37,4 +37,4 @@
 - [Instagram](https://www.instagram.com/_.guptaji._)
 - [LinkedIn](https://www.linkedin.com/in/guptaji6)
 - [Medium](https://medium.com/@guptaji)
-- [Email](mailtio:hello@ayushgupta.tech)
+- Email - hello@ayushgupta.tech

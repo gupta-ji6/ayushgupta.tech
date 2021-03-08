@@ -126,6 +126,12 @@ const mixins = {
       box-shadow: 0 20px 30px -15px ${colors.shadowNavy};
     }
   `,
+
+  hr: css`
+    margin: 30px 0;
+    border: 0;
+    border-bottom: 2px dashed ${colors.slate};
+  `,
 };
 
 export default mixins;

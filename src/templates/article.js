@@ -4,7 +4,7 @@ import kebabCase from 'lodash/kebabCase';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
-import { Author, Layout, SocialShare } from '@components';
+import { Author, Layout, SocialShare, Comments } from '@components';
 import { theme, media, mixins } from '@styles';
 
 const { colors, fontSizes } = theme;
@@ -14,8 +14,8 @@ const { colors, fontSizes } = theme;
 const StyledPostContainer = styled.main`
   padding: 200px 200px;
   ${media.desktop`padding: 200px 100px;`};
-  ${media.tablet`padding: 150px 50px;`};
-  ${media.phone`padding: 125px 25px;`};
+  ${media.tablet`padding: 150px 40px;`};
+  ${media.phone`padding: 125px 20px;`};
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -126,9 +126,7 @@ const StyledPostContent = styled.div`
     border-bottom-right-radius: ${theme.borderRadius};
   }
   hr {
-    margin: 30px 0;
-    border: 0;
-    border-bottom: 2px dashed ${colors.slate};
+    ${mixins.hr};
   }
 `;
 
@@ -136,7 +134,7 @@ const StyledPostContent = styled.div`
 
 const PostTemplate = ({ data, location }) => {
   const { frontmatter, html } = data.markdownRemark;
-  const { title, date, tags, description, draft } = frontmatter;
+  const { title, date, tags, description, draft, slug } = frontmatter;
 
   return (
     <Layout location={location}>
@@ -145,7 +143,7 @@ const PostTemplate = ({ data, location }) => {
         <link rel="canonical" href={location.href} />
       </Helmet>
 
-      <StyledPostContainer id="#content">
+      <StyledPostContainer id="content">
         <span className="breadcrumb">
           <span className="arrow">&larr;</span>
           <Link to="/blog">All articles</Link>
@@ -187,6 +185,8 @@ const PostTemplate = ({ data, location }) => {
         <SocialShare showText title={title} tags={tags} url={location.href} />
 
         <Author showBg />
+
+        <Comments slug={slug} />
       </StyledPostContainer>
     </Layout>
   );

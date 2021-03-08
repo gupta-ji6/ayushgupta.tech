@@ -28,11 +28,14 @@ const updateButtonStyles = {
 // Called when the Gatsby browser runtime first starts
 exports.onClientEntry = () => {
   // console.log('client has entered the chat!');
-  splitbee.default.init({
-    disableCookie: true, // will disable the cookie usage
-    scriptUrl: 'https://ayushgupta.tech/bee.js',
-    apiUrl: 'https://ayushgupta.tech/_hive',
-  });
+
+  if (process.env.NODE_ENV === 'production') {
+    splitbee.default.init({
+      disableCookie: true, // will disable the cookie usage
+      scriptUrl: 'https://ayushgupta.tech/bee.js',
+      apiUrl: 'https://ayushgupta.tech/_hive',
+    });
+  }
 };
 
 // Reference - https://www.gatsbyjs.com/docs/reference/config-files/gatsby-browser/#onServiceWorkerUpdateReady

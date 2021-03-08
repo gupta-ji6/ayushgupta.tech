@@ -1,6 +1,7 @@
 import About from './about';
 import Author from './author';
 import Blog from './blog';
+import Comments from './comments';
 import Contact from './contact';
 import Education from './education';
 import Email from './email';
@@ -22,6 +23,7 @@ export {
   About,
   Author,
   Blog,
+  Comments,
   Contact,
   Education,
   Email,

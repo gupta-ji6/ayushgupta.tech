@@ -150,7 +150,7 @@ const BlogPage = ({ location, data }) => {
     <Layout location={location}>
       <Helmet title="Blog - Ayush Gupta" />
 
-      <StyledMainContainer id="#content">
+      <StyledMainContainer id="content">
         <header>
           <h1 className="big-heading">thoughts</h1>
           <p className="subtitle">documenting my learning journey, failures & wins</p>
