@@ -22,7 +22,8 @@ order: 1
 
 ### Camera
 
-I'm going to buy one soon :) Guide me on which one to buy on [Instagram](https://www.instagram.com/_.guptaji._/).
+- Body - [Fujifilm X-T4](https://fujifilm-x.com/en-us/products/cameras/x-t4/)
+- Lens - [FUJINON XF16-80mm F4 R OIS WR](https://fujifilm-x.com/en-us/products/lenses/xf16-80mmf4-r-ois-wr/)
 
 ### Accessories
 
