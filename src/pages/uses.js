@@ -99,8 +99,12 @@ const StyledMainContainer = styled.main`
 const StyledDetails = styled.details`
   summary::-webkit-details-marker {
     color: ${colors.green};
-    display: inline-block;
   }
+
+  summary::marker {
+    color: ${colors.green};
+  }
+
   padding: 10px 0;
 
   div {
@@ -115,7 +119,7 @@ const StyledDetails = styled.details`
 `;
 
 const StyledSummary = styled.summary`
-  display: block;
+  display: list-item;
   cursor: pointer;
   position: relative;
   padding: 10px;
