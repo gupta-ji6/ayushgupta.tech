@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { Layout } from '@components';
 import { theme, mixins, media } from '@styles';
 const { colors, fontSizes } = theme;
@@ -7,8 +7,7 @@ import ogImage from '@images/og-uses.png';
 import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
 import styled from 'styled-components';
-import { srConfig, siteUrl } from '@config';
-import sr from '@utils/sr';
+import { siteUrl } from '@config';
 import { Helmet } from 'react-helmet';
 import ExternalLink from '../components/externalLink';
 
@@ -80,18 +79,45 @@ const StyledMainContainer = styled.main`
       color: ${colors.green};
     }
   }
+
+  details[open] summary ~ * {
+    animation: sweep 0.5s ease-in-out;
+  }
+
+  @keyframes sweep {
+    0% {
+      opacity: 0;
+      margin-left: -10px;
+    }
+    100% {
+      opacity: 1;
+      margin-left: 10px;
+    }
+  }
 `;
 
 const StyledDetails = styled.details`
   summary::-webkit-details-marker {
     color: ${colors.green};
+    display: inline-block;
   }
   padding: 10px 0;
+
+  div {
+    margin-left: 10px;
+  }
+
+  transition: ${theme.transition};
+  &:hover,
+  &:focus {
+    transform: translateY(-5px);
+  }
 `;
 
 const StyledSummary = styled.summary`
   display: block;
   cursor: pointer;
+  position: relative;
   padding: 10px;
   font-size: ${fontSizes.h3};
   ${theme.transition};
@@ -107,7 +133,6 @@ const StyledSummary = styled.summary`
   span {
     color: ${colors.white};
     font-weight: 600;
-
     &:hover {
       color: ${colors.green};
     }
@@ -131,12 +156,7 @@ const metaConfig = {
 };
 
 const UsesPage = ({ data, location }) => {
-  const revealTitle = useRef(null);
   const usesData = data.uses.edges;
-
-  useEffect(() => {
-    sr.reveal(revealTitle.current, srConfig());
-  }, []);
 
   return (
     <Layout location={location}>
@@ -175,7 +195,7 @@ const UsesPage = ({ data, location }) => {
               const { title, subtitle } = frontmatter;
 
               return (
-                <StyledDetails key={i} ref={revealTitle}>
+                <StyledDetails key={i}>
                   <StyledSummary>
                     <span className="medium-heading">{title}</span>
                     <p>{subtitle}</p>
