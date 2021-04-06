@@ -219,7 +219,7 @@ const UsesPage = ({ data, location }) => {
             </ExternalLink>
             .
           </p>
-          <small>Last Updated: November, 2020</small>
+          <small>Last Updated: February, 2021</small>
         </MoreQuestionsSection>
       </StyledMainContainer>
     </Layout>
