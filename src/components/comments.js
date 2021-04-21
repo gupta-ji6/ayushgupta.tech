@@ -100,6 +100,11 @@ const StyledCommentAuthor = styled.span`
   font-weight: 500;
 `;
 
+const StyledAuthorTag = styled.span`
+  color: ${colors.green};
+  font-weight: 300;
+`;
+
 const StyledCommentContent = styled.div`
   padding-top: 2vh;
 `;
@@ -131,6 +136,12 @@ const Comment = ({ data }) => {
         <StyledCommentAuthor>{author}</StyledCommentAuthor>
         <time dateTime={created_at}>{`・${getRelativeTime(+new Date(created_at))}`}</time>
         <span>{status ? `・ ${formatStatus(status)}` : ''}</span>
+        {author === 'Ayush Gupta' ? (
+          <Fragment>
+            <span>・ </span>
+            <StyledAuthorTag>Author</StyledAuthorTag>
+          </Fragment>
+        ) : null}
       </div>
       <StyledCommentContent>{content}</StyledCommentContent>
     </StyledComment>
