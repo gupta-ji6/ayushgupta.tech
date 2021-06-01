@@ -1,10 +1,12 @@
 import React from 'react';
 import { graphql, Link } from 'gatsby';
+import Img from 'gatsby-image';
 import kebabCase from 'lodash/kebabCase';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { Author, Layout, SocialShare, Comments } from '@components';
+import { siteUrl } from '@config';
 import { theme, media, mixins } from '@styles';
 
 const { colors, fontSizes } = theme;
@@ -35,19 +37,26 @@ const StyledDraftWarning = styled.blockquote`
 `;
 
 const StyledPostHeader = styled.header`
-  margin-bottom: 50px;
+  margin-bottom: 25px;
   .tag {
     margin-right: 10px;
   }
 `;
+
 const StledArticleDescription = styled.h2`
   color: ${colors.slate};
   font-weight: 500;
   margin: 1.2rem auto;
 `;
+
+const StyledCoverImage = styled(Img)`
+  margin-bottom: 1.2rem;
+`;
+
 const StyledDate = styled.time`
   color: ${colors.slate};
 `;
+
 const StyledArticleTags = styled.p`
   color: ${colors.slate};
   a {
@@ -134,13 +143,34 @@ const StyledPostContent = styled.div`
 
 const PostTemplate = ({ data, location }) => {
   const { frontmatter, html } = data.markdownRemark;
-  const { title, date, tags, description, draft, slug } = frontmatter;
+  const { title, date, tags, description, draft, slug, cover } = frontmatter;
+  const {
+    childImageSharp: {
+      fluid: { src },
+    },
+  } = cover;
 
   return (
     <Layout location={location}>
       <Helmet>
         <title>{title} - Ayush Gupta</title>
         <link rel="canonical" href={location.href} />
+        <meta name="description" content={description} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={`${siteUrl}${src}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={location.href} />
+        <meta property="og:site_name" content={title} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:type" content="image/png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={siteUrl} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={`${siteUrl}${src}`} />
+        <meta name="twitter:image:alt" content={title} />
       </Helmet>
 
       <StyledPostContainer id="content">
@@ -159,6 +189,8 @@ const PostTemplate = ({ data, location }) => {
         <StyledPostHeader>
           <h1 className="medium-heading">{title}</h1>
           <StledArticleDescription>{description}</StledArticleDescription>
+
+          <StyledCoverImage fluid={cover.childImageSharp.fluid} />
           <p className="subtitle">
             <StyledDate>
               {new Date(date).toLocaleDateString('en-US', {
@@ -208,7 +240,13 @@ export const pageQuery = graphql`
         description
         date
         slug
-        image
+        cover {
+          childImageSharp {
+            fluid(maxWidth: 700, quality: 90, traceSVG: { color: "#64ffda" }) {
+              ...GatsbyImageSharpFluid_withWebp_tracedSVG
+            }
+          }
+        }
         tags
         draft
       }

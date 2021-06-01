@@ -5,14 +5,13 @@ date: '2021-06-01'
 draft: false
 slug: '/blog/story-of-scriptified'
 popular: true
+cover: './images/scriptified-launch-cover.png'
 tags:
   - NextJS
   - Tailwind CSS
   - TypeScript
   - JavaScript
 ---
-
-![Launching Scriptified]('./../images/scriptified-launch-cover.png)
 
 A project we started in June'20 which was planned to launch for Hacktoberfest, but didn't, was finally launched in Mar'21. Yay! Introducing to you - [Scriptified](https://scriptified.dev).
 

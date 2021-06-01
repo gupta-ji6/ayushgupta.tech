@@ -4,6 +4,7 @@ description: An overview and comparison between CSS Grid and Flexbox layout tech
 date: '2018-06-15'
 draft: false
 slug: '/blog/grid-vs-flex'
+cover: './images/css-grid-vs-flex-hero.jpg'
 popular: true
 tags:
   - Layout
@@ -11,8 +12,6 @@ tags:
   - Flexbox
   - CSS
 ---
-
-![Beginner’s Guide To CSS Grid And Flexbox](./images/css-grid-vs-flex-hero.jpg)
 
 Everything you browse on the internet is contained in web pages. Those web pages accommodate content and that content needs a layout to fit itself in it. Nowadays, the technology has enabled us to browse the web on any screen dimension we wish for and your content should be responsive to any dimension we put forward. That’s where responsive layout design knocks the door.
 
