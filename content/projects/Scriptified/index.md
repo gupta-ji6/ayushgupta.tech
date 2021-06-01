@@ -3,7 +3,7 @@ date: '2020-09-20'
 title: 'Scriptified'
 image: ''
 github: 'https://github.com/scriptified/scriptified'
-# external: 'https://scriptified.dev'
+external: 'https://scriptified.dev'
 tech:
   - NextJS
   - TypeScript
