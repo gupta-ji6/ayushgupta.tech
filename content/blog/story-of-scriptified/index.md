@@ -2,7 +2,7 @@
 title: How An App Crash Made Us Build Another App - Story of Scriptified
 description: The behind the scenes of launching & building Scriptified with NextJS and TailwindCSS
 date: '2021-06-01'
-draft: true
+draft: false
 slug: '/blog/story-of-scriptified'
 popular: true
 tags:

@@ -3,7 +3,7 @@ title: How To Play GIF In Your Terminal
 description: A tutorial on playing GIF in your terminal using gif-for-cli in Linux or Mac OS
 date: '2018-06-27'
 draft: false
-popular: true
+popular: false
 slug: '/blog/play-gif-in-terminal'
 tags:
   - Terminal
