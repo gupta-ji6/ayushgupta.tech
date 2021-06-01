@@ -4,13 +4,12 @@ description: A tutorial on playing GIF in your terminal using gif-for-cli in Lin
 date: '2018-06-27'
 draft: false
 popular: false
+cover: './images/gif-in-terminal.jpg'
 slug: '/blog/play-gif-in-terminal'
 tags:
   - Terminal
   - GIF
 ---
-
-![Play GIF In Terminal](./images/gif-in-terminal.jpg)
 
 You might have seen ASCII arts on your terminal like the ones below when installing a new module/library in your system. Some developers (or even you might have) configure a static ASCII art which appear when they open their terminal. But have you ever seen a GIF running in your Swiss Army knife like terminal? 👀 That would give life and a personality to your terminal!
 
