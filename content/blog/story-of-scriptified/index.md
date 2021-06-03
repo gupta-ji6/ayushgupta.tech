@@ -55,7 +55,7 @@ After some long discussions, we settled on four options & shared a poll open for
 
 ScriptBee won on Twitter but we decided to go with **Scriptified**. After deciding the name we headed over to buy [scriptified.dev](https://scriptied.dev) domain even before starting the project, because that's what _passionate_ developers do!
 
-## ✔ Choosing Tech Stack
+## 👨🏻‍💻 Choosing Tech Stack
 
 Here comes the thrilling part - choosing the tech stack. A wise man would choose a stack he is comfortable & skilled in to build a project fast. But God didn't distribute wisdom equally and hence we chose the stack we both have never worked with. _Not so classic_!
 
@@ -84,7 +84,7 @@ As of now, Scriptified's repository is **44+ Pull Requests strong** 💪🏻. We
 We are working on making Scriptified an Open Source project. It will be open for any sort of contributions & PR's soon! :)
 Follow [Scriptified on Twitter](https://scriptified.dev/twitter) to get notified about such updates & our issues.
 
-## Making Logo
+## ✨ Making Logo
 
 'Designer Who Codes' is a term but what about 'Developer Who Designs'?
 
