@@ -56,47 +56,47 @@ const GithubLink = styled(ExternalLink)`
   margin-bottom: 5px;
 `;
 
-const Footer = () => (
+const Footer = ({ isMusicPage }) => (
   <FooterContainer>
-    <NowPlaying />
+    {isMusicPage ? null : <NowPlaying />}
     <SocialContainer>
       <SocialItemList>
         {socialMedia &&
-          socialMedia.map(({ name, url }, i) => (
-            <li key={i}>
-              <SocialLink url={url} aria-label={name} eventType={name}>
-                {name === 'Github' ? (
-                  <IconGithub />
-                ) : name === 'Linkedin' ? (
-                  <IconLinkedin />
-                ) : name === 'Medium' ? (
-                  <IconMedium />
-                ) : name === 'Instagram' ? (
-                  <IconInstagram />
-                ) : name === 'Twitter' ? (
-                  <IconTwitter />
-                ) : name === 'Facebook' ? (
-                  <IconFacebook />
-                ) : (
-                  <IconGithub />
-                )}
-              </SocialLink>
-            </li>
-          ))}
+            socialMedia.map(({ name, url }, i) => (
+              <li key={i}>
+                <SocialLink url={url} aria-label={name} eventType={name}>
+                  {name === 'Github' ? (
+                    <IconGithub />
+                  ) : name === 'Linkedin' ? (
+                    <IconLinkedin />
+                  ) : name === 'Medium' ? (
+                    <IconMedium />
+                  ) : name === 'Instagram' ? (
+                    <IconInstagram />
+                  ) : name === 'Twitter' ? (
+                    <IconTwitter />
+                  ) : name === 'Facebook' ? (
+                    <IconFacebook />
+                  ) : (
+                    <IconGithub />
+                  )}
+                </SocialLink>
+              </li>
+            ))}
       </SocialItemList>
     </SocialContainer>
     <Copy>
       <GithubLink url="https://github.com/gupta-ji6" eventType="Github">
         <small>
-          Customized with{' '}
+            Customized with{' '}
           <span role="img" aria-label="Coffee">
-            ☕
+              ☕
           </span>{' '}
-          and{' '}
+            and{' '}
           <span role="img" aria-label="Heart">
-            ❤
+              ❤
           </span>{' '}
-          by Ayush Gupta
+            by Ayush Gupta
         </small>
         {/* <div>Template by Brittany Chiang</div> */}
       </GithubLink>
@@ -108,7 +108,7 @@ const Footer = () => (
 );
 
 Footer.propTypes = {
-  githubInfo: PropTypes.object,
+  isMusicPage: PropTypes.bool,
 };
 
 export default Footer;

@@ -49,6 +49,7 @@ const StyledContent = styled.div`
 
 const Layout = ({ children, location }) => {
   const isHome = location.pathname === '/';
+  const isMusicPage = location.pathname === '/music';
   const [isLoading] = useState(isHome);
 
   useEffect(() => {
@@ -98,7 +99,7 @@ const Layout = ({ children, location }) => {
             <Social />
             <Email />
             {children}
-            <Footer />
+            <Footer isMusicPage={isMusicPage} />
           </StyledContent>
           {/*  )} */}
         </div>
