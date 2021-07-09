@@ -116,6 +116,12 @@ const NowPlayingWidgetContainer = styled.div`
   margin-bottom: 40px;
 `;
 
+const StyledRefetchBtn = styled.button`
+  ${mixins.bigButton};
+  margin-left: 10px;
+  margin-top: 10px;
+`;
+
 const metaConfig = {
   title: 'Music - Ayush Gupta',
   description: 'A living document of setup with apps Ayush Gupta uses daily.',
@@ -125,7 +131,7 @@ const metaConfig = {
 const MusicPage = ({ location }) => {
   // const usesData = data.uses.edges;
 
-  const { recentlyPlayedTracks, loading, error } = useRecentlyPlayedTracks(10);
+  const { recentlyPlayedTracks, loading, error, refetch } = useRecentlyPlayedTracks(10);
 
   useEffect(() => {
     let unsusbscribe = false;
@@ -144,8 +150,13 @@ const MusicPage = ({ location }) => {
     } else if (error !== null) {
       return (
         <Fragment>
-          <div>{Error}</div>
-          <button>Re-fetch</button>
+          <div>{error}</div>
+          <StyledRefetchBtn
+            type="button"
+            data-splitbee-event="Re-fetch Recently Played"
+            onClick={() => refetch()}>
+            Re-fetch Tracks
+          </StyledRefetchBtn>
         </Fragment>
       );
     } else if (recentlyPlayedTracks !== undefined) {
@@ -156,7 +167,7 @@ const MusicPage = ({ location }) => {
             const { track } = trackData;
             return (
               <li key={track.id}>
-                <a href={track.external_urls.spotify}>{track.name}</a>
+                <ExternalLink url={track.external_urls.spotify}>{track.name}</ExternalLink>
               </li>
             );
           })}

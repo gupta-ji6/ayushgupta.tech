@@ -13,23 +13,23 @@ function useRecentlyPlayedTracks(limit = 20) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  async function fetchData() {
+    setLoading(true);
+    const tracks = await fetchCurrentUsersRecentlyPlayed(limit);
+    //   console.log(tracks);
+    if (tracks !== undefined) {
+      setRecentlyPlayedTracks(tracks?.items);
+      setLoading(false);
+      setError(null);
+    } else {
+      setRecentlyPlayedTracks([]);
+      setLoading(false);
+      setError(`Couldn't fetch recently played tracks.`);
+    }
+  }
+
   useEffect(() => {
     let unsubscribe = false;
-
-    async function fetchData() {
-      setLoading(true);
-      const tracks = await fetchCurrentUsersRecentlyPlayed(limit);
-      //   console.log(tracks);
-      if (tracks !== undefined) {
-        setRecentlyPlayedTracks(tracks?.items);
-        setLoading(false);
-        setError(null);
-      } else {
-        setRecentlyPlayedTracks([]);
-        setLoading(false);
-        setError(`Couldn't fetch recently played tracks.`);
-      }
-    }
     if (!unsubscribe) {
       fetchData();
     }
@@ -42,7 +42,7 @@ function useRecentlyPlayedTracks(limit = 20) {
     recentlyPlayedTracks,
     error,
     loading,
-    refetch: fetchCurrentUsersRecentlyPlayed,
+    refetch: fetchData,
   };
 }
 
