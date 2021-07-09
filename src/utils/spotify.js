@@ -186,7 +186,7 @@ export const fetchCurrentUserPlaylists = async (limit = 20) => {
  * @see {@link https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-recently-played}
  * @param {number} [limit] - The maximum number of playlists to return. Default: 20. Minimum: 1. Maximum: 50.
  * @param {number} [before] - A Unix timestamp in milliseconds. Returns all items before (but not including) this cursor position. If before is specified, after must not be specified.
- * @return {Object} contains an array of play history objects (wrapped in a cursor-based paging object) in JSON format
+ * @return {Promise} contains an array of play history objects (wrapped in a cursor-based paging object) in JSON format
  */
 export const fetchCurrentUsersRecentlyPlayed = async (limit = 20, before = Date.now()) => {
   const { access_token } = await getAccessToken();
