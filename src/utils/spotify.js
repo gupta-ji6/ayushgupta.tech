@@ -95,7 +95,7 @@ export const fetchCurrentTrack = async () => {
  *
  * @see {@link https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-playlist}
  * @param {string} playlist_id The Spotify ID for the playlist.
- * @return {Object}  a playlist object.
+ * @return {Promise}  a playlist object.
  */
 export const fetchPlaylistById = async playlist_id => {
   const { access_token } = await getAccessToken();
@@ -139,7 +139,7 @@ export const fetchPlaylistById = async playlist_id => {
  * @see {@link https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-list-of-current-users-playlists}
  *
  * @param {number} [limit] - The maximum number of playlists to return. Default: 20. Minimum: 1. Maximum: 50.
- * @return {Object} contains an array of simplified playlist objects.
+ * @return {Promise} contains an array of simplified playlist objects.
  */
 export const fetchCurrentUserPlaylists = async (limit = 20) => {
   const { access_token } = await getAccessToken();
@@ -235,7 +235,7 @@ export const fetchCurrentUsersRecentlyPlayed = async (limit = 20, before = Date.
  *
  * @see {@link https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-users-saved-tracks}
  * @param {number} [limit] - The maximum number of playlists to return. Default: 20. Minimum: 1. Maximum: 50.
- * @return {Object}  contains an array of saved track objects (wrapped in a paging object) in JSON format.
+ * @return {Promise}  contains an array of saved track objects (wrapped in a paging object) in JSON format.
  */
 export const fetchCurrentUsersSavedTracks = async (limit = 20) => {
   const { access_token } = await getAccessToken();
@@ -284,7 +284,7 @@ export const fetchCurrentUsersSavedTracks = async (limit = 20) => {
  * @param {string} type - The type of entity to return. Valid values: artists or tracks.
  * @param {string} time_range - Over what time frame the affinities are computed. Valid values: long_term (calculated from several years of data and including all new data as it becomes available), medium_term (approximately last 6 months), short_term (approximately last 4 weeks). Default: medium_term
  * @param {number} limit - The number of entities to return. Default: 20. Minimum: 1. Maximum: 50.
- * @return {Object} contains a paging object of Artists or Tracks.
+ * @return {Promise} contains a paging object of Artists or Tracks.
  */
 export const fetchCurrentUsersTopArtistsOrTracks = async (
   type = 'tracks',
@@ -337,7 +337,7 @@ export const fetchCurrentUsersTopArtistsOrTracks = async (
  * Get detailed profile information about the current user (including the current user’s username).
  *
  * @see {@link https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-current-users-profile}
- * @return {Object} contains a user object in JSON format.
+ * @return {Promise} contains a user object in JSON format.
  */
 export const fetchCurrentUserProfile = async () => {
   const { access_token } = await getAccessToken();

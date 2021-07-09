@@ -10,21 +10,21 @@ import { fetchCurrentUsersRecentlyPlayed } from '../utils/spotify';
  */
 function useRecentlyPlayedTracks(limit = 20) {
   const [recentlyPlayedTracks, setRecentlyPlayedTracks] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [recentTracksError, setRecentTracksError] = useState(null);
+  const [recentTracksLoading, setRecentTracksLoading] = useState(false);
 
   async function fetchData() {
-    setLoading(true);
+    setRecentTracksLoading(true);
     const tracks = await fetchCurrentUsersRecentlyPlayed(limit);
     //   console.log(tracks);
     if (tracks !== undefined) {
       setRecentlyPlayedTracks(tracks?.items);
-      setLoading(false);
-      setError(null);
+      setRecentTracksLoading(false);
+      setRecentTracksError(null);
     } else {
       setRecentlyPlayedTracks([]);
-      setLoading(false);
-      setError(`Couldn't fetch recently played tracks.`);
+      setRecentTracksLoading(false);
+      setRecentTracksError(`Couldn't fetch recently played tracks.`);
     }
   }
 
@@ -40,9 +40,9 @@ function useRecentlyPlayedTracks(limit = 20) {
 
   return {
     recentlyPlayedTracks,
-    error,
-    loading,
-    refetch: fetchData,
+    recentTracksError,
+    recentTracksLoading,
+    refetchRecentTracks: fetchData,
   };
 }
 
