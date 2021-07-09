@@ -12,6 +12,7 @@ import ExternalLink from '../components/externalLink';
 import NowPlaying from '../components/now-palying';
 import useRecentlyPlayedTracks from '../hooks/useRecentlyPlayedTracks';
 import DetailsAndSummary from '../components/detailsAndSummary';
+import useTopTracks from '../hooks/useTopTracks';
 
 const StyledMainContainer = styled.main`
   padding: 200px 200px;
@@ -131,7 +132,18 @@ const metaConfig = {
 const MusicPage = ({ location }) => {
   // const usesData = data.uses.edges;
 
-  const { recentlyPlayedTracks, loading, error, refetch } = useRecentlyPlayedTracks(10);
+  const {
+    recentlyPlayedTracks,
+    recentTracksLoading,
+    recentTracksError,
+    refetchRecentTracks,
+  } = useRecentlyPlayedTracks(10);
+
+  const { topTracks, topTracksLoading, topTracksError, refetchTopTracks } = useTopTracks(
+    'tracks',
+    'short_term',
+    10,
+  );
 
   useEffect(() => {
     let unsusbscribe = false;
@@ -145,16 +157,16 @@ const MusicPage = ({ location }) => {
   }, []);
 
   const renderRecentlyPlayedTracks = () => {
-    if (loading) {
+    if (recentTracksLoading) {
       return <div>Loading recently played tracks...</div>;
-    } else if (error !== null) {
+    } else if (recentTracksError !== null) {
       return (
         <Fragment>
-          <div>{error}</div>
+          <div>{recentTracksError}</div>
           <StyledRefetchBtn
             type="button"
             data-splitbee-event="Re-fetch Recently Played"
-            onClick={() => refetch()}>
+            onClick={() => refetchRecentTracks()}>
             Re-fetch Tracks
           </StyledRefetchBtn>
         </Fragment>
@@ -171,6 +183,35 @@ const MusicPage = ({ location }) => {
               </li>
             );
           })}
+        </ul>
+      );
+    }
+  };
+
+  const renderTopTracks = () => {
+    if (topTracksLoading) {
+      return <div>Loading Ayush's top tracks...</div>;
+    } else if (topTracksError !== null) {
+      return (
+        <Fragment>
+          <div>{topTracksError}</div>
+          <StyledRefetchBtn
+            type="button"
+            data-splitbee-event="Re-fetch Recently Played"
+            onClick={() => refetchTopTracks()}>
+            Re-fetch Tracks
+          </StyledRefetchBtn>
+        </Fragment>
+      );
+    } else if (topTracks !== undefined) {
+      // console.log(topTracks);
+      return (
+        <ul>
+          {topTracks.map(track => (
+            <li key={track.id}>
+              <ExternalLink url={track.external_urls.spotify}>{track.name}</ExternalLink>
+            </li>
+          ))}
         </ul>
       );
     }
@@ -211,21 +252,7 @@ const MusicPage = ({ location }) => {
           <DetailsAndSummary title="Recently Played Tracks">
             {renderRecentlyPlayedTracks()}
           </DetailsAndSummary>
-          {/* usesData &&
-            usesData.map(({ node }, i) => {
-              const { frontmatter, html } = node;
-              const { title, subtitle } = frontmatter;
-
-              return (
-                <StyledDetails key={i}>
-                  <StyledSummary>
-                    <span className="medium-heading">{title}</span>
-                    <p>{subtitle}</p>
-                  </StyledSummary>
-                  <div dangerouslySetInnerHTML={{ __html: html }} itemProp="usesContent" />
-                </StyledDetails>
-              );
-            }) */}
+          <DetailsAndSummary title="Top Tracks">{renderTopTracks()}</DetailsAndSummary>
         </section>
 
         <MoreQuestionsSection>
