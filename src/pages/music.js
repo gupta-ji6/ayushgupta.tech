@@ -1,18 +1,28 @@
-import React, { useEffect, Fragment } from 'react';
-import { Layout } from '@components';
-import { theme, mixins, media } from '@styles';
-const { colors, fontSizes } = theme;
-import ogImage from '@images/og-uses.png';
-
+import React, { useEffect, Fragment, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { siteUrl } from '@config';
 import { Helmet } from 'react-helmet';
-import ExternalLink from '../components/externalLink';
-import NowPlaying from '../components/now-palying';
+
+import { Layout, ExternalLink, NowPlaying, DetailsAndSummary } from '@components';
 import useRecentlyPlayedTracks from '../hooks/useRecentlyPlayedTracks';
-import DetailsAndSummary from '../components/detailsAndSummary';
 import useTopTracks from '../hooks/useTopTracks';
+import { theme, mixins, media } from '@styles';
+import { siteUrl, srConfig } from '@config';
+import sr from '@utils/sr';
+import ogImage from '@images/og-uses.png';
+import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion';
+
+// =================================== CONSTANTS ==========================================
+
+const { colors, fontSizes } = theme;
+
+const metaConfig = {
+  title: 'Music - Ayush Gupta',
+  description: 'A living document of setup with apps Ayush Gupta uses daily.',
+  url: 'https://ayushgupta.tech/music',
+};
+
+// =================================== STYLED COMPONENTS ==========================================
 
 const StyledMainContainer = styled.main`
   padding: 200px 200px;
@@ -29,72 +39,17 @@ const StyledMainContainer = styled.main`
     text-align: center;
   }
 
-  h4 {
-    padding-left: 10px;
-  }
-
   ul {
     padding: 0;
-    padding-left: 10px;
     margin: 0;
     list-style: none;
-    font-size: ${fontSizes.large};
+    font-size: ${fontSizes.xlarge};
     li {
+      background-color: ${colors.lightNavy};
+      border-radius: ${theme.borderRadius};
       position: relative;
-      padding-left: 30px;
+      padding: 10px;
       margin-bottom: 10px;
-      &:before {
-        content: '▹';
-        position: absolute;
-        left: 0;
-        color: ${colors.green};
-        line-height: ${fontSizes.xlarge};
-      }
-    }
-  }
-
-  ol {
-    padding: 0;
-    padding-left: 10px;
-    margin: 0;
-    list-style: none;
-    font-size: ${fontSizes.large};
-    li {
-      position: relative;
-      padding-left: 30px;
-      margin-bottom: 10px;
-      &:before {
-        content: '+';
-        position: absolute;
-        left: 0;
-        color: ${colors.green};
-        line-height: ${fontSizes.xlarge};
-      }
-    }
-  }
-
-  /* a {
-    ${mixins.inlineLink};
-  } */
-
-  details[open] {
-    summary > span {
-      color: ${colors.green};
-    }
-  }
-
-  details[open] summary ~ * {
-    animation: sweep 0.5s ease-in-out;
-  }
-
-  @keyframes sweep {
-    0% {
-      opacity: 0;
-      margin-left: -10px;
-    }
-    100% {
-      opacity: 1;
-      margin-left: 10px;
     }
   }
 `;
@@ -103,6 +58,10 @@ const MoreQuestionsSection = styled.section`
   ${mixins.flexCenter};
   flex-direction: column;
   padding-top: 60px;
+
+  a {
+    ${mixins.inlineLink};
+  }
 `;
 
 const NowPlayingWidgetContainer = styled.div`
@@ -123,14 +82,71 @@ const StyledRefetchBtn = styled.button`
   margin-top: 10px;
 `;
 
-const metaConfig = {
-  title: 'Music - Ayush Gupta',
-  description: 'A living document of setup with apps Ayush Gupta uses daily.',
-  url: 'https://ayushgupta.tech/music',
-};
+const TrackItem = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin: 0 10px 10px 10px;
+
+  &:hover {
+    img {
+      border-radius: 50%;
+      border: 2px solid ${colors.green};
+      @media (prefers-reduced-motion: no-preference) {
+        animation: rotation 6s infinite linear;
+      }
+    }
+  }
+`;
+
+const StyledAlbumCover = styled.img`
+  width: auto;
+  height: 8rem;
+  border: 2px solid transparent;
+  border-radius: ${theme.borderRadius};
+  z-index: 1;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: ${theme.transition};
+  }
+
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
+`;
+
+const TrackInfoContainer = styled.div`
+  border-radius: ${theme.borderRadius};
+  background-color: ${colors.darkNavy};
+  width: 100%;
+  padding: 16px;
+  margin-left: -36px;
+  padding-left: 46px;
+
+  a {
+    ${mixins.inlineLink};
+  }
+`;
+
+const Artists = styled.div`
+  color: ${colors.slate};
+  margin-left: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
+
+// ======================================= COMPONENT ================================
 
 const MusicPage = ({ location }) => {
-  // const usesData = data.uses.edges;
+  const revealTitle = useRef(null);
+  const revealMusicContent = useRef(null);
 
   const {
     recentlyPlayedTracks,
@@ -145,15 +161,15 @@ const MusicPage = ({ location }) => {
     10,
   );
 
-  useEffect(() => {
-    let unsusbscribe = false;
+  const prefersReducedMotion = usePrefersReducedMotion();
 
-    if (!unsusbscribe) {
-      // console.log(recentlyPlayedTracks);
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
     }
-    return () => {
-      unsusbscribe = true;
-    };
+
+    sr.reveal(revealTitle.current, srConfig());
+    sr.reveal(revealMusicContent.current, srConfig(200, 0));
   }, []);
 
   const renderRecentlyPlayedTracks = () => {
@@ -174,16 +190,29 @@ const MusicPage = ({ location }) => {
     } else if (recentlyPlayedTracks !== undefined) {
       // console.log(recentlyPlayedTracks);
       return (
-        <ul>
+        <Fragment>
           {recentlyPlayedTracks.map(trackData => {
             const { track } = trackData;
+            const { album, artists, external_urls, name, id } = track;
+            const trackArtists = artists.map(artist => artist.name);
             return (
-              <li key={track.id}>
-                <ExternalLink url={track.external_urls.spotify}>{track.name}</ExternalLink>
-              </li>
+              <TrackItem key={id}>
+                <StyledAlbumCover
+                  src={album.images[1].url}
+                  height={album.images[1].height}
+                  width={album.images[1].width}
+                  alt={`${album.name}'s album cover`}
+                />
+                <TrackInfoContainer>
+                  <ExternalLink url={external_urls.spotify} eventName="Spotify">
+                    {name}
+                  </ExternalLink>
+                  <Artists>{trackArtists.join(', ')}</Artists>
+                </TrackInfoContainer>
+              </TrackItem>
             );
           })}
-        </ul>
+        </Fragment>
       );
     }
   };
@@ -207,11 +236,26 @@ const MusicPage = ({ location }) => {
       // console.log(topTracks);
       return (
         <ul>
-          {topTracks.map(track => (
-            <li key={track.id}>
-              <ExternalLink url={track.external_urls.spotify}>{track.name}</ExternalLink>
-            </li>
-          ))}
+          {topTracks.map(track => {
+            const { album, artists, external_urls, name, id } = track;
+            const trackArtists = artists.map(artist => artist.name);
+            return (
+              <TrackItem key={id}>
+                <StyledAlbumCover
+                  src={album.images[1].url}
+                  height={album.images[1].height}
+                  width={album.images[1].width}
+                  alt={`${album.name}'s album cover`}
+                />
+                <TrackInfoContainer>
+                  <ExternalLink url={external_urls.spotify} eventName="Spotify">
+                    {name}
+                  </ExternalLink>
+                  <Artists>{trackArtists.join(', ')}</Artists>
+                </TrackInfoContainer>
+              </TrackItem>
+            );
+          })}
         </ul>
       );
     }
@@ -240,19 +284,25 @@ const MusicPage = ({ location }) => {
         <meta name="twitter:image:alt" content={metaConfig.title} />
       </Helmet>
       <StyledMainContainer id="content">
-        <header>
+        <header ref={revealTitle}>
           <h1 className="big-heading">Music</h1>
-          <p className="subtitle">intorducing to you, my up-to-date music library</p>
+          <p className="subtitle">deep dive into my music library</p>
         </header>
 
-        <section>
+        <section ref={revealMusicContent}>
           <NowPlayingWidgetContainer>
             <NowPlaying />
           </NowPlayingWidgetContainer>
-          <DetailsAndSummary title="Recently Played Tracks">
+          <DetailsAndSummary
+            title="Top Tracks"
+            subtitle="Top tracks I jammed to this month. Some put me to sleep while some made me dance.">
+            {renderTopTracks()}
+          </DetailsAndSummary>
+          <DetailsAndSummary
+            title="Recently Played"
+            subtitle="Recent tracks I played while discovering new music, or maybe listening to same old shiz nth time">
             {renderRecentlyPlayedTracks()}
           </DetailsAndSummary>
-          <DetailsAndSummary title="Top Tracks">{renderTopTracks()}</DetailsAndSummary>
         </section>
 
         <MoreQuestionsSection>
