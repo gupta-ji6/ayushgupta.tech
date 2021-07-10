@@ -1,16 +1,27 @@
-import React from 'react';
-import { Layout } from '@components';
-import { theme, mixins, media } from '@styles';
-const { colors, fontSizes } = theme;
-import ogImage from '@images/og-uses.png';
-
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
-import styled from 'styled-components';
-import { siteUrl } from '@config';
 import { Helmet } from 'react-helmet';
-import ExternalLink from '../components/externalLink';
-import DetailsAndSummary from '../components/detailsAndSummary';
+import styled from 'styled-components';
+
+import { Layout, ExternalLink, DetailsAndSummary } from '@components';
+import { theme, mixins, media } from '@styles';
+import ogImage from '@images/og-uses.png';
+import { siteUrl, srConfig } from '@config';
+import sr from '@utils/sr';
+import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion';
+
+// ============================= CONSTANTS ============================================
+
+const { colors, fontSizes } = theme;
+
+const metaConfig = {
+  title: 'Uses - Ayush Gupta',
+  description: 'A living document of setup with apps Ayush Gupta uses daily.',
+  url: 'https://ayushgupta.tech/uses',
+};
+
+// ============================= STYLED COMPONENTS ============================================
 
 const StyledMainContainer = styled.main`
   padding: 200px 200px;
@@ -82,14 +93,29 @@ const MoreQuestionsSection = styled.section`
   padding-top: 60px;
 `;
 
-const metaConfig = {
-  title: 'Uses - Ayush Gupta',
-  description: 'A living document of setup with apps Ayush Gupta uses daily.',
-  url: 'https://ayushgupta.tech/uses',
-};
+const UsesContent = styled.div`
+  margin-left: 10px;
+`;
+
+// ============================= COMPONENT ============================================
 
 const UsesPage = ({ data, location }) => {
   const usesData = data.uses.edges;
+
+  const revealTitle = useRef(null);
+  const revealUsesContent = useRef(null);
+  const revealUsesItems = useRef([]);
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    sr.reveal(revealTitle.current, srConfig());
+    sr.reveal(revealUsesContent.current, srConfig(200, 0));
+    revealUsesItems.current.forEach((ref, i) => sr.reveal(ref, srConfig(i * 10)));
+  }, []);
 
   return (
     <Layout location={location}>
@@ -115,20 +141,24 @@ const UsesPage = ({ data, location }) => {
         <meta name="twitter:image:alt" content={metaConfig.title} />
       </Helmet>
       <StyledMainContainer id="content">
-        <header>
+        <header ref={revealTitle}>
           <h1 className="big-heading">Uses</h1>
           <p className="subtitle">a living document of my setup with apps I use daily</p>
         </header>
 
-        <section>
+        <section ref={revealUsesContent}>
           {usesData &&
             usesData.map(({ node }, i) => {
               const { frontmatter, html } = node;
               const { title, subtitle } = frontmatter;
 
               return (
-                <DetailsAndSummary key={i} title={title} subtitle={subtitle}>
-                  <div dangerouslySetInnerHTML={{ __html: html }} itemProp="usesContent" />
+                <DetailsAndSummary
+                  key={i}
+                  title={title}
+                  subtitle={subtitle}
+                  ref={el => (revealUsesItems.current[i] = el)}>
+                  <UsesContent dangerouslySetInnerHTML={{ __html: html }} itemProp="usesContent" />
                 </DetailsAndSummary>
               );
             })}

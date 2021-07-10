@@ -13,19 +13,22 @@ const StyledDetailsContainer = styled.div`
   }
 
   details[open] {
+    background-color: ${colors.lightNavy};
+    border-radius: ${theme.borderRadius};
+    box-shadow: ${mixins.boxShadow};
     summary > span {
       color: ${colors.green};
     }
   }
 
   details[open] summary ~ * {
-    animation: sweep 0.5s ease-in-out;
+    animation: sweep 0.6s ease-in-out;
   }
 
   @keyframes sweep {
     0% {
       opacity: 0;
-      margin-left: -10px;
+      margin-left: 0px;
     }
     100% {
       opacity: 1;
@@ -44,15 +47,14 @@ const StyledDetails = styled.details`
   }
 
   padding: 10px 0;
-
-  div {
-    margin-left: 10px;
-  }
-
+  margin-bottom: 20px;
   transition: ${theme.transition};
+
   &:hover,
-  &:focus {
-    transform: translateY(-5px);
+  &:focus,
+  &:active {
+    background-color: ${colors.lightNavy};
+    border-radius: ${theme.borderRadius};
   }
 `;
 
