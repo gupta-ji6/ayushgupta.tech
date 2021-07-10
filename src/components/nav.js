@@ -34,6 +34,8 @@ const StyledContainer = styled.header`
   );
   ${media.desktop`padding: 0 40px;`};
   ${media.tablet`padding: 0 25px;`};
+  background-color: rgba(10, 25, 47, 0.85);
+  backdrop-filter: blur(10px);
 `;
 const StyledNav = styled.nav`
   ${mixins.flexBetween};
