@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { fetchCurrentUsersRecentlyPlayed } from '../utils/spotify';
+import uniqBy from 'lodash/uniqBy';
 
 /**
  * Custom react hook to get tracks from the current user’s recently played tracks. Note: Currently doesn’t support podcast episodes.
@@ -18,7 +19,10 @@ function useRecentlyPlayedTracks(limit = 20) {
     const tracks = await fetchCurrentUsersRecentlyPlayed(limit);
     //   console.log(tracks);
     if (tracks !== undefined) {
-      setRecentlyPlayedTracks(tracks?.items);
+      const uniqueRecentTracks = uniqBy(tracks?.items, function(e) {
+        return e.track.id;
+      });
+      setRecentlyPlayedTracks(uniqueRecentTracks);
       setRecentTracksLoading(false);
       setRecentTracksError(null);
     } else {
