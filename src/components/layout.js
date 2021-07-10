@@ -49,7 +49,7 @@ const StyledContent = styled.div`
 
 const Layout = ({ children, location }) => {
   const isHome = location.pathname === '/';
-  const isMusicPage = location.pathname === '/music';
+  const isMusicPage = ['/music', '/music/'].includes(location.pathname);
   const [isLoading] = useState(isHome);
 
   useEffect(() => {
