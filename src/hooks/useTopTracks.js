@@ -38,7 +38,7 @@ function useTopTracks(type = 'tracks', time_range = 'short_term', limit = 20) {
     return () => {
       unsubscribe = true;
     };
-  }, []);
+  }, [time_range, type, limit]);
 
   return {
     topTracks,
