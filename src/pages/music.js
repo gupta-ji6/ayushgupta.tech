@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment, useRef } from 'react';
+import React, { useEffect, Fragment, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
@@ -14,7 +14,7 @@ import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion';
 
 // =================================== CONSTANTS ==========================================
 
-const { colors, fontSizes } = theme;
+const { colors } = theme;
 
 const metaConfig = {
   title: 'Music - Ayush Gupta',
@@ -37,20 +37,6 @@ const StyledMainContainer = styled.main`
   & > header {
     margin-bottom: 75px;
     text-align: center;
-  }
-
-  ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    font-size: ${fontSizes.xlarge};
-    li {
-      background-color: ${colors.lightNavy};
-      border-radius: ${theme.borderRadius};
-      position: relative;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
   }
 `;
 
@@ -148,6 +134,9 @@ const MusicPage = ({ location }) => {
   const revealTitle = useRef(null);
   const revealMusicContent = useRef(null);
 
+  // const [topTracksType, setTopTracksType] = useState('tracks')
+  const [topTracksRange, setTopTracksRange] = useState('short_term');
+
   const {
     recentlyPlayedTracks,
     recentTracksLoading,
@@ -157,7 +146,7 @@ const MusicPage = ({ location }) => {
 
   const { topTracks, topTracksLoading, topTracksError, refetchTopTracks } = useTopTracks(
     'tracks',
-    'short_term',
+    topTracksRange,
     10,
   );
 
@@ -296,11 +285,16 @@ const MusicPage = ({ location }) => {
           <DetailsAndSummary
             title="Top Tracks"
             subtitle="Top tracks I jammed to this month. Some put me to sleep while some made me dance.">
+            <div style={{ marginLeft: '10px' }}>
+              <button onClick={() => setTopTracksRange('short_term')}>Short Term</button>
+              <button onClick={() => setTopTracksRange('medium_term')}>Medium Term</button>
+              <button onClick={() => setTopTracksRange('long_term')}>Long Term</button>
+            </div>
             {renderTopTracks()}
           </DetailsAndSummary>
           <DetailsAndSummary
             title="Recently Played"
-            subtitle="Recent tracks I played while discovering new music, or maybe listening to same old shiz nth time">
+            subtitle="Recent tracks I played while discovering new music, or maybe listening to same old shiz nth time.">
             {renderRecentlyPlayedTracks()}
           </DetailsAndSummary>
         </section>

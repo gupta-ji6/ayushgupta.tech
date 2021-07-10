@@ -105,7 +105,7 @@ function DetailsAndSummary({ title = '', subtitle = '', children, ...otherProps 
 
 DetailsAndSummary.propTypes = {
   title: PropTypes.string.isRequired,
-  subtitle: PropTypes.object,
+  subtitle: PropTypes.string,
   children: PropTypes.node,
 };
 
