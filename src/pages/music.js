@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet';
 import { Layout, ExternalLink, NowPlaying, DetailsAndSummary } from '@components';
 import {
   useRecentlyPlayedTracks,
+  useAyushFavouritePlaylist,
   usePrefersReducedMotion,
   useTopTracks,
   useSavedTracks,
@@ -198,6 +199,13 @@ const MusicPage = ({ location }) => {
   );
 
   const {
+    ayushFavouritePlaylist,
+    ayushFavouritePlaylistError,
+    ayushFavouritePlaylistLoading,
+    refetchAyushFavouritePlaylist,
+  } = useAyushFavouritePlaylist();
+
+  const {
     topTracks: topArtists,
     topTracksLoading: topArtistsLoading,
     topTracksError: topArtistsError,
@@ -276,6 +284,53 @@ const MusicPage = ({ location }) => {
             );
           })}
         </Fragment>
+      );
+    }
+  };
+
+  const renderAyushFavouritePlaylist = () => {
+    if (ayushFavouritePlaylistLoading) {
+      return <FetchLoader>Loading recently saved tracks...</FetchLoader>;
+    } else if (ayushFavouritePlaylistError !== null) {
+      return (
+        <RefetchContainer>
+          <div>{ayushFavouritePlaylistError}</div>
+          <StyledRefetchBtn
+            type="button"
+            data-splitbee-event="Re-fetch Playlist"
+            onClick={() => refetchAyushFavouritePlaylist()}>
+            Re-fetch Tracks
+          </StyledRefetchBtn>
+        </RefetchContainer>
+      );
+    } else if (ayushFavouritePlaylist !== undefined) {
+      // console.log(ayushFavouritePlaylist);
+      const {
+        name,
+        images,
+        id,
+        owner: { display_name },
+        tracks: { total },
+        external_urls,
+      } = ayushFavouritePlaylist;
+      return (
+        <TrackItem key={id}>
+          <StyledAlbumCover
+            src={images[0].url}
+            height={images[0].height}
+            width={images[0].width}
+            alt={`${name}'s playlist cover`}
+          />
+          <TrackInfoContainer>
+            <div>
+              <ExternalLink url={external_urls.spotify} eventName="Spotify">
+                {name}
+              </ExternalLink>
+              <span> by {display_name}</span>
+            </div>
+            <Artists>{total} tracks</Artists>
+          </TrackInfoContainer>
+        </TrackItem>
       );
     }
   };
@@ -533,6 +588,11 @@ const MusicPage = ({ location }) => {
               </RangeToggleButtonContainer>
               {renderTopTracks()}
             </Fragment>
+          </DetailsAndSummary>
+          <DetailsAndSummary
+            title="Favourite Playlist"
+            subtitle="A playlist I wouldn't share with just anyone. I used to listen to this at night alone, which is now turning into a collection of feel-good & indie songs.">
+            {renderAyushFavouritePlaylist()}
           </DetailsAndSummary>
           <DetailsAndSummary
             title="Top Artists"
