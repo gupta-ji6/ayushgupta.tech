@@ -180,6 +180,10 @@ export const fetchCurrentUserPlaylists = async (limit = 20) => {
 
 // ==========================================================================================
 
+const today = new Date();
+const yesterday = new Date(today);
+yesterday.setDate(yesterday.getDate() - 1);
+
 /**
  * Get tracks from the current user’s recently played tracks. Note: Currently doesn’t support podcast episodes.
  *
@@ -188,12 +192,13 @@ export const fetchCurrentUserPlaylists = async (limit = 20) => {
  * @param {number} [before] - A Unix timestamp in milliseconds. Returns all items before (but not including) this cursor position. If before is specified, after must not be specified.
  * @return {Promise} contains an array of play history objects (wrapped in a cursor-based paging object) in JSON format
  */
-export const fetchCurrentUsersRecentlyPlayed = async (limit = 20, before = Date.now()) => {
+export const fetchCurrentUsersRecentlyPlayed = async (limit = 20) => {
   const { access_token } = await getAccessToken();
   const url = new URL(CURRENT_USER_RECENTLY_PLAYED_URL);
   const params = {
     limit,
-    before,
+    // after: Math.round(new Date(yesterday).getTime() / 1000),
+    // before,
   };
 
   url.search = new URLSearchParams(params).toString();

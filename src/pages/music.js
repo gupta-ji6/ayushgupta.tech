@@ -4,13 +4,12 @@ import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
 
 import { Layout, ExternalLink, NowPlaying, DetailsAndSummary } from '@components';
-import useRecentlyPlayedTracks from '../hooks/useRecentlyPlayedTracks';
-import useTopTracks from '../hooks/useTopTracks';
+import { useRecentlyPlayedTracks, usePrefersReducedMotion, useTopTracks } from '@hooks';
 import { theme, mixins, media } from '@styles';
 import { siteUrl, srConfig } from '@config';
 import sr from '@utils/sr';
 import ogImage from '@images/og-uses.png';
-import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion';
+import { IconCheck } from '@components/icons';
 
 // =================================== CONSTANTS ==========================================
 
@@ -20,6 +19,19 @@ const metaConfig = {
   title: 'Music - Ayush Gupta',
   description: 'A living document of setup with apps Ayush Gupta uses daily.',
   url: 'https://ayushgupta.tech/music',
+};
+
+const mapRangeToTime = range => {
+  switch (range) {
+    case 'short':
+      return 'Last Month';
+    case 'medium':
+      return 'Last 6 Months';
+    case 'long':
+      return 'All Time';
+    default:
+      return 'Last Month';
+  }
 };
 
 // =================================== STYLED COMPONENTS ==========================================
@@ -40,10 +52,11 @@ const StyledMainContainer = styled.main`
   }
 `;
 
-const MoreQuestionsSection = styled.section`
+const SimilarTasteSection = styled.section`
   ${mixins.flexCenter};
   flex-direction: column;
   padding-top: 60px;
+  text-align: center;
 
   a {
     ${mixins.inlineLink};
@@ -62,17 +75,42 @@ const NowPlayingWidgetContainer = styled.div`
   margin-bottom: 40px;
 `;
 
+const RangeToggleButtonContainer = styled.div`
+  padding: 10px 0;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+`;
+
+const ToggleButton = styled.button`
+  ${mixins.bigButton};
+  /* ${media.desktop`${mixins.bigButton};`}; */
+  /* ${media.tablet`${mixins.smallButton};`}; */
+  ${media.thone`${mixins.smallButton};`};
+  margin-right: 10px;
+  margin-top: 10px;
+  /* flex-grow: 1, */
+
+  svg {
+    width: 12px;
+    height: 12px;
+    margin-right: 6px;
+    flex-grow: 0;
+  }
+`;
+
 const StyledRefetchBtn = styled.button`
   ${mixins.bigButton};
-  margin-left: 10px;
   margin-top: 10px;
 `;
 
 const TrackItem = styled.div`
   display: flex;
   align-items: center;
-  padding: 10px;
-  margin: 0 10px 10px 10px;
+  padding: 10px 0;
+  margin: 10px;
 
   &:hover {
     img {
@@ -86,11 +124,12 @@ const TrackItem = styled.div`
 `;
 
 const StyledAlbumCover = styled.img`
-  width: auto;
+  width: 8rem;
   height: 8rem;
   border: 2px solid transparent;
   border-radius: ${theme.borderRadius};
   z-index: 1;
+  object-fit: cover;
 
   @media (prefers-reduced-motion: no-preference) {
     transition: ${theme.transition};
@@ -126,6 +165,15 @@ const Artists = styled.div`
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-transform: capitalize;
+`;
+
+const FetchLoader = styled.div`
+  margin: 10px 10px 0;
+`;
+
+const RefetchContainer = styled.div`
+  margin: 10px 10px 0;
 `;
 
 // ======================================= COMPONENT ================================
@@ -136,6 +184,7 @@ const MusicPage = ({ location }) => {
 
   // const [topTracksType, setTopTracksType] = useState('tracks')
   const [topTracksRange, setTopTracksRange] = useState('short_term');
+  const [topArtistsRange, setTopArtistsRange] = useState('short_term');
 
   const {
     recentlyPlayedTracks,
@@ -150,6 +199,13 @@ const MusicPage = ({ location }) => {
     10,
   );
 
+  const {
+    topTracks: topArtists,
+    topTracksLoading: topArtistsLoading,
+    topTracksError: topArtistsError,
+    refetchTopTracks: refetchTopArtists,
+  } = useTopTracks('artists', topArtistsRange, 10);
+
   const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
@@ -163,10 +219,10 @@ const MusicPage = ({ location }) => {
 
   const renderRecentlyPlayedTracks = () => {
     if (recentTracksLoading) {
-      return <div>Loading recently played tracks...</div>;
+      return <FetchLoader>Loading recently played tracks...</FetchLoader>;
     } else if (recentTracksError !== null) {
       return (
-        <Fragment>
+        <RefetchContainer>
           <div>{recentTracksError}</div>
           <StyledRefetchBtn
             type="button"
@@ -174,7 +230,7 @@ const MusicPage = ({ location }) => {
             onClick={() => refetchRecentTracks()}>
             Re-fetch Tracks
           </StyledRefetchBtn>
-        </Fragment>
+        </RefetchContainer>
       );
     } else if (recentlyPlayedTracks !== undefined) {
       // console.log(recentlyPlayedTracks);
@@ -208,23 +264,23 @@ const MusicPage = ({ location }) => {
 
   const renderTopTracks = () => {
     if (topTracksLoading) {
-      return <div>Loading Ayush's top tracks...</div>;
+      return <FetchLoader>Loading Ayush's top tracks...</FetchLoader>;
     } else if (topTracksError !== null) {
       return (
-        <Fragment>
+        <RefetchContainer>
           <div>{topTracksError}</div>
           <StyledRefetchBtn
             type="button"
-            data-splitbee-event="Re-fetch Recently Played"
+            data-splitbee-event="Re-fetch Top Tracks"
             onClick={() => refetchTopTracks()}>
             Re-fetch Tracks
           </StyledRefetchBtn>
-        </Fragment>
+        </RefetchContainer>
       );
     } else if (topTracks !== undefined) {
       // console.log(topTracks);
       return (
-        <ul>
+        <Fragment>
           {topTracks.map(track => {
             const { album, artists, external_urls, name, id } = track;
             const trackArtists = artists.map(artist => artist.name);
@@ -245,7 +301,74 @@ const MusicPage = ({ location }) => {
               </TrackItem>
             );
           })}
-        </ul>
+        </Fragment>
+      );
+    }
+  };
+
+  const renderTopArtists = () => {
+    if (topArtistsLoading) {
+      return <FetchLoader>Loading Ayush's top artists...</FetchLoader>;
+    } else if (topArtistsError !== null) {
+      return (
+        <RefetchContainer>
+          <div>{topArtistsError}</div>
+          <StyledRefetchBtn
+            type="button"
+            data-splitbee-event="Re-fetch Top Artists"
+            onClick={() => refetchTopArtists()}>
+            Re-fetch Artists
+          </StyledRefetchBtn>
+        </RefetchContainer>
+      );
+    } else if (topArtists !== undefined) {
+      // console.log(topArtists);
+      return (
+        <Fragment>
+          {topArtists.map(artist => {
+            const { external_urls, name, id, images, genres } = artist;
+            return (
+              <TrackItem key={id}>
+                <StyledAlbumCover
+                  src={images[1].url}
+                  height={images[1].height}
+                  width={images[1].width}
+                  alt={`${name}'s picture`}
+                />
+                <TrackInfoContainer>
+                  <ExternalLink url={external_urls.spotify} eventName="Spotify">
+                    {name}
+                  </ExternalLink>
+                  <Artists>{genres.join(', ')}</Artists>
+                </TrackInfoContainer>
+              </TrackItem>
+            );
+          })}
+        </Fragment>
+      );
+    }
+  };
+
+  /**
+   *
+   *
+   * @param {*} {range = 'short', type = 'tracks'}
+   * @return {*}
+   */
+  const RangeToggleButton = ({ range = 'short', type = 'tracks' }) => {
+    if (type === 'tracks') {
+      return (
+        <ToggleButton onClick={() => setTopTracksRange(`${range}_term`)}>
+          {`${range}_term` === topTracksRange ? <IconCheck /> : null}
+          <span>{mapRangeToTime(range)}</span>
+        </ToggleButton>
+      );
+    } else if (type === 'artists') {
+      return (
+        <ToggleButton onClick={() => setTopArtistsRange(`${range}_term`)}>
+          {`${range}_term` === topArtistsRange ? <IconCheck /> : null}
+          <span>{mapRangeToTime(range)}</span>
+        </ToggleButton>
       );
     }
   };
@@ -284,22 +407,36 @@ const MusicPage = ({ location }) => {
           </NowPlayingWidgetContainer>
           <DetailsAndSummary
             title="Top Tracks"
-            subtitle="Top tracks I jammed to this month. Some put me to sleep while some made me dance.">
-            <div style={{ marginLeft: '10px' }}>
-              <button onClick={() => setTopTracksRange('short_term')}>Short Term</button>
-              <button onClick={() => setTopTracksRange('medium_term')}>Medium Term</button>
-              <button onClick={() => setTopTracksRange('long_term')}>Long Term</button>
-            </div>
-            {renderTopTracks()}
+            subtitle="Top tracks I have jammed to. Some put me to sleep while some made me dance.">
+            <Fragment>
+              <RangeToggleButtonContainer>
+                <RangeToggleButton range="short" type="tracks" />
+                <RangeToggleButton range="medium" type="tracks" />
+                <RangeToggleButton range="long" type="tracks" />
+              </RangeToggleButtonContainer>
+              {renderTopTracks()}
+            </Fragment>
+          </DetailsAndSummary>
+          <DetailsAndSummary
+            title="Top Artists"
+            subtitle="Top artists I looped on. I am more of an indie guy but the list doesn't suggest so, sigh.">
+            <Fragment>
+              <RangeToggleButtonContainer>
+                <RangeToggleButton range="short" type="artists" />
+                <RangeToggleButton range="medium" type="artists" />
+                <RangeToggleButton range="long" type="artists" />
+              </RangeToggleButtonContainer>
+              {renderTopArtists()}
+            </Fragment>
           </DetailsAndSummary>
           <DetailsAndSummary
             title="Recently Played"
-            subtitle="Recent tracks I played while discovering new music, or maybe listening to same old shiz nth time.">
+            subtitle="Recent tracks I played while discovering new music, or maybe listening to the same old shiz nth time.">
             {renderRecentlyPlayedTracks()}
           </DetailsAndSummary>
         </section>
 
-        <MoreQuestionsSection>
+        <SimilarTasteSection>
           <h2>Have similar music taste?</h2>
           <p>
             Feel free to recommend me your favorite songs on{' '}
@@ -312,7 +449,7 @@ const MusicPage = ({ location }) => {
             </ExternalLink>
             .
           </p>
-        </MoreQuestionsSection>
+        </SimilarTasteSection>
       </StyledMainContainer>
     </Layout>
   );

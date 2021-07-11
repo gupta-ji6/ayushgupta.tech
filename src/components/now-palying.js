@@ -97,7 +97,7 @@ const NowPlayingWidget = styled.div`
   border: 1px solid ${colors.green};
   border-radius: 3px;
   padding: 9px;
-  margin: 0 16px 24px 16px;
+  margin-bottom: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
