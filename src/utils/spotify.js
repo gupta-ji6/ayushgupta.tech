@@ -114,14 +114,8 @@ export const fetchPlaylistById = async playlist_id => {
       const jsonResponse = await response.json();
       // console.log(jsonResponse);
 
-      if (jsonResponse?.total !== 0) {
-        const { items, href, total } = jsonResponse;
-
-        return {
-          items,
-          href,
-          total,
-        };
+      if (jsonResponse !== null) {
+        return jsonResponse;
       }
     } else {
       return undefined;
