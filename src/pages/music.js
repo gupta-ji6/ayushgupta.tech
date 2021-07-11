@@ -303,32 +303,25 @@ const MusicPage = ({ location }) => {
           </StyledRefetchBtn>
         </RefetchContainer>
       );
-    } else if (ayushFavouritePlaylist !== undefined) {
+    } else if (Object.keys(ayushFavouritePlaylist).length > 0) {
       // console.log(ayushFavouritePlaylist);
-      const {
-        name,
-        images,
-        id,
-        owner: { display_name },
-        tracks: { total },
-        external_urls,
-      } = ayushFavouritePlaylist;
+      const { name, images, id, owner, tracks, external_urls } = ayushFavouritePlaylist;
       return (
         <TrackItem key={id}>
           <StyledAlbumCover
-            src={images[0].url}
-            height={images[0].height}
-            width={images[0].width}
+            src={images?.[0]?.url}
+            height={images?.[0]?.height}
+            width={images?.[0]?.width}
             alt={`${name}'s playlist cover`}
           />
           <TrackInfoContainer>
             <div>
-              <ExternalLink url={external_urls.spotify} eventName="Spotify">
+              <ExternalLink url={external_urls?.spotify} eventName="Spotify">
                 {name}
               </ExternalLink>
-              <span> by {display_name}</span>
+              <span> by {owner?.display_name}</span>
             </div>
-            <Artists>{total} tracks</Artists>
+            <Artists>{tracks?.total} tracks</Artists>
           </TrackInfoContainer>
         </TrackItem>
       );
