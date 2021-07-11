@@ -43,7 +43,7 @@ export const getAccessToken = async () => {
  * Get the object currently being played on the user’s Spotify account.
  *
  * @see {@link https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-the-users-currently-playing-track}
- * @return {Object}  A successful request will return a 200 OK response code with a json payload that contains information about the currently playing track or episode and its context.
+ * @return {Promise}  A successful request will return a 200 OK response code with a json payload that contains information about the currently playing track or episode and its context.
  */
 export const fetchCurrentTrack = async () => {
   const { access_token } = await getAccessToken();

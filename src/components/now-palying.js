@@ -5,8 +5,7 @@ import { theme, mixins } from '@styles';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
 import { IconSpotify, IconPlay, IconPause } from '@components/icons';
-import { usePrefersReducedMotion } from '@hooks';
-import { fetchCurrentTrack } from '../utils/spotify';
+import { usePrefersReducedMotion, useNowPlayingTrack } from '@hooks';
 import ExternalLink from './externalLink';
 
 // ========================= CONSTANTS ===========================
@@ -167,46 +166,32 @@ const SpotifyIcon = styled.div`
 // ========================= COMPONENT ===========================
 
 const NowPlaying = () => {
-  const [track, setTrack] = useState({});
-  const [isAyushListeningToAnything, setIsAyushListeningToAnything] = useState(false);
-  const [audio, setAudio] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const revealContainer = useRef(null);
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  const toggleAudio = () => setIsPlaying(!isPlaying);
-
-  // fetch the current playing track, if any
-  const fetchNowPlaying = async () => {
-    const trackData = await fetchCurrentTrack();
-    if (trackData !== undefined) {
-      setTrack(trackData);
-      if (trackData?.preview_url !== null) {
-        setAudio(new Audio(trackData?.preview_url));
-      }
-      setIsAyushListeningToAnything(true);
-    }
-  };
+  const { nowPlayingTrack, nowPlayingAudio, isAyushListeningToAnything } = useNowPlayingTrack();
 
   useEffect(() => {
     if (!prefersReducedMotion) {
       sr.reveal(revealContainer.current, srConfig());
     }
-    fetchNowPlaying();
   }, []);
 
   useEffect(() => {
-    if (audio !== null) {
-      isPlaying ? audio.play() : audio.pause();
+    if (nowPlayingAudio !== null) {
+      isPlaying ? nowPlayingAudio.play() : nowPlayingAudio.pause();
     }
   }, [isPlaying]);
 
+  const toggleAudio = () => setIsPlaying(!isPlaying);
+
   useEffect(() => {
-    if (audio !== null) {
-      audio.addEventListener('ended', () => setIsPlaying(false));
+    if (nowPlayingAudio !== null) {
+      nowPlayingAudio.addEventListener('ended', () => setIsPlaying(false));
       return () => {
-        audio.removeEventListener('ended', () => setIsPlaying(false));
+        nowPlayingAudio.removeEventListener('ended', () => setIsPlaying(false));
       };
     }
   }, [isPlaying, toggleAudio]);
@@ -245,11 +230,13 @@ const NowPlaying = () => {
       <TrackContext>{fetchNowPlayingCopy()}</TrackContext>
       <NowPlayingWidget>
         <ExternalLink
-          url={track?.external_urls?.spotify || SPOTIFY_PROFILE}
+          url={nowPlayingTrack?.external_urls?.spotify || SPOTIFY_PROFILE}
           eventName="Spotify"
           eventType="Open Spotify Link">
           <AlbumImage
-            src={track?.album?.images[0].url || 'https://source.unsplash.com/128x128/?music'}
+            src={
+              nowPlayingTrack?.album?.images[0].url || 'https://source.unsplash.com/128x128/?music'
+            }
             width="48"
             height="48"
             loading="lazy"
@@ -257,12 +244,12 @@ const NowPlaying = () => {
           />
         </ExternalLink>
         <ExternalLink
-          url={track?.external_urls?.spotify || SPOTIFY_PROFILE}
+          url={nowPlayingTrack?.external_urls?.spotify || SPOTIFY_PROFILE}
           eventName="Spotify"
           eventType="Open Spotify Link">
           <TrackInfo>
-            <TrackName>{track?.name || 'Not Playing'}</TrackName>
-            <AlbumName>{track?.album?.name || 'View Spotify Profile'}</AlbumName>
+            <TrackName>{nowPlayingTrack?.name || 'Not Playing'}</TrackName>
+            <AlbumName>{nowPlayingTrack?.album?.name || 'View Spotify Profile'}</AlbumName>
           </TrackInfo>
         </ExternalLink>
         <SpotifyIcon playing={isAyushListeningToAnything}>
@@ -271,7 +258,7 @@ const NowPlaying = () => {
             disabled={!isAyushListeningToAnything}
             data-splitbee-event="Spotify"
             data-splitbee-event-type="Play Spotify Song Preview">
-            {isAyushListeningToAnything && track?.preview_url !== null ? (
+            {isAyushListeningToAnything && nowPlayingTrack?.preview_url !== null ? (
               isPlaying ? (
                 <IconPause />
               ) : (
