@@ -1,9 +1,11 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+
 import { theme, mixins } from '@styles';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
 import { IconSpotify, IconPlay, IconPause } from '@components/icons';
+import { usePrefersReducedMotion } from '@hooks';
 import { fetchCurrentTrack } from '../utils/spotify';
 import ExternalLink from './externalLink';
 
@@ -171,6 +173,7 @@ const NowPlaying = () => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const revealContainer = useRef(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const toggleAudio = () => setIsPlaying(!isPlaying);
 
@@ -187,7 +190,9 @@ const NowPlaying = () => {
   };
 
   useEffect(() => {
-    sr.reveal(revealContainer.current, srConfig());
+    if (!prefersReducedMotion) {
+      sr.reveal(revealContainer.current, srConfig());
+    }
     fetchNowPlaying();
   }, []);
 

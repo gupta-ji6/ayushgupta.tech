@@ -1,13 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { CSSTransition } from 'react-transition-group';
+import styled from 'styled-components';
+
 import { KEY_CODES } from '@utils';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
-import styled from 'styled-components';
 import { theme, mixins, media, Section, Heading } from '@styles';
+import { usePrefersReducedMotion } from '@hooks';
 import ExternalLink from './externalLink';
-import { CSSTransition } from 'react-transition-group';
+
+// ================================== CONSTANTS =====================================
+
 const { colors, fontSizes, fonts } = theme;
+
+// ================================== STYLED COMPONENTS =====================================
 
 const EduContainer = styled(Section)`
   position: relative;
@@ -189,13 +196,23 @@ const EduLocation = styled.h5`
   }
 `;
 
+// ================================== COMPONENT =====================================
+
 const Education = ({ data }) => {
   const [activeTabId, setActiveTabId] = useState(0);
   const [tabFocus, setTabFocus] = useState(null);
   const tabs = useRef([]);
 
   const revealContainer = useRef(null);
-  useEffect(() => sr.reveal(revealContainer.current, srConfig()), []);
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    sr.reveal(revealContainer.current, srConfig());
+  }, []);
 
   const focusTab = () => {
     if (tabs.current[tabFocus]) {

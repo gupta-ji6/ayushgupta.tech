@@ -1,11 +1,18 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
 import sr from '@utils/sr';
 import { srConfig } from '@config';
-import styled from 'styled-components';
 import { theme, mixins, media, Section, Heading } from '@styles';
+import { usePrefersReducedMotion } from '@hooks';
 import ExternalLink from './externalLink';
+
+// ================================== CONSTANTS =====================================
+
 const { colors, fontSizes, fonts } = theme;
+
+// ================================== STYLED COMPONENTS =====================================
 
 const ContactContainer = styled(Section)`
   text-align: center;
@@ -44,11 +51,22 @@ const EmailLink = styled(ExternalLink)`
   margin-top: 50px;
 `;
 
+// ================================== COMPONENT =====================================
+
 const Contact = ({ data }) => {
   const { frontmatter, html } = data[0].node;
   const { title } = frontmatter;
   const revealContainer = useRef(null);
-  useEffect(() => sr.reveal(revealContainer.current, srConfig()), []);
+
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    sr.reveal(revealContainer.current, srConfig());
+  }, []);
 
   return (
     <ContactContainer id="contact" ref={revealContainer}>

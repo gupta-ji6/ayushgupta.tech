@@ -2,12 +2,19 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'gatsby';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import styled from 'styled-components';
+
 import sr from '@utils/sr';
 import { srConfig } from '@config';
+import { usePrefersReducedMotion } from '@hooks';
 import { IconArticle } from '@components/icons';
-import styled from 'styled-components';
 import { theme, mixins, media, Section, Heading } from '@styles';
+
+// ================================== CONSTANTS =====================================
+
 const { colors, fontSizes, fonts } = theme;
+
+// ================================== STYLED COMPONENTS =====================================
 
 const BlogContainer = styled(Section)`
   ${mixins.flexCenter};
@@ -118,11 +125,20 @@ const ReadMore = styled(Link)`
   ${media.tablet`width: 40vw;`};
 `;
 
+// ================================== COMPONENT =====================================
+
 const Blog = ({ data }) => {
   // const [showMore, setShowMore] = useState(false);
   const revealContainer = useRef(null);
   const revealArticles = useRef([]);
+
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
     sr.reveal(revealContainer.current, srConfig());
     revealArticles.current.forEach((ref, i) => sr.reveal(ref, srConfig(i * 100)));
   }, []);

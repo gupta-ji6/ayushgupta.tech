@@ -1,15 +1,20 @@
-import { Button, Section, media, mixins, theme } from '@styles';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { IconExternal, IconFolder, IconGithub, IconGooglePlay } from '@components/icons';
 import React, { useEffect, useRef, useState } from 'react';
-
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+import { Button, Section, media, mixins, theme } from '@styles';
+import { IconExternal, IconFolder, IconGithub, IconGooglePlay } from '@components/icons';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
-import styled from 'styled-components';
+import { usePrefersReducedMotion } from '@hooks';
 import ExternalLink from './externalLink';
 
+// ================================== CONSTANTS =====================================
+
 const { colors, fontSizes, fonts } = theme;
+
+// ================================== STYLED COMPONENTS =====================================
 
 const ProjectsContainer = styled(Section)`
   ${mixins.flexCenter};
@@ -113,11 +118,21 @@ const ShowMoreButton = styled(Button)`
   margin: 100px auto 0;
 `;
 
+// ================================== COMPONENT =====================================
+
 const Projects = ({ data }) => {
   const [showMore, setShowMore] = useState(false);
+
   const revealTitle = useRef(null);
   const revealProjects = useRef([]);
+
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
     sr.reveal(revealTitle.current, srConfig());
     revealProjects.current.forEach((ref, i) => sr.reveal(ref, srConfig(i * 100)));
   }, []);

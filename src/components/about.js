@@ -1,11 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Img from 'gatsby-image';
+import styled from 'styled-components';
+
 import sr from '@utils/sr';
 import { srConfig, github } from '@config';
-import styled from 'styled-components';
 import { theme, mixins, media, Section, Heading } from '@styles';
+import { usePrefersReducedMotion } from '@hooks';
 import ExternalLink from './externalLink';
+
 const { colors, fontSizes, fonts } = theme;
 
 const AboutContainer = styled(Section)`
@@ -147,7 +150,16 @@ const About = ({ data }) => {
   const { frontmatter, html } = data[0].node;
   const { title, skills, avatar } = frontmatter;
   const revealContainer = useRef(null);
-  useEffect(() => sr.reveal(revealContainer.current, srConfig()), []);
+
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    sr.reveal(revealContainer.current, srConfig());
+  }, []);
 
   return (
     <AboutContainer id="about" ref={revealContainer}>

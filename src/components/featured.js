@@ -1,15 +1,20 @@
-import { Heading, Section, media, mixins, theme } from '@styles';
-import { IconAppStore, IconExternal, IconGithub, IconGooglePlay } from '@components/icons';
 import React, { useEffect, useRef } from 'react';
-
-import Img from 'gatsby-image';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import Img from 'gatsby-image';
+
 import sr from '@utils/sr';
 import { srConfig } from '@config';
-import styled from 'styled-components';
+import { IconAppStore, IconExternal, IconGithub, IconGooglePlay } from '@components/icons';
 import ExternalLink from '@components/externalLink';
+import { usePrefersReducedMotion } from '@hooks';
+import { Heading, Section, media, mixins, theme } from '@styles';
+
+// ================================== CONSTANTS =====================================
 
 const { colors, fontSizes, fonts } = theme;
+
+// ================================== STYLED COMPONENTS =====================================
 
 const FeaturedContainer = styled(Section)`
   ${mixins.flexCenter};
@@ -228,10 +233,18 @@ const Project = styled.div`
   }
 `;
 
+// ================================== COMPONENT =====================================
+
 const Featured = ({ data }) => {
   const revealTitle = useRef(null);
   const revealProjects = useRef([]);
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
     sr.reveal(revealTitle.current, srConfig());
     revealProjects.current.forEach((ref, i) => sr.reveal(ref, srConfig(i * 100)));
   }, []);
