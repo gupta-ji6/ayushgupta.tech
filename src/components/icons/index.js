@@ -1,6 +1,7 @@
 import FormattedIcon from './formattedIcon';
 import IconAppStore from './appStore';
 import IconArticle from './article';
+import IconCheck from './check';
 import IconCheckbox from './checkbox';
 import IconCopy from './copy';
 import IconExternal from './external';
@@ -20,6 +21,7 @@ import IconSpotify from './spotify';
 import IconTwitter from './twitter';
 
 export {
+  IconCheck,
   IconCheckbox,
   IconCopy,
   IconLoader,
