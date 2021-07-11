@@ -4,7 +4,12 @@ import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
 
 import { Layout, ExternalLink, NowPlaying, DetailsAndSummary } from '@components';
-import { useRecentlyPlayedTracks, usePrefersReducedMotion, useTopTracks } from '@hooks';
+import {
+  useRecentlyPlayedTracks,
+  usePrefersReducedMotion,
+  useTopTracks,
+  useSavedTracks,
+} from '@hooks';
 import { theme, mixins, media } from '@styles';
 import { siteUrl, srConfig } from '@config';
 import sr from '@utils/sr';
@@ -182,16 +187,8 @@ const MusicPage = ({ location }) => {
   const revealTitle = useRef(null);
   const revealMusicContent = useRef(null);
 
-  // const [topTracksType, setTopTracksType] = useState('tracks')
   const [topTracksRange, setTopTracksRange] = useState('short_term');
   const [topArtistsRange, setTopArtistsRange] = useState('short_term');
-
-  const {
-    recentlyPlayedTracks,
-    recentTracksLoading,
-    recentTracksError,
-    refetchRecentTracks,
-  } = useRecentlyPlayedTracks(10);
 
   const { topTracks, topTracksLoading, topTracksError, refetchTopTracks } = useTopTracks(
     'tracks',
@@ -206,6 +203,20 @@ const MusicPage = ({ location }) => {
     refetchTopTracks: refetchTopArtists,
   } = useTopTracks('artists', topArtistsRange, 10);
 
+  const {
+    recentlyPlayedTracks,
+    recentTracksLoading,
+    recentTracksError,
+    refetchRecentTracks,
+  } = useRecentlyPlayedTracks(10);
+
+  const {
+    recentlySavedTracks,
+    savedTracksLoading,
+    savedTracksError,
+    refetchSavedTracks,
+  } = useSavedTracks(10);
+
   const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
@@ -216,51 +227,6 @@ const MusicPage = ({ location }) => {
     sr.reveal(revealTitle.current, srConfig());
     sr.reveal(revealMusicContent.current, srConfig(200, 0));
   }, []);
-
-  const renderRecentlyPlayedTracks = () => {
-    if (recentTracksLoading) {
-      return <FetchLoader>Loading recently played tracks...</FetchLoader>;
-    } else if (recentTracksError !== null) {
-      return (
-        <RefetchContainer>
-          <div>{recentTracksError}</div>
-          <StyledRefetchBtn
-            type="button"
-            data-splitbee-event="Re-fetch Recently Played"
-            onClick={() => refetchRecentTracks()}>
-            Re-fetch Tracks
-          </StyledRefetchBtn>
-        </RefetchContainer>
-      );
-    } else if (recentlyPlayedTracks !== undefined) {
-      // console.log(recentlyPlayedTracks);
-      return (
-        <Fragment>
-          {recentlyPlayedTracks.map(trackData => {
-            const { track } = trackData;
-            const { album, artists, external_urls, name, id } = track;
-            const trackArtists = artists.map(artist => artist.name);
-            return (
-              <TrackItem key={id}>
-                <StyledAlbumCover
-                  src={album.images[1].url}
-                  height={album.images[1].height}
-                  width={album.images[1].width}
-                  alt={`${album.name}'s album cover`}
-                />
-                <TrackInfoContainer>
-                  <ExternalLink url={external_urls.spotify} eventName="Spotify">
-                    {name}
-                  </ExternalLink>
-                  <Artists>{trackArtists.join(', ')}</Artists>
-                </TrackInfoContainer>
-              </TrackItem>
-            );
-          })}
-        </Fragment>
-      );
-    }
-  };
 
   const renderTopTracks = () => {
     if (topTracksLoading) {
@@ -340,6 +306,96 @@ const MusicPage = ({ location }) => {
                     {name}
                   </ExternalLink>
                   <Artists>{genres.join(', ')}</Artists>
+                </TrackInfoContainer>
+              </TrackItem>
+            );
+          })}
+        </Fragment>
+      );
+    }
+  };
+
+  const renderRecentlyPlayedTracks = () => {
+    if (recentTracksLoading) {
+      return <FetchLoader>Loading recently played tracks...</FetchLoader>;
+    } else if (recentTracksError !== null) {
+      return (
+        <RefetchContainer>
+          <div>{recentTracksError}</div>
+          <StyledRefetchBtn
+            type="button"
+            data-splitbee-event="Re-fetch Recently Played"
+            onClick={() => refetchRecentTracks()}>
+            Re-fetch Tracks
+          </StyledRefetchBtn>
+        </RefetchContainer>
+      );
+    } else if (recentlyPlayedTracks !== undefined) {
+      // console.log(recentlyPlayedTracks);
+      return (
+        <Fragment>
+          {recentlyPlayedTracks.map(trackData => {
+            const { track } = trackData;
+            const { album, artists, external_urls, name, id } = track;
+            const trackArtists = artists.map(artist => artist.name);
+            return (
+              <TrackItem key={id}>
+                <StyledAlbumCover
+                  src={album.images[1].url}
+                  height={album.images[1].height}
+                  width={album.images[1].width}
+                  alt={`${album.name}'s album cover`}
+                />
+                <TrackInfoContainer>
+                  <ExternalLink url={external_urls.spotify} eventName="Spotify">
+                    {name}
+                  </ExternalLink>
+                  <Artists>{trackArtists.join(', ')}</Artists>
+                </TrackInfoContainer>
+              </TrackItem>
+            );
+          })}
+        </Fragment>
+      );
+    }
+  };
+
+  const renderRecentlySavedTracks = () => {
+    if (savedTracksLoading) {
+      return <FetchLoader>Loading recently saved tracks...</FetchLoader>;
+    } else if (savedTracksError !== null) {
+      return (
+        <RefetchContainer>
+          <div>{savedTracksError}</div>
+          <StyledRefetchBtn
+            type="button"
+            data-splitbee-event="Re-fetch Saved Tracks"
+            onClick={() => refetchSavedTracks()}>
+            Re-fetch Tracks
+          </StyledRefetchBtn>
+        </RefetchContainer>
+      );
+    } else if (recentlySavedTracks !== undefined) {
+      // console.log(recenSavedTracks);
+      return (
+        <Fragment>
+          {recentlySavedTracks.map(trackData => {
+            const { track } = trackData;
+            const { album, artists, external_urls, name, id } = track;
+            const trackArtists = artists.map(artist => artist.name);
+            return (
+              <TrackItem key={id}>
+                <StyledAlbumCover
+                  src={album.images[1].url}
+                  height={album.images[1].height}
+                  width={album.images[1].width}
+                  alt={`${album.name}'s album cover`}
+                />
+                <TrackInfoContainer>
+                  <ExternalLink url={external_urls.spotify} eventName="Spotify">
+                    {name}
+                  </ExternalLink>
+                  <Artists>{trackArtists.join(', ')}</Artists>
                 </TrackInfoContainer>
               </TrackItem>
             );
@@ -433,6 +489,11 @@ const MusicPage = ({ location }) => {
             title="Recently Played"
             subtitle="Recent tracks I played while discovering new music, or maybe listening to the same old shiz nth time.">
             {renderRecentlyPlayedTracks()}
+          </DetailsAndSummary>
+          <DetailsAndSummary
+            title="Recently Saved"
+            subtitle="It's so sad that Spotify doesn't let us share our Liked Songs as a playlist :3">
+            {renderRecentlySavedTracks()}
           </DetailsAndSummary>
         </section>
 
