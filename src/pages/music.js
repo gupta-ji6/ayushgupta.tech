@@ -9,6 +9,7 @@ import {
   usePrefersReducedMotion,
   useTopTracks,
   useSavedTracks,
+  useUserPlaylists,
 } from '@hooks';
 import { theme, mixins, media } from '@styles';
 import { siteUrl, srConfig } from '@config';
@@ -217,6 +218,13 @@ const MusicPage = ({ location }) => {
     refetchSavedTracks,
   } = useSavedTracks(10);
 
+  const {
+    userPlaylists,
+    userPlaylistsError,
+    userPlaylistsLoading,
+    refetchUserPlaylists,
+  } = useUserPlaylists(10);
+
   const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
@@ -376,7 +384,7 @@ const MusicPage = ({ location }) => {
         </RefetchContainer>
       );
     } else if (recentlySavedTracks !== undefined) {
-      // console.log(recenSavedTracks);
+      // console.log(recentlySavedTracks);
       return (
         <Fragment>
           {recentlySavedTracks.map(trackData => {
@@ -396,6 +404,59 @@ const MusicPage = ({ location }) => {
                     {name}
                   </ExternalLink>
                   <Artists>{trackArtists.join(', ')}</Artists>
+                </TrackInfoContainer>
+              </TrackItem>
+            );
+          })}
+        </Fragment>
+      );
+    }
+  };
+
+  const renderUserPlaylists = () => {
+    if (userPlaylistsLoading) {
+      return <FetchLoader>Loading recently saved tracks...</FetchLoader>;
+    } else if (userPlaylistsError !== null) {
+      return (
+        <RefetchContainer>
+          <div>{userPlaylistsError}</div>
+          <StyledRefetchBtn
+            type="button"
+            data-splitbee-event="Re-fetch Playlists"
+            onClick={() => refetchUserPlaylists()}>
+            Re-fetch Tracks
+          </StyledRefetchBtn>
+        </RefetchContainer>
+      );
+    } else if (userPlaylists !== undefined) {
+      // console.log(userPlaylists);
+      return (
+        <Fragment>
+          {userPlaylists.map(playlistData => {
+            const {
+              name,
+              images,
+              id,
+              owner: { display_name },
+              tracks: { total },
+              external_urls,
+            } = playlistData;
+            return (
+              <TrackItem key={id}>
+                <StyledAlbumCover
+                  src={images[0].url}
+                  height={images[0].height}
+                  width={images[0].width}
+                  alt={`${name}'s playlist cover`}
+                />
+                <TrackInfoContainer>
+                  <div>
+                    <ExternalLink url={external_urls.spotify} eventName="Spotify">
+                      {name}
+                    </ExternalLink>
+                    <span> by {display_name}</span>
+                  </div>
+                  <Artists>{total} tracks</Artists>
                 </TrackInfoContainer>
               </TrackItem>
             );
@@ -494,6 +555,11 @@ const MusicPage = ({ location }) => {
             title="Recently Saved"
             subtitle="It's so sad that Spotify doesn't let us share our Liked Songs as a playlist :3">
             {renderRecentlySavedTracks()}
+          </DetailsAndSummary>
+          <DetailsAndSummary
+            title="Recently Saved Playlists"
+            subtitle="Some playlists are too precious to not save, IYKYK.">
+            {renderUserPlaylists()}
           </DetailsAndSummary>
         </section>
 
