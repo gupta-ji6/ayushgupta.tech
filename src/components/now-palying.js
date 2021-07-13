@@ -105,7 +105,9 @@ const NowPlayingWidget = styled.div`
   box-shadow: ${mixins.boxShadow};
 
   &:hover {
-    transform: scale3d(0.95, 0.95, 0.95);
+    @media (prefers-reduced-motion: no-preference) {
+      transform: scale3d(0.95, 0.95, 0.95);
+    }
   }
 `;
 

@@ -89,6 +89,8 @@ const RangeToggleButtonContainer = styled.div`
   align-items: center;
   justify-content: flex-start;
   flex-wrap: wrap;
+  flex-direction: row;
+  ${media.thone`flex-direction: column; align-items: flex-start`};
 `;
 
 const ToggleButton = styled.button`
@@ -588,6 +590,16 @@ const MusicPage = ({ location }) => {
             {renderAyushFavouritePlaylist()}
           </DetailsAndSummary>
           <DetailsAndSummary
+            title="Recently Played"
+            subtitle="Recent tracks I played while discovering new music, or maybe listening to the same old shiz nth time.">
+            {renderRecentlyPlayedTracks()}
+          </DetailsAndSummary>
+          <DetailsAndSummary
+            title="Recently Saved Tracks"
+            subtitle="It's so sad that Spotify doesn't let us share our Liked Songs as a playlist :3">
+            {renderRecentlySavedTracks()}
+          </DetailsAndSummary>
+          <DetailsAndSummary
             title="Top Artists"
             subtitle="Top artists I looped on. I am more of an indie guy but the list doesn't suggest so, sigh.">
             <Fragment>
@@ -598,16 +610,6 @@ const MusicPage = ({ location }) => {
               </RangeToggleButtonContainer>
               {renderTopArtists()}
             </Fragment>
-          </DetailsAndSummary>
-          <DetailsAndSummary
-            title="Recently Played"
-            subtitle="Recent tracks I played while discovering new music, or maybe listening to the same old shiz nth time.">
-            {renderRecentlyPlayedTracks()}
-          </DetailsAndSummary>
-          <DetailsAndSummary
-            title="Recently Saved"
-            subtitle="It's so sad that Spotify doesn't let us share our Liked Songs as a playlist :3">
-            {renderRecentlySavedTracks()}
           </DetailsAndSummary>
           <DetailsAndSummary
             title="Recently Saved Playlists"
