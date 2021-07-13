@@ -147,6 +147,16 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: inherit;
   }
 
+  ::selection {
+    background-color: ${colors.lightestNavy};
+    color: ${colors.lightestSlate};
+  }
+  
+  :focus {
+    outline: 2px dashed ${colors.green};
+    outline-offset: 3px;
+  }
+
   body {
     margin: 0;
     width: 100%;
@@ -222,7 +232,6 @@ const GlobalStyle = createGlobalStyle`
     &:hover,
     &:focus {
       color: ${colors.green};
-      outline: 0;
     }
   }
 
