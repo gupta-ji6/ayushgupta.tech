@@ -13,10 +13,12 @@ import {
   useUserPlaylists,
 } from '@hooks';
 import { theme, mixins, media } from '@styles';
-import { siteUrl, srConfig } from '@config';
+import { siteUrl, srConfig, hasuraURL } from '@config';
 import sr from '@utils/sr';
 import ogImage from '@images/og-uses.png';
 import { IconCheck } from '@components/icons';
+import toast from 'react-hot-toast';
+import { useComments } from 'use-comments';
 
 // =================================== CONSTANTS ==========================================
 
@@ -188,6 +190,8 @@ const RefetchContainer = styled.div`
 // ======================================= COMPONENT ================================
 
 const MusicPage = ({ location }) => {
+  const { pathname } = location;
+
   const revealTitle = useRef(null);
   const revealMusicContent = useRef(null);
 
@@ -234,6 +238,12 @@ const MusicPage = ({ location }) => {
     userPlaylistsLoading,
     refetchUserPlaylists,
   } = useUserPlaylists(10);
+
+  const { addComment } = useComments(hasuraURL, pathname);
+  const [songRecommendationData, setSongRecommendationData] = useState({
+    authorName: '',
+    comment: '',
+  });
 
   const prefersReducedMotion = usePrefersReducedMotion();
 
@@ -540,6 +550,42 @@ const MusicPage = ({ location }) => {
     }
   };
 
+  const onSongSubmit = event => {
+    event.preventDefault();
+    event.persist();
+    addComment({
+      content: songRecommendationData.comment,
+      author: songRecommendationData.authorName,
+    });
+    setSongRecommendationData({
+      authorName: '',
+      comment: '',
+    });
+    toast.success('People who recommend songs are precious. Thank you!', {
+      duration: 5000,
+    });
+  };
+
+  /* handle change in Full Name input */
+  const onNameChange = event => {
+    event.preventDefault();
+    event.persist();
+    setSongRecommendationData(oldCommentData => ({
+      ...oldCommentData,
+      authorName: event.target.value,
+    }));
+  };
+
+  /* handle change in Comment input */
+  const onCommentChange = event => {
+    event.preventDefault();
+    event.persist();
+    setSongRecommendationData(oldCommentData => ({
+      ...oldCommentData,
+      comment: event.target.value,
+    }));
+  };
+
   return (
     <Layout location={location}>
       <Helmet>
@@ -631,6 +677,25 @@ const MusicPage = ({ location }) => {
             </ExternalLink>
             .
           </p>
+          <form onSubmit={onSongSubmit}>
+            <div>
+              <input
+                type="text"
+                placeholder="Enter name"
+                onChange={onNameChange}
+                value={songRecommendationData.authorName}
+                required
+              />
+              <input
+                type="url"
+                placeholder="Enter song url"
+                onChange={onCommentChange}
+                value={songRecommendationData.comment}
+                required
+              />
+            </div>
+            <button type="submit">Send Recommendation</button>
+          </form>
         </SimilarTasteSection>
       </StyledMainContainer>
     </Layout>
