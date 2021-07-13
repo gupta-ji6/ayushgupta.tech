@@ -1,42 +1,65 @@
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import React, { Component } from 'react';
-import { media, mixins, theme } from '@styles';
-import { navHeight, navLinks } from '@config';
-
-import Helmet from 'react-helmet';
-import { IconLogo } from '@components/icons';
+import React, { useEffect, useState, Fragment } from 'react';
 import { Link } from 'gatsby';
-import { Menu } from '@components';
+import styled, { css } from 'styled-components';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { throttle } from '@utils';
+
 import ExternalLink from './externalLink';
+import { Menu } from '@components';
+import { IconLogo } from '@components/icons';
+import { useScrollDirection, usePrefersReducedMotion } from '@hooks';
+import { navLinks } from '@config';
+import { media, mixins, theme } from '@styles';
+
+// --------------------------- CONSTANTS ------------------------------------------
 
 const { colors, fontSizes, fonts, loaderDelay } = theme;
+
+// --------------------------- STYLED COMPONENTS ------------------------------------------
 
 const StyledContainer = styled.header`
   ${mixins.flexBetween};
   position: fixed;
   top: 0;
   padding: 0px 50px;
-  background-color: ${colors.navy};
   transition: ${theme.transition};
   z-index: 11;
+  width: 100%;
+  height: ${theme.navHeight};
+  background-color: rgba(10, 25, 47, 0.85);
+  backdrop-filter: blur(10px);
   filter: none !important;
   pointer-events: auto !important;
   user-select: auto !important;
-  width: 100%;
-  height: ${props => (props.scrollDirection === 'none' ? theme.navHeight : theme.navScrollHeight)};
-  box-shadow: ${props =>
-    props.scrollDirection === 'up' ? `0 10px 30px -10px ${colors.shadowNavy}` : 'none'};
-  transform: translateY(
-    ${props => (props.scrollDirection === 'down' ? `-${theme.navScrollHeight}` : '0px')}
-  );
-  ${media.desktop`padding: 0 40px;`};
-  ${media.tablet`padding: 0 25px;`};
-  background-color: rgba(10, 25, 47, 0.85);
-  backdrop-filter: blur(10px);
+
+  @media (max-width: 1080px) {
+    padding: 0 40px;
+  }
+  @media (max-width: 768px) {
+    padding: 0 25px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    ${props =>
+    props.scrollDirection === 'up' &&
+      !props.scrolledToTop &&
+      css`
+        height: ${theme.navScrollHeight};
+        transform: translateY(0px);
+        background-color: rgba(10, 25, 47, 0.85);
+        box-shadow: 0 10px 30px -10px ${colors.shadowNavy};
+      `};
+    ${props =>
+    props.scrollDirection === 'down' &&
+      !props.scrolledToTop &&
+      css`
+        height: ${theme.navScrollHeight};
+        transform: translateY(calc(${theme.navScrollHeight} * -1));
+        box-shadow: 0 10px 30px -10px ${colors.shadowNavy};
+      `};
+  }
 `;
+
 const StyledNav = styled.nav`
   ${mixins.flexBetween};
   position: relative;
@@ -46,6 +69,7 @@ const StyledNav = styled.nav`
   counter-reset: item 0;
   z-index: 12;
 `;
+
 const StyledLogo = styled.div`
   ${mixins.flexCenter};
   a {
@@ -66,255 +90,174 @@ const StyledLogo = styled.div`
     }
   }
 `;
-const StyledHamburger = styled.div`
-  ${mixins.flexCenter};
-  overflow: visible;
-  margin: 0 -12px 0 0;
-  padding: 15px;
-  cursor: pointer;
-  transition-timing-function: linear;
-  transition-duration: 0.15s;
-  transition-property: opacity, filter;
-  text-transform: none;
-  color: inherit;
-  border: 0;
-  background-color: transparent;
-  display: none;
-  ${media.tablet`display: flex;`};
-`;
-const StyledHamburgerBox = styled.div`
-  position: relative;
-  display: inline-block;
-  width: ${theme.hamburgerWidth}px;
-  height: 24px;
-`;
-const StyledHamburgerInner = styled.div`
-  background-color: ${colors.green};
-  position: absolute;
-  width: ${theme.hamburgerWidth}px;
-  height: 2px;
-  border-radius: ${theme.borderRadius};
-  top: 50%;
-  left: 0;
-  right: 0;
-  transition-duration: 0.22s;
-  transition-property: transform;
-  transition-delay: ${props => (props.menuOpen ? `0.12s` : `0s`)};
-  transform: rotate(${props => (props.menuOpen ? `225deg` : `0deg`)});
-  transition-timing-function: cubic-bezier(
-    ${props => (props.menuOpen ? `0.215, 0.61, 0.355, 1` : `0.55, 0.055, 0.675, 0.19`)}
-  );
-  &:before,
-  &:after {
-    content: '';
-    display: block;
-    background-color: ${colors.green};
-    position: absolute;
-    left: auto;
-    right: 0;
-    width: ${theme.hamburgerWidth}px;
-    height: 2px;
-    transition-timing-function: ease;
-    transition-duration: 0.15s;
-    transition-property: transform;
-    border-radius: 4px;
-  }
-  &:before {
-    width: ${props => (props.menuOpen ? `100%` : `120%`)};
-    top: ${props => (props.menuOpen ? `0` : `-10px`)};
-    opacity: ${props => (props.menuOpen ? 0 : 1)};
-    transition: ${props => (props.menuOpen ? theme.hamBeforeActive : theme.hamBefore)};
-  }
-  &:after {
-    width: ${props => (props.menuOpen ? `100%` : `80%`)};
-    bottom: ${props => (props.menuOpen ? `0` : `-10px`)};
-    transform: rotate(${props => (props.menuOpen ? `-90deg` : `0`)});
-    transition: ${props => (props.menuOpen ? theme.hamAfterActive : theme.hamAfter)};
-  }
-`;
-const StyledLink = styled.div`
+
+const StyledLinks = styled.div`
   display: flex;
   align-items: center;
   ${media.tablet`display: none;`};
-`;
-const StyledList = styled.ol`
-  ${mixins.flexBetween};
-  padding: 0;
-  margin: 0;
-  list-style: none;
-`;
-const StyledListItem = styled.li`
-  margin: 0 10px;
-  position: relative;
-  font-size: ${fontSizes.smallish};
-  counter-increment: item 1;
-  &:before {
-    content: '0' counter(item) '.';
-    text-align: right;
-    color: ${colors.green};
-    font-size: ${fontSizes.xsmall};
+
+  ol {
+    ${mixins.flexBetween};
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    li {
+      margin: 0 10px;
+      position: relative;
+      font-size: ${fontSizes.smallish};
+      counter-increment: item 1;
+
+      a {
+        padding: 10px;
+
+        &:before {
+          content: '0' counter(item) '.';
+          text-align: right;
+          color: ${colors.green};
+          font-size: ${fontSizes.xsmall};
+        }
+      }
+    }
   }
 `;
+
 const StyledListLink = styled(Link)`
   padding: 12px 10px;
 `;
+
 const StyledResumeButton = styled(ExternalLink)`
   ${mixins.smallButton};
   margin-left: 10px;
   font-size: ${fontSizes.smallish};
 `;
 
-const DELTA = 5;
+// --------------------------- CONSTANTS ------------------------------------------
 
-class Nav extends Component {
-  state = {
-    isMounted: !this.props.isHome,
-    menuOpen: false,
-    scrollDirection: 'none',
-    lastScrollTop: 0,
+const Nav = ({ isHome }) => {
+  const [isMounted, setIsMounted] = useState(!isHome);
+  const [scrolledToTop, setScrolledToTop] = useState(true);
+
+  const scrollDirection = useScrollDirection('down');
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  const handleScroll = () => {
+    setScrolledToTop(window.pageYOffset < 50);
   };
 
-  componentDidMount() {
-    setTimeout(
-      () =>
-        this.setState({ isMounted: true }, () => {
-          window.addEventListener('scroll', () => throttle(this.handleScroll()));
-          window.addEventListener('resize', () => throttle(this.handleResize()));
-          window.addEventListener('keydown', e => this.handleKeydown(e));
-        }),
-      100,
-    );
-  }
-
-  componentWillUnmount() {
-    // this.setState({ isMounted: false });
-
-    window.removeEventListener('scroll', () => this.handleScroll());
-    window.removeEventListener('resize', () => this.handleResize());
-    window.removeEventListener('keydown', e => this.handleKeydown(e));
-  }
-
-  toggleMenu = () => this.setState({ menuOpen: !this.state.menuOpen });
-
-  handleScroll = () => {
-    const { isMounted, menuOpen, scrollDirection, lastScrollTop } = this.state;
-    const fromTop = window.scrollY;
-
-    // Make sure they scroll more than DELTA
-    if (!isMounted || Math.abs(lastScrollTop - fromTop) <= DELTA || menuOpen) {
+  useEffect(() => {
+    if (prefersReducedMotion) {
       return;
     }
 
-    if (fromTop < DELTA) {
-      this.setState({ scrollDirection: 'none' });
-    } else if (fromTop > lastScrollTop && fromTop > navHeight) {
-      if (scrollDirection !== 'down') {
-        this.setState({ scrollDirection: 'down' });
-      }
-    } else if (fromTop + window.innerHeight < document.body.scrollHeight) {
-      if (scrollDirection !== 'up') {
-        this.setState({ scrollDirection: 'up' });
-      }
-    }
+    const timeout = setTimeout(() => {
+      setIsMounted(true);
+    }, 100);
 
-    this.setState({ lastScrollTop: fromTop });
-  };
+    window.addEventListener('scroll', handleScroll);
 
-  handleResize = () => {
-    if (window.innerWidth > 768 && this.state.menuOpen) {
-      this.toggleMenu();
-    }
-  };
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
-  handleKeydown = e => {
-    if (!this.state.menuOpen) {
-      return;
-    }
+  const timeout = isHome ? loaderDelay : 0;
+  const fadeClass = isHome ? 'fade' : '';
+  const fadeDownClass = isHome ? 'fadedown' : '';
 
-    if (e.which === 27 || e.key === 'Escape') {
-      this.toggleMenu();
-    }
-  };
+  const Logo = (
+    <StyledLogo className="logo" tabIndex="-1">
+      {isHome ? (
+        <a href="/" aria-label="home">
+          <IconLogo />
+        </a>
+      ) : (
+        <Link to="/" aria-label="home">
+          <IconLogo />
+        </Link>
+      )}
+    </StyledLogo>
+  );
 
-  render() {
-    const { isMounted, menuOpen, scrollDirection } = this.state;
-    const { isHome } = this.props;
-    const timeout = isHome ? loaderDelay : 0;
-    const fadeClass = isHome ? 'fade' : '';
-    const fadeDownClass = isHome ? 'fadedown' : '';
+  const ResumeLink = (
+    <StyledResumeButton url="/resume" eventName="View Resume">
+      Resume
+    </StyledResumeButton>
+  );
 
-    return (
-      <StyledContainer scrollDirection={scrollDirection}>
-        <Helmet>
-          <body className={menuOpen ? 'blur' : ''} />
-        </Helmet>
-        <StyledNav>
-          <TransitionGroup>
-            {isMounted && (
-              <CSSTransition classNames={fadeClass} timeout={timeout}>
-                <StyledLogo tabindex="-1">
-                  {isHome ? (
-                    <a href="/" aria-label="home">
-                      <IconLogo />
-                    </a>
-                  ) : (
-                    <Link to="/" aria-label="home">
-                      <IconLogo />
-                    </Link>
-                  )}
-                </StyledLogo>
-              </CSSTransition>
-            )}
-          </TransitionGroup>
+  return (
+    <StyledContainer scrollDirection={scrollDirection} scrolledToTop={scrolledToTop}>
+      <StyledNav>
+        {prefersReducedMotion ? (
+          <Fragment>
+            {Logo}
 
-          <TransitionGroup>
-            {isMounted && (
-              <CSSTransition classNames={fadeClass} timeout={timeout}>
-                <StyledHamburger onClick={this.toggleMenu}>
-                  <StyledHamburgerBox>
-                    <StyledHamburgerInner menuOpen={menuOpen} />
-                  </StyledHamburgerBox>
-                </StyledHamburger>
-              </CSSTransition>
-            )}
-          </TransitionGroup>
-
-          <StyledLink>
-            <StyledList>
-              <TransitionGroup component={null}>
-                {isMounted &&
-                  navLinks &&
+            <StyledLinks>
+              <ol>
+                {navLinks &&
                   navLinks.map(({ url, name }, i) => (
-                    <CSSTransition key={i} classNames={fadeDownClass} timeout={timeout}>
-                      <StyledListItem
-                        key={i}
-                        style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
-                        <StyledListLink to={name === 'Blog' ? '/blog' : url}>{name}</StyledListLink>
-                      </StyledListItem>
-                    </CSSTransition>
+                    <li key={i}>
+                      <Link to={name === 'Blog' ? '/blog' : url}>{name}</Link>
+                    </li>
                   ))}
-              </TransitionGroup>
-            </StyledList>
+              </ol>
+              <div>{ResumeLink}</div>
+            </StyledLinks>
 
-            <TransitionGroup>
+            <Menu />
+          </Fragment>
+        ) : (
+          <Fragment>
+            <TransitionGroup component={null}>
               {isMounted && (
-                <CSSTransition classNames={fadeDownClass} timeout={timeout}>
-                  <div style={{ transitionDelay: `${isHome ? navLinks.length * 100 : 0}ms` }}>
-                    <StyledResumeButton url="/resume" eventName="View Resume">
-                      Resume
-                    </StyledResumeButton>
-                  </div>
+                <CSSTransition classNames={fadeClass} timeout={timeout}>
+                  <Fragment>{Logo}</Fragment>
                 </CSSTransition>
               )}
             </TransitionGroup>
-          </StyledLink>
-        </StyledNav>
 
-        <Menu menuOpen={menuOpen} toggleMenu={this.toggleMenu} />
-      </StyledContainer>
-    );
-  }
-}
+            <StyledLinks>
+              <ol>
+                <TransitionGroup component={null}>
+                  {isMounted &&
+                    navLinks &&
+                    navLinks.map(({ url, name }, i) => (
+                      <CSSTransition key={i} classNames={fadeDownClass} timeout={timeout}>
+                        <li key={i} style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
+                          <StyledListLink to={name === 'Blog' ? '/blog' : url}>
+                            {name}
+                          </StyledListLink>
+                        </li>
+                      </CSSTransition>
+                    ))}
+                </TransitionGroup>
+              </ol>
+
+              <TransitionGroup component={null}>
+                {isMounted && (
+                  <CSSTransition classNames={fadeDownClass} timeout={timeout}>
+                    <div style={{ transitionDelay: `${isHome ? navLinks.length * 100 : 0}ms` }}>
+                      {ResumeLink}
+                    </div>
+                  </CSSTransition>
+                )}
+              </TransitionGroup>
+            </StyledLinks>
+
+            <TransitionGroup component={null}>
+              {isMounted && (
+                <CSSTransition classNames={fadeClass} timeout={timeout}>
+                  <Menu />
+                </CSSTransition>
+              )}
+            </TransitionGroup>
+          </Fragment>
+        )}
+      </StyledNav>
+    </StyledContainer>
+  );
+};
 
 Nav.propTypes = {
   isHome: PropTypes.bool,

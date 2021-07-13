@@ -157,6 +157,23 @@ const GlobalStyle = createGlobalStyle`
     outline-offset: 3px;
   }
 
+  /* Scrollbar Styles */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: ${colors.darkSlate} ${colors.navy};
+  }
+  body::-webkit-scrollbar {
+    width: 12px;
+  }
+  body::-webkit-scrollbar-track {
+    background: ${colors.navy};
+  }
+  body::-webkit-scrollbar-thumb {
+    background-color: ${colors.darkSlate};
+    border: 3px solid ${colors.navy};
+    border-radius: 10px;
+  }
+
   body {
     margin: 0;
     width: 100%;
@@ -174,19 +191,19 @@ const GlobalStyle = createGlobalStyle`
     &.hidden {
       overflow: hidden;
     }
+    
     &.blur {
       overflow: hidden;
-      #root > .container > * {
+      header {
+        background-color: transparent;
+      }
+      #content > * {
         filter: blur(5px) brightness(0.7);
         transition: ${theme.transition};
         pointer-events: none;
         user-select: none;
       }
     }
-  }
-
-  ::selection {
-    background-color: ${colors.highlight};
   }
 
   h1,

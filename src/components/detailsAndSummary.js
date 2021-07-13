@@ -22,7 +22,9 @@ const StyledDetailsContainer = styled.div`
   }
 
   details[open] summary ~ * {
-    animation: sweep 0.6s ease-in-out;
+    @media (prefers-reduced-motion: no-preference) {
+      animation: sweep 0.6s ease-in-out;
+    }
   }
 
   @keyframes sweep {

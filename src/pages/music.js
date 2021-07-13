@@ -121,9 +121,9 @@ const TrackItem = styled.div`
 
   &:hover {
     img {
-      border-radius: 50%;
-      border: 2px solid ${colors.green};
       @media (prefers-reduced-motion: no-preference) {
+        border: 2px solid ${colors.green};
+        border-radius: 50%;
         animation: rotation 6s infinite linear;
       }
     }
