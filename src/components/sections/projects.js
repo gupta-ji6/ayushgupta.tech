@@ -8,7 +8,7 @@ import { IconExternal, IconFolder, IconGithub, IconGooglePlay } from '@component
 import sr from '@utils/sr';
 import { srConfig } from '@config';
 import { usePrefersReducedMotion } from '@hooks';
-import ExternalLink from './externalLink';
+import ExternalLink from '../externalLink';
 
 // ================================== CONSTANTS =====================================
 
@@ -21,6 +21,7 @@ const ProjectsContainer = styled(Section)`
   flex-direction: column;
   align-items: stretch;
 `;
+
 const ProjectsTitle = styled.h4`
   margin: 0 auto 50px;
   font-size: ${fontSizes.h3};
@@ -29,6 +30,7 @@ const ProjectsTitle = styled.h4`
     display: block;
   }
 `;
+
 const ProjectsGrid = styled.div`
   .projects {
     display: grid;
@@ -38,6 +40,7 @@ const ProjectsGrid = styled.div`
     ${media.desktop`grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));`};
   }
 `;
+
 const ProjectInner = styled.div`
   ${mixins.boxShadow};
   ${mixins.flexBetween};
@@ -50,6 +53,7 @@ const ProjectInner = styled.div`
   transition: ${theme.transition};
   background-color: ${colors.lightNavy};
 `;
+
 const Project = styled.div`
   transition: ${theme.transition};
   cursor: default;
@@ -61,10 +65,12 @@ const Project = styled.div`
     }
   }
 `;
+
 const ProjectHeader = styled.div`
   ${mixins.flexBetween};
   margin-bottom: 30px;
 `;
+
 const Folder = styled.div`
   color: ${colors.green};
   svg {
@@ -72,10 +78,12 @@ const Folder = styled.div`
     height: 40px;
   }
 `;
+
 const Links = styled.div`
   margin-right: -10px;
   color: ${colors.lightSlate};
 `;
+
 const IconLink = styled(ExternalLink)`
   position: relative;
   top: -10px;
@@ -86,17 +94,20 @@ const IconLink = styled(ExternalLink)`
     height: 24px;
   }
 `;
+
 const ProjectName = styled.h5`
   margin: 0 0 10px;
   font-size: ${fontSizes.xxlarge};
   color: ${colors.lightestSlate};
 `;
+
 const ProjectDescription = styled.div`
   font-size: 17px;
   a {
     ${mixins.inlineLink};
   }
 `;
+
 const TechList = styled.ul`
   flex-grow: 1;
   display: flex;
@@ -114,6 +125,7 @@ const TechList = styled.ul`
     }
   }
 `;
+
 const ShowMoreButton = styled(Button)`
   margin: 100px auto 0;
 `;

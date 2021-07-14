@@ -7,18 +7,24 @@ import sr from '@utils/sr';
 import { srConfig, github } from '@config';
 import { theme, mixins, media, Section, Heading } from '@styles';
 import { usePrefersReducedMotion } from '@hooks';
-import ExternalLink from './externalLink';
+import ExternalLink from '../externalLink';
+
+// ------------------------------ CONSTANTS --------------------------------
 
 const { colors, fontSizes, fonts } = theme;
+
+// ------------------------------ STYLED COMPONENTS --------------------------------
 
 const AboutContainer = styled(Section)`
   position: relative;
 `;
+
 const FlexContainer = styled.div`
   ${mixins.flexBetween};
   align-items: flex-start;
   ${media.tablet`display: block;`};
 `;
+
 const ContentContainer = styled.div`
   width: 60%;
   max-width: 480px;
@@ -27,12 +33,14 @@ const ContentContainer = styled.div`
     ${mixins.inlineLink};
   }
 `;
+
 const SkillsContainer = styled.ul`
   display: grid;
   grid-template-columns: repeat(2, minmax(140px, 200px));
   overflow: hidden;
   margin-top: 20px;
 `;
+
 const Skill = styled.li`
   position: relative;
   margin-bottom: 10px;
@@ -49,6 +57,7 @@ const Skill = styled.li`
     line-height: 12px;
   }
 `;
+
 const PicContainer = styled.div`
   position: relative;
   width: 40%;
@@ -57,6 +66,7 @@ const PicContainer = styled.div`
   ${media.tablet`margin: 60px auto 0;`};
   ${media.phablet`width: 70%;`};
 `;
+
 const Avatar = styled(Img)`
   position: relative;
   mix-blend-mode: screen;
@@ -93,6 +103,7 @@ const Avatar = styled(Img)`
   border-radius: ${theme.borderRadius};
   transition: ${theme.transition};
 `;
+
 const AvatarContainer = styled(ExternalLink)`
   ${mixins.boxShadow};
   width: 100%;
@@ -145,6 +156,8 @@ const AvatarContainer = styled(ExternalLink)`
     z-index: -1;
   }
 `;
+
+// ------------------------------ COMPONENT --------------------------------
 
 const About = ({ data }) => {
   const { frontmatter, html } = data[0].node;

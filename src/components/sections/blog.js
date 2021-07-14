@@ -21,6 +21,7 @@ const BlogContainer = styled(Section)`
   flex-direction: column;
   align-items: stretch;
 `;
+
 // const BlogTitle = styled.h4`
 //   margin: 0 auto 50px;
 //   font-size: ${fontSizes.h3};
@@ -29,6 +30,7 @@ const BlogContainer = styled(Section)`
 //     display: block;
 //   }
 // `;
+
 const BlogGrid = styled.div`
   .blogs {
     display: grid;
@@ -38,6 +40,7 @@ const BlogGrid = styled.div`
     ${media.tablet`grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));`};
   }
 `;
+
 const BlogInner = styled.div`
   ${mixins.boxShadow};
   ${mixins.flexBetween};
@@ -50,6 +53,7 @@ const BlogInner = styled.div`
   transition: ${theme.transition};
   background-color: ${colors.lightNavy};
 `;
+
 const Article = styled.div`
   transition: ${theme.transition};
   cursor: default;
@@ -61,10 +65,12 @@ const Article = styled.div`
     }
   }
 `;
+
 const BlogHeader = styled.div`
   ${mixins.flexBetween};
   margin-bottom: 30px;
 `;
+
 const Folder = styled.div`
   color: ${colors.green};
   svg {
@@ -72,10 +78,12 @@ const Folder = styled.div`
     height: 40px;
   }
 `;
+
 // const Links = styled.div`
 //   margin-right: -10px;
 //   color: ${colors.lightSlate};
 // `;
+
 // const IconLink = styled.a`
 //   position: relative;
 //   top: -10px;
@@ -86,11 +94,13 @@ const Folder = styled.div`
 //     height: 24px;
 //   }
 // `;
+
 const BlogName = styled.h4`
   margin: 0 0 10px;
   font-size: ${fontSizes.xxlarge};
   color: ${colors.lightestSlate};
 `;
+
 const BlogDescription = styled.div`
   font-size: 17px;
   color: ${colors.lightSlate};
@@ -98,6 +108,7 @@ const BlogDescription = styled.div`
     ${mixins.inlineLink};
   }
 `;
+
 const TagList = styled.ul`
   flex-grow: 1;
   display: flex;
@@ -115,6 +126,7 @@ const TagList = styled.ul`
     }
   }
 `;
+
 const ReadMore = styled(Link)`
   ${mixins.bigButton};
   margin: auto;

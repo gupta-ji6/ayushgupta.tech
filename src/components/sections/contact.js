@@ -6,7 +6,7 @@ import sr from '@utils/sr';
 import { srConfig } from '@config';
 import { theme, mixins, media, Section, Heading } from '@styles';
 import { usePrefersReducedMotion } from '@hooks';
-import ExternalLink from './externalLink';
+import ExternalLink from '../externalLink';
 
 // ================================== CONSTANTS =====================================
 
@@ -22,6 +22,7 @@ const ContactContainer = styled(Section)`
     ${mixins.inlineLink};
   }
 `;
+
 const GreenHeading = styled(Heading)`
   display: block;
   color: ${colors.green};
@@ -40,12 +41,14 @@ const GreenHeading = styled(Heading)`
     display: none;
   }
 `;
+
 const Title = styled.h4`
   margin: 0 0 20px;
   font-size: 60px;
   ${media.desktop`font-size: 50px;`};
   ${media.tablet`font-size: 40px;`};
 `;
+
 const EmailLink = styled(ExternalLink)`
   ${mixins.bigButton};
   margin-top: 50px;

@@ -8,7 +8,7 @@ import sr from '@utils/sr';
 import { srConfig } from '@config';
 import { theme, mixins, media, Section, Heading } from '@styles';
 import { usePrefersReducedMotion } from '@hooks';
-import ExternalLink from './externalLink';
+import ExternalLink from '../externalLink';
 
 // ================================== CONSTANTS =====================================
 
@@ -20,6 +20,7 @@ const EduContainer = styled(Section)`
   position: relative;
   max-width: 700px;
 `;
+
 const TabsContainer = styled.div`
   display: flex;
   align-items: flex-start;
@@ -28,6 +29,7 @@ const TabsContainer = styled.div`
     display: block;
   `};
 `;
+
 const Tabs = styled.ul`
   display: block;
   position: relative;
@@ -64,6 +66,7 @@ const Tabs = styled.ul`
     }
   }
 `;
+
 const Tab = styled.button`
   ${mixins.link};
   display: flex;
@@ -93,6 +96,7 @@ const Tab = styled.button`
     background-color: ${colors.lightNavy};
   }
 `;
+
 const Highlighter = styled.span`
   display: block;
   background: ${colors.green};
@@ -123,6 +127,7 @@ const Highlighter = styled.span`
     margin-left: 25px;
   `};
 `;
+
 const ContentContainer = styled.div`
   position: relative;
   padding-top: 12px;
@@ -131,6 +136,7 @@ const ContentContainer = styled.div`
   ${media.tablet`padding-left: 20px;`};
   ${media.thone`padding-left: 0;`};
 `;
+
 const TabContent = styled.div`
   top: 0;
   left: 0;
@@ -164,15 +170,18 @@ const TabContent = styled.div`
     ${mixins.inlineLink};
   }
 `;
+
 const EduTitle = styled.h4`
   color: ${colors.lightestSlate};
   font-size: ${fontSizes.xxlarge};
   font-weight: 500;
   margin-bottom: 5px;
 `;
+
 const School = styled.span`
   color: ${colors.green};
 `;
+
 const EduDetails = styled.h5`
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.smallish};
@@ -184,6 +193,7 @@ const EduDetails = styled.h5`
     width: 15px;
   }
 `;
+
 const EduLocation = styled.h5`
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.smallish};

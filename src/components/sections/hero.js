@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-// import { email } from '@config';
 import styled from 'styled-components';
+
+// import { email } from '@config';
 import { theme, mixins, media, Section } from '@styles';
-import { fetchCurrentTrack } from '../utils/spotify';
+import { fetchCurrentTrack } from '../../utils/spotify';
+import { NowPlayingContext } from '../now-palying';
+import ExternalLink from '../externalLink';
+
+// --------------------------- CONSTANTS -----------------------------------
+
 const { colors, fontSizes, fonts } = theme;
-import { NowPlayingContext } from './now-palying';
-import ExternalLink from './externalLink';
+
+// --------------------------- STYLED COMPONENTS -----------------------------------
 
 const HeroContainer = styled(Section)`
   ${mixins.flexCenter};
@@ -19,6 +25,7 @@ const HeroContainer = styled(Section)`
     width: 100%;
   }
 `;
+
 const Hi = styled.h1`
   color: ${colors.green};
   margin: 0 0 20px 3px;
@@ -28,6 +35,7 @@ const Hi = styled.h1`
   ${media.desktop`font-size: ${fontSizes.small};`};
   ${media.tablet`font-size: ${fontSizes.smallish};`};
 `;
+
 const Name = styled.h2`
   font-size: 80px;
   line-height: 1.1;
@@ -37,6 +45,7 @@ const Name = styled.h2`
   ${media.phablet`font-size: 50px;`};
   ${media.phone`font-size: 40px;`};
 `;
+
 const Subtitle = styled.h3`
   font-size: 70px;
   line-height: 1.1;
@@ -46,6 +55,7 @@ const Subtitle = styled.h3`
   ${media.phablet`font-size: 40px;`};
   ${media.phone`font-size: 30px;`};
 `;
+
 const Blurb = styled.div`
   margin-top: 25px;
   width: 50%;
@@ -80,6 +90,8 @@ const EmailLink = styled(ExternalLink)`
   ${mixins.bigButton};
   margin-top: 50px;
 `;
+
+// --------------------------- COMPONENT -----------------------------------
 
 const Hero = ({ data }) => {
   const [isMounted, setIsMounted] = useState(false);
