@@ -2,6 +2,8 @@ import React, { useEffect, Fragment, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
+import toast from 'react-hot-toast';
+import { useComments } from 'use-comments';
 
 import { Layout, ExternalLink, NowPlaying, DetailsAndSummary } from '@components';
 import {
@@ -17,12 +19,10 @@ import { siteUrl, srConfig, hasuraURL } from '@config';
 import sr from '@utils/sr';
 import ogImage from '@images/og-music.png';
 import { IconCheck } from '@components/icons';
-import toast from 'react-hot-toast';
-import { useComments } from 'use-comments';
 
 // =================================== CONSTANTS ==========================================
 
-const { colors } = theme;
+const { colors, fonts, fontSizes } = theme;
 
 const metaConfig = {
   title: 'Music - Ayush Gupta',
@@ -97,12 +97,9 @@ const RangeToggleButtonContainer = styled.div`
 
 const ToggleButton = styled.button`
   ${mixins.bigButton};
-  /* ${media.desktop`${mixins.bigButton};`}; */
-  /* ${media.tablet`${mixins.smallButton};`}; */
   ${media.thone`${mixins.smallButton};`};
   margin-right: 10px;
   margin-top: 10px;
-  /* flex-grow: 1, */
 
   svg {
     width: 12px;
@@ -187,6 +184,70 @@ const RefetchContainer = styled.div`
   margin: 10px 10px 0;
 `;
 
+const StyledFieldset = styled.fieldset`
+  ${mixins.boxShadow};
+  margin-top: 5vh;
+  background-color: ${colors.darkNavy};
+  border: none;
+  border-radius: ${theme.borderRadius};
+  padding: 5vh;
+
+  legend {
+    background-color: ${colors.lightNavy};
+    border-radius: ${theme.borderRadius};
+    padding: 10px;
+    color: ${colors.green};
+    font-family: ${fonts.SFMono};
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
+
+  label {
+    vertical-align: middle;
+    margin-bottom: 10px;
+    padding-right: 10px;
+    font-size: ${fontSizes.xxlarge};
+    flex-shrink: 0;
+    flex: 0.3;
+  }
+
+  input {
+    flex: 0.7;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: ${colors.lightNavy};
+    border-radius: ${theme.borderRadius};
+    border: 1px solid ${colors.transGreen};
+    color: ${colors.white};
+    font-size: ${fontSizes.large};
+    width: 50vw;
+    max-width: 500px;
+
+    &:focus {
+      border: 1px solid ${colors.green};
+    }
+
+    &::placeholder {
+      color: ${colors.slate};
+    }
+  }
+
+  button[type='submit'] {
+    ${mixins.bigButton};
+    margin-top: 5vh;
+  }
+`;
+
+const SongCount = styled.div`
+  margin-top: -3vh;
+  margin-bottom: 5vh;
+`;
+
 // ======================================= COMPONENT ================================
 
 const MusicPage = ({ location }) => {
@@ -239,7 +300,7 @@ const MusicPage = ({ location }) => {
     refetchUserPlaylists,
   } = useUserPlaylists(10);
 
-  const { addComment } = useComments(hasuraURL, pathname);
+  const { addComment, count, error } = useComments(hasuraURL, pathname);
   const [songRecommendationData, setSongRecommendationData] = useState({
     authorName: '',
     comment: '',
@@ -557,16 +618,23 @@ const MusicPage = ({ location }) => {
       content: songRecommendationData.comment,
       author: songRecommendationData.authorName,
     });
-    setSongRecommendationData({
-      authorName: '',
-      comment: '',
-    });
-    toast.success('People who recommend songs are precious. Thank you!', {
-      duration: 5000,
-    });
+    if (error !== null) {
+      toast.success('People who recommend songs are invaluable. You are my precious!', {
+        duration: 5000,
+      });
+      setSongRecommendationData({
+        authorName: '',
+        comment: '',
+      });
+    } else {
+      console.error(error);
+      toast.error(
+        `Something's wrong with your song or my servers. Try later & let Ayush know about it!`,
+      );
+    }
   };
 
-  /* handle change in Full Name input */
+  /* handle change in Name input */
   const onNameChange = event => {
     event.preventDefault();
     event.persist();
@@ -576,7 +644,7 @@ const MusicPage = ({ location }) => {
     }));
   };
 
-  /* handle change in Comment input */
+  /* handle change in song input */
   const onCommentChange = event => {
     event.preventDefault();
     event.persist();
@@ -667,7 +735,7 @@ const MusicPage = ({ location }) => {
         <SimilarTasteSection>
           <h2>Have similar music taste?</h2>
           <p>
-            Feel free to recommend me your favorite songs on{' '}
+            Fill the form below or recommend me your favorite songs on{' '}
             <ExternalLink url="https://twitter.com/_guptaji_" eventType="Twitter">
               twitter
             </ExternalLink>
@@ -678,23 +746,37 @@ const MusicPage = ({ location }) => {
             .
           </p>
           <form onSubmit={onSongSubmit}>
-            <div>
-              <input
-                type="text"
-                placeholder="Enter name"
-                onChange={onNameChange}
-                value={songRecommendationData.authorName}
-                required
-              />
-              <input
-                type="url"
-                placeholder="Enter song url"
-                onChange={onCommentChange}
-                value={songRecommendationData.comment}
-                required
-              />
-            </div>
-            <button type="submit">Send Recommendation</button>
+            <StyledFieldset>
+              <legend>recommend a song to ayush</legend>
+              {count !== 0 ? (
+                <SongCount>{count} people have suggested songs which ayush liked!</SongCount>
+              ) : null}
+              <div>
+                <label htmlFor="name">Name</label>
+                <input
+                  id="name"
+                  type="text"
+                  placeholder="Your name or handle"
+                  onChange={onNameChange}
+                  value={songRecommendationData.authorName}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="song">Song</label>
+                <input
+                  id="song"
+                  type="text"
+                  placeholder="Track name or link"
+                  onChange={onCommentChange}
+                  value={songRecommendationData.comment}
+                  required
+                />
+              </div>
+              <button type="submit" data-splitbee-event="Send Song Recommendation">
+                Send Recommendation
+              </button>
+            </StyledFieldset>
           </form>
         </SimilarTasteSection>
       </StyledMainContainer>
