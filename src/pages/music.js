@@ -300,7 +300,7 @@ const MusicPage = ({ location }) => {
     refetchUserPlaylists,
   } = useUserPlaylists(10);
 
-  const { addComment, count, error } = useComments(hasuraURL, pathname);
+  const { addComment, count } = useComments(hasuraURL, pathname);
   const [songRecommendationData, setSongRecommendationData] = useState({
     authorName: '',
     comment: '',
@@ -618,20 +618,13 @@ const MusicPage = ({ location }) => {
       content: songRecommendationData.comment,
       author: songRecommendationData.authorName,
     });
-    if (error !== null) {
-      setSongRecommendationData({
-        authorName: '',
-        comment: '',
-      });
-      return toast.success('People who recommend songs are invaluable. You are my precious!', {
-        duration: 5000,
-      });
-    } else {
-      console.error(error);
-      return toast.error(
-        `Something's wrong with your song or my servers. Try later & let Ayush know about it!`,
-      );
-    }
+    toast.success('People who recommend songs are invaluable. You are my precious!', {
+      duration: 5000,
+    });
+    setSongRecommendationData({
+      authorName: '',
+      comment: '',
+    });
   };
 
   /* handle change in Name input */
@@ -653,6 +646,42 @@ const MusicPage = ({ location }) => {
       comment: event.target.value,
     }));
   };
+
+  const renderSongReceommendationForm = () => (
+    <form onSubmit={onSongSubmit}>
+      <StyledFieldset>
+        <legend>recommend a song to ayush</legend>
+        {count !== 0 ? (
+          <SongCount>{count} people have suggested songs which ayush liked!</SongCount>
+        ) : null}
+        <div>
+          <label htmlFor="name">Name</label>
+          <input
+            id="name"
+            type="text"
+            placeholder="Your name or handle"
+            onChange={onNameChange}
+            value={songRecommendationData.authorName}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="song">Song</label>
+          <input
+            id="song"
+            type="text"
+            placeholder="Track name or link"
+            onChange={onCommentChange}
+            value={songRecommendationData.comment}
+            required
+          />
+        </div>
+        <button type="submit" data-splitbee-event="Send Song Recommendation">
+            Send Recommendation
+        </button>
+      </StyledFieldset>
+    </form>
+  );
 
   return (
     <Layout location={location}>
@@ -686,6 +715,7 @@ const MusicPage = ({ location }) => {
           <NowPlayingWidgetContainer>
             <NowPlaying />
           </NowPlayingWidgetContainer>
+
           <DetailsAndSummary
             title="Top Tracks"
             subtitle="Top tracks I have jammed to. Some put me to sleep while some made me dance.">
@@ -698,21 +728,25 @@ const MusicPage = ({ location }) => {
               {renderTopTracks()}
             </Fragment>
           </DetailsAndSummary>
+
           <DetailsAndSummary
             title="Favourite Playlist"
             subtitle="A playlist I wouldn't share with just anyone. I used to listen to this at night alone, which is now turning into a collection of feel-good & indie songs.">
             {renderAyushFavouritePlaylist()}
           </DetailsAndSummary>
+
           <DetailsAndSummary
             title="Recently Played"
             subtitle="Recent tracks I played while discovering new music, or maybe listening to the same old shiz nth time.">
             {renderRecentlyPlayedTracks()}
           </DetailsAndSummary>
+
           <DetailsAndSummary
             title="Recently Saved Tracks"
             subtitle="It's so sad that Spotify doesn't let us share our Liked Songs as a playlist :3">
             {renderRecentlySavedTracks()}
           </DetailsAndSummary>
+
           <DetailsAndSummary
             title="Top Artists"
             subtitle="Top artists I looped on. I am more of an indie guy but the list doesn't suggest so, sigh.">
@@ -725,6 +759,7 @@ const MusicPage = ({ location }) => {
               {renderTopArtists()}
             </Fragment>
           </DetailsAndSummary>
+
           <DetailsAndSummary
             title="Recently Saved Playlists"
             subtitle="Some playlists are too precious to not save, IYKYK.">
@@ -745,39 +780,7 @@ const MusicPage = ({ location }) => {
             </ExternalLink>
             .
           </p>
-          <form onSubmit={onSongSubmit}>
-            <StyledFieldset>
-              <legend>recommend a song to ayush</legend>
-              {count !== 0 ? (
-                <SongCount>{count} people have suggested songs which ayush liked!</SongCount>
-              ) : null}
-              <div>
-                <label htmlFor="name">Name</label>
-                <input
-                  id="name"
-                  type="text"
-                  placeholder="Your name or handle"
-                  onChange={onNameChange}
-                  value={songRecommendationData.authorName}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="song">Song</label>
-                <input
-                  id="song"
-                  type="text"
-                  placeholder="Track name or link"
-                  onChange={onCommentChange}
-                  value={songRecommendationData.comment}
-                  required
-                />
-              </div>
-              <button type="submit" data-splitbee-event="Send Song Recommendation">
-                Send Recommendation
-              </button>
-            </StyledFieldset>
-          </form>
+          {renderSongReceommendationForm()}
         </SimilarTasteSection>
       </StyledMainContainer>
     </Layout>
@@ -785,28 +788,7 @@ const MusicPage = ({ location }) => {
 };
 
 MusicPage.propTypes = {
-  // data: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
 };
 
 export default MusicPage;
-
-// export const pageQuery = graphql`
-//   {
-//     uses: allMarkdownRemark(
-//       filter: { fileAbsolutePath: { regex: "/uses/" } }
-//       sort: { fields: [frontmatter___order], order: ASC }
-//     ) {
-//       edges {
-//         node {
-//           frontmatter {
-//             title
-//             subtitle
-//             order
-//           }
-//           html
-//         }
-//       }
-//     }
-//   }
-// `;
