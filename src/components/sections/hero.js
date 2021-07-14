@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 // import { email } from '@config';
 import { theme, mixins, media, Section } from '@styles';
+import { navDelay, loaderDelay } from '@config';
 import { useNowPlayingTrack } from '@hooks';
 import { NowPlayingContext } from '../now-palying';
 import ExternalLink from '../externalLink';
@@ -104,7 +105,7 @@ const Hero = ({ data }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsMounted(true);
-    }, 1000);
+    }, navDelay);
 
     return () => clearTimeout(timeout);
   }, []);
@@ -143,7 +144,8 @@ const Hero = ({ data }) => {
         View Resume
       </ResumeLink> */}
       <EmailLink url="mailto:hire@ayushgupta.tech" eventName="Hire Me">
-        Hire Me {/* <span role="img" aria-label="man technologist">
+        Hire Me{' '}
+        {/* <span role="img" aria-label="man technologist">
           👨🏻‍💻
         </span> */}
       </EmailLink>
@@ -157,7 +159,7 @@ const Hero = ({ data }) => {
       <TransitionGroup>
         {isMounted &&
           items.map((item, i) => (
-            <CSSTransition key={i} classNames="fadeup" timeout={3000}>
+            <CSSTransition key={i} classNames="fadeup" timeout={loaderDelay}>
               {item}
             </CSSTransition>
           ))}

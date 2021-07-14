@@ -79,6 +79,7 @@ module.exports = {
   googleAnalyticsID: 'G-XYDGVM2S3D',
 
   navHeight: 100,
+  navDelay: 1000,
   loaderDelay: 2000,
 
   greenColor: '#64ffda',
