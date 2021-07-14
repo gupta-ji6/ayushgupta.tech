@@ -9,15 +9,28 @@ import { Menu } from '@components';
 import { IconLogo } from '@components/icons';
 import { useScrollDirection, usePrefersReducedMotion } from '@hooks';
 import { navLinks } from '@config';
-import { media, mixins, theme } from '@styles';
+import { mixins, theme } from '@styles';
 
 // --------------------------- CONSTANTS ------------------------------------------
 
 const { colors, fontSizes, fonts, loaderDelay } = theme;
 
+export const navLinkRedirection = (url, name) => {
+  switch (name) {
+    case 'Blog':
+      return '/blog';
+    case 'Uses':
+      return '/uses';
+    case 'Music':
+      return '/music';
+    default:
+      return url;
+  }
+};
+
 // --------------------------- STYLED COMPONENTS ------------------------------------------
 
-const StyledContainer = styled.header`
+const StyledHeader = styled.header`
   ${mixins.flexBetween};
   position: fixed;
   top: 0;
@@ -72,17 +85,20 @@ const StyledNav = styled.nav`
 
 const StyledLogo = styled.div`
   ${mixins.flexCenter};
+
   a {
-    display: block;
+    /* display: block; */
     color: ${colors.green};
     width: 50px;
     height: 50px;
+
     &:hover,
     &:focus {
       svg {
         fill: ${colors.transGreen};
       }
     }
+
     svg {
       fill: none;
       transition: ${theme.transition};
@@ -94,7 +110,10 @@ const StyledLogo = styled.div`
 const StyledLinks = styled.div`
   display: flex;
   align-items: center;
-  ${media.tablet`display: none;`};
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 
   ol {
     ${mixins.flexBetween};
@@ -113,6 +132,7 @@ const StyledLinks = styled.div`
 
         &:before {
           content: '0' counter(item) '.';
+          margin-right: 5px;
           text-align: right;
           color: ${colors.green};
           font-size: ${fontSizes.xsmall};
@@ -132,7 +152,7 @@ const StyledResumeButton = styled(ExternalLink)`
   font-size: ${fontSizes.smallish};
 `;
 
-// --------------------------- CONSTANTS ------------------------------------------
+// --------------------------- COMPONENT ------------------------------------------
 
 const Nav = ({ isHome }) => {
   const [isMounted, setIsMounted] = useState(!isHome);
@@ -167,7 +187,7 @@ const Nav = ({ isHome }) => {
   const fadeDownClass = isHome ? 'fadedown' : '';
 
   const Logo = (
-    <StyledLogo className="logo" tabIndex="-1">
+    <StyledLogo tabIndex="-1">
       {isHome ? (
         <a href="/" aria-label="home">
           <IconLogo />
@@ -187,7 +207,7 @@ const Nav = ({ isHome }) => {
   );
 
   return (
-    <StyledContainer scrollDirection={scrollDirection} scrolledToTop={scrolledToTop}>
+    <StyledHeader scrollDirection={scrollDirection} scrolledToTop={scrolledToTop}>
       <StyledNav>
         {prefersReducedMotion ? (
           <Fragment>
@@ -198,7 +218,7 @@ const Nav = ({ isHome }) => {
                 {navLinks &&
                   navLinks.map(({ url, name }, i) => (
                     <li key={i}>
-                      <Link to={name === 'Blog' ? '/blog' : url}>{name}</Link>
+                      <Link to={navLinkRedirection(url, name)}>{name}</Link>
                     </li>
                   ))}
               </ol>
@@ -225,9 +245,7 @@ const Nav = ({ isHome }) => {
                     navLinks.map(({ url, name }, i) => (
                       <CSSTransition key={i} classNames={fadeDownClass} timeout={timeout}>
                         <li key={i} style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
-                          <StyledListLink to={name === 'Blog' ? '/blog' : url}>
-                            {name}
-                          </StyledListLink>
+                          <StyledListLink to={navLinkRedirection(url, name)}>{name}</StyledListLink>
                         </li>
                       </CSSTransition>
                     ))}
@@ -255,7 +273,7 @@ const Nav = ({ isHome }) => {
           </Fragment>
         )}
       </StyledNav>
-    </StyledContainer>
+    </StyledHeader>
   );
 };
 

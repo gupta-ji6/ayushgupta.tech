@@ -41,14 +41,14 @@ module.exports = {
   ],
 
   navLinks: [
-    {
-      name: 'About',
-      url: '/#about',
-    },
-    {
-      name: 'Experience',
-      url: '/#jobs',
-    },
+    // {
+    //   name: 'About',
+    //   url: '/#about',
+    // },
+    // {
+    //   name: 'Experience',
+    //   url: '/#jobs',
+    // },
     {
       name: 'Projects',
       url: '/#projects',
@@ -66,9 +66,13 @@ module.exports = {
       url: '/uses',
     },
     {
-      name: 'Contact',
-      url: '/#contact',
+      name: 'Music',
+      url: '/music',
     },
+    // {
+    //   name: 'Contact',
+    //   url: '/#contact',
+    // },
   ],
 
   twitterHandle: '@_guptaji_',

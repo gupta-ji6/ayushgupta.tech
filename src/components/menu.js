@@ -8,6 +8,7 @@ import { useOnClickOutside } from '@hooks';
 import { KEY_CODES } from '@utils';
 import { navLinks } from '@config';
 import { mixins, theme } from '@styles';
+import { navLinkRedirection } from './nav';
 
 // --------------------------- CONSTANTS ------------------------------------------
 
@@ -17,6 +18,7 @@ const { colors, fontSizes, fonts } = theme;
 
 const StyledMenu = styled.div`
   display: none;
+
   @media (max-width: 768px) {
     display: block;
   }
@@ -24,6 +26,7 @@ const StyledMenu = styled.div`
 
 const StyledHamburgerButton = styled.button`
   display: none;
+
   @media (max-width: 768px) {
     ${mixins.flexCenter};
     position: relative;
@@ -38,17 +41,19 @@ const StyledHamburgerButton = styled.button`
     transition-duration: 0.15s;
     transition-property: opacity, filter;
   }
+
   .ham-box {
     display: inline-block;
     position: relative;
-    width: ${theme.hamburgerWidth}px;
+    width: ${theme.hamburgerWidth};
     height: 24px;
   }
+
   .ham-box-inner {
     position: absolute;
     top: 50%;
     right: 0;
-    width: ${theme.hamburgerWidth}px;
+    width: ${theme.hamburgerWidth};
     height: 2px;
     border-radius: ${theme.borderRadius};
     background-color: ${colors.green};
@@ -59,6 +64,7 @@ const StyledHamburgerButton = styled.button`
     transition-timing-function: cubic-bezier(
       ${props => (props.menuOpen ? `0.215, 0.61, 0.355, 1` : `0.55, 0.055, 0.675, 0.19`)}
     );
+
     &:before,
     &:after {
       content: '';
@@ -66,7 +72,7 @@ const StyledHamburgerButton = styled.button`
       position: absolute;
       left: auto;
       right: 0;
-      width: ${theme.hamburgerWidth}px;
+      width: ${theme.hamburgerWidth};
       height: 2px;
       border-radius: 4px;
       background-color: ${colors.green};
@@ -74,6 +80,7 @@ const StyledHamburgerButton = styled.button`
       transition-duration: 0.15s;
       transition-property: transform;
     }
+
     &:before {
       width: ${props => (props.menuOpen ? `100%` : `120%`)};
       top: ${props => (props.menuOpen ? `0` : `-10px`)};
@@ -91,6 +98,7 @@ const StyledHamburgerButton = styled.button`
 
 const StyledSidebar = styled.aside`
   display: none;
+
   @media (max-width: 768px) {
     ${mixins.flexCenter};
     position: fixed;
@@ -108,6 +116,7 @@ const StyledSidebar = styled.aside`
     visibility: ${props => (props.menuOpen ? 'visible' : 'hidden')};
     transition: ${theme.transition};
   }
+
   nav {
     ${mixins.flexBetween};
     width: 100%;
@@ -116,19 +125,23 @@ const StyledSidebar = styled.aside`
     font-family: ${fonts.SFMono};
     text-align: center;
   }
+
   ol {
     padding: 0;
     margin: 0;
     list-style: none;
     width: 100%;
+
     li {
       position: relative;
       margin: 0 auto 20px;
       counter-increment: item 1;
       font-size: clamp(${fontSizes.small}, 4vw, ${fontSizes.large});
+
       @media (max-width: 600px) {
         margin: 0 auto 10px;
       }
+
       &:before {
         content: '0' counter(item) '.';
         display: block;
@@ -137,12 +150,14 @@ const StyledSidebar = styled.aside`
         font-size: ${fontSizes.small};
       }
     }
+
     a {
       ${mixins.link};
       width: 100%;
       padding: 3px 20px 20px;
     }
   }
+
   .resume-link {
     ${mixins.bigButton};
     padding: 18px 50px;
@@ -263,7 +278,7 @@ const Menu = () => {
               <ol>
                 {navLinks.map(({ url, name }, i) => (
                   <li key={i}>
-                    <Link to={name === 'Blog' ? '/blog' : url} onClick={() => setMenuOpen(false)}>
+                    <Link to={navLinkRedirection(url, name)} onClick={() => setMenuOpen(false)}>
                       {name}
                     </Link>
                   </li>
