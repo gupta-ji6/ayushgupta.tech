@@ -11,7 +11,7 @@ export { default as Menu } from './menu';
 export { default as Nav } from './nav';
 export { default as Notifications } from './notifications';
 export { default as NowPlaying } from './now-palying';
-// export { default as Side } from './side';
+export { default as Side } from './side';
 export { default as Social } from './social';
 export { default as SocialShare } from './socialShare';
 

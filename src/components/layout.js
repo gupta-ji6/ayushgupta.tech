@@ -91,8 +91,8 @@ const Layout = ({ children, location }) => {
           ) : ( */}
           <StyledContent>
             <Nav isHome={isHome} />
-            <Social />
-            <Email />
+            <Social isHome={isHome} />
+            <Email isHome={isHome} />
             {children}
             <Footer isMusicPage={isMusicPage} />
           </StyledContent>

@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
 import { socialMedia } from '@config';
 import { FormattedIcon } from '@components/icons';
-import styled from 'styled-components';
-import { theme, media } from '@styles';
-import ExternalLink from './externalLink';
+import { Side, ExternalLink } from '@components';
+import { theme } from '@styles';
+
+// -------------------------------- CONSTANTS ------------------------
+
 const { colors } = theme;
 
-const SocialContainer = styled.div`
-  width: 40px;
-  position: fixed;
-  bottom: 0;
-  left: 40px;
-  color: ${colors.lightSlate};
-  ${media.desktop`left: 25px;`};
-  ${media.tablet`display: none;`};
-`;
+// -------------------------------- STYLED COMPONENTS ------------------------
+
 const SocialItemList = styled.ul`
   display: flex;
   flex-direction: column;
@@ -29,11 +26,13 @@ const SocialItemList = styled.ul`
     background-color: ${colors.lightSlate};
   }
 `;
+
 const SocialItem = styled.li`
   &:last-of-type {
     margin-bottom: 20px;
   }
 `;
+
 const SocialLink = styled(ExternalLink)`
   padding: 10px;
   &:hover,
@@ -46,34 +45,25 @@ const SocialLink = styled(ExternalLink)`
   }
 `;
 
-const Social = () => {
-  const [isMounted, setIsMounted] = useState(false);
+// -------------------------------- COMPONENT ------------------------
 
-  useEffect(() => {
-    const timeout = setTimeout(() => setIsMounted(true), 2000);
-    return () => clearTimeout(timeout);
-  }, []);
+const Social = ({ isHome }) => (
+  <Side isHome={isHome} orientation="left">
+    <SocialItemList>
+      {socialMedia &&
+          socialMedia.map(({ url, name }, i) => (
+            <SocialItem key={i}>
+              <SocialLink url={url} aria-label={name} eventType={name}>
+                <FormattedIcon name={name} />
+              </SocialLink>
+            </SocialItem>
+          ))}
+    </SocialItemList>
+  </Side>
+);
 
-  return (
-    <SocialContainer>
-      <TransitionGroup>
-        {isMounted && (
-          <CSSTransition timeout={3000} classNames="fade">
-            <SocialItemList>
-              {socialMedia &&
-                socialMedia.map(({ url, name }, i) => (
-                  <SocialItem key={i}>
-                    <SocialLink url={url} aria-label={name} eventType={name}>
-                      <FormattedIcon name={name} />
-                    </SocialLink>
-                  </SocialItem>
-                ))}
-            </SocialItemList>
-          </CSSTransition>
-        )}
-      </TransitionGroup>
-    </SocialContainer>
-  );
+Social.propTypes = {
+  isHome: PropTypes.bool,
 };
 
 export default Social;
