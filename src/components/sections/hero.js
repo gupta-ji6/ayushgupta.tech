@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 // import { email } from '@config';
 import { theme, mixins, media, Section } from '@styles';
-import { fetchCurrentTrack } from '../../utils/spotify';
+import { useNowPlayingTrack } from '@hooks';
 import { NowPlayingContext } from '../now-palying';
 import ExternalLink from '../externalLink';
 
@@ -95,24 +95,15 @@ const EmailLink = styled(ExternalLink)`
 
 const Hero = ({ data }) => {
   const [isMounted, setIsMounted] = useState(false);
-  const [track, setTrack] = useState({});
+
+  const { nowPlayingTrack, isAyushListeningToAnything } = useNowPlayingTrack();
 
   const trackCopy =
     NowPlayingContext.playing[Math.floor(Math.random() * NowPlayingContext.playing.length)].copy;
 
-  // fetch the current playing track, if any
-  const fetchNowPlaying = async () => {
-    const trackData = await fetchCurrentTrack();
-    // console.log(trackData);
-    if (trackData !== undefined) {
-      setTrack(trackData);
-    }
-  };
-
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsMounted(true);
-      fetchNowPlaying();
     }, 1000);
 
     return () => clearTimeout(timeout);
@@ -133,14 +124,14 @@ const Hero = ({ data }) => {
   );
 
   const five = () =>
-    Object.keys(track).length !== 0 ? (
+    isAyushListeningToAnything ? (
       <NowPlayingTrack style={{ transitionDelay: '500ms' }}>
         <TrackCopy>{`${trackCopy} `}</TrackCopy>
         <ExternalLink
-          url={track.external_urls.spotify}
+          url={nowPlayingTrack.external_urls.spotify}
           eventName="Spotify"
           eventType="Open Spotify Link">
-          {track.name}
+          {nowPlayingTrack.name}
         </ExternalLink>
         <span>{` at the moment.`}</span>
       </NowPlayingTrack>
