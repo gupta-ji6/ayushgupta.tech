@@ -619,16 +619,16 @@ const MusicPage = ({ location }) => {
       author: songRecommendationData.authorName,
     });
     if (error !== null) {
-      toast.success('People who recommend songs are invaluable. You are my precious!', {
-        duration: 5000,
-      });
       setSongRecommendationData({
         authorName: '',
         comment: '',
       });
+      return toast.success('People who recommend songs are invaluable. You are my precious!', {
+        duration: 5000,
+      });
     } else {
       console.error(error);
-      toast.error(
+      return toast.error(
         `Something's wrong with your song or my servers. Try later & let Ayush know about it!`,
       );
     }
