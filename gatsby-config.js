@@ -16,6 +16,15 @@ module.exports = {
     `gatsby-plugin-netlify`,
     `gatsby-plugin-catch-links`,
     {
+      resolve: `gatsby-plugin-nprogress`,
+      options: {
+        // Setting a color is optional.
+        color: config.greenColor,
+        // Disable the loading spinner.
+        showSpinner: false,
+      },
+    },
+    {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: 'Ayush Gupta',
