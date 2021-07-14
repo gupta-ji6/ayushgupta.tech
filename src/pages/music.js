@@ -15,7 +15,7 @@ import {
 import { theme, mixins, media } from '@styles';
 import { siteUrl, srConfig, hasuraURL } from '@config';
 import sr from '@utils/sr';
-import ogImage from '@images/og-uses.png';
+import ogImage from '@images/og-music.png';
 import { IconCheck } from '@components/icons';
 import toast from 'react-hot-toast';
 import { useComments } from 'use-comments';
@@ -26,7 +26,7 @@ const { colors } = theme;
 
 const metaConfig = {
   title: 'Music - Ayush Gupta',
-  description: 'A living document of setup with apps Ayush Gupta uses daily.',
+  description: `Deep dive into my Ayush Gupta's music library. Explore anything from my current playing song or my top tracks this month.`,
   url: 'https://ayushgupta.tech/music',
 };
 

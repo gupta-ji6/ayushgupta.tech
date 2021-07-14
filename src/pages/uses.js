@@ -17,7 +17,7 @@ const { colors, fontSizes } = theme;
 
 const metaConfig = {
   title: 'Uses - Ayush Gupta',
-  description: 'A living document of setup with apps Ayush Gupta uses daily.',
+  description: `A living document of Ayush Gupta's setup, with apps he uses daily.`,
   url: 'https://ayushgupta.tech/uses',
 };
 
@@ -125,7 +125,7 @@ const UsesPage = ({ data, location }) => {
         <meta name="description" content={metaConfig.description} />
         <meta property="og:title" content={metaConfig.title} />
         <meta property="og:description" content={metaConfig.description} />
-        <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+        <meta property="og:image" content={`${siteUrl}${ogImage}?v=2`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={metaConfig.url} />
         <meta property="og:site_name" content={metaConfig.title} />
@@ -143,7 +143,7 @@ const UsesPage = ({ data, location }) => {
       <StyledMainContainer id="content">
         <header ref={revealTitle}>
           <h1 className="big-heading">Uses</h1>
-          <p className="subtitle">a living document of my setup with apps I use daily</p>
+          <p className="subtitle">a living document of my setup, with apps I use daily</p>
         </header>
 
         <section ref={revealUsesContent}>
