@@ -955,13 +955,6 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.14.0":
-  version "7.14.6"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.6.tgz#535203bc0892efc7dec60bdc27b2ecf6e409062d"
-  integrity sha512-/PCB2uJ7oM44tz8YhC4Z/6PeOKXp4K588f+5M3clr1M4zbqztlo0XEfJ2LEzj/FgwfgGcIdl8n7YYjTCI0BYwg==
-  dependencies:
-    regenerator-runtime "^0.13.4"
-
 "@babel/standalone@^7.12.6":
   version "7.12.9"
   resolved "https://registry.yarnpkg.com/@babel/standalone/-/standalone-7.12.9.tgz#2da8a223b44498a1e7ca5b83d4e9d010088b0036"
@@ -6393,12 +6386,12 @@ gatsby-page-utils@^0.8.0:
     lodash "^4.17.20"
     micromatch "^4.0.2"
 
-gatsby-plugin-catch-links@^3.9.0:
-  version "3.9.0"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-catch-links/-/gatsby-plugin-catch-links-3.9.0.tgz#b1cefce8b7254b8690b135f17dca4e32d6a0eea8"
-  integrity sha512-zugIqkQBn9I2fE50we+QHT6EsMQvmgsr1G7i4dRc87RRcFshYMG1UA1Lkj0BxPNI188wWEFzdwKh2R5UUnikQA==
+gatsby-plugin-catch-links@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-catch-links/-/gatsby-plugin-catch-links-2.6.0.tgz#c8ac3530cc71714280996e1df958dea240ae0bef"
+  integrity sha512-aDJusHyALS2h05MLFZURRnC+Ds5jUxq4PHmuVyP/5R6tqhYFoPHih+h6RlxyacSUeAKtqCsyQ/YJt5Lv1LA9qw==
   dependencies:
-    "@babel/runtime" "^7.14.0"
+    "@babel/runtime" "^7.12.5"
     escape-string-regexp "^1.0.5"
 
 gatsby-plugin-google-gtag@^2.7.0:
@@ -6431,12 +6424,12 @@ gatsby-plugin-netlify@^2.10.0:
     lodash "^4.17.20"
     webpack-assets-manifest "^3.1.1"
 
-gatsby-plugin-nprogress@^3.9.0:
-  version "3.9.0"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-nprogress/-/gatsby-plugin-nprogress-3.9.0.tgz#0c4bf290b7b7f39d0ba466bca9a143d535fa90d4"
-  integrity sha512-rIBOR2qB05tcn2suUm5FOpiGCQJJ+AoDZQ0O3MV3fN0TWAWwpt4RFHAVMmZu6V/Xh+lP/RrBy4HVb02+QmrKUQ==
+gatsby-plugin-nprogress@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-nprogress/-/gatsby-plugin-nprogress-2.6.0.tgz#86984cca5cb7c8f18e86dd23d6153634f45cd71c"
+  integrity sha512-yJ3O2o0/m2VeLnl9+UZm1dM7r3fQD15nazF3waNcM3QqqVIwK73JwMuGdrBSdBIRZaIvHqk0sEdzNCb1QOAeqg==
   dependencies:
-    "@babel/runtime" "^7.14.0"
+    "@babel/runtime" "^7.12.5"
     nprogress "^0.2.0"
 
 gatsby-plugin-offline@^3.9.0:
