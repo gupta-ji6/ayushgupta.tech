@@ -173,7 +173,7 @@ const PostTemplate = ({ data, location }) => {
         <meta name="twitter:image:alt" content={title} />
       </Helmet>
 
-      <StyledPostContainer id="content">
+      <StyledPostContainer>
         <span className="breadcrumb">
           <span className="arrow">&larr;</span>
           <Link to="/blog">All articles</Link>

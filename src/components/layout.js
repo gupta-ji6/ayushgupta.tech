@@ -93,7 +93,7 @@ const Layout = ({ children, location }) => {
             <Nav isHome={isHome} />
             <Social isHome={isHome} />
             <Email isHome={isHome} />
-            {children}
+            <div id="content">{children}</div>
             <Footer isMusicPage={isMusicPage} />
           </StyledContent>
           {/*  )} */}

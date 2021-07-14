@@ -677,7 +677,7 @@ const MusicPage = ({ location }) => {
           />
         </div>
         <button type="submit" data-splitbee-event="Send Song Recommendation">
-            Send Recommendation
+          Send Recommendation
         </button>
       </StyledFieldset>
     </form>
@@ -705,7 +705,7 @@ const MusicPage = ({ location }) => {
         <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
         <meta name="twitter:image:alt" content={metaConfig.title} />
       </Helmet>
-      <StyledMainContainer id="content">
+      <StyledMainContainer>
         <header ref={revealTitle}>
           <h1 className="big-heading">Music</h1>
           <p className="subtitle">deep dive into my music library</p>
