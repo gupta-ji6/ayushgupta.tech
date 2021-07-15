@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
+import { graphql, useStaticQuery } from 'gatsby';
 
 import { KEY_CODES } from '@utils';
 import sr from '@utils/sr';
@@ -208,7 +208,31 @@ const EduLocation = styled.h5`
 
 // ================================== COMPONENT =====================================
 
-const Education = ({ data }) => {
+const Education = () => {
+  const data = useStaticQuery(graphql`
+    {
+      education: allMarkdownRemark(
+        filter: { fileAbsolutePath: { regex: "/education/" } }
+        sort: { fields: [frontmatter___passingYear], order: DESC }
+      ) {
+        edges {
+          node {
+            frontmatter {
+              level
+              school
+              location
+              passingYear
+              url
+            }
+            html
+          }
+        }
+      }
+    }
+  `);
+
+  const educationData = data.education.edges;
+
   const [activeTabId, setActiveTabId] = useState(0);
   const [tabFocus, setTabFocus] = useState(null);
   const tabs = useRef([]);
@@ -262,8 +286,8 @@ const Education = ({ data }) => {
       <Heading>Education</Heading>
       <TabsContainer>
         <Tabs aria-label="Education tabs" onKeyDown={onKeyDown} role="tablist">
-          {data &&
-            data.map(({ node }, i) => {
+          {educationData &&
+            educationData.map(({ node }, i) => {
               const { school } = node.frontmatter;
               return (
                 <li key={i}>
@@ -284,8 +308,8 @@ const Education = ({ data }) => {
           <Highlighter activeTabId={activeTabId} />
         </Tabs>
         <ContentContainer>
-          {data &&
-            data.map(({ node }, i) => {
+          {educationData &&
+            educationData.map(({ node }, i) => {
               const { frontmatter, html } = node;
               const { level, url, school, passingYear, location } = frontmatter;
               return (
@@ -321,10 +345,6 @@ const Education = ({ data }) => {
       </TabsContainer>
     </EduContainer>
   );
-};
-
-Education.propTypes = {
-  data: PropTypes.array.isRequired,
 };
 
 export default Education;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { graphql, useStaticQuery } from 'gatsby';
 
 import sr from '@utils/sr';
 import { srConfig } from '@config';
@@ -56,9 +56,26 @@ const EmailLink = styled(ExternalLink)`
 
 // ================================== COMPONENT =====================================
 
-const Contact = ({ data }) => {
-  const { frontmatter, html } = data[0].node;
+const Contact = () => {
+  const data = useStaticQuery(graphql`
+    {
+      contact: allMarkdownRemark(filter: { fileAbsolutePath: { regex: "/contact/" } }) {
+        edges {
+          node {
+            frontmatter {
+              title
+            }
+            html
+          }
+        }
+      }
+    }
+  `);
+
+  const { contact } = data;
+  const { frontmatter, html } = contact.edges[0].node;
   const { title } = frontmatter;
+
   const revealContainer = useRef(null);
 
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -87,10 +104,6 @@ const Contact = ({ data }) => {
       </EmailLink>
     </ContactContainer>
   );
-};
-
-Contact.propTypes = {
-  data: PropTypes.array.isRequired,
 };
 
 export default Contact;

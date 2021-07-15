@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { graphql, useStaticQuery } from 'gatsby';
 
 import { Button, Section, media, mixins, theme } from '@styles';
 import { IconExternal, IconFolder, IconGithub, IconGooglePlay } from '@components/icons';
@@ -132,7 +132,31 @@ const ShowMoreButton = styled(Button)`
 
 // ================================== COMPONENT =====================================
 
-const Projects = ({ data }) => {
+const Projects = () => {
+  const data = useStaticQuery(graphql`
+    {
+      projects: allMarkdownRemark(
+        filter: { fileAbsolutePath: { regex: "/projects/" } }
+        sort: { fields: [frontmatter___date], order: DESC }
+      ) {
+        edges {
+          node {
+            frontmatter {
+              title
+              image
+              tech
+              github
+              external
+              googleplay
+              show
+            }
+            html
+          }
+        }
+      }
+    }
+  `);
+
   const [showMore, setShowMore] = useState(false);
 
   const revealTitle = useRef(null);
@@ -150,7 +174,7 @@ const Projects = ({ data }) => {
   }, []);
 
   const GRID_LIMIT = 4;
-  const projects = data.filter(({ node }) => node.frontmatter.show === 'true');
+  const projects = data.projects.edges.filter(({ node }) => node.frontmatter.show === 'true');
   const firstSix = projects.slice(0, GRID_LIMIT);
   const projectsToShow = showMore ? projects : firstSix;
 
@@ -231,10 +255,6 @@ const Projects = ({ data }) => {
       </ShowMoreButton>
     </ProjectsContainer>
   );
-};
-
-Projects.propTypes = {
-  data: PropTypes.array.isRequired,
 };
 
 export default Projects;

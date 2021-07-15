@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'gatsby';
+import { graphql, Link, useStaticQuery } from 'gatsby';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
 
@@ -139,7 +138,34 @@ const ReadMore = styled(Link)`
 
 // ================================== COMPONENT =====================================
 
-const Blog = ({ data }) => {
+const Blog = () => {
+  const data = useStaticQuery(graphql`
+    {
+      popularArticles: allMarkdownRemark(
+        filter: {
+          fileAbsolutePath: { regex: "/blog/" }
+          frontmatter: { draft: { ne: true }, popular: { eq: true } }
+        }
+        sort: { fields: [frontmatter___date], order: DESC }
+      ) {
+        edges {
+          node {
+            frontmatter {
+              title
+              description
+              slug
+              date
+              tags
+              draft
+              popular
+            }
+            html
+          }
+        }
+      }
+    }
+  `);
+
   // const [showMore, setShowMore] = useState(false);
   const revealContainer = useRef(null);
   const revealArticles = useRef([]);
@@ -156,7 +182,9 @@ const Blog = ({ data }) => {
   }, []);
 
   const GRID_LIMIT = 2;
-  const blog = data.filter(({ node }) => node.frontmatter.popular && !node.frontmatter.draft);
+  const popularArticles = data.popularArticles.edges.filter(
+    ({ node }) => node.frontmatter.popular && !node.frontmatter.draft,
+  );
   // const firstSix = blog.slice(0, GRID_LIMIT);
   // const blogsToShow = showMore ? blog : firstSix;
   // console.log(data);
@@ -167,8 +195,8 @@ const Blog = ({ data }) => {
       <Heading>Popular Articles</Heading>
       <BlogGrid>
         <TransitionGroup className="blogs">
-          {blog &&
-            blog.map(({ node }, i) => {
+          {popularArticles &&
+            popularArticles.map(({ node }, i) => {
               const { frontmatter } = node;
               const { title, tags, slug, description } = frontmatter;
               return (
@@ -216,10 +244,6 @@ const Blog = ({ data }) => {
       <ReadMore to="/blog">Read More Articles</ReadMore>
     </BlogContainer>
   );
-};
-
-Blog.propTypes = {
-  data: PropTypes.array.isRequired,
 };
 
 export default Blog;

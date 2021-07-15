@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import PropTypes from 'prop-types';
+import { graphql, useStaticQuery } from 'gatsby';
 import styled from 'styled-components';
 
 import { KEY_CODES } from '@utils';
@@ -208,7 +208,7 @@ const JobLocation = styled.h5`
 
 // ================================== COMPONENT =====================================
 
-const Jobs = ({ data }) => {
+const Jobs = () => {
   const [activeTabId, setActiveTabId] = useState(0);
   const [tabFocus, setTabFocus] = useState(null);
   const tabs = useRef([]);
@@ -257,13 +257,37 @@ const Jobs = ({ data }) => {
     }
   };
 
+  const data = useStaticQuery(graphql`
+    {
+      jobs: allMarkdownRemark(
+        filter: { fileAbsolutePath: { regex: "/jobs/" } }
+        sort: { fields: [frontmatter___date], order: DESC }
+      ) {
+        edges {
+          node {
+            frontmatter {
+              title
+              company
+              location
+              range
+              url
+            }
+            html
+          }
+        }
+      }
+    }
+  `);
+
+  const jobsData = data.jobs.edges;
+
   return (
     <JobsContainer id="jobs" ref={revealContainer}>
       <Heading>Work Experience</Heading>
       <TabsContainer>
         <Tabs aria-label="Job tabs" onKeyDown={onKeyDown} role="tablist">
-          {data &&
-            data.map(({ node }, i) => {
+          {jobsData &&
+            jobsData.map(({ node }, i) => {
               const { company } = node.frontmatter;
               return (
                 <li key={i}>
@@ -284,8 +308,8 @@ const Jobs = ({ data }) => {
           <Highlighter activeTabId={activeTabId} />
         </Tabs>
         <ContentContainer>
-          {data &&
-            data.map(({ node }, i) => {
+          {jobsData &&
+            jobsData.map(({ node }, i) => {
               const { frontmatter, html } = node;
               const { title, url, company, range, location } = frontmatter;
               return (
@@ -320,10 +344,6 @@ const Jobs = ({ data }) => {
       </TabsContainer>
     </JobsContainer>
   );
-};
-
-Jobs.propTypes = {
-  data: PropTypes.array.isRequired,
 };
 
 export default Jobs;

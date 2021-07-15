@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { graphql, useStaticQuery } from 'gatsby';
 import styled from 'styled-components';
 
 // import { email } from '@config';
@@ -94,7 +94,7 @@ const EmailLink = styled(ExternalLink)`
 
 // --------------------------- COMPONENT -----------------------------------
 
-const Hero = ({ data }) => {
+const Hero = () => {
   const [isMounted, setIsMounted] = useState(false);
 
   const { nowPlayingTrack, isAyushListeningToAnything } = useNowPlayingTrack();
@@ -110,15 +110,33 @@ const Hero = ({ data }) => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const { frontmatter, html } = data[0].node;
+  const data = useStaticQuery(graphql`
+    {
+      hero: allMarkdownRemark(filter: { fileAbsolutePath: { regex: "/hero/" } }) {
+        edges {
+          node {
+            frontmatter {
+              title
+              name
+              subtitle
+              contactText
+            }
+            html
+          }
+        }
+      }
+    }
+  `);
 
-  const one = () => <Hi style={{ transitionDelay: '100ms' }}>{frontmatter.title}</Hi>;
+  const { hero } = data;
+  const { frontmatter, html } = hero.edges[0].node;
+  const { title, name, subtitle, contactText } = frontmatter;
 
-  const two = () => <Name style={{ transitionDelay: '200ms' }}>{frontmatter.name}</Name>;
+  const one = () => <Hi style={{ transitionDelay: '100ms' }}>{title}</Hi>;
 
-  const three = () => (
-    <Subtitle style={{ transitionDelay: '300ms' }}>{frontmatter.subtitle}</Subtitle>
-  );
+  const two = () => <Name style={{ transitionDelay: '200ms' }}>{name}</Name>;
+
+  const three = () => <Subtitle style={{ transitionDelay: '300ms' }}>{subtitle}</Subtitle>;
 
   const four = () => (
     <Blurb style={{ transitionDelay: '400ms' }} dangerouslySetInnerHTML={{ __html: html }} />
@@ -166,10 +184,6 @@ const Hero = ({ data }) => {
       </TransitionGroup>
     </HeroContainer>
   );
-};
-
-Hero.propTypes = {
-  data: PropTypes.array.isRequired,
 };
 
 export default Hero;
