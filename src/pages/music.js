@@ -279,26 +279,14 @@ const MusicPage = ({ location }) => {
     refetchTopTracks: refetchTopArtists,
   } = useTopTracks('artists', topArtistsRange, 10);
 
-  const {
-    recentlyPlayedTracks,
-    recentTracksLoading,
-    recentTracksError,
-    refetchRecentTracks,
-  } = useRecentlyPlayedTracks(10);
+  const { recentlyPlayedTracks, recentTracksLoading, recentTracksError, refetchRecentTracks } =
+    useRecentlyPlayedTracks(10);
 
-  const {
-    recentlySavedTracks,
-    savedTracksLoading,
-    savedTracksError,
-    refetchSavedTracks,
-  } = useSavedTracks(10);
+  const { recentlySavedTracks, savedTracksLoading, savedTracksError, refetchSavedTracks } =
+    useSavedTracks(10);
 
-  const {
-    userPlaylists,
-    userPlaylistsError,
-    userPlaylistsLoading,
-    refetchUserPlaylists,
-  } = useUserPlaylists(10);
+  const { userPlaylists, userPlaylistsError, userPlaylistsLoading, refetchUserPlaylists } =
+    useUserPlaylists(10);
 
   const { addComment, count } = useComments(hasuraURL, pathname);
   const [songRecommendationData, setSongRecommendationData] = useState({
@@ -346,6 +334,7 @@ const MusicPage = ({ location }) => {
                   height={album.images[1].height}
                   width={album.images[1].width}
                   alt={`${album.name}'s album cover`}
+                  loading="lazy"
                 />
                 <TrackInfoContainer>
                   <ExternalLink url={external_urls.spotify} eventName="Spotify">
@@ -386,6 +375,7 @@ const MusicPage = ({ location }) => {
             height={images?.[0]?.height}
             width={images?.[0]?.width}
             alt={`${name}'s playlist cover`}
+            loading="lazy"
           />
           <TrackInfoContainer>
             <div>
@@ -429,6 +419,7 @@ const MusicPage = ({ location }) => {
                   height={images[1].height}
                   width={images[1].width}
                   alt={`${name}'s picture`}
+                  loading="lazy"
                 />
                 <TrackInfoContainer>
                   <ExternalLink url={external_urls.spotify} eventName="Spotify">
@@ -474,6 +465,7 @@ const MusicPage = ({ location }) => {
                   height={album.images[1].height}
                   width={album.images[1].width}
                   alt={`${album.name}'s album cover`}
+                  loading="lazy"
                 />
                 <TrackInfoContainer>
                   <ExternalLink url={external_urls.spotify} eventName="Spotify">
@@ -519,6 +511,7 @@ const MusicPage = ({ location }) => {
                   height={album.images[1].height}
                   width={album.images[1].width}
                   alt={`${album.name}'s album cover`}
+                  loading="lazy"
                 />
                 <TrackInfoContainer>
                   <ExternalLink url={external_urls.spotify} eventName="Spotify">
@@ -569,6 +562,7 @@ const MusicPage = ({ location }) => {
                   height={images[0].height}
                   width={images[0].width}
                   alt={`${name}'s playlist cover`}
+                  loading="lazy"
                 />
                 <TrackInfoContainer>
                   <div>
