@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import Img from 'gatsby-image';
+import { graphql, useStaticQuery } from 'gatsby';
+import { StaticImage } from 'gatsby-plugin-image';
 import styled from 'styled-components';
 
 import sr from '@utils/sr';
@@ -58,110 +58,94 @@ const Skill = styled.li`
   }
 `;
 
-const PicContainer = styled.div`
+const StyledPic = styled(ExternalLink)`
   position: relative;
-  width: 40%;
   max-width: 300px;
-  margin-left: 60px;
-  ${media.tablet`margin: 60px auto 0;`};
-  ${media.phablet`width: 70%;`};
-`;
 
-const Avatar = styled(Img)`
-  position: relative;
-  mix-blend-mode: screen;
-  filter: grayscale(100%) contrast(1);
-  ${media.tablet`
-    mix-blend-mode: normal; 
-    filter:grayscale(100%) contrast(1);
-    &:hover,
-    &:focus {
-      background: transparent;
-      filter: none;
-      mix-blend-mode: normal;
-      &:after {
-        top: 15px;
-        left: 15px;
-        background: transparent;
-        filter: none;
-    }`};
-  ${media.phablet`
-    mix-blend-mode: normal; 
-    filter:grayscale(100%) contrast(1);
-    &:hover,
-    &:focus {
-      background: transparent;
-      filter: none;
-      mix-blend-mode: normal;
-      &:after {
-        top: 15px;
-        left: 15px;
-        background: transparent;
-        filter: none;
-      }
-    `};
-  border-radius: ${theme.borderRadius};
-  transition: ${theme.transition};
-`;
+  @media (max-width: 768px) {
+    margin: 50px auto 0;
+    width: 70%;
+  }
 
-const AvatarContainer = styled(ExternalLink)`
-  ${mixins.boxShadow};
-  width: 100%;
-  position: relative;
-  border-radius: ${theme.borderRadius};
-  background-color: ${colors.green};
-  margin-left: -20px;
-  ${Avatar} {
-    border-radius: ${theme.borderRadius};
-  }
-  &:hover,
-  &:focus {
-    background: transparent;
-    filter: none;
-    mix-blend-mode: nomral;
-    &:after {
-      top: 15px;
-      left: 15px;
-      background: transparent;
-      filter: none;
-    }
-    ${Avatar} {
-      border-radius: ${theme.borderRadius};
-      filter: none;
-      mix-blend-mode: normal;
-    }
-  }
-  &:before,
-  &:after {
-    content: '';
+  .wrapper {
+    ${mixins.boxShadow};
     display: block;
-    position: absolute;
+    position: relative;
     width: 100%;
-    height: 100%;
     border-radius: ${theme.borderRadius};
-    transition: ${theme.transition};
-  }
-  &:before {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: ${colors.navy};
-    mix-blend-mode: normal;
-  }
-  &:after {
-    border: 2px solid ${colors.green};
-    top: 20px;
-    left: 20px;
-    z-index: -1;
+    background-color: ${colors.green};
+
+    &:hover,
+    &:focus {
+      background: transparent;
+      outline: 0;
+      &:after {
+        top: 15px;
+        left: 15px;
+      }
+      .img {
+        filter: none;
+        mix-blend-mode: normal;
+      }
+    }
+
+    .img {
+      position: relative;
+      border-radius: ${theme.borderRadius};
+      mix-blend-mode: multiply;
+      filter: grayscale(100%) contrast(1);
+      transition: ${theme.transition};
+    }
+
+    &:before,
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: ${theme.borderRadius};
+      transition: ${theme.transition};
+    }
+
+    &:before {
+      top: 0;
+      left: 0;
+      background-color: ${colors.navy};
+      mix-blend-mode: screen;
+    }
+
+    &:after {
+      border: 2px solid ${colors.green};
+      top: 20px;
+      left: 20px;
+      z-index: -1;
+    }
   }
 `;
 
 // ------------------------------ COMPONENT --------------------------------
 
-const About = ({ data }) => {
-  const { frontmatter, html } = data[0].node;
-  const { title, skills, avatar } = frontmatter;
+const About = () => {
+  const data = useStaticQuery(graphql`
+    {
+      about: allMarkdownRemark(filter: { fileAbsolutePath: { regex: "/about/" } }) {
+        edges {
+          node {
+            frontmatter {
+              title
+              skills
+            }
+            html
+          }
+        }
+      }
+    }
+  `);
+
+  const { about } = data;
+  const { frontmatter, html } = about.edges[0].node;
+  const { title, skills } = frontmatter;
   const revealContainer = useRef(null);
 
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -184,18 +168,21 @@ const About = ({ data }) => {
             {skills && skills.map((skill, i) => <Skill key={i}>{skill}</Skill>)}
           </SkillsContainer>
         </ContentContainer>
-        <PicContainer>
-          <AvatarContainer url={github} eventType="Github">
-            <Avatar fluid={avatar.childImageSharp.fluid} alt="Avatar" />
-          </AvatarContainer>
-        </PicContainer>
+
+        <StyledPic url={github} eventType="Github">
+          <div className="wrapper">
+            <StaticImage
+              className="img"
+              src="../../../content/about/ayush.jpg"
+              width={500}
+              quality={95}
+              alt="Headshot"
+            />
+          </div>
+        </StyledPic>
       </FlexContainer>
     </AboutContainer>
   );
-};
-
-About.propTypes = {
-  data: PropTypes.array.isRequired,
 };
 
 export default About;

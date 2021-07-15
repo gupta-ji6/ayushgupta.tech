@@ -155,6 +155,12 @@ const mixins = {
     border: 0;
     border-bottom: 2px dashed ${colors.slate};
   `,
+
+  resetList: css`
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  `,
 };
 
 export default mixins;

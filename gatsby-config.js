@@ -9,12 +9,30 @@ module.exports = {
   plugins: [
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-styled-components`,
-    `gatsby-plugin-sharp`,
+    `gatsby-plugin-image`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sitemap`,
     `gatsby-plugin-robots-txt`,
     `gatsby-plugin-netlify`,
     `gatsby-plugin-catch-links`,
+    {
+      resolve: `gatsby-plugin-sharp`,
+      options: {
+        defaults: {
+          formats: [`auto`, `webp`],
+          placeholder: `blurred`,
+          quality: 50,
+          breakpoints: [750, 1080, 1366, 1920],
+          backgroundColor: `transparent`,
+          // tracedSVGOptions: {},
+          // blurredOptions: {},
+          // jpgOptions: {},
+          // pngOptions: {},
+          // webpOptions: {},
+          // avifOptions: {},
+        },
+      },
+    },
     {
       resolve: `gatsby-plugin-nprogress`,
       options: {
