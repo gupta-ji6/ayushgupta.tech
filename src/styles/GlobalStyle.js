@@ -143,6 +143,16 @@ const GlobalStyle = createGlobalStyle`
     outline-offset: 3px;
   }
 
+  :focus:not(:focus-visible) {
+    outline: none;
+    outline-offset: 0px;
+  }
+
+  :focus-visible {
+    outline: 2px dashed ${colors.green};
+    outline-offset: 3px;
+  }
+
   /* Scrollbar Styles */
   html {
     scrollbar-width: thin;
