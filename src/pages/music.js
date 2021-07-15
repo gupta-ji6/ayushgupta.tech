@@ -1,5 +1,4 @@
 import React, { useEffect, Fragment, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
 import toast from 'react-hot-toast';
@@ -251,9 +250,7 @@ const SongCount = styled.div`
 
 // ======================================= COMPONENT ================================
 
-const MusicPage = ({ location }) => {
-  const { pathname } = location;
-
+const MusicPage = () => {
   const revealTitle = useRef(null);
   const revealMusicContent = useRef(null);
 
@@ -289,7 +286,7 @@ const MusicPage = ({ location }) => {
   const { userPlaylists, userPlaylistsError, userPlaylistsLoading, refetchUserPlaylists } =
     useUserPlaylists(10);
 
-  const { addComment, count } = useComments(hasuraURL, pathname);
+  const { addComment, count } = useComments(hasuraURL, '/music/');
   const [songRecommendationData, setSongRecommendationData] = useState({
     authorName: '',
     comment: '',
@@ -646,9 +643,7 @@ const MusicPage = ({ location }) => {
     <form onSubmit={onSongSubmit}>
       <StyledFieldset>
         <legend>recommend a song to ayush</legend>
-        {count !== 0 ? (
-          <SongCount>{count} people have suggested songs which ayush liked!</SongCount>
-        ) : null}
+        <SongCount>{count} people have suggested songs which ayush liked!</SongCount>
         <div>
           <label htmlFor="name">Name</label>
           <input
@@ -780,10 +775,6 @@ const MusicPage = ({ location }) => {
       </StyledMainContainer>
     </Layout>
   );
-};
-
-MusicPage.propTypes = {
-  location: PropTypes.object.isRequired,
 };
 
 export default MusicPage;
