@@ -134,6 +134,7 @@ const TrackItem = styled.div`
 const StyledAlbumCover = styled.img`
   width: 8rem;
   height: 8rem;
+  background-color: ${colors.navy};
   border: 2px solid transparent;
   border-radius: ${theme.borderRadius};
   z-index: 1;
