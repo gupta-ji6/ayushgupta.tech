@@ -9,9 +9,16 @@ const CURRENT_USER_SAVED_TRACKS_URL = 'https://api.spotify.com/v1/me/tracks';
 const CURRENT_USER_TOP_ARTISTS_TRACKS_URL = 'https://api.spotify.com/v1/me/top';
 const CURRENT_USER_PROFILE_URL = 'https://api.spotify.com/v1/me';
 
-const basic = Buffer.from(
-  `${process.env.GATSBY_SPOTIFY_CLIENT_ID}:${process.env.GATSBY_SPOTIFY_CLIENT_SECRET}`,
-).toString('base64');
+let basic;
+if (typeof window !== 'undefined') {
+  basic = btoa(
+    `${process.env.GATSBY_SPOTIFY_CLIENT_ID}:${process.env.GATSBY_SPOTIFY_CLIENT_SECRET}`,
+  );
+} else {
+  basic = Buffer.from(
+    `${process.env.GATSBY_SPOTIFY_CLIENT_ID}:${process.env.GATSBY_SPOTIFY_CLIENT_SECRET}`,
+  ).toString('base64');
+}
 
 // =============================== FUNCTIONS ===========================================================
 
