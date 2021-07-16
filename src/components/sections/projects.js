@@ -4,7 +4,13 @@ import styled from 'styled-components';
 import { graphql, useStaticQuery } from 'gatsby';
 
 import { Button, Section, media, mixins, theme } from '@styles';
-import { IconExternal, IconFolder, IconGithub, IconGooglePlay } from '@components/icons';
+import {
+  IconExternal,
+  IconFolder,
+  IconGithub,
+  IconGooglePlay,
+  IconAppStore,
+} from '@components/icons';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
 import { usePrefersReducedMotion } from '@hooks';
@@ -148,6 +154,7 @@ const Projects = () => {
               github
               external
               googleplay
+              appstore
               show
             }
             html
@@ -191,7 +198,7 @@ const Projects = () => {
           {projects &&
             projectsToShow.map(({ node }, i) => {
               const { frontmatter, html } = node;
-              const { github, external, title, tech, googleplay } = frontmatter;
+              const { github, external, title, tech, googleplay, appstore } = frontmatter;
               return (
                 <CSSTransition
                   key={i}
@@ -220,6 +227,11 @@ const Projects = () => {
                             {googleplay && (
                               <IconLink url={googleplay} aria-label="Google Play Store Link">
                                 <IconGooglePlay />
+                              </IconLink>
+                            )}
+                            {appstore && (
+                              <IconLink url={appstore} aria-label="Apple App Store Link">
+                                <IconAppStore />
                               </IconLink>
                             )}
                             {external && (

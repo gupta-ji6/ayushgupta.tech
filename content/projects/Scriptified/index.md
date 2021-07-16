@@ -12,9 +12,7 @@ tech:
   - Vercel
   - PWA
   - Buttondown
-show: 'true'
+show: 'false'
 ---
 
-WIP: A blazing fast Progressive Web App built in NextJS and Tailwind CSS.
-Built for publishing our curated weekly newsletters on JavaScript & React.
-Launching in Jan, 2021.
+A blazing fast Progressive Web App built with NextJS and Tailwind CSS. We publishing our curated weekly newsletters on JavaScript & React. The newsletter API is powered by Strapi CMS.
