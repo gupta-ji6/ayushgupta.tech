@@ -1,4 +1,5 @@
 import React, { useEffect, Fragment, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
 import toast from 'react-hot-toast';
@@ -250,7 +251,7 @@ const SongCount = styled.div`
 
 // ======================================= COMPONENT ================================
 
-const MusicPage = () => {
+const MusicPage = ({ location }) => {
   const revealTitle = useRef(null);
   const revealMusicContent = useRef(null);
 
@@ -775,6 +776,10 @@ const MusicPage = () => {
       </StyledMainContainer>
     </Layout>
   );
+};
+
+MusicPage.propTypes = {
+  location: PropTypes.object.isRequired,
 };
 
 export default MusicPage;
