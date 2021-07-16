@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { StaticQuery, graphql } from 'gatsby';
@@ -77,27 +77,29 @@ const Layout = ({ children, location }) => {
         }
       `}
       render={({ site }) => (
-        <div id="root">
+        <Fragment>
           <Head metadata={site.siteMetadata} />
 
-          <GlobalStyle />
+          <div id="root">
+            <GlobalStyle />
 
-          <SkipToContent href="#content">Skip to Content</SkipToContent>
+            <SkipToContent href="#content">Skip to Content</SkipToContent>
 
-          <Notifications />
+            <Notifications />
 
-          {/* {isLoading ? (
+            {/* {isLoading ? (
             <Loader finishLoading={() => setIsLoading(false)} />
           ) : ( */}
-          <StyledContent>
-            <Nav isHome={isHome} />
-            <Social isHome={isHome} />
-            <Email isHome={isHome} />
-            <div id="content">{children}</div>
-            <Footer isMusicPage={isMusicPage} />
-          </StyledContent>
-          {/*  )} */}
-        </div>
+            <StyledContent>
+              <Nav isHome={isHome} />
+              <Social isHome={isHome} />
+              <Email isHome={isHome} />
+              <div id="content">{children}</div>
+              <Footer isMusicPage={isMusicPage} />
+            </StyledContent>
+            {/*  )} */}
+          </div>
+        </Fragment>
       )}
     />
   );

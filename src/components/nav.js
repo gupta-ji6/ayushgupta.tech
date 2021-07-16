@@ -54,7 +54,7 @@ const StyledHeader = styled.header`
 
   @media (prefers-reduced-motion: no-preference) {
     ${props =>
-    props.scrollDirection === 'up' &&
+      props.scrollDirection === 'up' &&
       !props.scrolledToTop &&
       css`
         height: ${theme.navScrollHeight};
@@ -63,7 +63,7 @@ const StyledHeader = styled.header`
         box-shadow: 0 10px 30px -10px ${colors.shadowNavy};
       `};
     ${props =>
-    props.scrollDirection === 'down' &&
+      props.scrollDirection === 'down' &&
       !props.scrolledToTop &&
       css`
         height: ${theme.navScrollHeight};
@@ -81,28 +81,28 @@ const StyledNav = styled.nav`
   font-family: ${fonts.SFMono};
   counter-reset: item 0;
   z-index: 12;
-`;
 
-const StyledLogo = styled.div`
-  ${mixins.flexCenter};
+  .logo {
+    ${mixins.flexCenter};
 
-  a {
-    /* display: block; */
-    color: ${colors.green};
-    width: 50px;
-    height: 50px;
+    a {
+      /* display: block; */
+      color: ${colors.green};
+      width: 50px;
+      height: 50px;
 
-    &:hover,
-    &:focus {
-      svg {
-        fill: ${colors.transGreen};
+      &:hover,
+      &:focus {
+        svg {
+          fill: ${colors.transGreen};
+        }
       }
-    }
 
-    svg {
-      fill: none;
-      transition: ${theme.transition};
-      user-select: none;
+      svg {
+        fill: none;
+        transition: ${theme.transition};
+        user-select: none;
+      }
     }
   }
 `;
@@ -187,7 +187,7 @@ const Nav = ({ isHome }) => {
   const fadeDownClass = isHome ? 'fadedown' : '';
 
   const Logo = (
-    <StyledLogo tabIndex="-1">
+    <div className="logo" tabIndex="-1">
       {isHome ? (
         <a href="/" aria-label="home">
           <IconLogo />
@@ -197,7 +197,7 @@ const Nav = ({ isHome }) => {
           <IconLogo />
         </Link>
       )}
-    </StyledLogo>
+    </div>
   );
 
   const ResumeLink = (
