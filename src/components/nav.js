@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import ExternalLink from './externalLink';
 import { Menu } from '@components';
 import { IconLogo } from '@components/icons';
-import { useScrollDirection, usePrefersReducedMotion } from '@hooks';
+import { useScrollDirection } from '@hooks';
 import { navLinks } from '@config';
 import { mixins, theme } from '@styles';
 
@@ -159,17 +159,12 @@ const Nav = ({ isHome }) => {
   const [scrolledToTop, setScrolledToTop] = useState(true);
 
   const scrollDirection = useScrollDirection('down');
-  const prefersReducedMotion = usePrefersReducedMotion();
 
   const handleScroll = () => {
     setScrolledToTop(window.pageYOffset < 50);
   };
 
   useEffect(() => {
-    if (prefersReducedMotion) {
-      return;
-    }
-
     const timeout = setTimeout(() => {
       setIsMounted(true);
     }, 100);

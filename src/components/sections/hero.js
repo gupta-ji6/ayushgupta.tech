@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { graphql, useStaticQuery } from 'gatsby';
 import styled from 'styled-components';
@@ -6,7 +6,7 @@ import styled from 'styled-components';
 // import { email } from '@config';
 import { theme, mixins, media, Section } from '@styles';
 import { navDelay, loaderDelay } from '@config';
-import { useNowPlayingTrack } from '@hooks';
+import { useNowPlayingTrack, usePrefersReducedMotion } from '@hooks';
 import { NowPlayingContext } from '../now-palying';
 import ExternalLink from '../externalLink';
 
@@ -96,6 +96,7 @@ const EmailLink = styled(ExternalLink)`
 
 const Hero = () => {
   const [isMounted, setIsMounted] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const { nowPlayingTrack, isAyushListeningToAnything } = useNowPlayingTrack();
 
@@ -103,6 +104,10 @@ const Hero = () => {
     NowPlayingContext.playing[Math.floor(Math.random() * NowPlayingContext.playing.length)].copy;
 
   useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
     const timeout = setTimeout(() => {
       setIsMounted(true);
     }, navDelay);
@@ -132,19 +137,17 @@ const Hero = () => {
   const { frontmatter, html } = hero.edges[0].node;
   const { title, name, subtitle, contactText } = frontmatter;
 
-  const one = () => <Hi style={{ transitionDelay: '100ms' }}>{title}</Hi>;
+  const one = () => <Hi>{title}</Hi>;
 
-  const two = () => <Name style={{ transitionDelay: '200ms' }}>{name}</Name>;
+  const two = () => <Name>{name}</Name>;
 
-  const three = () => <Subtitle style={{ transitionDelay: '300ms' }}>{subtitle}</Subtitle>;
+  const three = () => <Subtitle>{subtitle}</Subtitle>;
 
-  const four = () => (
-    <Blurb style={{ transitionDelay: '400ms' }} dangerouslySetInnerHTML={{ __html: html }} />
-  );
+  const four = () => <Blurb dangerouslySetInnerHTML={{ __html: html }} />;
 
   const five = () =>
     isAyushListeningToAnything ? (
-      <NowPlayingTrack style={{ transitionDelay: '500ms' }}>
+      <NowPlayingTrack>
         <TrackCopy>{`${trackCopy} `}</TrackCopy>
         <ExternalLink
           url={nowPlayingTrack.external_urls.spotify}
@@ -157,7 +160,7 @@ const Hero = () => {
     ) : null;
 
   const six = () => (
-    <div style={{ transitionDelay: '600ms' }}>
+    <div>
       {/* <ResumeLink href="/resume.pdf" target="_blank" rel="nofollow noopener noreferrer">
         View Resume
       </ResumeLink> */}
@@ -174,14 +177,30 @@ const Hero = () => {
 
   return (
     <HeroContainer>
-      <TransitionGroup>
-        {isMounted &&
-          items.map((item, i) => (
-            <CSSTransition key={i} classNames="fadeup" timeout={loaderDelay}>
-              {item}
-            </CSSTransition>
-          ))}
-      </TransitionGroup>
+      {prefersReducedMotion ? (
+        <Fragment>
+          {items.map((Item, i) => {
+            return (
+              <div key={i}>
+                <Item />
+              </div>
+            );
+          })}
+        </Fragment>
+      ) : (
+        <TransitionGroup component={null}>
+          {isMounted &&
+            items.map((Item, i) => {
+              return (
+                <CSSTransition key={i} classNames="fadeup" timeout={loaderDelay}>
+                  <div style={{ transitionDelay: `${i + 1}00ms` }}>
+                    <Item />
+                  </div>
+                </CSSTransition>
+              );
+            })}
+        </TransitionGroup>
+      )}
     </HeroContainer>
   );
 };
