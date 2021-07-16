@@ -166,13 +166,6 @@ const StyledSidebar = styled.aside`
   }
 `;
 
-const ResumeLink = styled(ExternalLink)`
-  ${mixins.bigButton};
-  padding: 18px 50px;
-  margin: 10% auto 0;
-  width: max-content;
-`;
-
 // --------------------------- COMPONENT ------------------------------------------
 
 const Menu = () => {
@@ -286,9 +279,9 @@ const Menu = () => {
               </ol>
             )}
 
-            <ResumeLink url="/resume" eventName="View Resume">
+            <ExternalLink url="/resume" eventName="View Resume" className="resume-link">
               Resume
-            </ResumeLink>
+            </ExternalLink>
           </nav>
         </StyledSidebar>
       </div>

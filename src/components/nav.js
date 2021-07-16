@@ -140,16 +140,16 @@ const StyledLinks = styled.div`
       }
     }
   }
+
+  .resume-button {
+    ${mixins.smallButton};
+    margin-left: 10px;
+    font-size: ${fontSizes.smallish};
+  }
 `;
 
 const StyledListLink = styled(Link)`
   padding: 12px 10px;
-`;
-
-const StyledResumeButton = styled(ExternalLink)`
-  ${mixins.smallButton};
-  margin-left: 10px;
-  font-size: ${fontSizes.smallish};
 `;
 
 // --------------------------- COMPONENT ------------------------------------------
@@ -186,7 +186,7 @@ const Nav = ({ isHome }) => {
   const fadeClass = isHome ? 'fade' : '';
   const fadeDownClass = isHome ? 'fadedown' : '';
 
-  const Logo = (
+  const Logo = () => (
     <div className="logo" tabIndex="-1">
       {isHome ? (
         <a href="/" aria-label="home">
@@ -200,78 +200,60 @@ const Nav = ({ isHome }) => {
     </div>
   );
 
-  const ResumeLink = (
-    <StyledResumeButton url="/resume" eventName="View Resume">
+  const ResumeLink = () => (
+    <ExternalLink className="resume-button" url="/resume" eventName="View Resume">
       Resume
-    </StyledResumeButton>
+    </ExternalLink>
   );
 
   return (
     <StyledHeader scrollDirection={scrollDirection} scrolledToTop={scrolledToTop}>
       <StyledNav>
-        {prefersReducedMotion ? (
-          <Fragment>
-            {Logo}
+        <Fragment>
+          <TransitionGroup component={null}>
+            {isMounted && (
+              <CSSTransition classNames={fadeClass} timeout={timeout}>
+                <Fragment>
+                  <Logo />
+                </Fragment>
+              </CSSTransition>
+            )}
+          </TransitionGroup>
 
-            <StyledLinks>
-              <ol>
-                {navLinks &&
-                  navLinks.map(({ url, name }, i) => (
-                    <li key={i}>
-                      <Link to={navLinkRedirection(url, name)}>{name}</Link>
-                    </li>
-                  ))}
-              </ol>
-              <div>{ResumeLink}</div>
-            </StyledLinks>
-
-            <Menu />
-          </Fragment>
-        ) : (
-          <Fragment>
-            <TransitionGroup component={null}>
-              {isMounted && (
-                <CSSTransition classNames={fadeClass} timeout={timeout}>
-                  <Fragment>{Logo}</Fragment>
-                </CSSTransition>
-              )}
-            </TransitionGroup>
-
-            <StyledLinks>
-              <ol>
-                <TransitionGroup component={null}>
-                  {isMounted &&
-                    navLinks &&
-                    navLinks.map(({ url, name }, i) => (
-                      <CSSTransition key={i} classNames={fadeDownClass} timeout={timeout}>
-                        <li key={i} style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
-                          <StyledListLink to={navLinkRedirection(url, name)}>{name}</StyledListLink>
-                        </li>
-                      </CSSTransition>
-                    ))}
-                </TransitionGroup>
-              </ol>
-
+          <StyledLinks>
+            <ol>
               <TransitionGroup component={null}>
-                {isMounted && (
-                  <CSSTransition classNames={fadeDownClass} timeout={timeout}>
-                    <div style={{ transitionDelay: `${isHome ? navLinks.length * 100 : 0}ms` }}>
-                      {ResumeLink}
-                    </div>
-                  </CSSTransition>
-                )}
+                {isMounted &&
+                  navLinks &&
+                  navLinks.map(({ url, name }, i) => (
+                    <CSSTransition key={i} classNames={fadeDownClass} timeout={timeout}>
+                      <li key={i} style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
+                        <StyledListLink to={navLinkRedirection(url, name)}>{name}</StyledListLink>
+                      </li>
+                    </CSSTransition>
+                  ))}
               </TransitionGroup>
-            </StyledLinks>
+            </ol>
 
             <TransitionGroup component={null}>
               {isMounted && (
-                <CSSTransition classNames={fadeClass} timeout={timeout}>
-                  <Menu />
+                <CSSTransition classNames={fadeDownClass} timeout={timeout}>
+                  <div style={{ transitionDelay: `${isHome ? navLinks.length * 100 : 0}ms` }}>
+                    <ResumeLink />
+                  </div>
                 </CSSTransition>
               )}
             </TransitionGroup>
-          </Fragment>
-        )}
+          </StyledLinks>
+
+          <TransitionGroup component={null}>
+            {isMounted && (
+              <CSSTransition classNames={fadeClass} timeout={timeout}>
+                <Menu />
+              </CSSTransition>
+            )}
+          </TransitionGroup>
+        </Fragment>
       </StyledNav>
     </StyledHeader>
   );
