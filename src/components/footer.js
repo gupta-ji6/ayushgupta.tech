@@ -24,6 +24,10 @@ const FooterContainer = styled.footer`
   text-align: center;
   height: auto;
   min-height: 70px;
+
+  .now_playing_container {
+    max-width: 85vw;
+  }
 `;
 const SocialContainer = styled.div`
   color: ${colors.lightSlate};
@@ -58,45 +62,45 @@ const GithubLink = styled(ExternalLink)`
 
 const Footer = ({ isMusicPage }) => (
   <FooterContainer>
-    {isMusicPage ? null : <NowPlaying />}
+    <div className="now_playing_container">{isMusicPage ? null : <NowPlaying />}</div>
     <SocialContainer>
       <SocialItemList>
         {socialMedia &&
-            socialMedia.map(({ name, url }, i) => (
-              <li key={i}>
-                <SocialLink url={url} aria-label={name} eventType={name}>
-                  {name === 'Github' ? (
-                    <IconGithub />
-                  ) : name === 'Linkedin' ? (
-                    <IconLinkedin />
-                  ) : name === 'Medium' ? (
-                    <IconMedium />
-                  ) : name === 'Instagram' ? (
-                    <IconInstagram />
-                  ) : name === 'Twitter' ? (
-                    <IconTwitter />
-                  ) : name === 'Facebook' ? (
-                    <IconFacebook />
-                  ) : (
-                    <IconGithub />
-                  )}
-                </SocialLink>
-              </li>
-            ))}
+          socialMedia.map(({ name, url }, i) => (
+            <li key={i}>
+              <SocialLink url={url} aria-label={name} eventType={name}>
+                {name === 'Github' ? (
+                  <IconGithub />
+                ) : name === 'Linkedin' ? (
+                  <IconLinkedin />
+                ) : name === 'Medium' ? (
+                  <IconMedium />
+                ) : name === 'Instagram' ? (
+                  <IconInstagram />
+                ) : name === 'Twitter' ? (
+                  <IconTwitter />
+                ) : name === 'Facebook' ? (
+                  <IconFacebook />
+                ) : (
+                  <IconGithub />
+                )}
+              </SocialLink>
+            </li>
+          ))}
       </SocialItemList>
     </SocialContainer>
     <Copy>
       <GithubLink url="https://github.com/gupta-ji6" eventType="Github">
         <small>
-            Customized with{' '}
+          Customized with{' '}
           <span role="img" aria-label="Coffee">
-              ☕
+            ☕
           </span>{' '}
-            and{' '}
+          and{' '}
           <span role="img" aria-label="Heart">
-              ❤
+            ❤
           </span>{' '}
-            by Ayush Gupta
+          by Ayush Gupta
         </small>
         {/* <div>Template by Brittany Chiang</div> */}
       </GithubLink>

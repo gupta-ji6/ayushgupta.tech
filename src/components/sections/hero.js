@@ -152,7 +152,7 @@ const Hero = () => {
         <ExternalLink
           url={nowPlayingTrack.external_urls.spotify}
           eventName="Spotify"
-          eventType="Open Spotify Link">
+          eventType={`Hero - ${nowPlayingTrack.name}`}>
           {nowPlayingTrack.name}
         </ExternalLink>
         <span>{` at the moment.`}</span>

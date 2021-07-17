@@ -336,7 +336,10 @@ const MusicPage = ({ location }) => {
                   loading="lazy"
                 />
                 <TrackInfoContainer>
-                  <ExternalLink url={external_urls.spotify} eventName="Spotify">
+                  <ExternalLink
+                    url={external_urls.spotify}
+                    eventName="Spotify"
+                    eventType={`Top Tracks - ${name}`}>
                     {name}
                   </ExternalLink>
                   <Artists>{trackArtists.join(', ')}</Artists>
@@ -378,7 +381,10 @@ const MusicPage = ({ location }) => {
           />
           <TrackInfoContainer>
             <div>
-              <ExternalLink url={external_urls?.spotify} eventName="Spotify">
+              <ExternalLink
+                url={external_urls?.spotify}
+                eventName="Spotify"
+                eventType={`Favourite Playlist - ${name}`}>
                 {name}
               </ExternalLink>
               <span> by {owner?.display_name}</span>
@@ -421,7 +427,10 @@ const MusicPage = ({ location }) => {
                   loading="lazy"
                 />
                 <TrackInfoContainer>
-                  <ExternalLink url={external_urls.spotify} eventName="Spotify">
+                  <ExternalLink
+                    url={external_urls.spotify}
+                    eventName="Spotify"
+                    eventType={`Top Artists - ${name}`}>
                     {name}
                   </ExternalLink>
                   <Artists>{genres.join(', ')}</Artists>
@@ -467,7 +476,10 @@ const MusicPage = ({ location }) => {
                   loading="lazy"
                 />
                 <TrackInfoContainer>
-                  <ExternalLink url={external_urls.spotify} eventName="Spotify">
+                  <ExternalLink
+                    url={external_urls.spotify}
+                    eventName="Spotify"
+                    eventType={`Recently Played - ${name}`}>
                     {name}
                   </ExternalLink>
                   <Artists>{trackArtists.join(', ')}</Artists>
@@ -513,7 +525,10 @@ const MusicPage = ({ location }) => {
                   loading="lazy"
                 />
                 <TrackInfoContainer>
-                  <ExternalLink url={external_urls.spotify} eventName="Spotify">
+                  <ExternalLink
+                    url={external_urls.spotify}
+                    eventName="Spotify"
+                    eventType={`Recently Saved - ${name}`}>
                     {name}
                   </ExternalLink>
                   <Artists>{trackArtists.join(', ')}</Artists>
@@ -528,7 +543,7 @@ const MusicPage = ({ location }) => {
 
   const renderUserPlaylists = () => {
     if (userPlaylistsLoading) {
-      return <FetchLoader>Loading recently saved tracks...</FetchLoader>;
+      return <FetchLoader>Loading recently saved playlists...</FetchLoader>;
     } else if (userPlaylistsError !== null) {
       return (
         <RefetchContainer>
@@ -537,7 +552,7 @@ const MusicPage = ({ location }) => {
             type="button"
             data-splitbee-event="Re-fetch Playlists"
             onClick={() => refetchUserPlaylists()}>
-            Re-fetch Tracks
+            Re-fetch Playlists
           </StyledRefetchBtn>
         </RefetchContainer>
       );
@@ -565,7 +580,10 @@ const MusicPage = ({ location }) => {
                 />
                 <TrackInfoContainer>
                   <div>
-                    <ExternalLink url={external_urls.spotify} eventName="Spotify">
+                    <ExternalLink
+                      url={external_urls.spotify}
+                      eventName="Spotify"
+                      eventType={`Recently Saved Playlist - ${name}`}>
                       {name}
                     </ExternalLink>
                     <span> by {display_name}</span>
