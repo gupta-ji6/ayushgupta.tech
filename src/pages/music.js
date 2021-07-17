@@ -659,7 +659,7 @@ const MusicPage = ({ location }) => {
   };
 
   const renderSongReceommendationForm = () => (
-    <form onSubmit={onSongSubmit}>
+    <form onSubmit={onSongSubmit} data-splitbee-event="Song Recommendation">
       <StyledFieldset>
         <legend>recommend a song to ayush</legend>
         <SongCount>{count} people have suggested songs which ayush liked!</SongCount>
@@ -685,9 +685,7 @@ const MusicPage = ({ location }) => {
             required
           />
         </div>
-        <button type="submit" data-splitbee-event="Send Song Recommendation">
-          Send Recommendation
-        </button>
+        <button type="submit">Send Recommendation</button>
       </StyledFieldset>
     </form>
   );

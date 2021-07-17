@@ -230,7 +230,7 @@ const Comments = ({ slug = 'defaultSlug' }) => {
     <StyledCommentsContainer>
       <hr />
 
-      <StyledForm onSubmit={onSubmitComment}>
+      <StyledForm onSubmit={onSubmitComment} data-splitbee-event="Add Comment">
         <StyledFormEntry>
           <StyledLabel htmlFor="name">Full Name</StyledLabel>
           <StyledNameInput
@@ -257,9 +257,7 @@ const Comments = ({ slug = 'defaultSlug' }) => {
             required
           />
         </StyledFormEntry>
-        <StyledAddCommentBtn type="submit" data-splitbee-event="Add Comment">
-          Add Comment
-        </StyledAddCommentBtn>
+        <StyledAddCommentBtn type="submit">Add Comment</StyledAddCommentBtn>
       </StyledForm>
 
       <hr />
