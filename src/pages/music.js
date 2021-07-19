@@ -26,7 +26,7 @@ const { colors, fonts, fontSizes } = theme;
 
 const metaConfig = {
   title: 'Music - Ayush Gupta',
-  description: `Deep dive into my Ayush Gupta's music library. Explore anything from my current playing song or my top tracks this month.`,
+  description: `Deep dive into Ayush Gupta's music library. Explore anything from my current playing song or my top tracks this month.`,
   url: 'https://ayushgupta.tech/music',
 };
 
