@@ -1,19 +1,26 @@
 import React, { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'gatsby';
+import { graphql, Link, useStaticQuery } from 'gatsby';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import styled from 'styled-components';
+
 import sr from '@utils/sr';
 import { srConfig } from '@config';
+import { usePrefersReducedMotion } from '@hooks';
 import { IconArticle } from '@components/icons';
-import styled from 'styled-components';
 import { theme, mixins, media, Section, Heading } from '@styles';
+
+// ================================== CONSTANTS =====================================
+
 const { colors, fontSizes, fonts } = theme;
+
+// ================================== STYLED COMPONENTS =====================================
 
 const BlogContainer = styled(Section)`
   ${mixins.flexCenter};
   flex-direction: column;
   align-items: stretch;
 `;
+
 // const BlogTitle = styled.h4`
 //   margin: 0 auto 50px;
 //   font-size: ${fontSizes.h3};
@@ -22,6 +29,7 @@ const BlogContainer = styled(Section)`
 //     display: block;
 //   }
 // `;
+
 const BlogGrid = styled.div`
   .blogs {
     display: grid;
@@ -31,6 +39,7 @@ const BlogGrid = styled.div`
     ${media.tablet`grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));`};
   }
 `;
+
 const BlogInner = styled.div`
   ${mixins.boxShadow};
   ${mixins.flexBetween};
@@ -43,6 +52,7 @@ const BlogInner = styled.div`
   transition: ${theme.transition};
   background-color: ${colors.lightNavy};
 `;
+
 const Article = styled.div`
   transition: ${theme.transition};
   cursor: default;
@@ -54,10 +64,12 @@ const Article = styled.div`
     }
   }
 `;
+
 const BlogHeader = styled.div`
   ${mixins.flexBetween};
   margin-bottom: 30px;
 `;
+
 const Folder = styled.div`
   color: ${colors.green};
   svg {
@@ -65,10 +77,12 @@ const Folder = styled.div`
     height: 40px;
   }
 `;
+
 // const Links = styled.div`
 //   margin-right: -10px;
 //   color: ${colors.lightSlate};
 // `;
+
 // const IconLink = styled.a`
 //   position: relative;
 //   top: -10px;
@@ -79,11 +93,13 @@ const Folder = styled.div`
 //     height: 24px;
 //   }
 // `;
+
 const BlogName = styled.h4`
   margin: 0 0 10px;
   font-size: ${fontSizes.xxlarge};
   color: ${colors.lightestSlate};
 `;
+
 const BlogDescription = styled.div`
   font-size: 17px;
   color: ${colors.lightSlate};
@@ -91,6 +107,7 @@ const BlogDescription = styled.div`
     ${mixins.inlineLink};
   }
 `;
+
 const TagList = styled.ul`
   flex-grow: 1;
   display: flex;
@@ -108,6 +125,7 @@ const TagList = styled.ul`
     }
   }
 `;
+
 const ReadMore = styled(Link)`
   ${mixins.bigButton};
   margin: auto;
@@ -118,17 +136,55 @@ const ReadMore = styled(Link)`
   ${media.tablet`width: 40vw;`};
 `;
 
-const Blog = ({ data }) => {
+// ================================== COMPONENT =====================================
+
+const Blog = () => {
+  const data = useStaticQuery(graphql`
+    {
+      popularArticles: allMarkdownRemark(
+        filter: {
+          fileAbsolutePath: { regex: "/blog/" }
+          frontmatter: { draft: { ne: true }, popular: { eq: true } }
+        }
+        sort: { fields: [frontmatter___date], order: DESC }
+      ) {
+        edges {
+          node {
+            frontmatter {
+              title
+              description
+              slug
+              date
+              tags
+              draft
+              popular
+            }
+            html
+          }
+        }
+      }
+    }
+  `);
+
   // const [showMore, setShowMore] = useState(false);
   const revealContainer = useRef(null);
   const revealArticles = useRef([]);
+
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
     sr.reveal(revealContainer.current, srConfig());
     revealArticles.current.forEach((ref, i) => sr.reveal(ref, srConfig(i * 100)));
   }, []);
 
   const GRID_LIMIT = 2;
-  const blog = data.filter(({ node }) => node.frontmatter.popular && !node.frontmatter.draft);
+  const popularArticles = data.popularArticles.edges.filter(
+    ({ node }) => node.frontmatter.popular && !node.frontmatter.draft,
+  );
   // const firstSix = blog.slice(0, GRID_LIMIT);
   // const blogsToShow = showMore ? blog : firstSix;
   // console.log(data);
@@ -139,8 +195,8 @@ const Blog = ({ data }) => {
       <Heading>Popular Articles</Heading>
       <BlogGrid>
         <TransitionGroup className="blogs">
-          {blog &&
-            blog.map(({ node }, i) => {
+          {popularArticles &&
+            popularArticles.map(({ node }, i) => {
               const { frontmatter } = node;
               const { title, tags, slug, description } = frontmatter;
               return (
@@ -188,10 +244,6 @@ const Blog = ({ data }) => {
       <ReadMore to="/blog">Read More Articles</ReadMore>
     </BlogContainer>
   );
-};
-
-Blog.propTypes = {
-  data: PropTypes.array.isRequired,
 };
 
 export default Blog;

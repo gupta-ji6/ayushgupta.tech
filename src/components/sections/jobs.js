@@ -1,18 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import PropTypes from 'prop-types';
+import { graphql, useStaticQuery } from 'gatsby';
+import styled from 'styled-components';
+
 import { KEY_CODES } from '@utils';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
-import styled from 'styled-components';
 import { theme, mixins, media, Section, Heading } from '@styles';
-import ExternalLink from './externalLink';
+import { usePrefersReducedMotion } from '@hooks';
+import ExternalLink from '../externalLink';
+
+// ================================== CONSTANTS =====================================
+
 const { colors, fontSizes, fonts } = theme;
+
+// ================================== STYLED COMPONENTS =====================================
 
 const JobsContainer = styled(Section)`
   position: relative;
   max-width: 700px;
 `;
+
 const TabsContainer = styled.div`
   display: flex;
   align-items: flex-start;
@@ -21,6 +29,7 @@ const TabsContainer = styled.div`
     display: block;
   `};
 `;
+
 const Tabs = styled.ul`
   display: block;
   position: relative;
@@ -57,6 +66,7 @@ const Tabs = styled.ul`
     }
   }
 `;
+
 const Tab = styled.button`
   ${mixins.link};
   display: flex;
@@ -86,6 +96,7 @@ const Tab = styled.button`
     background-color: ${colors.lightNavy};
   }
 `;
+
 const Highlighter = styled.span`
   display: block;
   background: ${colors.green};
@@ -116,6 +127,7 @@ const Highlighter = styled.span`
     margin-left: 25px;
   `};
 `;
+
 const ContentContainer = styled.div`
   position: relative;
   padding-top: 12px;
@@ -124,6 +136,7 @@ const ContentContainer = styled.div`
   ${media.tablet`padding-left: 20px;`};
   ${media.thone`padding-left: 0;`};
 `;
+
 const TabContent = styled.div`
   top: 0;
   left: 0;
@@ -157,15 +170,18 @@ const TabContent = styled.div`
     ${mixins.inlineLink};
   }
 `;
+
 const JobTitle = styled.h4`
   color: ${colors.lightestSlate};
   font-size: ${fontSizes.xxlarge};
   font-weight: 500;
   margin-bottom: 5px;
 `;
+
 const Company = styled.span`
   color: ${colors.green};
 `;
+
 const JobDetails = styled.h5`
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.smallish};
@@ -177,6 +193,7 @@ const JobDetails = styled.h5`
     width: 15px;
   }
 `;
+
 const JobLocation = styled.h5`
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.smallish};
@@ -189,13 +206,23 @@ const JobLocation = styled.h5`
   }
 `;
 
-const Jobs = ({ data }) => {
+// ================================== COMPONENT =====================================
+
+const Jobs = () => {
   const [activeTabId, setActiveTabId] = useState(0);
   const [tabFocus, setTabFocus] = useState(null);
   const tabs = useRef([]);
 
   const revealContainer = useRef(null);
-  useEffect(() => sr.reveal(revealContainer.current, srConfig()), []);
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    sr.reveal(revealContainer.current, srConfig());
+  }, []);
 
   const focusTab = () => {
     if (tabs.current[tabFocus]) {
@@ -230,13 +257,37 @@ const Jobs = ({ data }) => {
     }
   };
 
+  const data = useStaticQuery(graphql`
+    {
+      jobs: allMarkdownRemark(
+        filter: { fileAbsolutePath: { regex: "/jobs/" } }
+        sort: { fields: [frontmatter___date], order: DESC }
+      ) {
+        edges {
+          node {
+            frontmatter {
+              title
+              company
+              location
+              range
+              url
+            }
+            html
+          }
+        }
+      }
+    }
+  `);
+
+  const jobsData = data.jobs.edges;
+
   return (
     <JobsContainer id="jobs" ref={revealContainer}>
       <Heading>Work Experience</Heading>
       <TabsContainer>
         <Tabs aria-label="Job tabs" onKeyDown={onKeyDown} role="tablist">
-          {data &&
-            data.map(({ node }, i) => {
+          {jobsData &&
+            jobsData.map(({ node }, i) => {
               const { company } = node.frontmatter;
               return (
                 <li key={i}>
@@ -257,8 +308,8 @@ const Jobs = ({ data }) => {
           <Highlighter activeTabId={activeTabId} />
         </Tabs>
         <ContentContainer>
-          {data &&
-            data.map(({ node }, i) => {
+          {jobsData &&
+            jobsData.map(({ node }, i) => {
               const { frontmatter, html } = node;
               const { title, url, company, range, location } = frontmatter;
               return (
@@ -293,10 +344,6 @@ const Jobs = ({ data }) => {
       </TabsContainer>
     </JobsContainer>
   );
-};
-
-Jobs.propTypes = {
-  data: PropTypes.array.isRequired,
 };
 
 export default Jobs;

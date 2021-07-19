@@ -1,15 +1,27 @@
-import React from 'react';
-import { Layout } from '@components';
-import { theme, mixins, media } from '@styles';
-const { colors, fontSizes } = theme;
-import ogImage from '@images/og-uses.png';
-
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
-import styled from 'styled-components';
-import { siteUrl } from '@config';
 import { Helmet } from 'react-helmet';
-import ExternalLink from '../components/externalLink';
+import styled from 'styled-components';
+
+import { Layout, ExternalLink, DetailsAndSummary } from '@components';
+import { theme, mixins, media } from '@styles';
+import ogImage from '@images/og-uses.png';
+import { siteUrl, srConfig } from '@config';
+import sr from '@utils/sr';
+import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion';
+
+// ============================= CONSTANTS ============================================
+
+const { colors, fontSizes } = theme;
+
+const metaConfig = {
+  title: 'Uses - Ayush Gupta',
+  description: `A living document of Ayush Gupta's setup, with apps he uses daily.`,
+  url: 'https://ayushgupta.tech/uses',
+};
+
+// ============================= STYLED COMPONENTS ============================================
 
 const StyledMainContainer = styled.main`
   padding: 200px 200px;
@@ -73,78 +85,6 @@ const StyledMainContainer = styled.main`
   a {
     ${mixins.inlineLink};
   }
-
-  details[open] {
-    summary > span {
-      color: ${colors.green};
-    }
-  }
-
-  details[open] summary ~ * {
-    animation: sweep 0.5s ease-in-out;
-  }
-
-  @keyframes sweep {
-    0% {
-      opacity: 0;
-      margin-left: -10px;
-    }
-    100% {
-      opacity: 1;
-      margin-left: 10px;
-    }
-  }
-`;
-
-const StyledDetails = styled.details`
-  summary::-webkit-details-marker {
-    color: ${colors.green};
-  }
-
-  summary::marker {
-    color: ${colors.green};
-  }
-
-  padding: 10px 0;
-
-  div {
-    margin-left: 10px;
-  }
-
-  transition: ${theme.transition};
-  &:hover,
-  &:focus {
-    transform: translateY(-5px);
-  }
-`;
-
-const StyledSummary = styled.summary`
-  display: list-item;
-  cursor: pointer;
-  position: relative;
-  padding: 10px;
-  font-size: ${fontSizes.h3};
-  ${theme.transition};
-  user-select: none;
-  line-height: 1.1;
-  color: ${colors.slate};
-  outline: none;
-
-  &:focus-visible {
-    outline: 1px solid ${colors.green};
-  }
-
-  span {
-    color: ${colors.white};
-    font-weight: 600;
-    &:hover {
-      color: ${colors.green};
-    }
-  }
-
-  p {
-    font-size: ${fontSizes.xxlarge};
-  }
 `;
 
 const MoreQuestionsSection = styled.section`
@@ -153,14 +93,29 @@ const MoreQuestionsSection = styled.section`
   padding-top: 60px;
 `;
 
-const metaConfig = {
-  title: 'Uses - Ayush Gupta',
-  description: 'A living document of setup with apps Ayush Gupta uses daily.',
-  url: 'https://ayushgupta.tech/uses',
-};
+const UsesContent = styled.div`
+  margin-left: 10px;
+`;
+
+// ============================= COMPONENT ============================================
 
 const UsesPage = ({ data, location }) => {
   const usesData = data.uses.edges;
+
+  const revealTitle = useRef(null);
+  const revealUsesContent = useRef(null);
+  const revealUsesItems = useRef([]);
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    sr.reveal(revealTitle.current, srConfig());
+    sr.reveal(revealUsesContent.current, srConfig(200, 0));
+    revealUsesItems.current.forEach((ref, i) => sr.reveal(ref, srConfig(i * 10)));
+  }, []);
 
   return (
     <Layout location={location}>
@@ -170,7 +125,7 @@ const UsesPage = ({ data, location }) => {
         <meta name="description" content={metaConfig.description} />
         <meta property="og:title" content={metaConfig.title} />
         <meta property="og:description" content={metaConfig.description} />
-        <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+        <meta property="og:image" content={`${siteUrl}${ogImage}?v=2`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={metaConfig.url} />
         <meta property="og:site_name" content={metaConfig.title} />
@@ -186,25 +141,25 @@ const UsesPage = ({ data, location }) => {
         <meta name="twitter:image:alt" content={metaConfig.title} />
       </Helmet>
       <StyledMainContainer id="content">
-        <header>
+        <header ref={revealTitle}>
           <h1 className="big-heading">Uses</h1>
-          <p className="subtitle">a living document of my setup with apps I use daily</p>
+          <p className="subtitle">a living document of my setup, with apps I use daily</p>
         </header>
 
-        <section>
+        <section ref={revealUsesContent}>
           {usesData &&
             usesData.map(({ node }, i) => {
               const { frontmatter, html } = node;
               const { title, subtitle } = frontmatter;
 
               return (
-                <StyledDetails key={i}>
-                  <StyledSummary>
-                    <span className="medium-heading">{title}</span>
-                    <p>{subtitle}</p>
-                  </StyledSummary>
-                  <div dangerouslySetInnerHTML={{ __html: html }} itemProp="usesContent" />
-                </StyledDetails>
+                <DetailsAndSummary
+                  key={i}
+                  title={title}
+                  subtitle={subtitle}
+                  ref={el => (revealUsesItems.current[i] = el)}>
+                  <UsesContent dangerouslySetInnerHTML={{ __html: html }} itemProp="usesContent" />
+                </DetailsAndSummary>
               );
             })}
         </section>

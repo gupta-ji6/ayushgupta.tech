@@ -1,13 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect, Fragment } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-// import { email } from '@config';
+import { graphql, useStaticQuery } from 'gatsby';
 import styled from 'styled-components';
+
+// import { email } from '@config';
 import { theme, mixins, media, Section } from '@styles';
-import { fetchCurrentTrack } from '../utils/spotify';
+import { navDelay, loaderDelay } from '@config';
+import { useNowPlayingTrack, usePrefersReducedMotion } from '@hooks';
+import { NowPlayingContext } from '../now-palying';
+import ExternalLink from '../externalLink';
+
+// --------------------------- CONSTANTS -----------------------------------
+
 const { colors, fontSizes, fonts } = theme;
-import { NowPlayingContext } from './now-palying';
-import ExternalLink from './externalLink';
+
+// --------------------------- STYLED COMPONENTS -----------------------------------
 
 const HeroContainer = styled(Section)`
   ${mixins.flexCenter};
@@ -19,6 +26,7 @@ const HeroContainer = styled(Section)`
     width: 100%;
   }
 `;
+
 const Hi = styled.h1`
   color: ${colors.green};
   margin: 0 0 20px 3px;
@@ -28,6 +36,7 @@ const Hi = styled.h1`
   ${media.desktop`font-size: ${fontSizes.small};`};
   ${media.tablet`font-size: ${fontSizes.smallish};`};
 `;
+
 const Name = styled.h2`
   font-size: 80px;
   line-height: 1.1;
@@ -37,6 +46,7 @@ const Name = styled.h2`
   ${media.phablet`font-size: 50px;`};
   ${media.phone`font-size: 40px;`};
 `;
+
 const Subtitle = styled.h3`
   font-size: 70px;
   line-height: 1.1;
@@ -46,6 +56,7 @@ const Subtitle = styled.h3`
   ${media.phablet`font-size: 40px;`};
   ${media.phone`font-size: 30px;`};
 `;
+
 const Blurb = styled.div`
   margin-top: 25px;
   width: 50%;
@@ -81,66 +92,81 @@ const EmailLink = styled(ExternalLink)`
   margin-top: 50px;
 `;
 
-const Hero = ({ data }) => {
+// --------------------------- COMPONENT -----------------------------------
+
+const Hero = () => {
   const [isMounted, setIsMounted] = useState(false);
-  const [track, setTrack] = useState({});
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  const { nowPlayingTrack, isAyushListeningToAnything } = useNowPlayingTrack();
 
   const trackCopy =
     NowPlayingContext.playing[Math.floor(Math.random() * NowPlayingContext.playing.length)].copy;
 
-  // fetch the current playing track, if any
-  const fetchNowPlaying = async () => {
-    const trackData = await fetchCurrentTrack();
-    // console.log(trackData);
-    if (trackData !== undefined) {
-      setTrack(trackData);
-    }
-  };
-
   useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
     const timeout = setTimeout(() => {
       setIsMounted(true);
-      fetchNowPlaying();
-    }, 1000);
+    }, navDelay);
 
     return () => clearTimeout(timeout);
   }, []);
 
-  const { frontmatter, html } = data[0].node;
+  const data = useStaticQuery(graphql`
+    {
+      hero: allMarkdownRemark(filter: { fileAbsolutePath: { regex: "/hero/" } }) {
+        edges {
+          node {
+            frontmatter {
+              title
+              name
+              subtitle
+              contactText
+            }
+            html
+          }
+        }
+      }
+    }
+  `);
 
-  const one = () => <Hi style={{ transitionDelay: '100ms' }}>{frontmatter.title}</Hi>;
+  const { hero } = data;
+  const { frontmatter, html } = hero.edges[0].node;
+  const { title, name, subtitle, contactText } = frontmatter;
 
-  const two = () => <Name style={{ transitionDelay: '200ms' }}>{frontmatter.name}</Name>;
+  const one = () => <Hi>{title}</Hi>;
 
-  const three = () => (
-    <Subtitle style={{ transitionDelay: '300ms' }}>{frontmatter.subtitle}</Subtitle>
-  );
+  const two = () => <Name>{name}</Name>;
 
-  const four = () => (
-    <Blurb style={{ transitionDelay: '400ms' }} dangerouslySetInnerHTML={{ __html: html }} />
-  );
+  const three = () => <Subtitle>{subtitle}</Subtitle>;
+
+  const four = () => <Blurb dangerouslySetInnerHTML={{ __html: html }} />;
 
   const five = () =>
-    Object.keys(track).length !== 0 ? (
-      <NowPlayingTrack style={{ transitionDelay: '500ms' }}>
+    isAyushListeningToAnything ? (
+      <NowPlayingTrack>
         <TrackCopy>{`${trackCopy} `}</TrackCopy>
         <ExternalLink
-          url={track.external_urls.spotify}
+          url={nowPlayingTrack.external_urls.spotify}
           eventName="Spotify"
-          eventType="Open Spotify Link">
-          {track.name}
+          eventType={`Hero - ${nowPlayingTrack.name}`}>
+          {nowPlayingTrack.name}
         </ExternalLink>
         <span>{` at the moment.`}</span>
       </NowPlayingTrack>
     ) : null;
 
   const six = () => (
-    <div style={{ transitionDelay: '600ms' }}>
+    <div>
       {/* <ResumeLink href="/resume.pdf" target="_blank" rel="nofollow noopener noreferrer">
         View Resume
       </ResumeLink> */}
       <EmailLink url="mailto:hire@ayushgupta.tech" eventName="Hire Me">
-        Hire Me {/* <span role="img" aria-label="man technologist">
+        Hire Me{' '}
+        {/* <span role="img" aria-label="man technologist">
           👨🏻‍💻
         </span> */}
       </EmailLink>
@@ -151,20 +177,32 @@ const Hero = ({ data }) => {
 
   return (
     <HeroContainer>
-      <TransitionGroup>
-        {isMounted &&
-          items.map((item, i) => (
-            <CSSTransition key={i} classNames="fadeup" timeout={3000}>
-              {item}
-            </CSSTransition>
-          ))}
-      </TransitionGroup>
+      {prefersReducedMotion ? (
+        <Fragment>
+          {items.map((Item, i) => {
+            return (
+              <div key={i}>
+                <Item />
+              </div>
+            );
+          })}
+        </Fragment>
+      ) : (
+        <TransitionGroup component={null}>
+          {isMounted &&
+            items.map((Item, i) => {
+              return (
+                <CSSTransition key={i} classNames="fadeup" timeout={loaderDelay}>
+                  <div style={{ transitionDelay: `${i + 1}00ms` }}>
+                    <Item />
+                  </div>
+                </CSSTransition>
+              );
+            })}
+        </TransitionGroup>
+      )}
     </HeroContainer>
   );
-};
-
-Hero.propTypes = {
-  data: PropTypes.array.isRequired,
 };
 
 export default Hero;

@@ -16,7 +16,6 @@ const GlobalStyle = createGlobalStyle`
     url(${fontFamilies.CalibreLightTTF}) format('truetype');
     font-weight: 300;
     font-style: normal;
-    font-display: auto;
   }
   @font-face {
     font-family: 'Calibre';
@@ -25,7 +24,6 @@ const GlobalStyle = createGlobalStyle`
     url(${fontFamilies.CalibreLightItalicTTF}) format('truetype');
     font-weight: 300;
     font-style: italic;
-    font-display: auto;
   }
   @font-face {
     font-family: 'Calibre';
@@ -34,7 +32,6 @@ const GlobalStyle = createGlobalStyle`
     url(${fontFamilies.CalibreRegularTTF}) format('truetype');
     font-weight: normal;
     font-style: normal;
-    font-display: auto;
   }
   @font-face {
     font-family: 'Calibre';
@@ -43,7 +40,6 @@ const GlobalStyle = createGlobalStyle`
     url(${fontFamilies.CalibreRegularItalicTTF}) format('truetype');
     font-weight: normal;
     font-style: italic;
-    font-display: auto;
   }
   @font-face {
     font-family: 'Calibre';
@@ -52,7 +48,6 @@ const GlobalStyle = createGlobalStyle`
     url(${fontFamilies.CalibreMediumTTF}) format('truetype');
     font-weight: 500;
     font-style: normal;
-    font-display: auto;
   }
   @font-face {
     font-family: 'Calibre';
@@ -61,7 +56,6 @@ const GlobalStyle = createGlobalStyle`
     url(${fontFamilies.CalibreMediumItalicTTF}) format('truetype');
     font-weight: 500;
     font-style: italic;
-    font-display: auto;
   }
   @font-face {
     font-family: 'Calibre';
@@ -70,7 +64,6 @@ const GlobalStyle = createGlobalStyle`
     url(${fontFamilies.CalibreSemiboldTTF}) format('truetype');
     font-weight: 600;
     font-style: normal;
-    font-display: auto;
   }
   @font-face {
     font-family: 'Calibre';
@@ -79,7 +72,6 @@ const GlobalStyle = createGlobalStyle`
     url(${fontFamilies.CalibreSemiboldItalicTTF}) format('truetype');
     font-weight: 600;
     font-style: italic;
-    font-display: auto;
   }
   @font-face {
     font-family: 'SF Mono';
@@ -88,7 +80,6 @@ const GlobalStyle = createGlobalStyle`
     url(${fontFamilies.SFMonoRegularTTF}) format('truetype');
     font-weight: normal;
     font-style: normal;
-    font-display: auto;
   }
   @font-face {
     font-family: 'SF Mono';
@@ -97,7 +88,6 @@ const GlobalStyle = createGlobalStyle`
     url(${fontFamilies.SFMonoRegularItalicTTF}) format('truetype');
     font-weight: normal;
     font-style: italic;
-    font-display: auto;
   }
   @font-face {
     font-family: 'SF Mono';
@@ -106,7 +96,6 @@ const GlobalStyle = createGlobalStyle`
     url(${fontFamilies.SFMonoMediumTTF}) format('truetype');
     font-weight: 500;
     font-style: normal;
-    font-display: auto;
   }
   @font-face {
     font-family: 'SF Mono';
@@ -115,7 +104,6 @@ const GlobalStyle = createGlobalStyle`
     url(${fontFamilies.SFMonoMediumItalicTTF}) format('truetype');
     font-weight: 500;
     font-style: italic;
-    font-display: auto;
   }
   @font-face {
     font-family: 'SF Mono';
@@ -124,7 +112,6 @@ const GlobalStyle = createGlobalStyle`
     url(${fontFamilies.SFMonoSemiboldTTF}) format('truetype');
     font-weight: 600;
     font-style: normal;
-    font-display: auto;
   }
   @font-face {
     font-family: 'SF Mono';
@@ -133,7 +120,6 @@ const GlobalStyle = createGlobalStyle`
     url(${fontFamilies.SFMonoSemiboldItalicTTF}) format('truetype');
     font-weight: 600;
     font-style: italic;
-    font-display: auto;
   }
 
   html {
@@ -145,6 +131,43 @@ const GlobalStyle = createGlobalStyle`
   *:before,
   *:after {
     box-sizing: inherit;
+  }
+
+  ::selection {
+    background-color: ${colors.lightestNavy};
+    color: ${colors.lightestSlate};
+  }
+  
+  :focus {
+    outline: 2px dashed ${colors.green};
+    outline-offset: 3px;
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+    outline-offset: 0px;
+  }
+
+  :focus-visible {
+    outline: 2px dashed ${colors.green};
+    outline-offset: 3px;
+  }
+
+  /* Scrollbar Styles */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: ${colors.darkSlate} ${colors.navy};
+  }
+  body::-webkit-scrollbar {
+    width: 12px;
+  }
+  body::-webkit-scrollbar-track {
+    background: ${colors.navy};
+  }
+  body::-webkit-scrollbar-thumb {
+    background-color: ${colors.darkSlate};
+    border: 3px solid ${colors.navy};
+    border-radius: 10px;
   }
 
   body {
@@ -164,19 +187,19 @@ const GlobalStyle = createGlobalStyle`
     &.hidden {
       overflow: hidden;
     }
+    
     &.blur {
       overflow: hidden;
-      #root > .container > * {
+      header {
+        background-color: transparent;
+      }
+      #content > * {
         filter: blur(5px) brightness(0.7);
         transition: ${theme.transition};
         pointer-events: none;
         user-select: none;
       }
     }
-  }
-
-  ::selection {
-    background-color: ${colors.highlight};
   }
 
   h1,
@@ -222,7 +245,6 @@ const GlobalStyle = createGlobalStyle`
     &:hover,
     &:focus {
       color: ${colors.green};
-      outline: 0;
     }
   }
 

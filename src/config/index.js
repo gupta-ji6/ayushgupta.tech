@@ -41,14 +41,14 @@ module.exports = {
   ],
 
   navLinks: [
-    {
-      name: 'About',
-      url: '/#about',
-    },
-    {
-      name: 'Experience',
-      url: '/#jobs',
-    },
+    // {
+    //   name: 'About',
+    //   url: '/#about',
+    // },
+    // {
+    //   name: 'Experience',
+    //   url: '/#jobs',
+    // },
     {
       name: 'Projects',
       url: '/#projects',
@@ -66,15 +66,21 @@ module.exports = {
       url: '/uses',
     },
     {
-      name: 'Contact',
-      url: '/#contact',
+      name: 'Music',
+      url: '/music',
     },
+    // {
+    //   name: 'Contact',
+    //   url: '/#contact',
+    // },
   ],
 
   twitterHandle: '@_guptaji_',
   googleAnalyticsID: 'G-XYDGVM2S3D',
 
   navHeight: 100,
+  navDelay: 1000,
+  loaderDelay: 2000,
 
   greenColor: '#64ffda',
   navyColor: '#0a192f',

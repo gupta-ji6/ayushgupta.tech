@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Email, Footer, Head, Nav, Social, Notifications } from '@components';
-import { GlobalStyle, theme } from '@styles';
-import { StaticQuery, graphql } from 'gatsby';
-
+import React, { useEffect, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { StaticQuery, graphql } from 'gatsby';
 
-const { colors, fontSizes, fonts } = theme;
+import { Email, Footer, Head, Nav, Social, Notifications } from '@components';
+import { GlobalStyle, theme, mixins } from '@styles';
+
+// ---------------------------- CONSTANTS ----------------------------
+
+const { colors } = theme;
+
+// ---------------------------- STYLED COMPONENTS ----------------------------
 
 const SkipToContent = styled.a`
+  ${mixins.button};
   position: absolute;
   top: auto;
   left: -999px;
@@ -16,22 +21,10 @@ const SkipToContent = styled.a`
   height: 1px;
   overflow: hidden;
   z-index: -99;
-  &:hover {
-    background-color: ${colors.darkGrey};
-  }
   &:focus,
   &:active {
-    outline: 0;
-    color: ${colors.green};
-    background-color: ${colors.lightNavy};
-    border-radius: ${theme.borderRadius};
-    padding: 18px 23px;
-    font-size: ${fontSizes.small};
-    font-family: ${fonts.SFMono};
-    line-height: 1;
-    text-decoration: none;
-    cursor: pointer;
-    transition: ${theme.transition};
+    background-color: ${colors.green};
+    color: ${colors.navy};
     top: 0;
     left: 0;
     width: auto;
@@ -47,8 +40,11 @@ const StyledContent = styled.div`
   min-height: 100vh;
 `;
 
+// ---------------------------- COMPONENT ----------------------------
+
 const Layout = ({ children, location }) => {
   const isHome = location.pathname === '/';
+  const isMusicPage = ['/music', '/music/'].includes(location.pathname);
   const [isLoading] = useState(isHome);
 
   useEffect(() => {
@@ -81,27 +77,29 @@ const Layout = ({ children, location }) => {
         }
       `}
       render={({ site }) => (
-        <div id="root">
+        <Fragment>
           <Head metadata={site.siteMetadata} />
 
-          <GlobalStyle />
+          <div id="root">
+            <GlobalStyle />
 
-          <SkipToContent href="#content">Skip to Content</SkipToContent>
+            <SkipToContent href="#content">Skip to Content</SkipToContent>
 
-          <Notifications />
+            <Notifications />
 
-          {/* {isLoading ? (
+            {/* {isLoading ? (
             <Loader finishLoading={() => setIsLoading(false)} />
           ) : ( */}
-          <StyledContent>
-            <Nav isHome={isHome} />
-            <Social />
-            <Email />
-            {children}
-            <Footer />
-          </StyledContent>
-          {/*  )} */}
-        </div>
+            <StyledContent>
+              <Nav isHome={isHome} />
+              <Social isHome={isHome} />
+              <Email isHome={isHome} />
+              <div id="content">{children}</div>
+              <Footer isMusicPage={isMusicPage} />
+            </StyledContent>
+            {/*  )} */}
+          </div>
+        </Fragment>
       )}
     />
   );

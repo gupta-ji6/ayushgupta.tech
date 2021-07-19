@@ -1,6 +1,6 @@
 import React from 'react';
 import { graphql, Link } from 'gatsby';
-import Img from 'gatsby-image';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import kebabCase from 'lodash/kebabCase';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
@@ -41,16 +41,16 @@ const StyledPostHeader = styled.header`
   .tag {
     margin-right: 10px;
   }
+
+  .cover_image {
+    margin-bottom: 1.2rem;
+  }
 `;
 
 const StledArticleDescription = styled.h2`
   color: ${colors.slate};
   font-weight: 500;
   margin: 1.2rem auto;
-`;
-
-const StyledCoverImage = styled(Img)`
-  margin-bottom: 1.2rem;
 `;
 
 const StyledDate = styled.time`
@@ -64,6 +64,7 @@ const StyledArticleTags = styled.p`
     color: ${colors.slate};
   }
 `;
+
 const StyledPostContent = styled.div`
   h1,
   h2,
@@ -144,11 +145,9 @@ const StyledPostContent = styled.div`
 const PostTemplate = ({ data, location }) => {
   const { frontmatter, html } = data.markdownRemark;
   const { title, date, tags, description, draft, slug, cover } = frontmatter;
-  const {
-    childImageSharp: {
-      fluid: { src },
-    },
-  } = cover;
+  const image = getImage(cover);
+  const ogImageSrc = image.images.fallback.src;
+  console.log(image);
 
   return (
     <Layout location={location}>
@@ -158,7 +157,7 @@ const PostTemplate = ({ data, location }) => {
         <meta name="description" content={description} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        <meta property="og:image" content={`${siteUrl}${src}`} />
+        <meta property="og:image" content={`${siteUrl}${ogImageSrc}`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={location.href} />
         <meta property="og:site_name" content={title} />
@@ -169,11 +168,11 @@ const PostTemplate = ({ data, location }) => {
         <meta name="twitter:url" content={siteUrl} />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={`${siteUrl}${src}`} />
+        <meta name="twitter:image" content={`${siteUrl}${ogImageSrc}`} />
         <meta name="twitter:image:alt" content={title} />
       </Helmet>
 
-      <StyledPostContainer id="content">
+      <StyledPostContainer>
         <span className="breadcrumb">
           <span className="arrow">&larr;</span>
           <Link to="/blog">All articles</Link>
@@ -190,7 +189,7 @@ const PostTemplate = ({ data, location }) => {
           <h1 className="medium-heading">{title}</h1>
           <StledArticleDescription>{description}</StledArticleDescription>
 
-          <StyledCoverImage fluid={cover.childImageSharp.fluid} />
+          <GatsbyImage image={image} className="cover_image" alt="Blog cover image" />
           <p className="subtitle">
             <StyledDate>
               {new Date(date).toLocaleDateString('en-US', {
@@ -232,7 +231,7 @@ PostTemplate.propTypes = {
 };
 
 export const pageQuery = graphql`
-  query($path: String!) {
+  query ($path: String!) {
     markdownRemark(frontmatter: { slug: { eq: $path } }) {
       html
       frontmatter {
@@ -242,9 +241,7 @@ export const pageQuery = graphql`
         slug
         cover {
           childImageSharp {
-            fluid(maxWidth: 700, quality: 90, traceSVG: { color: "#64ffda" }) {
-              ...GatsbyImageSharpFluid_withWebp_tracedSVG
-            }
+            gatsbyImageData(quality: 80, placeholder: BLURRED, formats: [AUTO, WEBP, AVIF])
           }
         }
         tags

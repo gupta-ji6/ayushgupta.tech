@@ -1,9 +1,11 @@
 import React from 'react';
-import Img from 'gatsby-image';
+import { StaticImage } from 'gatsby-plugin-image';
 import styled from 'styled-components';
-import { graphql, useStaticQuery } from 'gatsby';
 import PropTypes from 'prop-types';
+
 import { theme, media, mixins } from '@styles';
+
+// ======================= CONSTANTS ========================
 
 const { colors } = theme;
 
@@ -25,20 +27,6 @@ const StyledAuthorContainer = styled.div`
     margin-top: 2rem;
     padding: 1.5rem;
     align-items: center;`}
-
-`;
-
-const StyledAuthorImg = styled(Img)`
-  border-radius: ${theme.borderRadius};
-  ${props => props.showBg && `border-radius: 50%;`}
-  background-color: ${colors.lightNavy};
-  padding: 4px;
-  object-fit: cover;
-  border: 0.15rem solid ${colors.green};
-  margin-right: 1rem;
-  margin-bottom: 1rem;
-  /* ${media.tablet`margin-bottom: 1rem;`}
-  ${media.phone`margin-bottom: 1rem;`} */
 `;
 
 const StyledAuthorDescription = styled.div`
@@ -47,46 +35,35 @@ const StyledAuthorDescription = styled.div`
   /* ${props => !props.showBg && 'text-align: center;'}; */
 `;
 
+const AuthorImgContainer = styled.div`
+  width: 20vw;
+
+  .img {
+    border-radius: ${theme.borderRadius};
+    ${props => props.showBg && `border-radius: 50%;`}
+    background-color: ${colors.lightNavy};
+    padding: 4px;
+    object-fit: cover;
+    border: 0.15rem solid ${colors.green};
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+  }
+`;
+
 // ======================= COMPONENT ========================
 
 const Author = ({ showBg = false }) => {
-  const data = useStaticQuery(graphql`
-    {
-      author: allMarkdownRemark(filter: { fileAbsolutePath: { regex: "/about/" } }) {
-        edges {
-          node {
-            frontmatter {
-              avatar {
-                childImageSharp {
-                  fluid(maxWidth: 300, quality: 90, traceSVG: { color: "#64ffda" }) {
-                    ...GatsbyImageSharpFluid_withWebp_tracedSVG
-                    ...GatsbyImageSharpFluidLimitPresentationSize
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `);
-  // console.log(data);
-  const {
-    node: {
-      frontmatter: {
-        avatar: {
-          childImageSharp: { fluid },
-        },
-      },
-    },
-  } = data?.author?.edges[0];
-  // console.log(childImageSharp);
-
   return (
     <StyledAuthorContainer showBg={showBg}>
-      <div style={{ width: '20vh' }}>
-        <StyledAuthorImg fluid={fluid} alt="Ayush Gupta" />
-      </div>
+      <AuthorImgContainer style={{ width: '20vh' }}>
+        <StaticImage
+          className="img"
+          src="../../content/about/ayush.jpg"
+          width={400}
+          quality={95}
+          alt="Ayush Gupta's Picture"
+        />
+      </AuthorImgContainer>
       <StyledAuthorDescription>
         <strong>{`Ayush Gupta `}</strong>
         <span>
@@ -99,9 +76,8 @@ const Author = ({ showBg = false }) => {
   );
 };
 
-export default Author;
-
 Author.propTypes = {
   showBg: PropTypes.bool,
-  data: PropTypes.object,
 };
+
+export default Author;

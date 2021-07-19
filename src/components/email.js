@@ -1,24 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { email } from '@config';
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme, media } from '@styles';
+
+import { Side } from '@components';
 import ExternalLink from './externalLink';
+import { email } from '@config';
+import { theme } from '@styles';
+
+// ------------------------- CONSTANTS ------------------------------
+
 const { colors, fontSizes, fonts } = theme;
 
-const EmailContainer = styled.div`
-  width: 40px;
-  position: fixed;
-  bottom: 0;
-  right: 40px;
-  color: ${colors.lightSlate};
-  ${media.desktop`right: 25px;`};
-  ${media.tablet`display: none;`};
-  div {
-    width: 100%;
-    margin: 0 auto;
-  }
-`;
+// ------------------------- STYLED COMPONENTS ------------------------------
+
 const EmailLinkWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -33,6 +27,7 @@ const EmailLinkWrapper = styled.div`
     background-color: ${colors.lightSlate};
   }
 `;
+
 const EmailLink = styled(ExternalLink)`
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.xsmall};
@@ -47,29 +42,20 @@ const EmailLink = styled(ExternalLink)`
   }
 `;
 
-const Email = () => {
-  const [isMounted, setIsMounted] = useState(false);
+// ------------------------- COMPONENT ------------------------------
 
-  useEffect(() => {
-    const timeout = setTimeout(() => setIsMounted(true), 2000);
-    return () => clearTimeout(timeout);
-  }, []);
+const Email = ({ isHome }) => (
+  <Side isHome={isHome} orientation="right">
+    <EmailLinkWrapper>
+      <EmailLink url={`mailto:${email}`} eventName="Mail" eventType="Hello">
+        {email}
+      </EmailLink>
+    </EmailLinkWrapper>
+  </Side>
+);
 
-  return (
-    <EmailContainer>
-      <TransitionGroup>
-        {isMounted && (
-          <CSSTransition timeout={3000} classNames="fade">
-            <EmailLinkWrapper>
-              <EmailLink url={`mailto:${email}`} eventName="Mail" eventType="Hello">
-                {email}
-              </EmailLink>
-            </EmailLinkWrapper>
-          </CSSTransition>
-        )}
-      </TransitionGroup>
-    </EmailContainer>
-  );
+Email.propTypes = {
+  isHome: PropTypes.bool,
 };
 
 export default Email;

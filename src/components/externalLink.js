@@ -5,7 +5,7 @@ import { OutboundLink } from 'gatsby-plugin-google-gtag';
 const ExternalLink = ({
   url,
   children,
-  className,
+  className = '',
   eventName = 'External Link',
   eventType = '',
   ...otherProps

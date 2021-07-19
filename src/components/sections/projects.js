@@ -1,21 +1,33 @@
-import { Button, Section, media, mixins, theme } from '@styles';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { IconExternal, IconFolder, IconGithub, IconGooglePlay } from '@components/icons';
 import React, { useEffect, useRef, useState } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import styled from 'styled-components';
+import { graphql, useStaticQuery } from 'gatsby';
 
-import PropTypes from 'prop-types';
+import { Button, Section, media, mixins, theme } from '@styles';
+import {
+  IconExternal,
+  IconFolder,
+  IconGithub,
+  IconGooglePlay,
+  IconAppStore,
+} from '@components/icons';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
-import styled from 'styled-components';
-import ExternalLink from './externalLink';
+import { usePrefersReducedMotion } from '@hooks';
+import ExternalLink from '../externalLink';
+
+// ================================== CONSTANTS =====================================
 
 const { colors, fontSizes, fonts } = theme;
+
+// ================================== STYLED COMPONENTS =====================================
 
 const ProjectsContainer = styled(Section)`
   ${mixins.flexCenter};
   flex-direction: column;
   align-items: stretch;
 `;
+
 const ProjectsTitle = styled.h4`
   margin: 0 auto 50px;
   font-size: ${fontSizes.h3};
@@ -24,6 +36,7 @@ const ProjectsTitle = styled.h4`
     display: block;
   }
 `;
+
 const ProjectsGrid = styled.div`
   .projects {
     display: grid;
@@ -33,6 +46,7 @@ const ProjectsGrid = styled.div`
     ${media.desktop`grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));`};
   }
 `;
+
 const ProjectInner = styled.div`
   ${mixins.boxShadow};
   ${mixins.flexBetween};
@@ -45,6 +59,7 @@ const ProjectInner = styled.div`
   transition: ${theme.transition};
   background-color: ${colors.lightNavy};
 `;
+
 const Project = styled.div`
   transition: ${theme.transition};
   cursor: default;
@@ -56,10 +71,12 @@ const Project = styled.div`
     }
   }
 `;
+
 const ProjectHeader = styled.div`
   ${mixins.flexBetween};
   margin-bottom: 30px;
 `;
+
 const Folder = styled.div`
   color: ${colors.green};
   svg {
@@ -67,10 +84,12 @@ const Folder = styled.div`
     height: 40px;
   }
 `;
+
 const Links = styled.div`
   margin-right: -10px;
   color: ${colors.lightSlate};
 `;
+
 const IconLink = styled(ExternalLink)`
   position: relative;
   top: -10px;
@@ -81,17 +100,20 @@ const IconLink = styled(ExternalLink)`
     height: 24px;
   }
 `;
+
 const ProjectName = styled.h5`
   margin: 0 0 10px;
   font-size: ${fontSizes.xxlarge};
   color: ${colors.lightestSlate};
 `;
+
 const ProjectDescription = styled.div`
   font-size: 17px;
   a {
     ${mixins.inlineLink};
   }
 `;
+
 const TechList = styled.ul`
   flex-grow: 1;
   display: flex;
@@ -109,21 +131,57 @@ const TechList = styled.ul`
     }
   }
 `;
+
 const ShowMoreButton = styled(Button)`
   margin: 100px auto 0;
 `;
 
-const Projects = ({ data }) => {
+// ================================== COMPONENT =====================================
+
+const Projects = () => {
+  const data = useStaticQuery(graphql`
+    {
+      projects: allMarkdownRemark(
+        filter: { fileAbsolutePath: { regex: "/projects/" } }
+        sort: { fields: [frontmatter___date], order: DESC }
+      ) {
+        edges {
+          node {
+            frontmatter {
+              title
+              image
+              tech
+              github
+              external
+              googleplay
+              appstore
+              show
+            }
+            html
+          }
+        }
+      }
+    }
+  `);
+
   const [showMore, setShowMore] = useState(false);
+
   const revealTitle = useRef(null);
   const revealProjects = useRef([]);
+
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
     sr.reveal(revealTitle.current, srConfig());
     revealProjects.current.forEach((ref, i) => sr.reveal(ref, srConfig(i * 100)));
   }, []);
 
   const GRID_LIMIT = 4;
-  const projects = data.filter(({ node }) => node.frontmatter.show === 'true');
+  const projects = data.projects.edges.filter(({ node }) => node.frontmatter.show === 'true');
   const firstSix = projects.slice(0, GRID_LIMIT);
   const projectsToShow = showMore ? projects : firstSix;
 
@@ -140,7 +198,7 @@ const Projects = ({ data }) => {
           {projects &&
             projectsToShow.map(({ node }, i) => {
               const { frontmatter, html } = node;
-              const { github, external, title, tech, googleplay } = frontmatter;
+              const { github, external, title, tech, googleplay, appstore } = frontmatter;
               return (
                 <CSSTransition
                   key={i}
@@ -169,6 +227,11 @@ const Projects = ({ data }) => {
                             {googleplay && (
                               <IconLink url={googleplay} aria-label="Google Play Store Link">
                                 <IconGooglePlay />
+                              </IconLink>
+                            )}
+                            {appstore && (
+                              <IconLink url={appstore} aria-label="Apple App Store Link">
+                                <IconAppStore />
                               </IconLink>
                             )}
                             {external && (
@@ -204,10 +267,6 @@ const Projects = ({ data }) => {
       </ShowMoreButton>
     </ProjectsContainer>
   );
-};
-
-Projects.propTypes = {
-  data: PropTypes.array.isRequired,
 };
 
 export default Projects;

@@ -24,6 +24,10 @@ const FooterContainer = styled.footer`
   text-align: center;
   height: auto;
   min-height: 70px;
+
+  .now_playing_container {
+    max-width: 85vw;
+  }
 `;
 const SocialContainer = styled.div`
   color: ${colors.lightSlate};
@@ -56,9 +60,9 @@ const GithubLink = styled(ExternalLink)`
   margin-bottom: 5px;
 `;
 
-const Footer = () => (
+const Footer = ({ isMusicPage }) => (
   <FooterContainer>
-    <NowPlaying />
+    <div className="now_playing_container">{isMusicPage ? null : <NowPlaying />}</div>
     <SocialContainer>
       <SocialItemList>
         {socialMedia &&
@@ -108,7 +112,7 @@ const Footer = () => (
 );
 
 Footer.propTypes = {
-  githubInfo: PropTypes.object,
+  isMusicPage: PropTypes.bool,
 };
 
 export default Footer;
