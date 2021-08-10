@@ -266,7 +266,7 @@ const Featured = () => {
   const data = useStaticQuery(graphql`
     {
       featured: allMarkdownRemark(
-        filter: { fileAbsolutePath: { regex: "/featured/" } }
+        filter: { fileAbsolutePath: { regex: "/featured/" }, frontmatter: { show: { eq: "true" } } }
         sort: { fields: [frontmatter___date], order: DESC }
       ) {
         edges {
@@ -288,7 +288,6 @@ const Featured = () => {
               external
               googleplay
               appstore
-              show
             }
             html
           }
@@ -297,9 +296,7 @@ const Featured = () => {
     }
   `);
 
-  const featuredProjects = data.featured.edges.filter(
-    ({ node }) => node.frontmatter.show === 'true',
-  );
+  const featuredProjects = data.featured.edges;
 
   const revealTitle = useRef(null);
   const revealProjects = useRef([]);

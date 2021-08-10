@@ -3,8 +3,9 @@ date: '2020-02-13'
 title: 'React Native Developer'
 company: 'FirstCry'
 location: 'Pune, IND'
-range: 'Feb 2020 - Present'
+range: 'Feb 2020 - Aug 2021'
 url: 'https://www.firstcry.com/'
+show: 'true'
 ---
 
 - Single handedly built Polls feature with multiple poll templates in FirstCry Parenting.

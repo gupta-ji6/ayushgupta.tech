@@ -5,6 +5,7 @@ company: 'Cognizant'
 location: 'Bangalore, IND'
 range: 'July 2019 - Feb 2020'
 url: 'https://www.cognizant.com/'
+show: 'true'
 ---
 
 - Working on a Java based client project using [Drools](https://www.drools.org/) engine and [SpringBoot](https://spring.io/projects/spring-boot).

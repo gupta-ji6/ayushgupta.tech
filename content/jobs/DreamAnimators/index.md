@@ -5,6 +5,7 @@ company: 'Dream Animators'
 location: 'Remote Work'
 range: 'Aug 2017 - Oct 2017'
 url: 'http://dreamanimators.com/'
+show: 'true'
 ---
 
 - Attained remote development skills and experience, besides college.
