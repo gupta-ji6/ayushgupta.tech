@@ -68,8 +68,8 @@ const Author = ({ showBg = false }) => {
         <strong>{`Ayush Gupta `}</strong>
         <span>
           is a Web & Mobile Application Developer who is passionate about photography, writes blogs
-          and occasionaly designs. Currently working as a React & React Native Developer at
-          FirstCry. Fondly known as GuptaJi.
+          and occasionaly designs. Currently working as a Mobile Frontend Engineer at Razorpay.
+          Fondly known as GuptaJi.
         </span>
       </StyledAuthorDescription>
     </StyledAuthorContainer>

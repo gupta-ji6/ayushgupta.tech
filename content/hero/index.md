@@ -7,6 +7,6 @@ contactText: 'View Resume'
 
 I'm a [developer](https://github.com/gupta-ji6) and a passionate [photographer](https://www.instagram.com/_.guptaji._/).
 
-I enjoy building, learning & exploring things that live on the web.
+I often [write](/blog) blogs and occasionaly design things.
 
-I often [write](/blog) blogs and design things.
+Mobile Frontend Engineer at [Razorpay](https://razorpay.com/).
