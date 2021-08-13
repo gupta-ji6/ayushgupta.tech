@@ -5,6 +5,7 @@ company: 'Enappd'
 location: 'Jaipur, IND'
 range: 'May 2018 - July 2018'
 url: 'https://enappd.com'
+show: 'true'
 ---
 
 - Quickly learned [React Native](https://facebook.github.io/react-native/) and it’s concepts from the ground up.

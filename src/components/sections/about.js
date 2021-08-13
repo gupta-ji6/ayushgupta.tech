@@ -32,6 +32,11 @@ const ContentContainer = styled.div`
   a {
     ${mixins.inlineLink};
   }
+
+  strong {
+    color: ${colors.green};
+    font-weight: 400;
+  }
 `;
 
 const SkillsContainer = styled.ul`
