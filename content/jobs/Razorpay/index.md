@@ -8,5 +8,6 @@ url: 'https://razorpay.com/'
 show: 'true'
 ---
 
-- Started working with Payments mobile [app](https://razorpay.com/payments-app/) team
-- Getting my hands dirty on React Native, Apollo, GraphQL, Jest and [Blade](https://github.com/razorpay/blade).
+- Started working with [Payments mobile app](https://razorpay.com/payments-app/) team
+- Getting my hands dirty on React Native, Apollo, GraphQL, Jest, [Blade](https://github.com/razorpay/blade) and the inevitable JIRA.
+- So much of new stuff to learn :)
