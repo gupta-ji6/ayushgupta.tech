@@ -7,11 +7,7 @@ import sr from '@utils/sr';
 import { srConfig } from '@config';
 import { usePrefersReducedMotion } from '@hooks';
 import { IconArticle } from '@components/icons';
-import { theme, mixins, media, Section, Heading } from '@styles';
-
-// ================================== CONSTANTS =====================================
-
-const { colors, fontSizes, fonts } = theme;
+import { mixins, media, Section, Heading } from '@styles';
 
 // ================================== STYLED COMPONENTS =====================================
 
@@ -23,7 +19,7 @@ const BlogContainer = styled(Section)`
 
 // const BlogTitle = styled.h4`
 //   margin: 0 auto 50px;
-//   font-size: ${fontSizes.h3};
+//   font-size: ${({ theme }) => theme.fontSizes.h3};
 //   ${media.tablet`font-size: 24px;`};
 //   a {
 //     display: block;
@@ -48,13 +44,13 @@ const BlogInner = styled.div`
   position: relative;
   padding: 2rem 1.75rem;
   height: 100%;
-  border-radius: ${theme.borderRadius};
-  transition: ${theme.transition};
-  background-color: ${colors.lightNavy};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  transition: ${({ theme }) => theme.transition};
+  background-color: ${({ theme }) => theme.colors.lightNavy};
 `;
 
 const Article = styled.div`
-  transition: ${theme.transition};
+  transition: ${({ theme }) => theme.transition};
   cursor: default;
   &:hover,
   &:focus {
@@ -71,7 +67,7 @@ const BlogHeader = styled.div`
 `;
 
 const Folder = styled.div`
-  color: ${colors.green};
+  color: ${({ theme }) => theme.colors.green};
   svg {
     width: 40px;
     height: 40px;
@@ -80,7 +76,7 @@ const Folder = styled.div`
 
 // const Links = styled.div`
 //   margin-right: -10px;
-//   color: ${colors.lightSlate};
+//   color: ${({ theme }) => theme.colors.lightSlate};
 // `;
 
 // const IconLink = styled.a`
@@ -96,13 +92,13 @@ const Folder = styled.div`
 
 const BlogName = styled.h4`
   margin: 0 0 10px;
-  font-size: ${fontSizes.xxlarge};
-  color: ${colors.lightestSlate};
+  font-size: ${({ theme }) => theme.fontSizes.xxlarge};
+  color: ${({ theme }) => theme.colors.lightestSlate};
 `;
 
 const BlogDescription = styled.div`
   font-size: 17px;
-  color: ${colors.lightSlate};
+  color: ${({ theme }) => theme.colors.lightSlate};
   a {
     ${mixins.inlineLink};
   }
@@ -115,9 +111,9 @@ const TagList = styled.ul`
   flex-wrap: wrap;
   margin-top: 20px;
   li {
-    font-family: ${fonts.SFMono};
-    font-size: ${fontSizes.xsmall};
-    color: ${colors.lightSlate};
+    font-family: ${({ theme }) => theme.fonts.SFMono};
+    font-size: ${({ theme }) => theme.fontSizes.xsmall};
+    color: ${({ theme }) => theme.colors.lightSlate};
     line-height: 1.75;
     margin-right: 15px;
     &:last-of-type {

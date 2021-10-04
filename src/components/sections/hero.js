@@ -3,16 +3,11 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { graphql, useStaticQuery } from 'gatsby';
 import styled from 'styled-components';
 
-// import { email } from '@config';
-import { theme, mixins, media, Section } from '@styles';
+import { mixins, media, Section } from '@styles';
 import { navDelay, loaderDelay } from '@config';
 import { useNowPlayingTrack, usePrefersReducedMotion } from '@hooks';
 import { NowPlayingContext } from '../now-palying';
 import ExternalLink from '../externalLink';
-
-// --------------------------- CONSTANTS -----------------------------------
-
-const { colors, fontSizes, fonts } = theme;
 
 // --------------------------- STYLED COMPONENTS -----------------------------------
 
@@ -28,13 +23,13 @@ const HeroContainer = styled(Section)`
 `;
 
 const Hi = styled.h1`
-  color: ${colors.green};
+  color: ${({ theme }) => theme.colors.green};
   margin: 0 0 20px 3px;
-  font-size: ${fontSizes.medium};
-  font-family: ${fonts.SFMono};
+  font-size: ${({ theme }) => theme.fontSizes.medium};
+  font-family: ${({ theme }) => theme.fonts.SFMono};
   font-weight: normal;
-  ${media.desktop`font-size: ${fontSizes.small};`};
-  ${media.tablet`font-size: ${fontSizes.smallish};`};
+  ${media.desktop`font-size: ${({ theme }) => theme.fontSizes.small};`};
+  ${media.tablet`font-size: ${({ theme }) => theme.fontSizes.smallish};`};
 `;
 
 const Name = styled.h2`
@@ -50,7 +45,7 @@ const Name = styled.h2`
 const Subtitle = styled.h3`
   font-size: 70px;
   line-height: 1.1;
-  color: ${colors.slate};
+  color: ${({ theme }) => theme.colors.slate};
   ${media.desktop`font-size: 60px;`};
   ${media.tablet`font-size: 50px;`};
   ${media.phablet`font-size: 40px;`};

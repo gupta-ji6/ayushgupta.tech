@@ -6,13 +6,9 @@ import { graphql, useStaticQuery } from 'gatsby';
 import { KEY_CODES } from '@utils';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
-import { theme, mixins, media, Section, Heading } from '@styles';
+import { mixins, media, Section, Heading } from '@styles';
 import { usePrefersReducedMotion } from '@hooks';
 import ExternalLink from '../externalLink';
-
-// ================================== CONSTANTS =====================================
-
-const { colors, fontSizes, fonts } = theme;
 
 // ================================== STYLED COMPONENTS =====================================
 
@@ -73,36 +69,36 @@ const Tab = styled.button`
   align-items: center;
   width: 100%;
   background-color: transparent;
-  height: ${theme.tabHeight}px;
+  height: ${({ theme }) => theme.tabHeight}px;
   padding: 0 20px 2px;
-  transition: ${theme.transition};
-  border-left: 2px solid ${colors.darkGrey};
+  transition: ${({ theme }) => theme.transition};
+  border-left: 2px solid ${({ theme }) => theme.colors.darkGrey};
   text-align: left;
   white-space: nowrap;
-  font-family: ${fonts.SFMono};
-  font-size: ${fontSizes.smallish};
-  color: ${props => (props.isActive ? colors.green : colors.lightGrey)};
+  font-family: ${({ theme }) => theme.fonts.SFMono};
+  font-size: ${({ theme }) => theme.fontSizes.smallish};
+  color: ${({ theme, isActive }) => (isActive ? theme.colors.green : theme.colors.lightGrey)};
   ${media.tablet`padding: 0 15px 2px;`};
   ${media.thone`
     ${mixins.flexCenter};
     padding: 0 15px;
     text-align: center;
     border-left: 0;
-    border-bottom: 2px solid ${colors.darkGrey};
+    border-bottom: 2px solid ${({ theme }) => theme.colors.darkGrey};
     min-width: 120px;
   `};
   &:hover,
   &:focus {
-    background-color: ${colors.lightNavy};
+    background-color: ${({ theme }) => theme.colors.lightNavy};
   }
 `;
 
 const Highlighter = styled.span`
   display: block;
-  background: ${colors.green};
+  background: ${({ theme }) => theme.colors.green};
   width: 2px;
-  height: ${theme.tabHeight}px;
-  border-radius: ${theme.borderRadius};
+  height: ${({ theme }) => theme.tabHeight}px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   position: absolute;
   top: 0;
   left: 0;
@@ -110,16 +106,16 @@ const Highlighter = styled.span`
   transition-delay: 0.1s;
   z-index: 10;
   transform: translateY(
-    ${props => (props.activeTabId > 0 ? props.activeTabId * theme.tabHeight : 0)}px
+    ${({ theme, activeTabId }) => (activeTabId > 0 ? activeTabId * theme.tabHeight : 0)}px
   );
   ${media.thone`
     width: 100%;
-    max-width: ${theme.tabWidth}px;
+    max-width: ${({ theme }) => theme.tabWidth}px;
     height: 2px;
     top: auto;
     bottom: 0;
     transform: translateX(
-      ${props => (props.activeTabId > 0 ? props.activeTabId * theme.tabWidth : 0)}px
+      ${({ theme, activeTabId }) => (activeTabId > 0 ? activeTabId * theme.tabWidth : 0)}px
     );
     margin-left: 50px;
   `};
@@ -146,13 +142,13 @@ const TabContent = styled.div`
   z-index: ${props => (props.isActive ? 2 : -1)};
   position: ${props => (props.isActive ? 'relative' : 'absolute')};
   visibility: ${props => (props.isActive ? 'visible' : 'hidden')};
-  transition: ${theme.transition};
+  transition: ${({ theme }) => theme.transition};
   transition-duration: ${props => (props.isActive ? '0.5s' : '0s')};
   ul {
     padding: 0;
     margin: 0;
     list-style: none;
-    font-size: ${fontSizes.large};
+    font-size: ${({ theme }) => theme.fontSizes.large};
     li {
       position: relative;
       padding-left: 30px;
@@ -161,8 +157,8 @@ const TabContent = styled.div`
         content: '▹';
         position: absolute;
         left: 0;
-        color: ${colors.green};
-        line-height: ${fontSizes.xlarge};
+        color: ${({ theme }) => theme.colors.green};
+        line-height: ${({ theme }) => theme.fontSizes.xlarge};
       }
     }
   }
@@ -172,22 +168,22 @@ const TabContent = styled.div`
 `;
 
 const EduTitle = styled.h4`
-  color: ${colors.lightestSlate};
-  font-size: ${fontSizes.xxlarge};
+  color: ${({ theme }) => theme.colors.lightestSlate};
+  font-size: ${({ theme }) => theme.fontSizes.xxlarge};
   font-weight: 500;
   margin-bottom: 5px;
 `;
 
 const School = styled.span`
-  color: ${colors.green};
+  color: ${({ theme }) => theme.colors.green};
 `;
 
 const EduDetails = styled.h5`
-  font-family: ${fonts.SFMono};
-  font-size: ${fontSizes.smallish};
+  font-family: ${({ theme }) => theme.fonts.SFMono};
+  font-size: ${({ theme }) => theme.fontSizes.smallish};
   font-weight: normal;
   letter-spacing: 0.5px;
-  color: ${colors.lightSlate};
+  color: ${({ theme }) => theme.colors.lightSlate};
   margin-bottom: 10px;
   svg {
     width: 15px;
@@ -195,11 +191,11 @@ const EduDetails = styled.h5`
 `;
 
 const EduLocation = styled.h5`
-  font-family: ${fonts.SFMono};
-  font-size: ${fontSizes.smallish};
+  font-family: ${({ theme }) => theme.fonts.SFMono};
+  font-size: ${({ theme }) => theme.fontSizes.smallish};
   font-weight: normal;
   letter-spacing: 0.5px;
-  color: ${colors.lightSlate};
+  color: ${({ theme }) => theme.colors.lightSlate};
   margin-bottom: 30px;
   svg {
     width: 15px;

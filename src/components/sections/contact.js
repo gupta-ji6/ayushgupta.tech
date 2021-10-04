@@ -4,13 +4,9 @@ import { graphql, useStaticQuery } from 'gatsby';
 
 import sr from '@utils/sr';
 import { srConfig } from '@config';
-import { theme, mixins, media, Section, Heading } from '@styles';
+import { mixins, media, Section, Heading } from '@styles';
 import { usePrefersReducedMotion } from '@hooks';
 import ExternalLink from '../externalLink';
-
-// ================================== CONSTANTS =====================================
-
-const { colors, fontSizes, fonts } = theme;
 
 // ================================== STYLED COMPONENTS =====================================
 
@@ -25,17 +21,17 @@ const ContactContainer = styled(Section)`
 
 const GreenHeading = styled(Heading)`
   display: block;
-  color: ${colors.green};
-  font-size: ${fontSizes.medium};
-  font-family: ${fonts.SFMono};
+  color: ${({ theme }) => theme.colors.green};
+  font-size: ${({ theme }) => theme.fontSizes.medium};
+  font-family: ${({ theme }) => theme.fonts.SFMono};
   font-weight: normal;
   margin-bottom: 20px;
   justify-content: center;
-  ${media.desktop`font-size: ${fontSizes.small};`};
+  ${media.desktop`font-size: ${({ theme }) => theme.fontSizes.small};`};
   &:before {
     bottom: 0;
-    font-size: ${fontSizes.small};
-    ${media.desktop`font-size: ${fontSizes.smallish};`};
+    font-size: ${({ theme }) => theme.fontSizes.small};
+    ${media.desktop`font-size: ${({ theme }) => theme.fontSizes.smallish};`};
   }
   &:after {
     display: none;

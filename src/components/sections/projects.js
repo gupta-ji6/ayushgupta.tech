@@ -3,7 +3,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
 import { graphql, useStaticQuery } from 'gatsby';
 
-import { Button, Section, media, mixins, theme } from '@styles';
+import { Button, Section, media, mixins } from '@styles';
 import {
   IconExternal,
   IconFolder,
@@ -16,10 +16,6 @@ import { srConfig } from '@config';
 import { usePrefersReducedMotion } from '@hooks';
 import ExternalLink from '../externalLink';
 
-// ================================== CONSTANTS =====================================
-
-const { colors, fontSizes, fonts } = theme;
-
 // ================================== STYLED COMPONENTS =====================================
 
 const ProjectsContainer = styled(Section)`
@@ -30,7 +26,7 @@ const ProjectsContainer = styled(Section)`
 
 const ProjectsTitle = styled.h4`
   margin: 0 auto 50px;
-  font-size: ${fontSizes.h3};
+  font-size: ${({ theme }) => theme.fontSizes.h3};
   ${media.tablet`font-size: 24px;`};
   a {
     display: block;
@@ -55,13 +51,13 @@ const ProjectInner = styled.div`
   position: relative;
   padding: 2rem 1.75rem;
   height: 100%;
-  border-radius: ${theme.borderRadius};
-  transition: ${theme.transition};
-  background-color: ${colors.lightNavy};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  transition: ${({ theme }) => theme.transition};
+  background-color: ${({ theme }) => theme.colors.lightNavy};
 `;
 
 const Project = styled.div`
-  transition: ${theme.transition};
+  transition: ${({ theme }) => theme.transition};
   cursor: default;
   &:hover,
   &:focus {
@@ -78,7 +74,7 @@ const ProjectHeader = styled.div`
 `;
 
 const Folder = styled.div`
-  color: ${colors.green};
+  color: ${({ theme }) => theme.colors.green};
   svg {
     width: 40px;
     height: 40px;
@@ -87,7 +83,7 @@ const Folder = styled.div`
 
 const Links = styled.div`
   margin-right: -10px;
-  color: ${colors.lightSlate};
+  color: ${({ theme }) => theme.colors.lightSlate};
 `;
 
 const IconLink = styled(ExternalLink)`
@@ -103,8 +99,8 @@ const IconLink = styled(ExternalLink)`
 
 const ProjectName = styled.h5`
   margin: 0 0 10px;
-  font-size: ${fontSizes.xxlarge};
-  color: ${colors.lightestSlate};
+  font-size: ${({ theme }) => theme.fontSizes.xxlarge};
+  color: ${({ theme }) => theme.colors.lightestSlate};
 `;
 
 const ProjectDescription = styled.div`
@@ -121,9 +117,9 @@ const TechList = styled.ul`
   flex-wrap: wrap;
   margin-top: 20px;
   li {
-    font-family: ${fonts.SFMono};
-    font-size: ${fontSizes.xsmall};
-    color: ${colors.lightSlate};
+    font-family: ${({ theme }) => theme.fonts.SFMono};
+    font-size: ${({ theme }) => theme.fontSizes.xsmall};
+    color: ${({ theme }) => theme.colors.lightSlate};
     line-height: 1.75;
     margin-right: 15px;
     &:last-of-type {

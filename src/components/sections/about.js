@@ -5,13 +5,9 @@ import styled from 'styled-components';
 
 import sr from '@utils/sr';
 import { srConfig, github } from '@config';
-import { theme, mixins, media, Section, Heading } from '@styles';
+import { mixins, media, Section, Heading } from '@styles';
 import { usePrefersReducedMotion } from '@hooks';
 import ExternalLink from '../externalLink';
-
-// ------------------------------ CONSTANTS --------------------------------
-
-const { colors, fontSizes, fonts } = theme;
 
 // ------------------------------ STYLED COMPONENTS --------------------------------
 
@@ -34,7 +30,7 @@ const ContentContainer = styled.div`
   }
 
   strong {
-    color: ${colors.green};
+    color: ${({ theme }) => theme.colors.green};
     font-weight: 400;
   }
 `;
@@ -50,15 +46,15 @@ const Skill = styled.li`
   position: relative;
   margin-bottom: 10px;
   padding-left: 20px;
-  font-family: ${fonts.SFMono};
-  font-size: ${fontSizes.smallish};
-  color: ${colors.slate};
+  font-family: ${({ theme }) => theme.fonts.SFMono};
+  font-size: ${({ theme }) => theme.fontSizes.smallish};
+  color: ${({ theme }) => theme.colors.slate};
   &:before {
     content: '▹';
     position: absolute;
     left: 0;
-    color: ${colors.green};
-    font-size: ${fontSizes.small};
+    color: ${({ theme }) => theme.colors.green};
+    font-size: ${({ theme }) => theme.fontSizes.small};
     line-height: 12px;
   }
 `;
@@ -77,8 +73,8 @@ const StyledPic = styled(ExternalLink)`
     display: block;
     position: relative;
     width: 100%;
-    border-radius: ${theme.borderRadius};
-    background-color: ${colors.green};
+    border-radius: ${({ theme }) => theme.borderRadius};
+    background-color: ${({ theme }) => theme.colors.green};
 
     &:hover,
     &:focus {
@@ -96,10 +92,10 @@ const StyledPic = styled(ExternalLink)`
 
     .img {
       position: relative;
-      border-radius: ${theme.borderRadius};
+      border-radius: ${({ theme }) => theme.borderRadius};
       mix-blend-mode: multiply;
       filter: grayscale(100%) contrast(1);
-      transition: ${theme.transition};
+      transition: ${({ theme }) => theme.transition};
     }
 
     &:before,
@@ -109,19 +105,19 @@ const StyledPic = styled(ExternalLink)`
       position: absolute;
       width: 100%;
       height: 100%;
-      border-radius: ${theme.borderRadius};
-      transition: ${theme.transition};
+      border-radius: ${({ theme }) => theme.borderRadius};
+      transition: ${({ theme }) => theme.transition};
     }
 
     &:before {
       top: 0;
       left: 0;
-      background-color: ${colors.navy};
+      background-color: ${({ theme }) => theme.colors.navy};
       mix-blend-mode: screen;
     }
 
     &:after {
-      border: 2px solid ${colors.green};
+      border: 2px solid ${({ theme }) => theme.colors.green};
       top: 20px;
       left: 20px;
       z-index: -1;

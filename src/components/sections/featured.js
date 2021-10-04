@@ -8,11 +8,7 @@ import { srConfig } from '@config';
 import { IconAppStore, IconExternal, IconGithub, IconGooglePlay } from '@components/icons';
 import ExternalLink from '@components/externalLink';
 import { usePrefersReducedMotion } from '@hooks';
-import { Heading, mixins, theme } from '@styles';
-
-// ================================== CONSTANTS =====================================
-
-const { colors, fontSizes, fonts } = theme;
+import { Heading, mixins } from '@styles';
 
 // ================================== STYLED COMPONENTS =====================================
 
@@ -109,19 +105,19 @@ const StyledProject = styled.li`
   }
   .project-overline {
     margin: 10px 0;
-    color: ${colors.green};
-    font-family: ${fonts.SFMono};
-    font-size: ${fontSizes.xsmall};
+    color: ${({ theme }) => theme.colors.green};
+    font-family: ${({ theme }) => theme.fonts.SFMono};
+    font-size: ${({ theme }) => theme.fontSizes.xsmall};
     font-weight: 400;
   }
   .project-title {
-    color: ${colors.lightestSlate};
+    color: ${({ theme }) => theme.colors.lightestSlate};
     font-size: clamp(24px, 5vw, 28px);
     @media (min-width: 768px) {
       margin: 0 0 20px;
     }
     @media (max-width: 768px) {
-      color: ${colors.white};
+      color: ${({ theme }) => theme.colors.white};
       a {
         position: static;
         &:before {
@@ -142,10 +138,10 @@ const StyledProject = styled.li`
     position: relative;
     z-index: 2;
     padding: 25px;
-    border-radius: ${theme.borderRadius};
-    background-color: ${colors.lightNavy};
-    color: ${colors.lightSlate};
-    font-size: ${fontSizes.large};
+    border-radius: ${({ theme }) => theme.borderRadius};
+    background-color: ${({ theme }) => theme.colors.lightNavy};
+    color: ${({ theme }) => theme.colors.lightSlate};
+    font-size: ${({ theme }) => theme.fontSizes.large};
     @media (max-width: 768px) {
       padding: 20px 0;
       background-color: transparent;
@@ -168,16 +164,16 @@ const StyledProject = styled.li`
     list-style: none;
     li {
       margin: 0 20px 5px 0;
-      color: ${colors.lightSlate};
-      font-family: ${fonts.SFMono};
-      font-size: ${fontSizes.xsmall};
+      color: ${({ theme }) => theme.colors.lightSlate};
+      font-family: ${({ theme }) => theme.fonts.SFMono};
+      font-size: ${({ theme }) => theme.fontSizes.xsmall};
       white-space: nowrap;
     }
     @media (max-width: 768px) {
       margin: 10px 0;
       li {
         margin: 0 10px 5px 0;
-        color: ${colors.lightestSlate};
+        color: ${({ theme }) => theme.colors.lightestSlate};
       }
     }
   }
@@ -187,7 +183,7 @@ const StyledProject = styled.li`
     position: relative;
     margin-top: 10px;
     margin-left: -10px;
-    color: ${colors.lightestSlate};
+    color: ${({ theme }) => theme.colors.lightestSlate};
     a {
       ${mixins.flexCenter};
       padding: 10px;
@@ -218,8 +214,8 @@ const StyledProject = styled.li`
     a {
       width: 100%;
       height: 100%;
-      background-color: ${colors.green};
-      border-radius: ${theme.borderRadius};
+      background-color: ${({ theme }) => theme.colors.green};
+      border-radius: ${({ theme }) => theme.borderRadius};
       vertical-align: middle;
       &:hover,
       &:focus {
@@ -241,13 +237,13 @@ const StyledProject = styled.li`
         right: 0;
         bottom: 0;
         z-index: 3;
-        transition: ${theme.transition};
-        background-color: ${colors.navy};
+        transition: ${({ theme }) => theme.transition};
+        background-color: ${({ theme }) => theme.colors.navy};
         mix-blend-mode: screen;
       }
     }
     .img {
-      border-radius: ${theme.borderRadius};
+      border-radius: ${({ theme }) => theme.borderRadius};
       mix-blend-mode: multiply;
       filter: grayscale(100%) contrast(1) brightness(90%);
       @media (max-width: 768px) {
