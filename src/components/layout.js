@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { StaticQuery, graphql } from 'gatsby';
+import styled, { ThemeProvider } from 'styled-components';
+import { useStaticQuery, graphql } from 'gatsby';
 
 import { Email, Footer, Head, Nav, Social, Notifications } from '@components';
 import { GlobalStyle, theme, mixins } from '@styles';
@@ -43,6 +43,18 @@ const StyledContent = styled.div`
 // ---------------------------- COMPONENT ----------------------------
 
 const Layout = ({ children, location }) => {
+  const data = useStaticQuery(graphql`
+    query LayoutQuery {
+      site {
+        siteMetadata {
+          title
+          siteUrl
+          description
+        }
+      }
+    }
+  `);
+
   const isHome = location.pathname === '/';
   const isMusicPage = ['/music', '/music/'].includes(location.pathname);
   const [isLoading] = useState(isHome);
@@ -64,44 +76,29 @@ const Layout = ({ children, location }) => {
   }, [isLoading]);
 
   return (
-    <StaticQuery
-      query={graphql`
-        query LayoutQuery {
-          site {
-            siteMetadata {
-              title
-              siteUrl
-              description
-            }
-          }
-        }
-      `}
-      render={({ site }) => (
-        <Fragment>
-          <Head metadata={site.siteMetadata} />
+    <ThemeProvider theme={theme}>
+      <div id="root">
+        <Head metadata={data.site.siteMetadata} />
 
-          <div id="root">
-            <GlobalStyle />
+        <GlobalStyle />
 
-            <SkipToContent href="#content">Skip to Content</SkipToContent>
+        <SkipToContent href="#content">Skip to Content</SkipToContent>
 
-            <Notifications />
+        <Notifications />
 
-            {/* {isLoading ? (
+        {/* {isLoading ? (
             <Loader finishLoading={() => setIsLoading(false)} />
           ) : ( */}
-            <StyledContent>
-              <Nav isHome={isHome} />
-              <Social isHome={isHome} />
-              <Email isHome={isHome} />
-              <div id="content">{children}</div>
-              <Footer isMusicPage={isMusicPage} />
-            </StyledContent>
-            {/*  )} */}
-          </div>
-        </Fragment>
-      )}
-    />
+        <StyledContent>
+          <Nav isHome={isHome} />
+          <Social isHome={isHome} />
+          <Email isHome={isHome} />
+          <div id="content">{children}</div>
+          <Footer isMusicPage={isMusicPage} />
+        </StyledContent>
+        {/*  )} */}
+      </div>
+    </ThemeProvider>
   );
 };
 
