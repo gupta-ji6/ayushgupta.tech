@@ -181,7 +181,7 @@ const School = styled.span`
 const EduDetails = styled.h5`
   font-family: ${({ theme }) => theme.fonts.SFMono};
   font-size: ${({ theme }) => theme.fontSizes.smallish};
-  font-weight: normal;
+  font-weight: 400;
   letter-spacing: 0.5px;
   color: ${({ theme }) => theme.colors.lightSlate};
   margin-bottom: 10px;
@@ -193,7 +193,7 @@ const EduDetails = styled.h5`
 const EduLocation = styled.h5`
   font-family: ${({ theme }) => theme.fonts.SFMono};
   font-size: ${({ theme }) => theme.fontSizes.smallish};
-  font-weight: normal;
+  font-weight: 400;
   letter-spacing: 0.5px;
   color: ${({ theme }) => theme.colors.lightSlate};
   margin-bottom: 30px;

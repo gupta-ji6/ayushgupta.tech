@@ -1,126 +1,11 @@
 import { createGlobalStyle } from 'styled-components';
-import theme from './theme';
 import media from './media';
 import mixins from './mixins';
 import PrismStyles from './PrismStyles';
-import * as fontFamilies from './fonts';
-const { colors, fontSizes, fonts } = theme;
+import fonts from './fonts';
 
 const GlobalStyle = createGlobalStyle`
-  ${PrismStyles};
-  
-  @font-face {
-    font-family: 'Calibre';
-    src: url(${fontFamilies.CalibreLightWOFF2}) format('woff2'),
-    url(${fontFamilies.CalibreLightWOFF}) format('woff'),
-    url(${fontFamilies.CalibreLightTTF}) format('truetype');
-    font-weight: 300;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Calibre';
-    src: url(${fontFamilies.CalibreLightItalicWOFF2}) format('woff2'),
-    url(${fontFamilies.CalibreLightItalicWOFF}) format('woff'),
-    url(${fontFamilies.CalibreLightItalicTTF}) format('truetype');
-    font-weight: 300;
-    font-style: italic;
-  }
-  @font-face {
-    font-family: 'Calibre';
-    src: url(${fontFamilies.CalibreRegularWOFF2}) format('woff2'),
-    url(${fontFamilies.CalibreRegularWOFF}) format('woff'),
-    url(${fontFamilies.CalibreRegularTTF}) format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Calibre';
-    src: url(${fontFamilies.CalibreRegularItalicWOFF2}) format('woff2'),
-    url(${fontFamilies.CalibreRegularItalicWOFF}) format('woff'),
-    url(${fontFamilies.CalibreRegularItalicTTF}) format('truetype');
-    font-weight: normal;
-    font-style: italic;
-  }
-  @font-face {
-    font-family: 'Calibre';
-    src: url(${fontFamilies.CalibreMediumWOFF2}) format('woff2'),
-    url(${fontFamilies.CalibreMediumWOFF}) format('woff'),
-    url(${fontFamilies.CalibreMediumTTF}) format('truetype');
-    font-weight: 500;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Calibre';
-    src: url(${fontFamilies.CalibreMediumItalicWOFF2}) format('woff2'),
-    url(${fontFamilies.CalibreMediumItalicWOFF}) format('woff'),
-    url(${fontFamilies.CalibreMediumItalicTTF}) format('truetype');
-    font-weight: 500;
-    font-style: italic;
-  }
-  @font-face {
-    font-family: 'Calibre';
-    src: url(${fontFamilies.CalibreSemiboldWOFF2}) format('woff2'),
-    url(${fontFamilies.CalibreSemiboldWOFF}) format('woff'),
-    url(${fontFamilies.CalibreSemiboldTTF}) format('truetype');
-    font-weight: 600;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Calibre';
-    src: url(${fontFamilies.CalibreSemiboldItalicWOFF2}) format('woff2'),
-    url(${fontFamilies.CalibreSemiboldItalicWOFF}) format('woff'),
-    url(${fontFamilies.CalibreSemiboldItalicTTF}) format('truetype');
-    font-weight: 600;
-    font-style: italic;
-  }
-  @font-face {
-    font-family: 'SF Mono';
-    src: url(${fontFamilies.SFMonoRegularWOFF2}) format('woff2'),
-    url(${fontFamilies.SFMonoRegularWOFF}) format('woff'),
-    url(${fontFamilies.SFMonoRegularTTF}) format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'SF Mono';
-    src: url(${fontFamilies.SFMonoRegularItalicWOFF2}) format('woff2'),
-    url(${fontFamilies.SFMonoRegularItalicWOFF}) format('woff'),
-    url(${fontFamilies.SFMonoRegularItalicTTF}) format('truetype');
-    font-weight: normal;
-    font-style: italic;
-  }
-  @font-face {
-    font-family: 'SF Mono';
-    src: url(${fontFamilies.SFMonoMediumWOFF2}) format('woff2'),
-    url(${fontFamilies.SFMonoMediumWOFF}) format('woff'),
-    url(${fontFamilies.SFMonoMediumTTF}) format('truetype');
-    font-weight: 500;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'SF Mono';
-    src: url(${fontFamilies.SFMonoMediumItalicWOFF2}) format('woff2'),
-    url(${fontFamilies.SFMonoMediumItalicWOFF}) format('woff'),
-    url(${fontFamilies.SFMonoMediumItalicTTF}) format('truetype');
-    font-weight: 500;
-    font-style: italic;
-  }
-  @font-face {
-    font-family: 'SF Mono';
-    src: url(${fontFamilies.SFMonoSemiboldWOFF2}) format('woff2'),
-    url(${fontFamilies.SFMonoSemiboldWOFF}) format('woff'),
-    url(${fontFamilies.SFMonoSemiboldTTF}) format('truetype');
-    font-weight: 600;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'SF Mono';
-    src: url(${fontFamilies.SFMonoSemiboldItalicWOFF2}) format('woff2'),
-    url(${fontFamilies.SFMonoSemiboldItalicWOFF}) format('woff'),
-    url(${fontFamilies.SFMonoSemiboldItalicTTF}) format('truetype');
-    font-weight: 600;
-    font-style: italic;
-  }
+  ${fonts};
 
   html {
     box-sizing: border-box;
@@ -134,12 +19,12 @@ const GlobalStyle = createGlobalStyle`
   }
 
   ::selection {
-    background-color: ${colors.lightestNavy};
-    color: ${colors.lightestSlate};
+    background-color: ${({ theme }) => theme.colors.lightestNavy};
+    color: ${({ theme }) => theme.colors.lightestSlate};
   }
   
   :focus {
-    outline: 2px dashed ${colors.green};
+    outline: 2px dashed ${({ theme }) => theme.colors.green};
     outline-offset: 3px;
   }
 
@@ -149,24 +34,24 @@ const GlobalStyle = createGlobalStyle`
   }
 
   :focus-visible {
-    outline: 2px dashed ${colors.green};
+    outline: 2px dashed ${({ theme }) => theme.colors.green};
     outline-offset: 3px;
   }
 
   /* Scrollbar Styles */
   html {
     scrollbar-width: thin;
-    scrollbar-color: ${colors.darkSlate} ${colors.navy};
+    scrollbar-color: ${({ theme }) => theme.colors.darkSlate} ${({ theme }) => theme.colors.navy};
   }
   body::-webkit-scrollbar {
     width: 12px;
   }
   body::-webkit-scrollbar-track {
-    background: ${colors.navy};
+    background: ${({ theme }) => theme.colors.navy};
   }
   body::-webkit-scrollbar-thumb {
-    background-color: ${colors.darkSlate};
-    border: 3px solid ${colors.navy};
+    background-color: ${({ theme }) => theme.colors.darkSlate};
+    border: 3px solid ${({ theme }) => theme.colors.navy};
     border-radius: 10px;
   }
 
@@ -177,12 +62,12 @@ const GlobalStyle = createGlobalStyle`
     overflow-x: hidden;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-    background-color: ${colors.navy};
-    color: ${colors.slate};
+    background-color: ${({ theme }) => theme.colors.navy};
+    color: ${({ theme }) => theme.colors.slate};
     line-height: 1.3;
-    font-family: ${fonts.Calibre};
-    font-size: ${fontSizes.xlarge};
-    ${media.phablet`font-size: ${fontSizes.large};`}
+    font-family: ${({ theme }) => theme.fonts.Calibre};
+    font-size: ${({ theme }) => theme.fontSizes.xlarge};
+    ${media.phablet`font-size: ${({ theme }) => theme.fontSizes.large};`}
 
     &.hidden {
       overflow: hidden;
@@ -195,7 +80,7 @@ const GlobalStyle = createGlobalStyle`
       }
       #content > * {
         filter: blur(5px) brightness(0.7);
-        transition: ${theme.transition};
+        transition: ${({ theme }) => theme.transition};
         pointer-events: none;
         user-select: none;
       }
@@ -208,7 +93,7 @@ const GlobalStyle = createGlobalStyle`
   h4,
   h5 {
     font-weight: 600;
-    color: ${colors.white};
+    color: ${({ theme }) => theme.colors.white};
     margin: 0 0 10px 0;
   }
 
@@ -239,12 +124,12 @@ const GlobalStyle = createGlobalStyle`
     text-decoration-skip-ink: auto;
     color: inherit;
     position: relative;
-    transition: ${theme.transition};
+    transition: ${({ theme }) => theme.transition};
     cursor: pointer;
 
     &:hover,
     &:focus {
-      color: ${colors.green};
+      color: ${({ theme }) => theme.colors.green};
     }
   }
 
@@ -255,7 +140,7 @@ const GlobalStyle = createGlobalStyle`
 
     &:focus,
     &:active {
-      outline-color: ${colors.blue};
+      outline-color: ${({ theme }) => theme.colors.blue};
     }
   }
 
@@ -293,35 +178,39 @@ const GlobalStyle = createGlobalStyle`
   .fadeup-enter {
     opacity: 0.01;
     transform: translateY(20px);
-    transition: opacity 300ms ${theme.easing}, transform 300ms ${theme.easing};
+    transition: opacity 300ms ${({ theme }) => theme.easing}, transform 300ms ${({ theme }) =>
+  theme.easing};
   }
 
   .fadeup-enter-active {
     opacity: 1;
     transform: translateY(0px);
-    transition: opacity 300ms ${theme.easing}, transform 300ms ${theme.easing};
+    transition: opacity 300ms ${({ theme }) => theme.easing}, transform 300ms ${({ theme }) =>
+  theme.easing};
   }
 
   .fadedown-enter {
     opacity: 0.01;
     transform: translateY(-20px);
-    transition: opacity 300ms ${theme.easing}, transform 300ms ${theme.easing};
+    transition: opacity 300ms ${({ theme }) => theme.easing}, transform 300ms ${({ theme }) =>
+  theme.easing};
   }
 
   .fadedown-enter-active {
     opacity: 1;
     transform: translateY(0px);
-    transition: opacity 300ms ${theme.easing}, transform 300ms ${theme.easing};
+    transition: opacity 300ms ${({ theme }) => theme.easing}, transform 300ms ${({ theme }) =>
+  theme.easing};
   }
 
   .fade-enter {
     opacity: 0.01;
-    transition: opacity 1000ms ${theme.easing};
+    transition: opacity 1000ms ${({ theme }) => theme.easing};
   }
 
   .fade-enter-active {
     opacity: 1;
-    transition: opacity 1000ms ${theme.easing};
+    transition: opacity 1000ms ${({ theme }) => theme.easing};
   }
   
   .big-heading {
@@ -335,8 +224,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .subtitle {
-    color: ${colors.green};
-    font-family: ${fonts.SFMono};
+    color: ${({ theme }) => theme.colors.green};
+    font-family: ${({ theme }) => theme.fonts.SFMono};
     font-size: 16px;
     font-weight: 400;
     line-height: 1.5;
@@ -347,7 +236,7 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     align-items: center;
     margin-bottom: 50px;
-    color: ${colors.green};
+    color: ${({ theme }) => theme.colors.green};
     .arrow {
       display: block;
       margin-right: 10px;
@@ -355,14 +244,16 @@ const GlobalStyle = createGlobalStyle`
     }
     a {
       ${mixins.inlineLink};
-      font-family: ${fonts.SFMono};
-      font-size: ${fontSizes.small};
+      font-family: ${({ theme }) => theme.fonts.SFMono};
+      font-size: ${({ theme }) => theme.fontSizes.small};
       font-weight: 600;
       line-height: 1.5;
       text-transform: uppercase;
       letter-spacing: 0.1em;
     }
   }
+
+  ${PrismStyles};
 
 `;
 

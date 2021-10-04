@@ -27,7 +27,7 @@ const Hi = styled.h1`
   margin: 0 0 20px 3px;
   font-size: ${({ theme }) => theme.fontSizes.medium};
   font-family: ${({ theme }) => theme.fonts.SFMono};
-  font-weight: normal;
+  font-weight: 400;
   ${media.desktop`font-size: ${({ theme }) => theme.fontSizes.small};`};
   ${media.tablet`font-size: ${({ theme }) => theme.fontSizes.smallish};`};
 `;

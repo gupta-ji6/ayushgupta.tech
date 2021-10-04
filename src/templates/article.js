@@ -85,7 +85,7 @@ const StyledPostContent = styled.div`
   strong,
   em {
     color: ${colors.green};
-    font-weight: 'medium';
+    font-weight: 500;
   }
   ul {
     padding: 0;
