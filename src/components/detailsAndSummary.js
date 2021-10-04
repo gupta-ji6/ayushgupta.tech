@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { theme, mixins } from '@styles';
+import { mixins } from '@styles';
 import PropTypes from 'prop-types';
-
-const { colors, fontSizes } = theme;
 
 // ============================= STYLED COMPONENTS ================================
 
@@ -13,11 +11,11 @@ const StyledDetailsContainer = styled.div`
   }
 
   details[open] {
-    background-color: ${colors.lightNavy};
-    border-radius: ${theme.borderRadius};
+    background-color: ${({ theme }) => theme.colors.lightNavy};
+    border-radius: ${({ theme }) => theme.borderRadius};
     box-shadow: ${mixins.boxShadow};
     summary > span {
-      color: ${colors.green};
+      color: ${({ theme }) => theme.colors.green};
     }
   }
 
@@ -41,22 +39,22 @@ const StyledDetailsContainer = styled.div`
 
 const StyledDetails = styled.details`
   summary::-webkit-details-marker {
-    color: ${colors.green};
+    color: ${({ theme }) => theme.colors.green};
   }
 
   summary::marker {
-    color: ${colors.green};
+    color: ${({ theme }) => theme.colors.green};
   }
 
   padding: 10px 0;
   margin-bottom: 20px;
-  transition: ${theme.transition};
+  transition: ${({ theme }) => theme.transition};
 
   &:hover,
   &:focus,
   &:active {
-    background-color: ${colors.lightNavy};
-    border-radius: ${theme.borderRadius};
+    background-color: ${({ theme }) => theme.colors.lightNavy};
+    border-radius: ${({ theme }) => theme.borderRadius};
   }
 `;
 
@@ -65,27 +63,27 @@ const StyledSummary = styled.summary`
   cursor: pointer;
   position: relative;
   padding: 10px;
-  font-size: ${fontSizes.h3};
-  ${theme.transition};
+  font-size: ${({ theme }) => theme.fontSizes.h3};
+  ${({ theme }) => theme.transition};
   user-select: none;
   line-height: 1.1;
-  color: ${colors.slate};
+  color: ${({ theme }) => theme.colors.slate};
   outline: none;
 
   &:focus-visible {
-    outline: 1px solid ${colors.green};
+    outline: 1px solid ${({ theme }) => theme.colors.green};
   }
 
   span {
-    color: ${colors.white};
+    color: ${({ theme }) => theme.colors.white};
     font-weight: 600;
     &:hover {
-      color: ${colors.green};
+      color: ${({ theme }) => theme.colors.green};
     }
   }
 
   p {
-    font-size: ${fontSizes.xxlarge};
+    font-size: ${({ theme }) => theme.fontSizes.xxlarge};
   }
 `;
 

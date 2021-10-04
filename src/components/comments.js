@@ -5,9 +5,7 @@ import { useComments } from 'use-comments';
 import { toast } from 'react-hot-toast';
 import { hasuraURL } from '@config';
 import { getRelativeTime } from '@utils';
-import { theme, mixins } from '@styles';
-
-const { colors, fontSizes, fonts } = theme;
+import { mixins } from '@styles';
 
 // ======================= STYLED COMPONENTS ========================
 
@@ -32,47 +30,47 @@ const StyledLabel = styled.label`
   vertical-align: middle;
   margin-bottom: 10px;
   padding-right: 10px;
-  font-size: ${fontSizes.xxlarge};
+  font-size: ${({ theme }) => theme.fontSizes.xxlarge};
 `;
 
 const StyledNameInput = styled.input`
   display: table-cell;
   padding: 10px;
   margin-bottom: 10px;
-  background-color: ${colors.lightNavy};
-  border-radius: ${theme.borderRadius};
-  border: 1px solid ${colors.transGreen};
-  color: ${colors.white};
-  font-size: ${fontSizes.large};
+  background-color: ${({ theme }) => theme.colors.lightNavy};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  border: 1px solid ${({ theme }) => theme.colors.transGreen};
+  color: ${({ theme }) => theme.colors.white};
+  font-size: ${({ theme }) => theme.fontSizes.large};
   width: 50vw;
   max-width: 500px;
 
   &:focus {
-    border: 1px solid ${colors.green};
+    border: 1px solid ${({ theme }) => theme.colors.green};
   }
 
   &::placeholder {
-    color: ${colors.slate};
+    color: ${({ theme }) => theme.colors.slate};
   }
 `;
 
 const StyledTextarea = styled.textarea`
   padding: 10px;
-  background-color: ${colors.lightNavy};
-  border-radius: ${theme.borderRadius};
-  border: 1px solid ${colors.transGreen};
-  color: ${colors.white};
-  font-family: ${fonts.Calibre};
-  font-size: ${fontSizes.xlarge};
+  background-color: ${({ theme }) => theme.colors.lightNavy};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  border: 1px solid ${({ theme }) => theme.colors.transGreen};
+  color: ${({ theme }) => theme.colors.white};
+  font-family: ${({ theme }) => theme.fonts.Calibre};
+  font-size: ${({ theme }) => theme.fontSizes.xlarge};
   width: 50vw;
   max-width: 500px;
 
   &:focus {
-    border: 1px solid ${colors.green};
+    border: 1px solid ${({ theme }) => theme.colors.green};
   }
 
   &::placeholder {
-    color: ${colors.slate};
+    color: ${({ theme }) => theme.colors.slate};
   }
 `;
 
@@ -83,25 +81,25 @@ const StyledAddCommentBtn = styled.button`
 
 const StyledCommentCount = styled.div`
   padding: 2vh 0;
-  color: ${colors.white};
-  font-size: ${fontSizes.h3};
+  color: ${({ theme }) => theme.colors.white};
+  font-size: ${({ theme }) => theme.fontSizes.h3};
   font-weight: 600;
 `;
 
 const StyledComment = styled.div`
-  background-color: ${colors.lightNavy};
-  border-radius: ${theme.borderRadius};
+  background-color: ${({ theme }) => theme.colors.lightNavy};
+  border-radius: ${({ theme }) => theme.borderRadius};
   padding: 2vw;
   margin-bottom: 2vw;
 `;
 
 const StyledCommentAuthor = styled.span`
-  color: ${colors.green};
+  color: ${({ theme }) => theme.colors.green};
   font-weight: 500;
 `;
 
 const StyledAuthorTag = styled.span`
-  color: ${colors.green};
+  color: ${({ theme }) => theme.colors.green};
   font-weight: 300;
 `;
 

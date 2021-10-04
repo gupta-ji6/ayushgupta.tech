@@ -1,8 +1,5 @@
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
-import { theme } from '@styles';
-
-const { colors } = theme;
 
 const Notifications = () => (
   <Toaster
@@ -13,8 +10,8 @@ const Notifications = () => (
       className: '',
       style: {
         margin: '50px',
-        background: `${colors.darkNavy}`,
-        color: `${colors.white}`,
+        background: `${({ theme }) => theme.colors.darkNavy}`,
+        color: `${({ theme }) => theme.colors.white}`,
         zIndex: 1,
         display: 'flex',
         alignItems: 'center',
@@ -28,8 +25,8 @@ const Notifications = () => (
         //   secondary: 'black',
         // },
         iconTheme: {
-          primary: `${colors.lightNavy}`,
-          secondary: `${colors.green}`,
+          primary: `${({ theme }) => theme.colors.lightNavy}`,
+          secondary: `${({ theme }) => theme.colors.green}`,
         },
       },
     }}

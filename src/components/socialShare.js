@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { IconTwitter, IconCopy, IconFacebook, IconCheckbox, IconShare } from '@components/icons';
-import { theme, media, mixins } from '@styles';
+import { media, mixins } from '@styles';
 import config from '../config/index';
 import toast from 'react-hot-toast';
 
 // ====================== CONSTANTS =============================
 
-const { fontSizes, colors } = theme;
 const eventName = 'Share';
 
 // ===================== STYLED COMPONENTS =======================
@@ -21,7 +20,7 @@ const SocialShareContainer = styled.div`
   ${media.phone`flex-direction: ${props => (props.showText ? 'column' : 'row')};`};
   ${media.phablet`flex-direction: ${props => (props.showText ? 'column' : 'row')};`};
   ${media.tablet`flex-direction: ${props => (props.showText ? 'column' : 'row')};`};
-  font-size: ${fontSizes.xxlarge};
+  font-size: ${({ theme }) => theme.fontSizes.xxlarge};
 `;
 const StyledSocialPlatform = styled.button`
   ${mixins.flexCenter};
@@ -31,12 +30,12 @@ const StyledSocialPlatform = styled.button`
   padding: 0;
   outline: none;
   color: inherit;
-  transition: ${theme.transition};
-  font-size: ${fontSizes.xlarge};
+  transition: ${({ theme }) => theme.transition};
+  font-size: ${({ theme }) => theme.fontSizes.xlarge};
   &:hover,
   &:focus,
   &:active {
-    color: ${colors.green};
+    color: ${({ theme }) => theme.colors.green};
   }
   &:after {
     display: none !important;
@@ -57,14 +56,14 @@ const StyledCopyButton = styled.button`
   padding: 0;
   outline: none;
   cursor: pointer;
-  transition: ${theme.transition};
-  font-size: ${fontSizes.xlarge};
+  transition: ${({ theme }) => theme.transition};
+  font-size: ${({ theme }) => theme.fontSizes.xlarge};
   color: inherit;
   display: flex;
   &:hover,
   &:focus,
   &:active {
-    color: ${colors.green};
+    color: ${({ theme }) => theme.colors.green};
   }
   &:after {
     display: none !important;

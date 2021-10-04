@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
-import anime from 'animejs';
-import { IconLoader } from '@components/icons';
 import styled from 'styled-components';
-import { theme, mixins } from '@styles';
-const { colors } = theme;
+import anime from 'animejs';
+
+import { IconLoader } from '@components/icons';
+import { mixins } from '@styles';
+
+// ------------------------- STYLED COMPONENTS ------------------------------
 
 const LoaderContainer = styled.div`
   ${mixins.flexCenter};
-  background-color: ${colors.darkNavy};
+  background-color: ${({ theme }) => theme.colors.darkNavy};
   position: fixed;
   width: 100%;
   height: 100%;
@@ -22,7 +24,7 @@ const LoaderContainer = styled.div`
 const LogoWrapper = styled.div`
   width: max-content;
   max-width: 100px;
-  transition: ${theme.transition};
+  transition: ${({ theme }) => theme.transition};
   opacity: ${props => (props.isMounted ? 1 : 0)};
   svg {
     width: 100%;
@@ -36,6 +38,8 @@ const LogoWrapper = styled.div`
     }
   }
 `;
+
+// ------------------------- COMPONENT ------------------------------
 
 const Loader = ({ finishLoading }) => {
   const animate = () => {

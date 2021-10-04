@@ -7,12 +7,8 @@ import ExternalLink from './externalLink';
 import { useOnClickOutside } from '@hooks';
 import { KEY_CODES } from '@utils';
 import { navLinks } from '@config';
-import { mixins, theme } from '@styles';
+import { mixins } from '@styles';
 import { navLinkRedirection } from './nav';
-
-// --------------------------- CONSTANTS ------------------------------------------
-
-const { colors, fontSizes, fonts } = theme;
 
 // --------------------------- STYLED COMPONENTS ------------------------------------------
 
@@ -45,7 +41,7 @@ const StyledHamburgerButton = styled.button`
   .ham-box {
     display: inline-block;
     position: relative;
-    width: ${theme.hamburgerWidth};
+    width: ${({ theme }) => theme.hamburgerWidth};
     height: 24px;
   }
 
@@ -53,10 +49,10 @@ const StyledHamburgerButton = styled.button`
     position: absolute;
     top: 50%;
     right: 0;
-    width: ${theme.hamburgerWidth};
+    width: ${({ theme }) => theme.hamburgerWidth};
     height: 2px;
-    border-radius: ${theme.borderRadius};
-    background-color: ${colors.green};
+    border-radius: ${({ theme }) => theme.borderRadius};
+    background-color: ${({ theme }) => theme.colors.green};
     transition-duration: 0.22s;
     transition-property: transform;
     transition-delay: ${props => (props.menuOpen ? `0.12s` : `0s`)};
@@ -72,10 +68,10 @@ const StyledHamburgerButton = styled.button`
       position: absolute;
       left: auto;
       right: 0;
-      width: ${theme.hamburgerWidth};
+      width: ${({ theme }) => theme.hamburgerWidth};
       height: 2px;
       border-radius: 4px;
-      background-color: ${colors.green};
+      background-color: ${({ theme }) => theme.colors.green};
       transition-timing-function: ease;
       transition-duration: 0.15s;
       transition-property: transform;
@@ -109,20 +105,20 @@ const StyledSidebar = styled.aside`
     width: min(75vw, 400px);
     height: 100vh;
     outline: 0;
-    background-color: ${colors.lightNavy};
-    box-shadow: -10px 0px 30px -15px ${colors.shadowNavy};
+    background-color: ${({ theme }) => theme.colors.lightNavy};
+    box-shadow: -10px 0px 30px -15px ${({ theme }) => theme.colors.shadowNavy};
     z-index: 9;
     transform: translateX(${props => (props.menuOpen ? 0 : 100)}vw);
     visibility: ${props => (props.menuOpen ? 'visible' : 'hidden')};
-    transition: ${theme.transition};
+    transition: ${({ theme }) => theme.transition};
   }
 
   nav {
     ${mixins.flexBetween};
     width: 100%;
     flex-direction: column;
-    color: ${colors.lightestSlate};
-    font-family: ${fonts.SFMono};
+    color: ${({ theme }) => theme.colors.lightestSlate};
+    font-family: ${({ theme }) => theme.fonts.SFMono};
     text-align: center;
   }
 
@@ -136,7 +132,11 @@ const StyledSidebar = styled.aside`
       position: relative;
       margin: 0 auto 20px;
       counter-increment: item 1;
-      font-size: clamp(${fontSizes.small}, 4vw, ${fontSizes.large});
+      font-size: clamp(
+        ${({ theme }) => theme.fontSizes.small},
+        4vw,
+        ${({ theme }) => theme.fontSizes.large}
+      );
 
       @media (max-width: 600px) {
         margin: 0 auto 10px;
@@ -146,8 +146,8 @@ const StyledSidebar = styled.aside`
         content: '0' counter(item) '.';
         display: block;
         margin-bottom: 5px;
-        color: ${colors.green};
-        font-size: ${fontSizes.small};
+        color: ${({ theme }) => theme.colors.green};
+        font-size: ${({ theme }) => theme.fontSizes.small};
       }
     }
 

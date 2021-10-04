@@ -5,11 +5,6 @@ import styled from 'styled-components';
 import { socialMedia } from '@config';
 import { FormattedIcon } from '@components/icons';
 import { Side, ExternalLink } from '@components';
-import { theme } from '@styles';
-
-// -------------------------------- CONSTANTS ------------------------
-
-const { colors } = theme;
 
 // -------------------------------- STYLED COMPONENTS ------------------------
 
@@ -23,7 +18,7 @@ const SocialItemList = styled.ul`
     width: 1px;
     height: 90px;
     margin: 0 auto;
-    background-color: ${colors.lightSlate};
+    background-color: ${({ theme }) => theme.colors.lightSlate};
   }
 `;
 
@@ -51,13 +46,13 @@ const Social = ({ isHome }) => (
   <Side isHome={isHome} orientation="left">
     <SocialItemList>
       {socialMedia &&
-          socialMedia.map(({ url, name }, i) => (
-            <SocialItem key={i}>
-              <SocialLink url={url} aria-label={name} eventType={name}>
-                <FormattedIcon name={name} />
-              </SocialLink>
-            </SocialItem>
-          ))}
+        socialMedia.map(({ url, name }, i) => (
+          <SocialItem key={i}>
+            <SocialLink url={url} aria-label={name} eventType={name}>
+              <FormattedIcon name={name} />
+            </SocialLink>
+          </SocialItem>
+        ))}
     </SocialItemList>
   </Side>
 );

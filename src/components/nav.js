@@ -13,7 +13,7 @@ import { mixins, theme } from '@styles';
 
 // --------------------------- CONSTANTS ------------------------------------------
 
-const { colors, fontSizes, fonts, loaderDelay } = theme;
+const { loaderDelay } = theme;
 
 export const navLinkRedirection = (url, name) => {
   switch (name) {
@@ -35,10 +35,10 @@ const StyledHeader = styled.header`
   position: fixed;
   top: 0;
   padding: 0px 50px;
-  transition: ${theme.transition};
+  transition: ${({ theme }) => theme.transition};
   z-index: 11;
   width: 100%;
-  height: ${theme.navHeight};
+  height: ${({ theme }) => theme.navHeight};
   background-color: rgba(10, 25, 47, 0.85);
   backdrop-filter: blur(10px);
   filter: none !important;
@@ -53,22 +53,22 @@ const StyledHeader = styled.header`
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    ${props =>
-      props.scrollDirection === 'up' &&
-      !props.scrolledToTop &&
+    ${({ theme, scrollDirection, scrolledToTop }) =>
+      scrollDirection === 'up' &&
+      !scrolledToTop &&
       css`
         height: ${theme.navScrollHeight};
         transform: translateY(0px);
         background-color: rgba(10, 25, 47, 0.85);
-        box-shadow: 0 10px 30px -10px ${colors.shadowNavy};
+        box-shadow: 0 10px 30px -10px ${theme.colors.shadowNavy};
       `};
-    ${props =>
-      props.scrollDirection === 'down' &&
-      !props.scrolledToTop &&
+    ${({ theme, scrollDirection, scrolledToTop }) =>
+      scrollDirection === 'down' &&
+      !scrolledToTop &&
       css`
         height: ${theme.navScrollHeight};
         transform: translateY(calc(${theme.navScrollHeight} * -1));
-        box-shadow: 0 10px 30px -10px ${colors.shadowNavy};
+        box-shadow: 0 10px 30px -10px ${theme.colors.shadowNavy};
       `};
   }
 `;
@@ -77,8 +77,8 @@ const StyledNav = styled.nav`
   ${mixins.flexBetween};
   position: relative;
   width: 100%;
-  color: ${colors.lightestSlate};
-  font-family: ${fonts.SFMono};
+  color: ${({ theme }) => theme.colors.lightestSlate};
+  font-family: ${({ theme }) => theme.fonts.SFMono};
   counter-reset: item 0;
   z-index: 12;
 
@@ -87,20 +87,20 @@ const StyledNav = styled.nav`
 
     a {
       /* display: block; */
-      color: ${colors.green};
+      color: ${({ theme }) => theme.colors.green};
       width: 50px;
       height: 50px;
 
       &:hover,
       &:focus {
         svg {
-          fill: ${colors.transGreen};
+          fill: ${({ theme }) => theme.colors.transGreen};
         }
       }
 
       svg {
         fill: none;
-        transition: ${theme.transition};
+        transition: ${({ theme }) => theme.transition};
         user-select: none;
       }
     }
@@ -124,7 +124,7 @@ const StyledLinks = styled.div`
     li {
       margin: 0 10px;
       position: relative;
-      font-size: ${fontSizes.smallish};
+      font-size: ${({ theme }) => theme.fontSizes.smallish};
       counter-increment: item 1;
 
       a {
@@ -134,8 +134,8 @@ const StyledLinks = styled.div`
           content: '0' counter(item) '.';
           margin-right: 5px;
           text-align: right;
-          color: ${colors.green};
-          font-size: ${fontSizes.xsmall};
+          color: ${({ theme }) => theme.colors.green};
+          font-size: ${({ theme }) => theme.fontSizes.xsmall};
         }
       }
     }
@@ -144,7 +144,7 @@ const StyledLinks = styled.div`
   .resume-button {
     ${mixins.smallButton};
     margin-left: 10px;
-    font-size: ${fontSizes.smallish};
+    font-size: ${({ theme }) => theme.fontSizes.smallish};
   }
 `;
 

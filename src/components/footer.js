@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
 import {
   IconGithub,
   IconLinkedin,
@@ -9,18 +11,18 @@ import {
   IconFacebook,
 } from '@components/icons';
 import { socialMedia } from '@config';
-import styled from 'styled-components';
-import { theme, mixins, media } from '@styles';
+import { mixins, media } from '@styles';
 import NowPlaying from './now-palying';
 import ExternalLink from './externalLink';
-const { colors, fontSizes, fonts } = theme;
+
+// ------------------------- STYLED COMPONENTS ------------------------------
 
 const FooterContainer = styled.footer`
   ${mixins.flexCenter};
   flex-direction: column;
   padding: 5px;
-  background-color: ${colors.navy};
-  color: ${colors.slate};
+  background-color: ${({ theme }) => theme.colors.navy};
+  color: ${({ theme }) => theme.colors.slate};
   text-align: center;
   height: auto;
   min-height: 70px;
@@ -30,7 +32,7 @@ const FooterContainer = styled.footer`
   }
 `;
 const SocialContainer = styled.div`
-  color: ${colors.lightSlate};
+  color: ${({ theme }) => theme.colors.lightSlate};
   width: 100%;
   max-width: 270px;
   margin: 0 auto 10px;
@@ -51,14 +53,16 @@ const Copy = styled.div`
   ${mixins.flexCenter};
   flex-direction: column;
   margin: 5px 0;
-  font-family: ${fonts.SFMono};
-  font-size: ${fontSizes.xsmall};
+  font-family: ${({ theme }) => theme.fonts.SFMono};
+  font-size: ${({ theme }) => theme.fontSizes.xsmall};
   line-height: 1;
 `;
 const GithubLink = styled(ExternalLink)`
-  color: ${colors.slate};
+  color: ${({ theme }) => theme.colors.slate};
   margin-bottom: 5px;
 `;
+
+// ------------------------- COMPONENT ------------------------------
 
 const Footer = ({ isMusicPage }) => (
   <FooterContainer>

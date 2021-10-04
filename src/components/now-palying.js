@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-import { theme, mixins } from '@styles';
+import { mixins } from '@styles';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
 import { IconSpotify, IconPlay, IconPause } from '@components/icons';
@@ -9,8 +9,6 @@ import { usePrefersReducedMotion, useNowPlayingTrack } from '@hooks';
 import ExternalLink from './externalLink';
 
 // ========================= CONSTANTS ===========================
-
-const { colors } = theme;
 
 const SPOTIFY_PROFILE = 'https://open.spotify.com/user/31yuvamoxkbmkpvhpunh6xwoshii';
 
@@ -94,7 +92,7 @@ const TrackContext = styled.div`
 `;
 
 const NowPlayingWidget = styled.div`
-  border: 1px solid ${colors.green};
+  border: 1px solid ${({ theme }) => theme.colors.green};
   border-radius: 3px;
   padding: 9px;
   margin-bottom: 24px;
@@ -114,7 +112,7 @@ const NowPlayingWidget = styled.div`
 const AlbumImage = styled.img`
   width: 3rem;
   height: 3rem;
-  background-color: ${colors.lightNavy};
+  background-color: ${({ theme }) => theme.colors.lightNavy};
   border-radius: 3px;
   object-fit: cover;
 `;
@@ -130,7 +128,7 @@ const TrackInfo = styled.div`
 `;
 
 const TrackName = styled.div`
-  color: ${colors.lightestSlate};
+  color: ${({ theme }) => theme.colors.lightestSlate};
   font-weight: 500;
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -138,12 +136,12 @@ const TrackName = styled.div`
   overflow: hidden;
 
   &:hover {
-    color: ${colors.green};
+    color: ${({ theme }) => theme.colors.green};
   }
 `;
 
 const AlbumName = styled.div`
-  color: ${colors.slate};
+  color: ${({ theme }) => theme.colors.slate};
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
@@ -155,10 +153,10 @@ const SpotifyIcon = styled.div`
   height: ${props => (props.playing ? '3rem' : '2.5rem')};
   display: flex;
   justify-content: flex-end;
-  background-color: ${colors.navy};
+  background-color: ${({ theme }) => theme.colors.navy};
 
   button {
-    background-color: ${colors.navy};
+    background-color: ${({ theme }) => theme.colors.navy};
     margin: 0;
     border: 0;
     outline: 0;

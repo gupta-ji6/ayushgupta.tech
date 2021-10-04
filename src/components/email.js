@@ -5,11 +5,6 @@ import styled from 'styled-components';
 import { Side } from '@components';
 import ExternalLink from './externalLink';
 import { email } from '@config';
-import { theme } from '@styles';
-
-// ------------------------- CONSTANTS ------------------------------
-
-const { colors, fontSizes, fonts } = theme;
 
 // ------------------------- STYLED COMPONENTS ------------------------------
 
@@ -24,13 +19,13 @@ const EmailLinkWrapper = styled.div`
     width: 1px;
     height: 90px;
     margin: 0 auto;
-    background-color: ${colors.lightSlate};
+    background-color: ${({ theme }) => theme.colors.lightSlate};
   }
 `;
 
 const EmailLink = styled(ExternalLink)`
-  font-family: ${fonts.SFMono};
-  font-size: ${fontSizes.xsmall};
+  font-family: ${({ theme }) => theme.fonts.SFMono};
+  font-size: ${({ theme }) => theme.fontSizes.xsmall};
   letter-spacing: 0.8px;
   writing-mode: vertical-rl;
   margin: 20px auto;

@@ -6,10 +6,6 @@ import { useStaticQuery, graphql } from 'gatsby';
 import { Email, Footer, Head, Nav, Social, Notifications } from '@components';
 import { GlobalStyle, theme, mixins } from '@styles';
 
-// ---------------------------- CONSTANTS ----------------------------
-
-const { colors } = theme;
-
 // ---------------------------- STYLED COMPONENTS ----------------------------
 
 const SkipToContent = styled.a`
@@ -23,8 +19,8 @@ const SkipToContent = styled.a`
   z-index: -99;
   &:focus,
   &:active {
-    background-color: ${colors.green};
-    color: ${colors.navy};
+    background-color: ${({ theme }) => theme.colors.green};
+    color: ${({ theme }) => theme.colors.navy};
     top: 0;
     left: 0;
     width: auto;

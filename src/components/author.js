@@ -3,11 +3,7 @@ import { StaticImage } from 'gatsby-plugin-image';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import { theme, media, mixins } from '@styles';
-
-// ======================= CONSTANTS ========================
-
-const { colors } = theme;
+import { media, mixins } from '@styles';
 
 // ======================= STYLED COMPONENTS ========================
 
@@ -19,9 +15,9 @@ const StyledAuthorContainer = styled.div`
   ${media.desktop`flex-direction: row;`}
   ${media.tablet`flex-direction: column;`}
   ${media.phone`flex-direction: column;`}
-  ${props =>
-    props.showBg &&
-    `background-color: ${colors.lightNavy};
+  ${({ showBg, theme }) =>
+    showBg &&
+    `background-color: ${theme.colors.lightNavy};
     box-shadow: ${mixins.boxShadow};
     border-radius: ${theme.borderRadius};
     margin-top: 2rem;
@@ -30,7 +26,7 @@ const StyledAuthorContainer = styled.div`
 `;
 
 const StyledAuthorDescription = styled.div`
-  color: ${colors.slate};
+  color: ${({ theme }) => theme.colors.slate};
   flex: 0.9;
   /* ${props => !props.showBg && 'text-align: center;'}; */
 `;
@@ -39,12 +35,12 @@ const AuthorImgContainer = styled.div`
   width: 20vw;
 
   .img {
-    border-radius: ${theme.borderRadius};
+    border-radius: ${({ theme }) => theme.borderRadius};
     ${props => props.showBg && `border-radius: 50%;`}
-    background-color: ${colors.lightNavy};
+    background-color: ${({ theme }) => theme.colors.lightNavy};
     padding: 4px;
     object-fit: cover;
-    border: 0.15rem solid ${colors.green};
+    border: 0.15rem solid ${({ theme }) => theme.colors.green};
     margin-right: 1rem;
     margin-bottom: 1rem;
   }
