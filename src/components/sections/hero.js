@@ -3,7 +3,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { graphql, useStaticQuery } from 'gatsby';
 import styled from 'styled-components';
 
-import { mixins, media, Section } from '@styles';
+import { media, Section } from '@styles';
 import { navDelay, loaderDelay } from '@config';
 import { useNowPlayingTrack, usePrefersReducedMotion } from '@hooks';
 import { NowPlayingContext } from '../now-palying';
@@ -12,7 +12,7 @@ import ExternalLink from '../externalLink';
 // --------------------------- STYLED COMPONENTS -----------------------------------
 
 const HeroContainer = styled(Section)`
-  ${mixins.flexCenter};
+  ${({ theme }) => theme.mixins.flexCenter};
   flex-direction: column;
   align-items: flex-start;
   min-height: 100vh;
@@ -57,7 +57,7 @@ const Blurb = styled.div`
   width: 50%;
   max-width: 500px;
   a {
-    ${mixins.inlineLink};
+    ${({ theme }) => theme.mixins.inlineLink};
   }
 `;
 
@@ -65,7 +65,7 @@ const NowPlayingTrack = styled.div`
   width: 50%;
   max-width: 500px;
   a {
-    ${mixins.inlineLink};
+    ${({ theme }) => theme.mixins.inlineLink};
   }
 `;
 
@@ -76,14 +76,14 @@ const TrackCopy = styled.span`
 `;
 
 // const ResumeLink = styled.a`
-//   ${mixins.bigButton};
+//   ${({ theme }) => theme.mixins.bigButton};
 //   padding: 18px 50px;
 //   margin: 10% auto 0;
 //   width: max-content;
 // `;
 
 const EmailLink = styled(ExternalLink)`
-  ${mixins.bigButton};
+  ${({ theme }) => theme.mixins.bigButton};
   margin-top: 50px;
 `;
 

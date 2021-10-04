@@ -1,20 +1,18 @@
 import styled from 'styled-components';
 import ExternalLink from '../components/externalLink';
-import theme from './theme';
-const { colors } = theme;
 
 const InlineLink = styled(ExternalLink)`
   display: inline-block;
   text-decoration: none;
   text-decoration-skip-ink: auto;
   position: relative;
-  transition: ${theme.transition};
+  transition: ${({ theme }) => theme.transition};
   cursor: pointer;
-  color: ${colors.green};
+  color: ({ theme }) => theme.colors.green};
   &:hover,
   &:focus,
   &:active {
-    color: ${colors.green};
+    color: ({ theme }) => theme.colors.green};
     outline: 0;
     &:after {
       width: 100%;
@@ -27,8 +25,8 @@ const InlineLink = styled(ExternalLink)`
     height: 1px;
     position: relative;
     bottom: 0.37em;
-    background-color: ${colors.green};
-    transition: ${theme.transition};
+    background-color: ${({ theme }) => theme.colors.green};
+    transition: ${({ theme }) => theme.transition};
   }
 `;
 

@@ -6,7 +6,7 @@ import { graphql, useStaticQuery } from 'gatsby';
 import { KEY_CODES } from '@utils';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
-import { mixins, media, Section, Heading } from '@styles';
+import { media, Section, Heading } from '@styles';
 import { usePrefersReducedMotion } from '@hooks';
 import ExternalLink from '../externalLink';
 
@@ -64,7 +64,7 @@ const Tabs = styled.ul`
 `;
 
 const Tab = styled.button`
-  ${mixins.link};
+  ${({ theme }) => theme.mixins.link};
   display: flex;
   align-items: center;
   width: 100%;
@@ -80,7 +80,7 @@ const Tab = styled.button`
   color: ${({ theme, isActive }) => (isActive ? theme.colors.green : theme.colors.lightGrey)};
   ${media.tablet`padding: 0 15px 2px;`};
   ${media.thone`
-    ${mixins.flexCenter};
+    ${({ theme }) => theme.mixins.flexCenter};
     padding: 0 15px;
     text-align: center;
     border-left: 0;
@@ -163,7 +163,7 @@ const TabContent = styled.div`
     }
   }
   a {
-    ${mixins.inlineLink};
+    ${({ theme }) => theme.mixins.inlineLink};
   }
 `;
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { IconTwitter, IconCopy, IconFacebook, IconCheckbox, IconShare } from '@components/icons';
-import { media, mixins } from '@styles';
+import { media } from '@styles';
 import config from '../config/index';
 import toast from 'react-hot-toast';
 
@@ -23,7 +23,7 @@ const SocialShareContainer = styled.div`
   font-size: ${({ theme }) => theme.fontSizes.xxlarge};
 `;
 const StyledSocialPlatform = styled.button`
-  ${mixins.flexCenter};
+  ${({ theme }) => theme.mixins.flexCenter};
   background-color: transparent;
   border: none;
   margin: 0 20px 20px 0;
@@ -47,7 +47,7 @@ const StyledSocialPlatform = styled.button`
   }
 `;
 const StyledLink = styled.a`
-  ${mixins.flexCenter};
+  ${({ theme }) => theme.mixins.flexCenter};
 `;
 const StyledCopyButton = styled.button`
   background-color: transparent;

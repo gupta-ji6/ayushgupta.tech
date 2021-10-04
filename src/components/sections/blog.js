@@ -7,12 +7,12 @@ import sr from '@utils/sr';
 import { srConfig } from '@config';
 import { usePrefersReducedMotion } from '@hooks';
 import { IconArticle } from '@components/icons';
-import { mixins, media, Section, Heading } from '@styles';
+import { media, Section, Heading } from '@styles';
 
 // ================================== STYLED COMPONENTS =====================================
 
 const BlogContainer = styled(Section)`
-  ${mixins.flexCenter};
+  ${({ theme }) => theme.mixins.flexCenter};
   flex-direction: column;
   align-items: stretch;
 `;
@@ -37,8 +37,8 @@ const BlogGrid = styled.div`
 `;
 
 const BlogInner = styled.div`
-  ${mixins.boxShadow};
-  ${mixins.flexBetween};
+  ${({ theme }) => theme.mixins.boxShadow};
+  ${({ theme }) => theme.mixins.flexBetween};
   flex-direction: column;
   align-items: flex-start;
   position: relative;
@@ -62,7 +62,7 @@ const Article = styled.div`
 `;
 
 const BlogHeader = styled.div`
-  ${mixins.flexBetween};
+  ${({ theme }) => theme.mixins.flexBetween};
   margin-bottom: 30px;
 `;
 
@@ -100,7 +100,7 @@ const BlogDescription = styled.div`
   font-size: 17px;
   color: ${({ theme }) => theme.colors.lightSlate};
   a {
-    ${mixins.inlineLink};
+    ${({ theme }) => theme.mixins.inlineLink};
   }
 `;
 
@@ -123,7 +123,7 @@ const TagList = styled.ul`
 `;
 
 const ReadMore = styled(Link)`
-  ${mixins.bigButton};
+  ${({ theme }) => theme.mixins.bigButton};
   margin: auto;
   margin-top: 50px;
   width: 20vw;

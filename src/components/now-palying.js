@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-import { mixins } from '@styles';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
 import { IconSpotify, IconPlay, IconPause } from '@components/icons';
@@ -100,7 +99,7 @@ const NowPlayingWidget = styled.div`
   justify-content: space-between;
   align-items: center;
   transition: all 0.3s ease-in-out;
-  box-shadow: ${mixins.boxShadow};
+  box-shadow: ${({ theme }) => theme.mixins.boxShadow};
 
   &:hover {
     @media (prefers-reduced-motion: no-preference) {

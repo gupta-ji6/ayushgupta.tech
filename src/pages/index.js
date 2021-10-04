@@ -13,10 +13,10 @@ import {
   Layout,
   Projects,
 } from '@components';
-import { Main, mixins } from '@styles';
+import { Main } from '@styles';
 
 const MainContainer = styled(Main)`
-  ${mixins.sidePadding};
+  ${({ theme }) => theme.mixins.sidePadding};
   counter-reset: section;
 `;
 

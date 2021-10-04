@@ -5,15 +5,13 @@ import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 
 import { Layout, ExternalLink, DetailsAndSummary } from '@components';
-import { theme, mixins, media } from '@styles';
+import { media } from '@styles';
 import ogImage from '@images/og-uses.png';
 import { siteUrl, srConfig } from '@config';
 import sr from '@utils/sr';
 import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion';
 
 // ============================= CONSTANTS ============================================
-
-const { colors, fontSizes } = theme;
 
 const metaConfig = {
   title: 'Uses - Ayush Gupta',
@@ -47,7 +45,7 @@ const StyledMainContainer = styled.main`
     padding-left: 10px;
     margin: 0;
     list-style: none;
-    font-size: ${fontSizes.large};
+    font-size: ${({ theme }) => theme.fontSizes.large};
     li {
       position: relative;
       padding-left: 30px;
@@ -56,8 +54,8 @@ const StyledMainContainer = styled.main`
         content: '▹';
         position: absolute;
         left: 0;
-        color: ${colors.green};
-        line-height: ${fontSizes.xlarge};
+        color: ${({ theme }) => theme.colors.green};
+        line-height: ${({ theme }) => theme.fontSizes.xlarge};
       }
     }
   }
@@ -67,7 +65,7 @@ const StyledMainContainer = styled.main`
     padding-left: 10px;
     margin: 0;
     list-style: none;
-    font-size: ${fontSizes.large};
+    font-size: ${({ theme }) => theme.fontSizes.large};
     li {
       position: relative;
       padding-left: 30px;
@@ -76,19 +74,19 @@ const StyledMainContainer = styled.main`
         content: '+';
         position: absolute;
         left: 0;
-        color: ${colors.green};
-        line-height: ${fontSizes.xlarge};
+        color: ${({ theme }) => theme.colors.green};
+        line-height: ${({ theme }) => theme.fontSizes.xlarge};
       }
     }
   }
 
   a {
-    ${mixins.inlineLink};
+    ${({ theme }) => theme.mixins.inlineLink};
   }
 `;
 
 const MoreQuestionsSection = styled.section`
-  ${mixins.flexCenter};
+  ${({ theme }) => theme.mixins.flexCenter};
   flex-direction: column;
   padding-top: 60px;
 `;

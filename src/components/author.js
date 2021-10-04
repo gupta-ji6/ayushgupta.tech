@@ -3,7 +3,7 @@ import { StaticImage } from 'gatsby-plugin-image';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import { media, mixins } from '@styles';
+import { media } from '@styles';
 
 // ======================= STYLED COMPONENTS ========================
 
@@ -18,7 +18,7 @@ const StyledAuthorContainer = styled.div`
   ${({ showBg, theme }) =>
     showBg &&
     `background-color: ${theme.colors.lightNavy};
-    box-shadow: ${mixins.boxShadow};
+    box-shadow: ${({ theme }) => theme.mixins.boxShadow};
     border-radius: ${theme.borderRadius};
     margin-top: 2rem;
     padding: 1.5rem;

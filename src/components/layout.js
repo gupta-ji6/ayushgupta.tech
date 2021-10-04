@@ -4,12 +4,12 @@ import styled, { ThemeProvider } from 'styled-components';
 import { useStaticQuery, graphql } from 'gatsby';
 
 import { Email, Footer, Head, Nav, Social, Notifications } from '@components';
-import { GlobalStyle, theme, mixins } from '@styles';
+import { GlobalStyle, theme } from '@styles';
 
 // ---------------------------- STYLED COMPONENTS ----------------------------
 
 const SkipToContent = styled.a`
-  ${mixins.button};
+  ${({ theme }) => theme.mixins.button};
   position: absolute;
   top: auto;
   left: -999px;

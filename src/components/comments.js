@@ -5,14 +5,13 @@ import { useComments } from 'use-comments';
 import { toast } from 'react-hot-toast';
 import { hasuraURL } from '@config';
 import { getRelativeTime } from '@utils';
-import { mixins } from '@styles';
 
 // ======================= STYLED COMPONENTS ========================
 
 const StyledCommentsContainer = styled.section`
   padding: 5vh 0;
   hr {
-    ${mixins.hr};
+    ${({ theme }) => theme.mixins.hr};
   }
 `;
 
@@ -75,7 +74,7 @@ const StyledTextarea = styled.textarea`
 `;
 
 const StyledAddCommentBtn = styled.button`
-  ${mixins.bigButton};
+  ${({ theme }) => theme.mixins.bigButton};
   margin-top: 5vh;
 `;
 

@@ -5,12 +5,11 @@ import styled from 'styled-components';
 import anime from 'animejs';
 
 import { IconLoader } from '@components/icons';
-import { mixins } from '@styles';
 
 // ------------------------- STYLED COMPONENTS ------------------------------
 
 const LoaderContainer = styled.div`
-  ${mixins.flexCenter};
+  ${({ theme }) => theme.mixins.flexCenter};
   background-color: ${({ theme }) => theme.colors.darkNavy};
   position: fixed;
   width: 100%;

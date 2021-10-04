@@ -7,9 +7,7 @@ import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { Author, Layout, SocialShare, Comments } from '@components';
 import { siteUrl } from '@config';
-import { theme, media, mixins } from '@styles';
-
-const { colors, fontSizes } = theme;
+import { media } from '@styles';
 
 // ======================= STYLED COMPONENTS ========================
 
@@ -31,9 +29,9 @@ const StyledDraftWarning = styled.blockquote`
   font-style: italic;
   font-weight: 500;
   padding: 0.5em;
-  background-color: ${colors.lightNavy};
-  border: 0.1rem solid ${colors.green};
-  border-radius: ${theme.borderRadius};
+  background-color: ${({ theme }) => theme.colors.lightNavy};
+  border: 0.1rem solid ${({ theme }) => theme.colors.green};
+  border-radius: ${({ theme }) => theme.borderRadius};
 `;
 
 const StyledPostHeader = styled.header`
@@ -48,20 +46,20 @@ const StyledPostHeader = styled.header`
 `;
 
 const StledArticleDescription = styled.h2`
-  color: ${colors.slate};
+  color: ${({ theme }) => theme.colors.slate};
   font-weight: 500;
   margin: 1.2rem auto;
 `;
 
 const StyledDate = styled.time`
-  color: ${colors.slate};
+  color: ${({ theme }) => theme.colors.slate};
 `;
 
 const StyledArticleTags = styled.p`
-  color: ${colors.slate};
+  color: ${({ theme }) => theme.colors.slate};
   a {
-    ${mixins.inlineLink};
-    color: ${colors.slate};
+    ${({ theme }) => theme.mixins.inlineLink};
+    color: ${({ theme }) => theme.colors.slate};
   }
 `;
 
@@ -77,21 +75,21 @@ const StyledPostContent = styled.div`
   p {
     margin: 1em 0;
     line-height: 1.5;
-    color: ${colors.lightSlate};
+    color: ${({ theme }) => theme.colors.lightSlate};
   }
   a {
-    ${mixins.inlineLink};
+    ${({ theme }) => theme.mixins.inlineLink};
   }
   strong,
   em {
-    color: ${colors.green};
+    color: ${({ theme }) => theme.colors.green};
     font-weight: 500;
   }
   ul {
     padding: 0;
     margin: 0;
     list-style: none;
-    font-size: ${fontSizes.xlarge};
+    font-size: ${({ theme }) => theme.fontSizes.xlarge};
     li {
       position: relative;
       padding-left: 30px;
@@ -100,8 +98,8 @@ const StyledPostContent = styled.div`
         content: '▹';
         position: absolute;
         left: 0;
-        color: ${colors.green};
-        line-height: ${fontSizes.xlarge};
+        color: ${({ theme }) => theme.colors.green};
+        line-height: ${({ theme }) => theme.fontSizes.xlarge};
       }
     }
   }
@@ -111,7 +109,7 @@ const StyledPostContent = styled.div`
     margin: 0;
     list-style-type: decimal;
     list-style-position: outside;
-    font-size: ${fontSizes.xlarge};
+    font-size: ${({ theme }) => theme.fontSizes.xlarge};
     li {
       position: relative;
       padding-left: 6px;
@@ -120,8 +118,8 @@ const StyledPostContent = styled.div`
         content: '';
         position: absolute;
         left: 0;
-        color: ${colors.green};
-        line-height: ${fontSizes.xlarge};
+        color: ${({ theme }) => theme.colors.green};
+        line-height: ${({ theme }) => theme.fontSizes.xlarge};
       }
     }
   }
@@ -130,13 +128,13 @@ const StyledPostContent = styled.div`
     font-style: italic;
     margin: 0;
     padding: 0.5em;
-    background-color: ${colors.lightNavy};
-    border-left: 0.2rem solid ${colors.green};
-    border-top-right-radius: ${theme.borderRadius};
-    border-bottom-right-radius: ${theme.borderRadius};
+    background-color: ${({ theme }) => theme.colors.lightNavy};
+    border-left: 0.2rem solid ${({ theme }) => theme.colors.green};
+    border-top-right-radius: ${({ theme }) => theme.borderRadius};
+    border-bottom-right-radius: ${({ theme }) => theme.borderRadius};
   }
   hr {
-    ${mixins.hr};
+    ${({ theme }) => theme.mixins.hr};
   }
 `;
 

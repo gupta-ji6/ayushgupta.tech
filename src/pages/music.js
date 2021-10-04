@@ -14,15 +14,13 @@ import {
   useSavedTracks,
   useUserPlaylists,
 } from '@hooks';
-import { theme, mixins, media } from '@styles';
+import { media } from '@styles';
 import { siteUrl, srConfig, hasuraURL } from '@config';
 import sr from '@utils/sr';
 import ogImage from '@images/og-music.png';
 import { IconCheck } from '@components/icons';
 
 // =================================== CONSTANTS ==========================================
-
-const { colors, fonts, fontSizes } = theme;
 
 const metaConfig = {
   title: 'Music - Ayush Gupta',
@@ -62,22 +60,22 @@ const StyledMainContainer = styled.main`
 `;
 
 const SimilarTasteSection = styled.section`
-  ${mixins.flexCenter};
+  ${({ theme }) => theme.mixins.flexCenter};
   flex-direction: column;
   padding-top: 60px;
   text-align: center;
 
   a {
-    ${mixins.inlineLink};
+    ${({ theme }) => theme.mixins.inlineLink};
   }
 `;
 
 const NowPlayingWidgetContainer = styled.div`
-  ${mixins.flexCenter};
+  ${({ theme }) => theme.mixins.flexCenter};
   flex-direction: column;
   padding: 5px;
-  background-color: ${colors.navy};
-  color: ${colors.slate};
+  background-color: ${({ theme }) => theme.colors.navy};
+  color: ${({ theme }) => theme.colors.slate};
   text-align: center;
   height: auto;
   min-height: 70px;
@@ -96,8 +94,8 @@ const RangeToggleButtonContainer = styled.div`
 `;
 
 const ToggleButton = styled.button`
-  ${mixins.bigButton};
-  ${media.thone`${mixins.smallButton};`};
+  ${({ theme }) => theme.mixins.bigButton};
+  ${media.thone`${({ theme }) => theme.mixins.smallButton};`};
   margin-right: 10px;
   margin-top: 10px;
 
@@ -110,7 +108,7 @@ const ToggleButton = styled.button`
 `;
 
 const StyledRefetchBtn = styled.button`
-  ${mixins.bigButton};
+  ${({ theme }) => theme.mixins.bigButton};
   margin-top: 10px;
 `;
 
@@ -123,7 +121,7 @@ const TrackItem = styled.div`
   &:hover {
     img {
       @media (prefers-reduced-motion: no-preference) {
-        border: 2px solid ${colors.green};
+        border: 2px solid ${({ theme }) => theme.colors.green};
         border-radius: 50%;
         animation: rotation 6s infinite linear;
       }
@@ -134,14 +132,14 @@ const TrackItem = styled.div`
 const StyledAlbumCover = styled.img`
   width: 8rem;
   height: 8rem;
-  background-color: ${colors.navy};
+  background-color: ${({ theme }) => theme.colors.navy};
   border: 2px solid transparent;
-  border-radius: ${theme.borderRadius};
+  border-radius: ${({ theme }) => theme.borderRadius};
   z-index: 1;
   object-fit: cover;
 
   @media (prefers-reduced-motion: no-preference) {
-    transition: ${theme.transition};
+    transition: ${({ theme }) => theme.transition};
   }
 
   @keyframes rotation {
@@ -155,20 +153,20 @@ const StyledAlbumCover = styled.img`
 `;
 
 const TrackInfoContainer = styled.div`
-  border-radius: ${theme.borderRadius};
-  background-color: ${colors.darkNavy};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  background-color: ${({ theme }) => theme.colors.darkNavy};
   width: 100%;
   padding: 16px;
   margin-left: -36px;
   padding-left: 46px;
 
   a {
-    ${mixins.inlineLink};
+    ${({ theme }) => theme.mixins.inlineLink};
   }
 `;
 
 const Artists = styled.div`
-  color: ${colors.slate};
+  color: ${({ theme }) => theme.colors.slate};
   margin-left: 0;
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -186,19 +184,19 @@ const RefetchContainer = styled.div`
 `;
 
 const StyledFieldset = styled.fieldset`
-  ${mixins.boxShadow};
+  ${({ theme }) => theme.mixins.boxShadow};
   margin-top: 5vh;
-  background-color: ${colors.darkNavy};
+  background-color: ${({ theme }) => theme.colors.darkNavy};
   border: none;
-  border-radius: ${theme.borderRadius};
+  border-radius: ${({ theme }) => theme.borderRadius};
   padding: 5vh;
 
   legend {
-    background-color: ${colors.lightNavy};
-    border-radius: ${theme.borderRadius};
+    background-color: ${({ theme }) => theme.colors.lightNavy};
+    border-radius: ${({ theme }) => theme.borderRadius};
     padding: 10px;
-    color: ${colors.green};
-    font-family: ${fonts.SFMono};
+    color: ${({ theme }) => theme.colors.green};
+    font-family: ${({ theme }) => theme.fonts.SFMono};
   }
 
   div {
@@ -212,7 +210,7 @@ const StyledFieldset = styled.fieldset`
     vertical-align: middle;
     margin-bottom: 10px;
     padding-right: 10px;
-    font-size: ${fontSizes.xxlarge};
+    font-size: ${({ theme }) => theme.fontSizes.xxlarge};
     flex-shrink: 0;
     flex: 0.3;
   }
@@ -221,25 +219,25 @@ const StyledFieldset = styled.fieldset`
     flex: 0.7;
     padding: 10px;
     margin-bottom: 10px;
-    background-color: ${colors.lightNavy};
-    border-radius: ${theme.borderRadius};
-    border: 1px solid ${colors.transGreen};
-    color: ${colors.white};
-    font-size: ${fontSizes.large};
+    background-color: ${({ theme }) => theme.colors.lightNavy};
+    border-radius: ${({ theme }) => theme.borderRadius};
+    border: 1px solid ${({ theme }) => theme.colors.transGreen};
+    color: ${({ theme }) => theme.colors.white};
+    font-size: ${({ theme }) => theme.fontSizes.large};
     width: 50vw;
     max-width: 500px;
 
     &:focus {
-      border: 1px solid ${colors.green};
+      border: 1px solid ${({ theme }) => theme.colors.green};
     }
 
     &::placeholder {
-      color: ${colors.slate};
+      color: ${({ theme }) => theme.colors.slate};
     }
   }
 
   button[type='submit'] {
-    ${mixins.bigButton};
+    ${({ theme }) => theme.mixins.bigButton};
     margin-top: 5vh;
   }
 `;

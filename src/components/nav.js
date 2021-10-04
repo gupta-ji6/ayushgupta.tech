@@ -9,7 +9,7 @@ import { Menu } from '@components';
 import { IconLogo } from '@components/icons';
 import { useScrollDirection } from '@hooks';
 import { navLinks } from '@config';
-import { mixins, theme } from '@styles';
+import { theme } from '@styles';
 
 // --------------------------- CONSTANTS ------------------------------------------
 
@@ -31,7 +31,7 @@ export const navLinkRedirection = (url, name) => {
 // --------------------------- STYLED COMPONENTS ------------------------------------------
 
 const StyledHeader = styled.header`
-  ${mixins.flexBetween};
+  ${({ theme }) => theme.mixins.flexBetween};
   position: fixed;
   top: 0;
   padding: 0px 50px;
@@ -74,7 +74,7 @@ const StyledHeader = styled.header`
 `;
 
 const StyledNav = styled.nav`
-  ${mixins.flexBetween};
+  ${({ theme }) => theme.mixins.flexBetween};
   position: relative;
   width: 100%;
   color: ${({ theme }) => theme.colors.lightestSlate};
@@ -83,7 +83,7 @@ const StyledNav = styled.nav`
   z-index: 12;
 
   .logo {
-    ${mixins.flexCenter};
+    ${({ theme }) => theme.mixins.flexCenter};
 
     a {
       /* display: block; */
@@ -116,7 +116,7 @@ const StyledLinks = styled.div`
   }
 
   ol {
-    ${mixins.flexBetween};
+    ${({ theme }) => theme.mixins.flexBetween};
     padding: 0;
     margin: 0;
     list-style: none;
@@ -142,7 +142,7 @@ const StyledLinks = styled.div`
   }
 
   .resume-button {
-    ${mixins.smallButton};
+    ${({ theme }) => theme.mixins.smallButton};
     margin-left: 10px;
     font-size: ${({ theme }) => theme.fontSizes.smallish};
   }

@@ -6,9 +6,7 @@ import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { Author, Layout } from '@components';
 // import { IconArticle } from '@components/icons';
-import { mixins, theme, media } from '@styles';
-
-const { colors, fontSizes, fonts } = theme;
+import { media } from '@styles';
 
 const StyledMainContainer = styled.main`
   padding: 200px 200px;
@@ -22,14 +20,14 @@ const StyledMainContainer = styled.main`
     text-align: center;
   }
   footer {
-    ${mixins.flexBetween};
+    ${({ theme }) => theme.mixins.flexBetween};
     width: 100%;
     margin-top: 20px;
   }
 `;
 
 const StyledLatestArticles = styled.h2`
-  font-size: ${fontSizes.h3};
+  font-size: ${({ theme }) => theme.fontSizes.h3};
   text-align: center;
   ${media.phone`text-align: left;`}
   ${media.phablet`text-align: left;`}
@@ -54,16 +52,16 @@ const StyledGrid = styled.div`
 `;
 
 const StyledPostInner = styled.div`
-  ${mixins.boxShadow};
-  ${mixins.flexBetween};
+  ${({ theme }) => theme.mixins.boxShadow};
+  ${({ theme }) => theme.mixins.flexBetween};
   flex-direction: column;
   align-items: flex-start;
   position: relative;
   height: 100%;
   padding: 2rem 1.75rem;
-  border-radius: ${theme.borderRadius};
-  transition: ${theme.transition};
-  background-color: ${colors.lightNavy};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  transition: ${({ theme }) => theme.transition};
+  background-color: ${({ theme }) => theme.colors.lightNavy};
   header,
   a {
     width: 100%;
@@ -71,8 +69,8 @@ const StyledPostInner = styled.div`
 `;
 const StyledPostName = styled.h5`
   margin: 0 0 10px;
-  color: ${colors.lightestSlate};
-  font-size: ${fontSizes.h3};
+  color: ${({ theme }) => theme.colors.lightestSlate};
+  font-size: ${({ theme }) => theme.fontSizes.h3};
 `;
 const StyledPost = styled.div`
   width: 65vw;
@@ -81,7 +79,7 @@ const StyledPost = styled.div`
   ${media.phone`width: 90vw;`};
   max-width: 1200px;
   margin-bottom: 25px;
-  transition: ${theme.transition};
+  transition: ${({ theme }) => theme.transition};
   cursor: default;
   &:hover,
   &:focus {
@@ -90,27 +88,27 @@ const StyledPost = styled.div`
       transform: translateY(-5px);
     }
     ${StyledPostName} {
-      color: ${colors.green};
+      color: ${({ theme }) => theme.colors.green};
       text-decoration: wavy;
     }
   }
 `;
 
 // const StyledPostHeader = styled.div`
-//   ${mixins.flexBetween};
+//   ${({ theme }) => theme.mixins.flexBetween};
 //   margin-bottom: 30px;
 // `;
 
 // const StyledFolder = styled.div`
-//   color: ${colors.green};
+//   color: ${({ theme }) => theme.colors.green};
 //   svg {
 //     width: 40px;
 //     height: 40px;
 //   }
 // `;
 const StyledPostDescription = styled.div`
-  color: ${colors.lightSlate};
-  font-size: ${fontSizes.xlarge};
+  color: ${({ theme }) => theme.colors.lightSlate};
+  font-size: ${({ theme }) => theme.fontSizes.xlarge};
 `;
 const StyledFooter = styled.footer`
   flex-direction: column;
@@ -119,9 +117,9 @@ const StyledFooter = styled.footer`
 `;
 const StyledDate = styled.span`
   align-self: flex-start;
-  color: ${colors.lightSlate};
-  font-family: ${fonts.SFMono};
-  font-size: ${fontSizes.small};
+  color: ${({ theme }) => theme.colors.lightSlate};
+  font-family: ${({ theme }) => theme.fonts.SFMono};
+  font-size: ${({ theme }) => theme.fontSizes.small};
   text-transform: uppercase;
   padding: 10px 0;
 `;
@@ -133,9 +131,9 @@ const StyledTags = styled.ul`
   margin: 0;
   list-style: none;
   li {
-    color: ${colors.green};
-    font-family: ${fonts.SFMono};
-    font-size: ${fontSizes.small};
+    color: ${({ theme }) => theme.colors.green};
+    font-family: ${({ theme }) => theme.fonts.SFMono};
+    font-size: ${({ theme }) => theme.fontSizes.small};
     line-height: 1.75;
     &:not(:last-of-type) {
       margin-right: 15px;

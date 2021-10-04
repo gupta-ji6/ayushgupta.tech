@@ -8,12 +8,12 @@ import { srConfig } from '@config';
 import { IconAppStore, IconExternal, IconGithub, IconGooglePlay } from '@components/icons';
 import ExternalLink from '@components/externalLink';
 import { usePrefersReducedMotion } from '@hooks';
-import { Heading, mixins } from '@styles';
+import { Heading } from '@styles';
 
 // ================================== STYLED COMPONENTS =====================================
 
 const StyledProjectsGrid = styled.ul`
-  ${mixins.resetList};
+  ${({ theme }) => theme.mixins.resetList};
   a {
     position: relative;
     z-index: 1;
@@ -27,7 +27,7 @@ const StyledProject = styled.li`
   grid-template-columns: repeat(12, 1fr);
   align-items: center;
   @media (max-width: 768px) {
-    ${mixins.boxShadow};
+    ${({ theme }) => theme.mixins.boxShadow};
   }
   &:not(:last-of-type) {
     margin-bottom: 100px;
@@ -134,7 +134,7 @@ const StyledProject = styled.li`
     }
   }
   .project-description {
-    ${mixins.boxShadow};
+    ${({ theme }) => theme.mixins.boxShadow};
     position: relative;
     z-index: 2;
     padding: 25px;
@@ -151,7 +151,7 @@ const StyledProject = styled.li`
       }
     }
     a {
-      ${mixins.inlineLink};
+      ${({ theme }) => theme.mixins.inlineLink};
     }
   }
   .project-tech-list {
@@ -185,7 +185,7 @@ const StyledProject = styled.li`
     margin-left: -10px;
     color: ${({ theme }) => theme.colors.lightestSlate};
     a {
-      ${mixins.flexCenter};
+      ${({ theme }) => theme.mixins.flexCenter};
       padding: 10px;
       &.external {
         svg {
@@ -201,7 +201,7 @@ const StyledProject = styled.li`
     }
   }
   .project-image {
-    ${mixins.boxShadow};
+    ${({ theme }) => theme.mixins.boxShadow};
     grid-column: 6 / -1;
     grid-row: 1 / -1;
     position: relative;

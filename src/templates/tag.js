@@ -5,9 +5,7 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { Layout } from '@components';
-import { media, mixins, theme } from '@styles';
-
-const { colors, fontSizes } = theme;
+import { media } from '@styles';
 
 const StyledTagsContainer = styled.main`
   padding: 200px 200px;
@@ -21,13 +19,13 @@ const StyledTagsContainer = styled.main`
   justify-content: center;
   max-width: 1000px;
   a {
-    ${mixins.inlineLink};
+    ${({ theme }) => theme.mixins.inlineLink};
   }
   h1 {
-    ${mixins.flexBetween};
+    ${({ theme }) => theme.mixins.flexBetween};
     margin-bottom: 50px;
     a {
-      font-size: ${fontSizes.large};
+      font-size: ${({ theme }) => theme.fontSizes.large};
       font-weight: 400;
     }
   }
@@ -38,12 +36,12 @@ const StyledTagsContainer = styled.main`
         font-size: inherit;
         margin: 0;
         a {
-          color: ${colors.lightSlate};
+          color: ${({ theme }) => theme.colors.lightSlate};
         }
       }
       .subtitle {
-        color: ${colors.slate};
-        font-size: ${fontSizes.small};
+        color: ${({ theme }) => theme.colors.slate};
+        font-size: ${({ theme }) => theme.fontSizes.small};
         .tag {
           margin-right: 10px;
         }
@@ -131,7 +129,7 @@ TagTemplate.propTypes = {
 };
 
 export const pageQuery = graphql`
-  query($tag: String!) {
+  query ($tag: String!) {
     allMarkdownRemark(
       limit: 2000
       sort: { fields: [frontmatter___date], order: DESC }

@@ -1,19 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import { mixins } from '@styles';
 import PropTypes from 'prop-types';
 
 // ============================= STYLED COMPONENTS ================================
 
 const StyledDetailsContainer = styled.div`
   a {
-    ${mixins.inlineLink};
+    ${({ theme }) => theme.mixins.inlineLink};
   }
 
   details[open] {
     background-color: ${({ theme }) => theme.colors.lightNavy};
     border-radius: ${({ theme }) => theme.borderRadius};
-    box-shadow: ${mixins.boxShadow};
+    box-shadow: ${({ theme }) => theme.mixins.boxShadow};
     summary > span {
       color: ${({ theme }) => theme.colors.green};
     }

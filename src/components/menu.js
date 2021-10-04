@@ -7,7 +7,6 @@ import ExternalLink from './externalLink';
 import { useOnClickOutside } from '@hooks';
 import { KEY_CODES } from '@utils';
 import { navLinks } from '@config';
-import { mixins } from '@styles';
 import { navLinkRedirection } from './nav';
 
 // --------------------------- STYLED COMPONENTS ------------------------------------------
@@ -24,7 +23,7 @@ const StyledHamburgerButton = styled.button`
   display: none;
 
   @media (max-width: 768px) {
-    ${mixins.flexCenter};
+    ${({ theme }) => theme.mixins.flexCenter};
     position: relative;
     z-index: 10;
     margin-right: -15px;
@@ -96,7 +95,7 @@ const StyledSidebar = styled.aside`
   display: none;
 
   @media (max-width: 768px) {
-    ${mixins.flexCenter};
+    ${({ theme }) => theme.mixins.flexCenter};
     position: fixed;
     top: 0;
     bottom: 0;
@@ -114,7 +113,7 @@ const StyledSidebar = styled.aside`
   }
 
   nav {
-    ${mixins.flexBetween};
+    ${({ theme }) => theme.mixins.flexBetween};
     width: 100%;
     flex-direction: column;
     color: ${({ theme }) => theme.colors.lightestSlate};
@@ -152,14 +151,14 @@ const StyledSidebar = styled.aside`
     }
 
     a {
-      ${mixins.link};
+      ${({ theme }) => theme.mixins.link};
       width: 100%;
       padding: 3px 20px 20px;
     }
   }
 
   .resume-link {
-    ${mixins.bigButton};
+    ${({ theme }) => theme.mixins.bigButton};
     padding: 18px 50px;
     margin: 10% auto 0;
     width: max-content;

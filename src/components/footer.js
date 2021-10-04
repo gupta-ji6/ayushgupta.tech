@@ -11,14 +11,14 @@ import {
   IconFacebook,
 } from '@components/icons';
 import { socialMedia } from '@config';
-import { mixins, media } from '@styles';
+import { media } from '@styles';
 import NowPlaying from './now-palying';
 import ExternalLink from './externalLink';
 
 // ------------------------- STYLED COMPONENTS ------------------------------
 
 const FooterContainer = styled.footer`
-  ${mixins.flexCenter};
+  ${({ theme }) => theme.mixins.flexCenter};
   flex-direction: column;
   padding: 5px;
   background-color: ${({ theme }) => theme.colors.navy};
@@ -40,7 +40,7 @@ const SocialContainer = styled.div`
   ${media.tablet`display: block;`};
 `;
 const SocialItemList = styled.ul`
-  ${mixins.flexBetween};
+  ${({ theme }) => theme.mixins.flexBetween};
 `;
 const SocialLink = styled(ExternalLink)`
   padding: 10px;
@@ -50,7 +50,7 @@ const SocialLink = styled(ExternalLink)`
   }
 `;
 const Copy = styled.div`
-  ${mixins.flexCenter};
+  ${({ theme }) => theme.mixins.flexCenter};
   flex-direction: column;
   margin: 5px 0;
   font-family: ${({ theme }) => theme.fonts.SFMono};

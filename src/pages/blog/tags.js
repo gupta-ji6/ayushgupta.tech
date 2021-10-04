@@ -5,9 +5,7 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { Layout } from '@components';
-import { theme, media, mixins } from '@styles';
-
-const { colors, fontSizes, fonts } = theme;
+import { media } from '@styles';
 
 const StyledTagsContainer = styled.main`
   padding: 200px 200px;
@@ -27,8 +25,8 @@ const StyledTagsContainer = styled.main`
     padding: 0;
     margin: 0;
     list-style: none;
-    font-size: ${fontSizes.xlarge};
-    color: ${colors.lightSlate};
+    font-size: ${({ theme }) => theme.fontSizes.xlarge};
+    color: ${({ theme }) => theme.colors.lightSlate};
     li {
       position: relative;
       padding-left: 30px;
@@ -37,17 +35,17 @@ const StyledTagsContainer = styled.main`
         content: '▹';
         position: absolute;
         left: 0;
-        color: ${colors.green};
-        line-height: ${fontSizes.xlarge};
+        color: ${({ theme }) => theme.colors.green};
+        line-height: ${({ theme }) => theme.fontSizes.xlarge};
       }
-      font-size: ${fontSizes.xxlarge};
+      font-size: ${({ theme }) => theme.fontSizes.xxlarge};
       a {
-        ${mixins.inlineLink};
-        color: ${colors.lightSlate};
+        ${({ theme }) => theme.mixins.inlineLink};
+        color: ${({ theme }) => theme.colors.lightSlate};
         .count {
-          color: ${colors.slate};
-          font-family: ${fonts.SFMono};
-          font-size: ${fontSizes.medium};
+          color: ${({ theme }) => theme.colors.slate};
+          font-family: ${({ theme }) => theme.fonts.SFMono};
+          font-size: ${({ theme }) => theme.fontSizes.medium};
         }
       }
     }

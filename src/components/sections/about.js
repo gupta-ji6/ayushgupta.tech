@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import sr from '@utils/sr';
 import { srConfig, github } from '@config';
-import { mixins, media, Section, Heading } from '@styles';
+import { media, Section, Heading } from '@styles';
 import { usePrefersReducedMotion } from '@hooks';
 import ExternalLink from '../externalLink';
 
@@ -16,7 +16,7 @@ const AboutContainer = styled(Section)`
 `;
 
 const FlexContainer = styled.div`
-  ${mixins.flexBetween};
+  ${({ theme }) => theme.mixins.flexBetween};
   align-items: flex-start;
   ${media.tablet`display: block;`};
 `;
@@ -26,7 +26,7 @@ const ContentContainer = styled.div`
   max-width: 480px;
   ${media.tablet`width: 100%;`};
   a {
-    ${mixins.inlineLink};
+    ${({ theme }) => theme.mixins.inlineLink};
   }
 
   strong {
@@ -69,7 +69,7 @@ const StyledPic = styled(ExternalLink)`
   }
 
   .wrapper {
-    ${mixins.boxShadow};
+    ${({ theme }) => theme.mixins.boxShadow};
     display: block;
     position: relative;
     width: 100%;

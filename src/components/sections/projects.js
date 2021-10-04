@@ -3,7 +3,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
 import { graphql, useStaticQuery } from 'gatsby';
 
-import { Button, Section, media, mixins } from '@styles';
+import { Button, Section, media } from '@styles';
 import {
   IconExternal,
   IconFolder,
@@ -19,7 +19,7 @@ import ExternalLink from '../externalLink';
 // ================================== STYLED COMPONENTS =====================================
 
 const ProjectsContainer = styled(Section)`
-  ${mixins.flexCenter};
+  ${({ theme }) => theme.mixins.flexCenter};
   flex-direction: column;
   align-items: stretch;
 `;
@@ -44,8 +44,8 @@ const ProjectsGrid = styled.div`
 `;
 
 const ProjectInner = styled.div`
-  ${mixins.boxShadow};
-  ${mixins.flexBetween};
+  ${({ theme }) => theme.mixins.boxShadow};
+  ${({ theme }) => theme.mixins.flexBetween};
   flex-direction: column;
   align-items: flex-start;
   position: relative;
@@ -69,7 +69,7 @@ const Project = styled.div`
 `;
 
 const ProjectHeader = styled.div`
-  ${mixins.flexBetween};
+  ${({ theme }) => theme.mixins.flexBetween};
   margin-bottom: 30px;
 `;
 
@@ -106,7 +106,7 @@ const ProjectName = styled.h5`
 const ProjectDescription = styled.div`
   font-size: 17px;
   a {
-    ${mixins.inlineLink};
+    ${({ theme }) => theme.mixins.inlineLink};
   }
 `;
 

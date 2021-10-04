@@ -4,7 +4,7 @@ import { graphql, useStaticQuery } from 'gatsby';
 
 import sr from '@utils/sr';
 import { srConfig } from '@config';
-import { mixins, media, Section, Heading } from '@styles';
+import { media, Section, Heading } from '@styles';
 import { usePrefersReducedMotion } from '@hooks';
 import ExternalLink from '../externalLink';
 
@@ -15,7 +15,7 @@ const ContactContainer = styled(Section)`
   max-width: 600px;
   margin: 0 auto 100px;
   a {
-    ${mixins.inlineLink};
+    ${({ theme }) => theme.mixins.inlineLink};
   }
 `;
 
@@ -46,7 +46,7 @@ const Title = styled.h4`
 `;
 
 const EmailLink = styled(ExternalLink)`
-  ${mixins.bigButton};
+  ${({ theme }) => theme.mixins.bigButton};
   margin-top: 50px;
 `;
 

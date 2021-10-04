@@ -1,6 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
 import media from './media';
-import mixins from './mixins';
 import PrismStyles from './PrismStyles';
 import fonts from './fonts';
 
@@ -243,7 +242,7 @@ const GlobalStyle = createGlobalStyle`
       padding-top: 4px;
     }
     a {
-      ${mixins.inlineLink};
+      ${({ theme }) => theme.mixins.inlineLink};
       font-family: ${({ theme }) => theme.fonts.SFMono};
       font-size: ${({ theme }) => theme.fontSizes.small};
       font-weight: 600;

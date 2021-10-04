@@ -1,20 +1,18 @@
 import React from 'react';
-import { Main, media, mixins, theme } from '@styles';
+import { Main, media } from '@styles';
 import { Layout } from '@components';
 import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const { colors, fonts } = theme;
-
 const MainContainer = styled(Main)`
-  ${mixins.flexCenter};
+  ${({ theme }) => theme.mixins.flexCenter};
   flex-direction: column;
   height: 100vh !important;
 `;
 const Title = styled.h1`
-  color: ${colors.green};
-  font-family: ${fonts.SFMono};
+  color: ${({ theme }) => theme.colors.green};
+  font-family: ${({ theme }) => theme.fonts.SFMono};
   font-size: 12vw;
   line-height: 1;
   ${media.bigDesktop`font-size: 200px;`}
@@ -27,7 +25,7 @@ const Subtitle = styled.h2`
   ${media.phablet`font-size: 30px;`};
 `;
 const HomeButton = styled(Link)`
-  ${mixins.bigButton};
+  ${({ theme }) => theme.mixins.bigButton};
   margin-top: 40px;
 `;
 
