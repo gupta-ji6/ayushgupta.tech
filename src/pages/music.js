@@ -720,7 +720,7 @@ const MusicPage = ({ location }) => {
 
         <section ref={revealMusicContent}>
           <NowPlayingWidgetContainer>
-            <NowPlaying />
+            <NowPlaying isMusicPage={true} />
           </NowPlayingWidgetContainer>
 
           <DetailsAndSummary

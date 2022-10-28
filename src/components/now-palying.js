@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { Link } from 'gatsby';
 
 import { theme, mixins } from '@styles';
 import sr from '@utils/sr';
@@ -167,7 +168,7 @@ const SpotifyIcon = styled.div`
 
 // ========================= COMPONENT ===========================
 
-const NowPlaying = () => {
+const NowPlaying = ({ isMusicPage = false }) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const revealContainer = useRef(null);
@@ -227,37 +228,71 @@ const NowPlaying = () => {
     }
   };
 
+  const renderTrackImageAndName = () => {
+    if (isMusicPage) {
+      return (
+        <React.Fragment>
+          <ExternalLink
+            url={nowPlayingTrack?.external_urls?.spotify || SPOTIFY_PROFILE}
+            eventName="Spotify"
+            eventType={
+              nowPlayingTrack?.name ? `Widget - ${nowPlayingTrack.name}` : 'Open Spotify Profile'
+            }>
+            <AlbumImage
+              src={
+                nowPlayingTrack?.album?.images[0].url ||
+                'https://source.unsplash.com/128x128/?music'
+              }
+              width="48"
+              height="48"
+              loading="lazy"
+              alt="music"
+            />
+          </ExternalLink>
+          <ExternalLink
+            url={nowPlayingTrack?.external_urls?.spotify || SPOTIFY_PROFILE}
+            eventName="Spotify"
+            eventType={
+              nowPlayingTrack?.name ? `Widget - ${nowPlayingTrack.name}` : 'Open Spotify Profile'
+            }>
+            <TrackInfo>
+              <TrackName>{nowPlayingTrack?.name || 'Not Playing'}</TrackName>
+              <AlbumName>{nowPlayingTrack?.album?.name || 'View Spotify Profile'}</AlbumName>
+            </TrackInfo>
+          </ExternalLink>
+        </React.Fragment>
+      );
+    } else {
+      return (
+        <React.Fragment>
+          <Link to="/music" aria-label="music page">
+            <AlbumImage
+              src={
+                nowPlayingTrack?.album?.images[0].url ||
+                'https://source.unsplash.com/128x128/?music'
+              }
+              width="48"
+              height="48"
+              loading="lazy"
+              alt="music"
+            />
+          </Link>
+          <Link to="/music" aria-label="music page">
+            <TrackInfo>
+              <TrackName>{nowPlayingTrack?.name || 'Not Playing'}</TrackName>
+              <AlbumName>Explore Music Page</AlbumName>
+            </TrackInfo>
+          </Link>
+        </React.Fragment>
+      );
+    }
+  };
+
   return (
     <div>
       <TrackContext>{fetchNowPlayingCopy()}</TrackContext>
       <NowPlayingWidget>
-        <ExternalLink
-          url={nowPlayingTrack?.external_urls?.spotify || SPOTIFY_PROFILE}
-          eventName="Spotify"
-          eventType={
-            nowPlayingTrack?.name ? `Widget - ${nowPlayingTrack.name}` : 'Open Spotify Profile'
-          }>
-          <AlbumImage
-            src={
-              nowPlayingTrack?.album?.images[0].url || 'https://source.unsplash.com/128x128/?music'
-            }
-            width="48"
-            height="48"
-            loading="lazy"
-            alt="music"
-          />
-        </ExternalLink>
-        <ExternalLink
-          url={nowPlayingTrack?.external_urls?.spotify || SPOTIFY_PROFILE}
-          eventName="Spotify"
-          eventType={
-            nowPlayingTrack?.name ? `Widget - ${nowPlayingTrack.name}` : 'Open Spotify Profile'
-          }>
-          <TrackInfo>
-            <TrackName>{nowPlayingTrack?.name || 'Not Playing'}</TrackName>
-            <AlbumName>{nowPlayingTrack?.album?.name || 'View Spotify Profile'}</AlbumName>
-          </TrackInfo>
-        </ExternalLink>
+        {renderTrackImageAndName()}
         <SpotifyIcon playing={isAyushListeningToAnything}>
           <button
             onClick={toggleAudio}

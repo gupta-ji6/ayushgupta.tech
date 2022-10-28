@@ -6,9 +6,9 @@ order: 2
 
 ## Browsers
 
+- [Arc](https://arc.net/) ([DM on Twitter](https://twitter.com/_guptaji_) for invites)
 - [Chrome](https://www.google.com/intl/en_in/chrome/)
 - [Firefox](https://www.mozilla.org/en-US/firefox/browsers/)
-- [Opera](https://www.opera.com/hi/download) (only for VPN)
 
 ## Browser Extensions
 
@@ -38,25 +38,37 @@ order: 2
 - [Password Alert](https://chrome.google.com/webstore/detail/password-alert/noondiphcddnnabmjcihcjfbhfklnnep)
 - [Picture-in-Picture Extension (by Google)](https://chrome.google.com/webstore/detail/picture-in-picture-extens/hkgfoiooedgoejojocmhlaklaeopbecg)
 
-## Coding
+## Development
 
 - [VS Code](https://code.visualstudio.com/)
-- [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701)
+- [iTerm2 Terminal](https://iterm2.com/)
+- [XCode](https://developer.apple.com/xcode/)
 - [Android Studio](https://developer.android.com/studio)
+- [Flipper](https://fbflipper.com/)
+- [Reactotron](https://github.com/infinitered/reactotron)
 - [GitHub Desktop](https://desktop.github.com/)
+- [Fig](https://starship.rs/)
+- [Starship](https://starship.rs/)
 - [Git Bash](https://git-scm.com/downloads)
 - [Postman](https://www.postman.com/downloads/)
 - [Responsively App](https://responsively.app/)
-- [Hyper Terminal](https://hyper.is/)
 
 ## Design
 
-- [Canva](https://www.canva.com/en_in/download/windows/)
+- [Canva](https://www.canva.com/)
 - [Figma](https://www.figma.com/downloads/)
 
 ## Others
 
 - Communication - [Discord](https://discord.com/download), [WhatsApp](https://www.whatsapp.com/download), [Telegram](https://desktop.telegram.org/)
+- [Krisp](https://krisp.ai/)
+- [Hand Mirror](https://handmirror.app/)
+- [Kap](https://getkap.co/)
+- [Maccy](https://maccy.app/)
+- [Dato](https://sindresorhus.com/dato.html)
+- [Raycast](https://www.raycast.com/)
+- [Cron](https://cron.com/)
+- [Rectangle](https://rectangleapp.com/)
 - [NetSpeedMonitor](https://filehippo.com/download_netspeedmonitor64)
 - [Recuva](https://www.ccleaner.com/recuva)
 - [DaVinci Resolve](https://www.blackmagicdesign.com/in/products/davinciresolve/)

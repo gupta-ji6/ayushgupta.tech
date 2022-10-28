@@ -1,6 +1,6 @@
 ---
 title: 'Mobile'
-subtitle: 'Only if my phone could incorporate all these apps in 64 gigs of storage'
+subtitle: 'Only if my phone could incorporate all these apps in teeny-tiny gigs of storage'
 order: 3
 ---
 
@@ -9,6 +9,8 @@ order: 3
 - [Spotify Premium](https://play.google.com/store/apps/details?id=com.spotify.music)
 - [Netflix](https://netflix.com)
 - [Amazon Prime](https://www.primevideo.com/)
+- [VSCO](https://apps.apple.com/us/app/vsco-photo-video-editor/id588013838)
+- [Google One](https://one.google.com/about)
 - [Nova Launcher](https://play.google.com/store/apps/details?id=com.teslacoilsw.launcher.prime)
 - [Relay Pro for Reddit](https://play.google.com/store/apps/details?id=reddit.news)
 - [Crayon Icon Pack](https://play.google.com/store/apps/details?id=com.jndapp.cartoon.crayon.iconpack)
