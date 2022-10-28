@@ -62,7 +62,9 @@ const GithubLink = styled(ExternalLink)`
 
 const Footer = ({ isMusicPage }) => (
   <FooterContainer>
-    <div className="now_playing_container">{isMusicPage ? null : <NowPlaying />}</div>
+    <div className="now_playing_container">
+      {isMusicPage ? null : <NowPlaying isMusicPage={isMusicPage} />}
+    </div>
     <SocialContainer>
       <SocialItemList>
         {socialMedia &&

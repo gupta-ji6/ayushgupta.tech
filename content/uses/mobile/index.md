@@ -1,6 +1,6 @@
 ---
 title: 'Mobile'
-subtitle: 'Only if my phone could incorporate all these apps in 64 gigs of storage'
+subtitle: 'Only if my phone could incorporate all these apps in teeny-tiny gigs of storage'
 order: 3
 ---
 
