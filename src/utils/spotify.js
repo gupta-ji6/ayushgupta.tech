@@ -64,11 +64,8 @@ export const fetchCurrentTrack = async () => {
       },
     });
 
-    // console.log(response);
-
     if (response.status === 200) {
       const jsonResponse = await response.json();
-      //   console.log(jsonResponse);
 
       if (jsonResponse?.currently_playing_type === 'track' && jsonResponse?.item !== null) {
         const { album, artists, external_urls, name, preview_url } = jsonResponse?.item;
@@ -119,7 +116,6 @@ export const fetchPlaylistById = async playlist_id => {
 
     if (response.status === 200) {
       const jsonResponse = await response.json();
-      // console.log(jsonResponse);
 
       if (jsonResponse !== null) {
         return jsonResponse;
@@ -160,7 +156,6 @@ export const fetchCurrentUserPlaylists = async (limit = 20) => {
 
     if (response.status === 200) {
       const jsonResponse = await response.json();
-      // console.log(jsonResponse);
 
       if (jsonResponse?.total !== 0) {
         const { items, href, total } = jsonResponse;
@@ -215,7 +210,6 @@ export const fetchCurrentUsersRecentlyPlayed = async (limit = 20) => {
 
     if (response.status === 200) {
       const jsonResponse = await response.json();
-      // console.log(jsonResponse);
 
       if (jsonResponse?.items.length !== 0) {
         const { items, href, next } = jsonResponse;
@@ -261,7 +255,6 @@ export const fetchCurrentUsersSavedTracks = async (limit = 20) => {
 
     if (response.status === 200) {
       const jsonResponse = await response.json();
-      // console.log(jsonResponse);
 
       if (jsonResponse?.items.length !== 0) {
         const { items, href, next, total } = jsonResponse;
@@ -317,7 +310,6 @@ export const fetchCurrentUsersTopArtistsOrTracks = async (
 
     if (response.status === 200) {
       const jsonResponse = await response.json();
-      // console.log(jsonResponse);
 
       if (jsonResponse?.items.length !== 0) {
         const { items, href, next, total } = jsonResponse;
@@ -360,7 +352,6 @@ export const fetchCurrentUserProfile = async () => {
 
     if (response.status === 200) {
       const jsonResponse = await response.json();
-      // console.log(jsonResponse);
       return jsonResponse;
     }
   } catch (error) {

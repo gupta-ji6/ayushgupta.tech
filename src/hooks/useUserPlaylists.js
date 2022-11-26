@@ -16,7 +16,6 @@ function useUserPlaylists(limit = 20) {
   async function fetchData() {
     setUserPlaylistsLoading(true);
     const playlists = await fetchCurrentUserPlaylists(limit);
-    //   console.log(playlists);
     if (playlists !== undefined) {
       setUserPlaylists(playlists?.items);
       setUserPlaylistsLoading(false);

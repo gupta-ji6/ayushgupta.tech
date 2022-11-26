@@ -147,7 +147,6 @@ const PostTemplate = ({ data, location }) => {
   const { title, date, tags, description, draft, slug, cover } = frontmatter;
   const image = getImage(cover);
   const ogImageSrc = image.images.fallback.src;
-  console.log(image);
 
   return (
     <Layout location={location}>
@@ -231,7 +230,7 @@ PostTemplate.propTypes = {
 };
 
 export const pageQuery = graphql`
-  query ($path: String!) {
+  query($path: String!) {
     markdownRemark(frontmatter: { slug: { eq: $path } }) {
       html
       frontmatter {

@@ -278,14 +278,26 @@ const MusicPage = ({ location }) => {
     refetchTopTracks: refetchTopArtists,
   } = useTopTracks('artists', topArtistsRange, 10);
 
-  const { recentlyPlayedTracks, recentTracksLoading, recentTracksError, refetchRecentTracks } =
-    useRecentlyPlayedTracks(10);
+  const {
+    recentlyPlayedTracks,
+    recentTracksLoading,
+    recentTracksError,
+    refetchRecentTracks,
+  } = useRecentlyPlayedTracks(10);
 
-  const { recentlySavedTracks, savedTracksLoading, savedTracksError, refetchSavedTracks } =
-    useSavedTracks(10);
+  const {
+    recentlySavedTracks,
+    savedTracksLoading,
+    savedTracksError,
+    refetchSavedTracks,
+  } = useSavedTracks(10);
 
-  const { userPlaylists, userPlaylistsError, userPlaylistsLoading, refetchUserPlaylists } =
-    useUserPlaylists(10);
+  const {
+    userPlaylists,
+    userPlaylistsError,
+    userPlaylistsLoading,
+    refetchUserPlaylists,
+  } = useUserPlaylists(10);
 
   const { addComment, count } = useComments(hasuraURL, '/music/');
   const [songRecommendationData, setSongRecommendationData] = useState({
@@ -320,7 +332,6 @@ const MusicPage = ({ location }) => {
         </RefetchContainer>
       );
     } else if (topTracks !== undefined) {
-      // console.log(topTracks);
       return (
         <Fragment>
           {topTracks.map(track => {
@@ -368,7 +379,6 @@ const MusicPage = ({ location }) => {
         </RefetchContainer>
       );
     } else if (Object.keys(ayushFavouritePlaylist).length > 0) {
-      // console.log(ayushFavouritePlaylist);
       const { name, images, id, owner, tracks, external_urls } = ayushFavouritePlaylist;
       return (
         <TrackItem key={id}>
@@ -412,7 +422,6 @@ const MusicPage = ({ location }) => {
         </RefetchContainer>
       );
     } else if (topArtists !== undefined) {
-      // console.log(topArtists);
       return (
         <Fragment>
           {topArtists.map(artist => {
@@ -459,7 +468,6 @@ const MusicPage = ({ location }) => {
         </RefetchContainer>
       );
     } else if (recentlyPlayedTracks !== undefined) {
-      // console.log(recentlyPlayedTracks);
       return (
         <Fragment>
           {recentlyPlayedTracks.map(trackData => {
@@ -508,7 +516,6 @@ const MusicPage = ({ location }) => {
         </RefetchContainer>
       );
     } else if (recentlySavedTracks !== undefined) {
-      // console.log(recentlySavedTracks);
       return (
         <Fragment>
           {recentlySavedTracks.map(trackData => {
@@ -557,7 +564,6 @@ const MusicPage = ({ location }) => {
         </RefetchContainer>
       );
     } else if (userPlaylists !== undefined) {
-      // console.log(userPlaylists);
       return (
         <Fragment>
           {userPlaylists.map(playlistData => {

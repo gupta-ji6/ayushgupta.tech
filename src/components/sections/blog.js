@@ -187,8 +187,6 @@ const Blog = () => {
   );
   // const firstSix = blog.slice(0, GRID_LIMIT);
   // const blogsToShow = showMore ? blog : firstSix;
-  // console.log(data);
-  // console.log(blog);
 
   return (
     <BlogContainer id="blog" ref={revealContainer}>

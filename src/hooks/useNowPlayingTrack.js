@@ -17,7 +17,6 @@ function useNowPlayingTrack() {
   async function fetchData() {
     setNowPlayingLoading(true);
     const track = await fetchCurrentTrack();
-    // console.log(track);
     if (track !== undefined) {
       setNowPlayingTrack(track);
       setNowPlayingLoading(false);
