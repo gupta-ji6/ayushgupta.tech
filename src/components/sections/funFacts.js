@@ -14,7 +14,7 @@ const { colors } = theme;
 
 // ------------------------------ STYLED COMPONENTS --------------------------------
 
-const AboutContainer = styled(Section)`
+const FunFactsContainer = styled(Section)`
   position: relative;
 `;
 
@@ -84,7 +84,7 @@ const FunFacts = () => {
   };
 
   return (
-    <AboutContainer id="about" ref={revealContainer}>
+    <FunFactsContainer id="about" ref={revealContainer}>
       <Heading>Fun Facts</Heading>
       <FlexContainer>
         <ShuffleButton onClick={shuffleFunFacts}>Shuffle</ShuffleButton>
@@ -95,7 +95,7 @@ const FunFacts = () => {
           />
         </ContentContainer>
       </FlexContainer>
-    </AboutContainer>
+    </FunFactsContainer>
   );
 };
 
