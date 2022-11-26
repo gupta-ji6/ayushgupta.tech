@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import { sample } from 'lodash';
 import styled from 'styled-components';
-import { SwitchTransition, CSSTransition } from 'react-transition-group';
 
 import sr from '@utils/sr';
 import { srConfig } from '@config';
@@ -69,7 +68,6 @@ const FunFacts = () => {
 
   const [singleRandomFunFactHTML, setSingleRandomFunFactHTML] = useState(sample(allFunFactsHTML));
   const revealContainer = useRef(null);
-  const nodeRef = useRef(null);
 
   const prefersReducedMotion = usePrefersReducedMotion();
 
@@ -91,19 +89,10 @@ const FunFacts = () => {
       <FlexContainer>
         <ShuffleButton onClick={shuffleFunFacts}>Shuffle</ShuffleButton>
         <ContentContainer>
-          <SwitchTransition>
-            <CSSTransition
-              key={singleRandomFunFactHTML}
-              addEndListener={(node, done) => node.addEventListener('transitionend', done, false)}
-              nodeRef={nodeRef}
-              classNames="my-node">
-              <div
-                dangerouslySetInnerHTML={{ __html: singleRandomFunFactHTML }}
-                className="animate blur"
-                ref={nodeRef}
-              />
-            </CSSTransition>
-          </SwitchTransition>
+          <div
+            dangerouslySetInnerHTML={{ __html: singleRandomFunFactHTML }}
+            className="animate slide"
+          />
         </ContentContainer>
       </FlexContainer>
     </AboutContainer>
