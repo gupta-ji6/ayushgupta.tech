@@ -87,7 +87,9 @@ const FunFacts = () => {
     <FunFactsContainer id="about" ref={revealContainer}>
       <Heading>Fun Facts</Heading>
       <FlexContainer>
-        <ShuffleButton onClick={shuffleFunFacts}>Shuffle</ShuffleButton>
+        <ShuffleButton onClick={shuffleFunFacts} data-splitbee-event="Shuffle Fun Facts Clicked">
+          Shuffle
+        </ShuffleButton>
         <ContentContainer>
           <div
             dangerouslySetInnerHTML={{ __html: singleRandomFunFactHTML }}
