@@ -1,6 +1,8 @@
+import { sample } from 'lodash';
+
 export const throttle = (func, wait = 100) => {
   let timer = null;
-  return function(...args) {
+  return function (...args) {
     if (timer === null) {
       timer = setTimeout(() => {
         func.apply(this, args);
@@ -59,4 +61,25 @@ export const getRelativeTime = (d1, d2 = new Date()) => {
       return rtf.format(Math.round(elapsed / units[u]), u);
     }
   }
+};
+
+/**
+ * Get a random item from list, with no chances of getting the current item again.
+ * Useful only for small lists where chances of getting same item again from normal sampling is high.
+ *
+ * @returns a random list item which is never same as the current item
+ */
+export const getRandomItemFromList = ({ list = [], currentItem = undefined }) => {
+  // set intitial state
+  if (currentItem === undefined) {
+    return sample(list);
+  }
+
+  const currentItemIndex = list.indexOf(currentItem);
+
+  if (currentItemIndex > -1) {
+    list = list.filter(fact => fact !== currentItem);
+  }
+
+  return sample(list);
 };

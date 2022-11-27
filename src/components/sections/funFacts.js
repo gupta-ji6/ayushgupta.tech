@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
-import { sample } from 'lodash';
 import styled from 'styled-components';
 
 import sr from '@utils/sr';
+import { getRandomItemFromList } from '@utils';
 import { srConfig } from '@config';
 import { theme, mixins, media, Section, Heading } from '@styles';
 import { usePrefersReducedMotion } from '@hooks';
@@ -66,7 +66,9 @@ const FunFacts = () => {
 
   const allFunFactsHTML = funFacts.edges.map(edge => edge.node.html);
 
-  const [singleRandomFunFactHTML, setSingleRandomFunFactHTML] = useState(sample(allFunFactsHTML));
+  const [singleRandomFunFactHTML, setSingleRandomFunFactHTML] = useState(
+    getRandomItemFromList({ list: allFunFactsHTML }),
+  );
   const revealContainer = useRef(null);
 
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -80,7 +82,9 @@ const FunFacts = () => {
   }, []);
 
   const shuffleFunFacts = () => {
-    setSingleRandomFunFactHTML(sample(allFunFactsHTML));
+    setSingleRandomFunFactHTML(
+      getRandomItemFromList({ list: allFunFactsHTML, currentItem: singleRandomFunFactHTML }),
+    );
   };
 
   return (
