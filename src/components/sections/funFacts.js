@@ -88,7 +88,7 @@ const FunFacts = () => {
   };
 
   return (
-    <FunFactsContainer id="about" ref={revealContainer}>
+    <FunFactsContainer id="facts" ref={revealContainer}>
       <Heading>Fun Facts</Heading>
       <FlexContainer>
         <ShuffleButton onClick={shuffleFunFacts} data-splitbee-event="Shuffle Fun Facts Clicked">
