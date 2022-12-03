@@ -16,7 +16,6 @@ function useSavedTracks(limit = 20) {
   async function fetchData() {
     setSavedTracksLoading(true);
     const tracks = await fetchCurrentUsersSavedTracks(limit);
-    //   console.log(tracks);
     if (tracks !== undefined) {
       setRecentlySavedTracks(tracks?.items);
       setSavedTracksLoading(false);

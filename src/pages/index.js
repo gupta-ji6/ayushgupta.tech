@@ -8,6 +8,7 @@ import {
   Contact,
   Education,
   Featured,
+  FunFacts,
   Hero,
   Jobs,
   Layout,
@@ -25,6 +26,7 @@ const IndexPage = ({ location }) => (
     <MainContainer id="content">
       <Hero />
       <About />
+      <FunFacts />
       <Jobs />
       <Featured />
       <Projects />

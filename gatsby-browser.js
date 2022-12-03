@@ -11,7 +11,6 @@ const splitbee = require('@splitbee/web');
 const { toast } = require('react-hot-toast');
 const theme = require('./src/styles/theme');
 
-// console.log(theme);
 const { colors } = theme.default;
 
 const updateButtonStyles = {
@@ -27,8 +26,6 @@ const updateButtonStyles = {
 
 // Called when the Gatsby browser runtime first starts
 exports.onClientEntry = () => {
-  // console.log('client has entered the chat!');
-
   if (process.env.NODE_ENV === 'production') {
     splitbee.default.init({
       disableCookie: true, // will disable the cookie usage

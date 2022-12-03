@@ -93,9 +93,7 @@ const SocialShare = ({
   const [socialMediaConfig, setSocialMediaConfig] = useState({});
   const [showShareBtn, setShowShareBtn] = useState(false);
 
-  // console.log(Object.keys(socialMediaConfig).length);
   useEffect(() => {
-    // console.log({ title, tags });
     if (title !== '' && tags !== []) {
       setSocialMediaConfig({
         twitter: {
@@ -145,7 +143,7 @@ const SocialShare = ({
       navigator
         .share(shareData)
         .then(() => {
-          // console.log('Thanks for sharing!');
+          // thanks for sharing!
         })
         .catch(console.error);
     } else {

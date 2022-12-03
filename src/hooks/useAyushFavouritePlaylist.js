@@ -16,7 +16,6 @@ function useAyushFavouritePlaylist(playlist_id = '3qWhbV6ul3Bfl2iHrN4TYn') {
   async function fetchData() {
     setAyushFavouritePlaylistLoading(true);
     const playlist = await fetchPlaylistById(playlist_id);
-    // console.log(playlist);
     if (playlist !== undefined) {
       setAyushFavouritePlaylist(playlist);
       setAyushFavouritePlaylistLoading(false);

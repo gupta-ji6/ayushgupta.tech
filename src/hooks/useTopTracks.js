@@ -18,7 +18,6 @@ function useTopTracks(type = 'tracks', time_range = 'short_term', limit = 20) {
   async function fetchData() {
     setTopTracksLoading(true);
     const tracks = await fetchCurrentUsersTopArtistsOrTracks(type, time_range, limit);
-    //   console.log(tracks);
     if (tracks !== undefined) {
       setTopTracks(tracks?.items);
       setTopTracksLoading(false);
