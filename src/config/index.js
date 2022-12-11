@@ -101,6 +101,4 @@ module.exports = {
     viewFactor: 0.25,
     viewOffset: { top: 0, right: 0, bottom: 0, left: 0 },
   }),
-
-  hasuraURL: 'https://ayushgupta-tech-blog.herokuapp.com/v1/graphql',
 };

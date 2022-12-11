@@ -15,7 +15,7 @@ import {
   useUserPlaylists,
 } from '@hooks';
 import { theme, mixins, media } from '@styles';
-import { siteUrl, srConfig, hasuraURL } from '@config';
+import { siteUrl, srConfig } from '@config';
 import sr from '@utils/sr';
 import ogImage from '@images/og-music.png';
 import { IconCheck } from '@components/icons';
@@ -299,7 +299,7 @@ const MusicPage = ({ location }) => {
     refetchUserPlaylists,
   } = useUserPlaylists(10);
 
-  const { addComment, count } = useComments(hasuraURL, '/music/');
+  const { addComment, count } = useComments(process.env.GATSBY_HASURA_URL, '/music/');
   const [songRecommendationData, setSongRecommendationData] = useState({
     authorName: '',
     comment: '',

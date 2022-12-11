@@ -9,6 +9,7 @@ package-lock.json
 .DS_Store
 
 .vscode/
-.env.*
+.env.production
+.env.development
 # Local Netlify folder
 .netlify
