@@ -1,6 +1,6 @@
 ---
 title: 'About Me'
-avatar: './ayush.jpg'
+avatar: './ayush.png'
 skills:
   - React Native
   - ReactJs
