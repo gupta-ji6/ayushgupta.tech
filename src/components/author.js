@@ -58,7 +58,7 @@ const Author = ({ showBg = false }) => {
       <AuthorImgContainer style={{ width: '20vh' }}>
         <StaticImage
           className="img"
-          src="../../content/about/ayush.jpg"
+          src="../../content/about/ayush.png"
           width={400}
           quality={95}
           alt="Ayush Gupta's Picture"

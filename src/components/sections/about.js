@@ -178,7 +178,7 @@ const About = () => {
           <div className="wrapper">
             <StaticImage
               className="img"
-              src="../../../content/about/ayush.jpg"
+              src="../../../content/about/ayush.png"
               width={500}
               quality={95}
               alt="Headshot"
