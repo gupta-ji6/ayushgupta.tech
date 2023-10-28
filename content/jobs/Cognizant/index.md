@@ -8,6 +8,8 @@ url: 'https://www.cognizant.com/'
 show: 'true'
 ---
 
-- Working on a Java based client project using [Drools](https://www.drools.org/) engine and [SpringBoot](https://spring.io/projects/spring-boot).
-- I'm trained in Java Full Stack domain securing 100% marks in hands-on [project](https://mentorondemand.ayushgupta.tech) developed during training.
-- I work with [Java](https://www.java.com/), [SpringBoot](https://spring.io/projects/spring-boot), [Drools](https://www.drools.org/), [Maven](https://maven.apache.org/), [Git](https://git-scm.com/), and [Oracle SQL](https://docs.oracle.com/cd/B19306_01/server.102/b14200/intro.htm).
+- Polished foundations of Java Full Stack Web Development.
+- Scored 100% marks in hands-on [full stack web application project](https://mentorondemand.ayushgupta.tech) during training.
+- Cultivated the ability to lead & manage 30+ people being the CR of the batch.
+- Worked on a Java based client project using [Drools](https://www.drools.org/) engine and [SpringBoot](https://spring.io/projects/spring-boot).
+- Technologies I worked with included [Java](https://www.java.com/), [SpringBoot](https://spring.io/projects/spring-boot), [Drools](https://www.drools.org/), [Maven](https://maven.apache.org/), [Git](https://git-scm.com/), and [Oracle SQL](https://docs.oracle.com/cd/B19306_01/server.102/b14200/intro.htm).
