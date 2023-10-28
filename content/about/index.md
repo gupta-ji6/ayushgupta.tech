@@ -7,7 +7,7 @@ skills:
   - JavaScript
   - GraphQL
   - TypeScript
-  - NextJS/Gatsby
+  - NextJS
   - HTML5 & CSS3
 ---
 

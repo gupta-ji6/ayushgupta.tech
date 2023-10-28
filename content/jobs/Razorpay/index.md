@@ -8,13 +8,13 @@ url: 'https://razorpay.com/'
 show: 'true'
 ---
 - Implemented **Progressive Canary Analysis & Rollout** of our GraphQL server with automated zero-touch rollbacks. It helped to detect issues early with decreased blast radius & confidently ship to production
-- Deep dived into **DevOps** Kubernetes infrastructure, implemented numerous end-to-end deployment pipelines on Spinnaker, created Grafana dashboards while adding canary releases of GraphQL. Wrote full tech spec of progressive canary analysis & releases of GraphQL server with whole architecture & deployment flows, whose details were loved by many.
+- Wrote full tech spec of progressive canary analysis & releases of GraphQL server with whole architecture & deployment flows, whose details were loved by many. Deep dived into **DevOps** Kubernetes infrastructure, implemented 10+ end-to-end deployment pipelines on [Spinnaker](https://spinnaker.io/), created [Grafana](https://grafana.com/) dashboards while adding canary releases of GraphQL.
 - **Optimised CI build times of iOS app** reducing it by 20% and reduced the app size with it as well.
 - **Saved ~8m of developer's time per commit** by fixing an issue with deployment of our GraphQL service in stage environment.
 - **75% reduction in android build times** by making an architectural modification, saving up to crucial 90mins of build hours in a month, for a single developer.
-- Led the successful major version migration of [`apollo-server`](https://www.apollographql.com/docs/apollo-server/), NodeJS v18 & [Rover CLI](https://www.apollographql.com/docs/rover/)  which is used by our three client apps. **Improved Developer Experience** with it by adding a GraphQL Schema Change Summary in every PR.
+- Led the successful major version migration of [apollo-server](https://www.apollographql.com/docs/apollo-server/), NodeJS v18 & [Rover CLI](https://www.apollographql.com/docs/rover/)  which is used by our three client apps. **Improved Developer Experience** with it by adding a GraphQL Schema Change Summary in every PR.
 - Responded to a sensitive security incident with our CI-CD tool in a close span of the incident reported to resolution in just 2 days, for such a complex task.
-- Gave a **live workshop** presentation about making use of [Amplitude](https://amplitude.com/) to various pods in the organisation. Mastered our analytics tool Amplitude & build various dashboards to help my mobile engineering team make more data-driven decisions.
+- Gave a **live workshop** presentation about making use of our analytics tool [Amplitude](https://amplitude.com/) to various pods in the organisation. Built various dashboards to help my mobile engineering team make more data-driven decisions.
 - Wrote full-fledged tech spec for a major architectural re-design of our mobile app & contributed in it's implementation, which majorly helped in reducing GTM time for Payment Pages & QR Code feature in the app
 - Owned the development & release of our app’s new hero payment product Payment Handle end to end which became first-touch transaction product **leading by 78.06%** compared to numerous other payment products.
 - Implemented QR Code as a payment acceptance method in the mobile app from scratch, **without any direct involvement** of Product & Design.
