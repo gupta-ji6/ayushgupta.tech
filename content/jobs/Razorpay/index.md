@@ -3,7 +3,7 @@ date: '2021-08-09'
 title: 'Senior Frontend Engineer'
 company: 'Razorpay'
 location: 'Bengaluru, IND'
-range: 'Aug 2021 - Present'
+range: 'Aug 2021 - Apr 2024'
 url: 'https://razorpay.com/'
 show: 'true'
 ---

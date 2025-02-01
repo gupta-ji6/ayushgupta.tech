@@ -91,5 +91,8 @@
     "lint-staged": "11.0.1",
     "prettier": "2.2.1",
     "pretty-quick": "3.1.1"
+  },
+  "engines": {
+    "node": "14.16.0"
   }
 }

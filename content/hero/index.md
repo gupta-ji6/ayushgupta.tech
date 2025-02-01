@@ -9,4 +9,4 @@ I'm a [developer](https://github.com/gupta-ji6) and a passionate [photographer](
 
 I often [write](/blog) blogs and occasionaly design things.
 
-Senior Mobile Frontend Engineer at [Razorpay](https://razorpay.com/).
+Mobile App Lead at [Leap Wallet](https://leapwallet.io/).
