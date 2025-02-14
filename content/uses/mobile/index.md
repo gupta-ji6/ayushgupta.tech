@@ -1,52 +1,57 @@
 ---
 title: 'Mobile'
-subtitle: 'Only if my phone could incorporate all these apps in teeny-tiny gigs of storage'
+subtitle: 'For everything on the go'
 order: 3
 ---
 
 ## Paid Apps & Services
 
-- [Spotify Premium](https://play.google.com/store/apps/details?id=com.spotify.music)
-- [Netflix](https://netflix.com)
-- [Amazon Prime](https://www.primevideo.com/)
+- [Spotify](https://apps.apple.com/us/app/spotify-music-and-podcasts/id324684580)
+<!-- - [Amazon Prime](https://www.primevideo.com/) -->
 - [VSCO](https://apps.apple.com/us/app/vsco-photo-video-editor/id588013838)
+- [TickTick](https://ticktick.com/?language=en_US)
+- [ChatGPT](https://apps.apple.com/us/app/chatgpt/id6448311069)
 - [Google One](https://one.google.com/about)
-- [Nova Launcher](https://play.google.com/store/apps/details?id=com.teslacoilsw.launcher.prime)
-- [Relay Pro for Reddit](https://play.google.com/store/apps/details?id=reddit.news)
-- [Crayon Icon Pack](https://play.google.com/store/apps/details?id=com.jndapp.cartoon.crayon.iconpack)
-- [Sync Pro for Reddit](https://play.google.com/store/apps/details?id=com.laurencedawson.reddit_sync.pro)
-- [PocketCasts](https://play.google.com/store/apps/details?id=au.com.shiftyjelly.pocketcasts) (it's now free!)
-- [SD Maid Pro](https://play.google.com/store/apps/details?id=eu.thedarken.sdm.unlocker)
-- [BlackPlayer EX Music Player](https://play.google.com/store/apps/details?id=com.kodarkooperativet.blackplayerex)
-- [TouchRetouch](https://play.google.com/store/apps/details?id=com.advasoft.touchretouch)
-- [LightFlow Pro - LED Control](https://play.google.com/store/apps/details?id=com.rageconsulting.android.lightflow)
-- [~~Fella for Facebook~~](https://play.google.com/store/apps/details?id=fellasocial.app)
-- [~~PowerAudio Pro~~](https://play.google.com/store/apps/details?id=xsoftstudio.musicplayer.pro)
-- [Hook](https://play.google.com/store/apps/details?id=com.rt.hook)
+<!-- - [Nova Launcher](https://play.google.com/store/apps/details?id=com.teslacoilsw.launcher.prime) -->
+<!-- - [Relay Pro for Reddit](https://play.google.com/store/apps/details?id=reddit.news) -->
+<!-- - [Crayon Icon Pack](https://play.google.com/store/apps/details?id=com.jndapp.cartoon.crayon.iconpack) -->
+<!-- - [Sync Pro for Reddit](https://play.google.com/store/apps/details?id=com.laurencedawson.reddit_sync.pro) -->
+<!-- - [PocketCasts](https://play.google.com/store/apps/details?id=au.com.shiftyjelly.pocketcasts) (it's now free!) -->
+<!-- - [SD Maid Pro](https://play.google.com/store/apps/details?id=eu.thedarken.sdm.unlocker) -->
+<!-- - [BlackPlayer EX Music Player](https://play.google.com/store/apps/details?id=com.kodarkooperativet.blackplayerex) -->
+<!-- - [TouchRetouch](https://play.google.com/store/apps/details?id=com.advasoft.touchretouch) -->
+<!-- - [LightFlow Pro - LED Control](https://play.google.com/store/apps/details?id=com.rageconsulting.android.lightflow) -->
+<!-- - [~~Fella for Facebook~~](https://play.google.com/store/apps/details?id=fellasocial.app) -->
+<!-- - [~~PowerAudio Pro~~](https://play.google.com/store/apps/details?id=xsoftstudio.musicplayer.pro) -->
+<!-- - [Hook](https://play.google.com/store/apps/details?id=com.rt.hook) -->
 
 ## Free Apps
 
 ### Photography
 
-All the apps I use for capturing & editing photographs and creating stunnning stories on [my Instagram](https://www.instagram.com/_.guptaji._/).
+All the apps I use to capture & edit photographs and create cinematic stories on [my Instagram](https://www.instagram.com/_.guptaji._/).
 
-- [GCam Mod](https://www.xda-developers.com/google-camera-port-hub/)
-- [Snapseed](https://play.google.com/store/apps/details?id=com.niksoftware.snapseed)
-- [VSCO](https://play.google.com/store/apps/details?id=com.vsco.cam)
-- [Lightroom](https://play.google.com/store/apps/details?id=com.adobe.lrmobile)
-- [Phonto](https://play.google.com/store/apps/details?id=com.youthhr.phonto)
-- [Canva](https://play.google.com/store/apps/details?id=com.canva.editor)
-- [PicsArt](https://play.google.com/store/apps/details?id=com.picsart.studio)
-- [VN - Video Editor](https://play.google.com/store/apps/details?id=com.frontrow.vlog)
-- [Pixaloop](https://play.google.com/store/apps/details?id=com.lightricks.pixaloop)
-- [Just A Line](https://play.google.com/store/apps/details?id=com.arexperiments.justaline)
-- [GBox for Instagram](https://play.google.com/store/apps/details?id=com.dageek.socialtoolbox_android)
+<!-- - [GCam Mod](https://www.xda-developers.com/google-camera-port-hub/) -->
+- [VN - Video Editor](https://apps.apple.com/us/app/vn-video-editor/id1343581380)
+- [Snapseed](https://apps.apple.com/us/app/snapseed/id439438619)
+- [VSCO](https://apps.apple.com/us/app/vsco-photo-video-editor/id588013838)
+- [Lightroom](https://apps.apple.com/us/app/lightroom-photo-video-editor/id878783582)
+<!-- - [Phonto](https://play.google.com/store/apps/details?id=com.youthhr.phonto) -->
+- [Canva](https://apps.apple.com/us/app/canva-ai-photo-video-editor/id897446215)
+- [Phonto](https://apps.apple.com/us/app/phonto-text-on-photos/id438429273)
+- Final Cut Camera
+- [FujiX Weekly](https://apps.apple.com/us/app/fuji-x-weekly-film-recipes/id1539047257)
+<!-- - [PicsArt](https://apps.apple.com/us/app/picsart-ai-photo-video-editor/id587366035) -->
+<!-- - [Pixaloop](https://play.google.com/store/apps/details?id=com.lightricks.pixaloop) -->
+<!-- - [Just A Line](https://play.google.com/store/apps/details?id=com.arexperiments.justaline) -->
+<!-- - [GBox for Instagram](https://play.google.com/store/apps/details?id=com.dageek.socialtoolbox_android) -->
 
 ### Music
 
-- [Spotify - Premium](https://play.google.com/store/apps/details?id=com.spotify.music)
-- [Shazam](https://play.google.com/store/apps/details?id=com.shazam.android)
-- [SoundCloud](https://play.google.com/store/apps/details?id=com.soundcloud.android)
+- [Spotify](https://play.google.com/store/apps/details?id=com.spotify.music)
+- [YouTube Music](https://music.youtube.com/)
+- [Shazam](https://apps.apple.com/us/app/shazam-find-music-concerts/id284993459)
+<!-- - [SoundCloud](https://play.google.com/store/apps/details?id=com.soundcloud.android) -->
 
 ### Games
 
@@ -94,7 +99,14 @@ I play a lot of minimal, arcade and puzzle games. Below are my favorite ones. [S
 
 ### Miscellaneous
 
-- [Cred](https://play.google.com/store/apps/details?id=com.dreamplug.androidapp)
+- [Fold Money](https://fold.money/)
+- [Claude](https://apps.apple.com/us/app/claude-by-anthropic/id6473753684)
+- [Perplexity](https://apps.apple.com/us/app/perplexity-ask-anything/id1668000334)
+- [Bluesky](https://apps.apple.com/us/app/bluesky-social/id6444370199)
+- [Merlin Bird ID](https://apps.apple.com/us/app/merlin-bird-id-by-cornell-lab/id773457673)
+- [Night Sky](https://apps.apple.com/us/app/night-sky/id475772902)
+- [Peak Visor](https://apps.apple.com/us/app/hiking-maps-peakvisor/id1187259191)
+<!-- - [Cred](https://play.google.com/store/apps/details?id=com.dreamplug.androidapp)
 - [Google Lens](https://play.google.com/store/apps/details?id=com.google.ar.lens)
 - [Google Opinion Rewards](https://play.google.com/store/apps/details?id=com.google.android.apps.paidtasks)
 - [Google Find My Device](https://play.google.com/store/apps/details?id=com.google.android.apps.adm)
@@ -112,4 +124,4 @@ I play a lot of minimal, arcade and puzzle games. Below are my favorite ones. [S
 - [Google Podcasts](https://play.google.com/store/apps/details?id=com.google.android.apps.podcasts)
 - [VLC Media Player](https://play.google.com/store/apps/details?id=org.videolan.vlc)
 - [Google Fit](https://play.google.com/store/apps/details?id=com.google.android.apps.fitness)
-- [Google Photos](https://play.google.com/store/apps/details?id=com.google.android.apps.photos)
+- [Google Photos](https://play.google.com/store/apps/details?id=com.google.android.apps.photos) -->
