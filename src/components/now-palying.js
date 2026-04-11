@@ -5,7 +5,7 @@ import { Link } from 'gatsby';
 import { theme, mixins } from '@styles';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
-import { IconSpotify, IconPlay, IconPause } from '@components/icons';
+import { IconSpotify, IconPlay, IconPause, IconMusic } from '@components/icons';
 import { usePrefersReducedMotion, useNowPlayingTrack } from '@hooks';
 import ExternalLink from './externalLink';
 
@@ -120,6 +120,24 @@ const AlbumImage = styled.img`
   object-fit: cover;
 `;
 
+const AlbumArtFallback = styled.div`
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${colors.slate};
+
+  /* GlobalStyle sets svg { width/height: 100% } — size ~80% of Spotify column (2.5rem) */
+  svg {
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    max-width: 2rem;
+    max-height: 2rem;
+  }
+`;
+
 const TrackInfo = styled.div`
   min-width: 200px;
   max-width: 270px;
@@ -228,6 +246,8 @@ const NowPlaying = ({ isMusicPage = false }) => {
     }
   };
 
+  const albumArtUrl = nowPlayingTrack?.album?.images?.[0]?.url;
+
   const renderTrackImageAndName = () => {
     if (isMusicPage) {
       return (
@@ -237,17 +257,25 @@ const NowPlaying = ({ isMusicPage = false }) => {
             eventName="Spotify"
             eventType={
               nowPlayingTrack?.name ? `Widget - ${nowPlayingTrack.name}` : 'Open Spotify Profile'
+            }
+            aria-label={
+              nowPlayingTrack?.name
+                ? `Open ${nowPlayingTrack.name} on Spotify`
+                : 'Open Spotify profile'
             }>
-            <AlbumImage
-              src={
-                nowPlayingTrack?.album?.images[0].url ||
-                'https://source.unsplash.com/128x128/?music'
-              }
-              width="48"
-              height="48"
-              loading="lazy"
-              alt="music"
-            />
+            {albumArtUrl ? (
+              <AlbumImage
+                src={albumArtUrl}
+                width="48"
+                height="48"
+                loading="lazy"
+                alt=""
+              />
+            ) : (
+              <AlbumArtFallback aria-hidden="true">
+                <IconMusic fill="currentColor" />
+              </AlbumArtFallback>
+            )}
           </ExternalLink>
           <ExternalLink
             url={nowPlayingTrack?.external_urls?.spotify || SPOTIFY_PROFILE}
@@ -266,16 +294,19 @@ const NowPlaying = ({ isMusicPage = false }) => {
       return (
         <React.Fragment>
           <Link to="/music" aria-label="music page">
-            <AlbumImage
-              src={
-                nowPlayingTrack?.album?.images[0].url ||
-                'https://source.unsplash.com/128x128/?music'
-              }
-              width="48"
-              height="48"
-              loading="lazy"
-              alt="music"
-            />
+            {albumArtUrl ? (
+              <AlbumImage
+                src={albumArtUrl}
+                width="48"
+                height="48"
+                loading="lazy"
+                alt=""
+              />
+            ) : (
+              <AlbumArtFallback aria-hidden="true">
+                <IconMusic fill="currentColor" />
+              </AlbumArtFallback>
+            )}
           </Link>
           <Link to="/music" aria-label="music page">
             <TrackInfo>
