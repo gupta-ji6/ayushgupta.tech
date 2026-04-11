@@ -1,5 +1,5 @@
 ---
-date: '2'
+date: '2019-03-29'
 title: 'Smart Apart'
 cover: './smart-apart.png'
 github: 'https://github.com/gupta-ji6/Smart-Apart-Prototype'
