@@ -2,7 +2,7 @@
 date: '2020-02-13'
 title: 'React Native Developer'
 company: 'FirstCry'
-location: 'Pune, IND'
+location: 'Pune, India'
 range: 'Feb 2020 - Aug 2021'
 url: 'https://www.firstcry.com/'
 show: 'true'

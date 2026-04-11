@@ -2,7 +2,7 @@
 date: '2019-07-12'
 title: 'Programmer Analyst Trainee'
 company: 'Cognizant'
-location: 'Bangalore, IND'
+location: 'Bangalore, India'
 range: 'July 2019 - Feb 2020'
 url: 'https://www.cognizant.com/'
 show: 'true'

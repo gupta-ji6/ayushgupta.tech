@@ -2,7 +2,7 @@
 date: '2018-05-14'
 title: 'React Native Developer Intern'
 company: 'Enappd'
-location: 'Jaipur, IND'
+location: 'Jaipur, India'
 range: 'May 2018 - July 2018'
 url: 'https://enappd.com'
 show: 'true'
