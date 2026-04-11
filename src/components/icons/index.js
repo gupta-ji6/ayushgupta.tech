@@ -14,6 +14,7 @@ import IconLinkedin from './linkedin';
 import IconLoader from './loader';
 import IconLogo from './logo';
 import IconMedium from './medium';
+import IconMusic from './music';
 import IconPause from './pause';
 import IconPlay from './play';
 import IconShare from './share';
@@ -29,6 +30,7 @@ export {
   IconGithub,
   IconLinkedin,
   IconMedium,
+  IconMusic,
   IconFacebook,
   IconInstagram,
   IconTwitter,
