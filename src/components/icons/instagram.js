@@ -1,21 +1,14 @@
-import React from 'react';
+import * as React from "react"
 
-const IconInstagram = () => (
+const IconInstagram = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round">
-    <title>Instagram</title>
-    <rect fill="none" x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-    <path fill="none" d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-    <line fill="none" x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+    width={32}
+    height={32}
+    viewBox="0 0 256 256"
+    {...props}
+  >
+    <path d="M128 80a48 48 0 1 0 48 48 48.05 48.05 0 0 0-48-48Zm0 80a32 32 0 1 1 32-32 32 32 0 0 1-32 32Zm48-136H80a56.06 56.06 0 0 0-56 56v96a56.06 56.06 0 0 0 56 56h96a56.06 56.06 0 0 0 56-56V80a56.06 56.06 0 0 0-56-56Zm40 152a40 40 0 0 1-40 40H80a40 40 0 0 1-40-40V80a40 40 0 0 1 40-40h96a40 40 0 0 1 40 40ZM192 76a12 12 0 1 1-12-12 12 12 0 0 1 12 12Z" />
   </svg>
-);
-
+)
 export default IconInstagram;

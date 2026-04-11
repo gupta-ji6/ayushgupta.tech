@@ -1,36 +1,15 @@
-import React from 'react';
+import * as React from "react"
 
-const IconMedium = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 256 256">
-    <path fill="none" d="M0 0H256V256H0z"></path>
-    <ellipse
-      cx="72"
-      cy="128"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="20"
-      rx="56"
-      ry="60"></ellipse>
-    <ellipse
-      cx="184"
-      cy="128"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="20"
-      rx="24"
-      ry="56"></ellipse>
-    <path
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="20"
-      d="M240 72L240 184"></path>
+const IconMedium = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={32}
+    height={32}
+    viewBox="0 0 256 256"
+    {...props}
+  >
+    <path d="M72 64a64 64 0 1 0 64 64 64.07 64.07 0 0 0-64-64Zm0 112a48 48 0 1 1 48-48 48.05 48.05 0 0 1-48 48ZM184 64c-5.68 0-16.4 2.76-24.32 21.25C154.73 96.8 152 112 152 128s2.73 31.2 7.68 42.75C167.6 189.24 178.32 192 184 192s16.4-2.76 24.32-21.25C213.27 159.2 216 144 216 128s-2.73-31.2-7.68-42.75C200.4 66.76 189.68 64 184 64Zm0 112c-5.64 0-16-18.22-16-48s10.36-48 16-48 16 18.22 16 48-10.36 48-16 48Zm64-104v112a8 8 0 0 1-16 0V72a8 8 0 0 1 16 0Z" />
   </svg>
-);
+)
 
-export default IconMedium;
+export default IconMedium

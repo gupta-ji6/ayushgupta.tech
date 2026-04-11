@@ -1,21 +1,14 @@
-import React from 'react';
+import * as React from "react"
 
-const IconExternal = () => (
+const IconExternal = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round">
-    <title>External</title>
-    <path fill="none" d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-    <polyline fill="none" points="15 3 21 3 21 9"></polyline>
-    <line fill="none" x1="10" y1="14" x2="21" y2="3"></line>
+    width={32}
+    height={32}
+    viewBox="0 0 256 256"
+    {...props}
+  >
+    <path d="M224 104a8 8 0 0 1-16 0V59.32l-66.33 66.34a8 8 0 0 1-11.32-11.32L196.68 48H152a8 8 0 0 1 0-16h64a8 8 0 0 1 8 8Zm-40 24a8 8 0 0 0-8 8v72H48V80h72a8 8 0 0 0 0-16H48a16 16 0 0 0-16 16v128a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16v-72a8 8 0 0 0-8-8Z" />
   </svg>
-);
-
-export default IconExternal;
+)
+export default IconExternal

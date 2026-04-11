@@ -1,16 +1,16 @@
 module.exports = {
-  siteTitle: 'Ayush Gupta - Developer, Photographer, Blogger & Designer | GuptaJi',
+  siteTitle: 'Ayush Gupta - Frontend Engineer (GuptaJi)',
   siteDescription:
-    'Ayush Gupta is a Web & Mobile Application Developer who is passionate about photography, writes blogs and occasionaly designs. Senior Mobile Frontend Enginner at Razorpay. Fondly known as GuptaJi.',
+    'Ayush Gupta is a Web & Mobile Frontend Engineer who is passionate about photography, writes blogs and occasionaly designs. Senior Software Engineer at Circle. Fondly known as GuptaJi.',
   siteKeywords:
-    'Ayush Gupta, Ayush, Gupta, guptaji, software engineer, front end engineer, web developer, react, reactjs, react native, react native developer, javascript, gupta ji, developer, photographer, kota, razorpay, frontend engineer ',
+    'Ayush Gupta, Ayush, Gupta, guptaji, software engineer, senior software engineer, web developer, react, reactjs, react native, react native developer, javascript, typescript, next.js, graphql, gupta ji, developer, photographer, kota, circle, leap wallet, razorpay, frontend engineer, frontend lead',
   siteUrl: 'https://ayushgupta.tech',
   siteLanguage: 'en_US',
 
   googleVerification: 'YSmK_1bLGe-6FRuzC7f3Qww3eSH2AHd2UC35Lrn8iEM',
 
   name: 'Ayush Gupta',
-  location: 'Pune, IND',
+  location: 'Bengaluru, India',
   email: 'hello@ayushgupta.tech',
   github: 'https://github.com/gupta-ji6',
   socialMedia: [
@@ -28,16 +28,16 @@ module.exports = {
     },
     {
       name: 'Twitter',
-      url: 'https://twitter.com/_guptaji_',
+      url: 'https://x.com/_guptaji_',
     },
     {
       name: 'Medium',
       url: 'https://medium.com/@guptaji',
     },
-    {
-      name: 'Facebook',
-      url: 'https://www.facebook.com/guptaji.6',
-    },
+    // {
+    //   name: 'Facebook',
+    //   url: 'https://www.facebook.com/guptaji.6',
+    // },
   ],
 
   navLinks: [

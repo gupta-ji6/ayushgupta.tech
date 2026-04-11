@@ -67,9 +67,9 @@ const Author = ({ showBg = false }) => {
       <StyledAuthorDescription>
         <strong>{`Ayush Gupta `}</strong>
         <span>
-          is a Web & Mobile Application Developer who is passionate about photography, writes blogs
-          and occasionaly designs. Currently working as a Senior Mobile Frontend Engineer at
-          Razorpay. Fondly known as GuptaJi.
+          is a Frontend Engineer who solo travels, photographs, crafts stories, writes blogs
+          and occasionaly designs. Currently working as a Senior Software Engineer at Circle. Fondly
+          known as GuptaJi.
         </span>
       </StyledAuthorDescription>
     </StyledAuthorContainer>

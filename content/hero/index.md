@@ -5,8 +5,8 @@ subtitle: 'I build things for the web & mobile.'
 contactText: 'View Resume'
 ---
 
-I'm a [developer](https://github.com/gupta-ji6) and a passionate [photographer](https://www.instagram.com/_.guptaji._/).
+I'm a [Frontend Engineer](https://github.com/gupta-ji6) and a passionate [photographer](https://www.instagram.com/_.guptaji._/).
 
-I often [write](/blog) blogs and occasionaly design things.
+I solo travel, photograph & craft stories, [write](/blog) blogs and have an eye for design.
 
-Mobile App Lead at [Leap Wallet](https://leapwallet.io/).
+Senior Software Engineer at [Circle](https://www.circle.com/).
