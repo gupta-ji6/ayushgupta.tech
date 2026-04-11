@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'gatsby';
 
@@ -217,8 +217,9 @@ const NowPlaying = ({ isMusicPage = false }) => {
     }
   }, [isPlaying, toggleAudio]);
 
-  // function which returns a custom copy to show above now playing widget
-  const fetchNowPlayingCopy = () => {
+  // Random intro line once per listening state; avoids Math.random() on every render while the
+  // Spotify hook re-renders (loading, track updates, etc.).
+  const nowPlayingIntro = useMemo(() => {
     if (isAyushListeningToAnything) {
       const index = randomArrayIndex(NowPlayingContext.playing);
       return (
@@ -231,20 +232,19 @@ const NowPlaying = ({ isMusicPage = false }) => {
           <div>{NowPlayingContext.playing[index].copy}</div>
         </Fragment>
       );
-    } else {
-      const index = randomArrayIndex(NowPlayingContext.notPlaying);
-      return (
-        <Fragment>
-          <div>
-            <span role="img" aria-label="music-emoji">
-              {NowPlayingContext.notPlaying[index]?.emoji}
-            </span>
-          </div>
-          <div>{NowPlayingContext.notPlaying[index]?.copy}</div>
-        </Fragment>
-      );
     }
-  };
+    const index = randomArrayIndex(NowPlayingContext.notPlaying);
+    return (
+      <Fragment>
+        <div>
+          <span role="img" aria-label="music-emoji">
+            {NowPlayingContext.notPlaying[index]?.emoji}
+          </span>
+        </div>
+        <div>{NowPlayingContext.notPlaying[index]?.copy}</div>
+      </Fragment>
+    );
+  }, [isAyushListeningToAnything]);
 
   const albumArtUrl = nowPlayingTrack?.album?.images?.[0]?.url;
 
@@ -321,7 +321,7 @@ const NowPlaying = ({ isMusicPage = false }) => {
 
   return (
     <div>
-      <TrackContext>{fetchNowPlayingCopy()}</TrackContext>
+      <TrackContext>{nowPlayingIntro}</TrackContext>
       <NowPlayingWidget>
         {renderTrackImageAndName()}
         <SpotifyIcon playing={isAyushListeningToAnything}>
