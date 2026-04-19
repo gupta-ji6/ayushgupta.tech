@@ -389,6 +389,8 @@ Remove:
 
 ## Phase 7: SEO, Deploy, and Cleanup
 
+**Status**: Completed on April 20, 2026.
+
 **Goal**: Make Astro production-ready and remove Gatsby once parity is confirmed.
 
 ### Steps
@@ -420,6 +422,7 @@ Remove:
 - Core pages render correctly.
 - No console errors.
 - No Gatsby runtime or Hasura runtime dependency remains in the shipped launch.
+- For local runtime checks with the Netlify adapter, use `astro dev`; `astro preview` is not supported by `@astrojs/netlify`.
 
 ---
 

@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "npm run dev --",
     "check": "astro check",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx,astro}\" \"astro.config.mjs\" \"eslint.config.mjs\" \"prettier.config.js\"",
     "format": "prettier --write \"src/**/*.{astro,ts,tsx,js,jsx,md,mdx,css}\""

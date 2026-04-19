@@ -5,16 +5,10 @@
     "dist",
     ".astro",
     "node_modules",
-    "src-gatsby-ref",
-    "static",
     "public",
     "netlify",
     "docs",
-    ".claude",
-    "gatsby-browser.js",
-    "gatsby-config.js",
-    "gatsby-node.js",
-    "gatsby-ssr.js"
+    ".claude"
   ],
   "compilerOptions": {
     "baseUrl": ".",
