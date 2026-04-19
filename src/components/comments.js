@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useComments } from 'use-comments';
+import { useComments } from '@hooks/useComments';
 import { toast } from 'react-hot-toast';
 import { getRelativeTime } from '@utils';
 import { theme, mixins } from '@styles';
@@ -148,10 +148,7 @@ const Comment = ({ data }) => {
 };
 
 const Comments = ({ slug = 'defaultSlug' }) => {
-  const { comments, count, loading, addComment, error, refetch } = useComments(
-    process.env.GATSBY_HASURA_URL,
-    slug,
-  );
+  const { comments, count, loading, addComment, error, refetch } = useComments(slug);
   const [commentData, setCommentData] = useState({
     authorName: '',
     comment: '',

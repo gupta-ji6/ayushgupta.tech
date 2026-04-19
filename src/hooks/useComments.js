@@ -1,180 +1,110 @@
-/*
-  customized use-comments for my use case
-  ref - https://github.com/beerose/use-comments/blob/master/src/useComments/index.ts
-*/
+import { useState, useEffect, useCallback } from 'react';
 
-import { useState, useEffect } from 'react';
-
-const getCommentsQuery = `
-query GetComments($postId: String!, $limit: Int, $offset: Int) {
-  comments(where: {post_id: {_eq: $postId}}, limit: $limit, offset: $offset, order_by: {created_at: desc}) {
-    post_id
-    author
-    content
-    created_at
-  }
-  comments_aggregate(where: {post_id: {_eq: $postId}}) {
-    aggregate {
-      count
-    }
-  }
-}
-`;
-
-const addNewCommentMutation = `
-mutation AddNewComment($postId: String!, $author: String!, $content: String!) {
-  insert_comments_one(object: {author: $author, content: $content, post_id: $postId}) {
-    post_id
-    author
-    content
-    created_at
-    hidden
-  }
-}
-`;
+const SUPABASE_URL = process.env.GATSBY_SUPABASE_URL;
+const SUPABASE_KEY = process.env.GATSBY_SUPABASE_KEY;
 
 const errorMessage = 'Oops! Fetching comments was unsuccessful. Try again later.';
 
-/**
- * Fetches comments from Hasura backend specified in `hasuraUrl` on mount and whenever
- * `config.limit` or `config.offset` change.
- *
- * @param hasuraUrl URL of the Hasura instance
- * @param postId Comments will be fetched for the post with id `postId`
- * @param config Configurable offset and limit for the GraphQL query to Hasura
- * @returns comments for given post, aggregated count of all comments, error,
- *          loading state and a function to refetch data from backend.
- */
+const headers = () => ({
+  apikey: SUPABASE_KEY,
+  'Content-Type': 'application/json',
+  Prefer: 'return=representation',
+});
 
-export const useComments = (hasuraUrl, postId, config) => {
+/**
+ * Fetches visible comments for a given post from Supabase on mount and
+ * whenever `config.limit` or `config.offset` change.
+ *
+ * @param {string} postId  Slug or path that groups comments (e.g. '/music/')
+ * @param {Object} [config]  Optional `{ limit, offset }` for pagination
+ */
+export const useComments = (postId, config) => {
   const [comments, setComments] = useState([]);
   const [count, setCount] = useState(0);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const fetchComments = () => {
-    if (!hasuraUrl) {
+  const fetchComments = useCallback(() => {
+    if (!SUPABASE_URL || !SUPABASE_KEY) {
       setLoading(false);
       return;
     }
+
     setLoading(true);
-    fetch(hasuraUrl, {
-      method: 'POST',
-      headers: {
-        'x-hasura-role': 'anonymous',
-      },
-      body: JSON.stringify({
-        query: getCommentsQuery,
-        variables: Object.assign(
-          Object.assign(
-            { postId },
-            (config === null || config === void 0 ? void 0 : config.limit) && {
-              limit: config.limit,
-            },
-          ),
-          (config === null || config === void 0 ? void 0 : config.offset) && {
-            offset: config.offset,
-          },
-        ),
-      }),
+
+    const params = new URLSearchParams({
+      post_id: `eq.${postId}`,
+      hidden: 'eq.false',
+      order: 'created_at.desc',
+      select: 'post_id,author,content,created_at',
+    });
+    if (config?.limit) params.set('limit', config.limit);
+    if (config?.offset) params.set('offset', config.offset);
+
+    fetch(`${SUPABASE_URL}/rest/v1/comments?${params}`, {
+      headers: { ...headers(), Prefer: 'count=exact' },
     })
-      .then(res => res.json())
       .then(res => {
-        if (res.errors && res.errors.length) {
-          setError({
-            error: errorMessage,
-            details: res.errors[0].message,
-          });
-          setLoading(false);
-          return;
+        const range = res.headers.get('content-range');
+        const total = range ? parseInt(range.split('/')[1], 10) : 0;
+        return res.json().then(data => ({ data, total }));
+      })
+      .then(({ data, total }) => {
+        if (Array.isArray(data)) {
+          setComments(data);
+          setCount(total || data.length);
+        } else {
+          setError({ error: errorMessage, details: data?.message || 'Unknown error' });
         }
-        setComments(res.data.comments);
-        setCount(res.data.comments_aggregate.aggregate.count);
         setLoading(false);
       })
       .catch(err => {
-        setError({
-          error: errorMessage,
-          details: err,
-        });
+        setError({ error: errorMessage, details: err.message || err });
         setLoading(false);
       });
-  };
+  }, [postId, config?.limit, config?.offset]);
 
-  useEffect(fetchComments, [
-    config === null || config === void 0 ? void 0 : config.limit,
-    config === null || config === void 0 ? void 0 : config.offset,
-  ]);
+  useEffect(fetchComments, [fetchComments]);
 
   const addComment = ({ content, author }) => {
-    if (!hasuraUrl) {
-      return;
-    }
-    const createdAt = new Date().toDateString();
-    const newComment = {
+    if (!SUPABASE_URL || !SUPABASE_KEY) return;
+
+    const createdAt = new Date().toISOString();
+    const optimistic = {
       author,
       content,
       post_id: postId,
       created_at: createdAt,
       status: 'sending',
     };
-    setComments(prev => [newComment, ...prev]);
-    setCount(prev => ++prev);
-    fetch(hasuraUrl, {
+    setComments(prev => [optimistic, ...prev]);
+    setCount(prev => prev + 1);
+
+    fetch(`${SUPABASE_URL}/rest/v1/comments`, {
       method: 'POST',
-      headers: {
-        'x-hasura-role': 'user',
-      },
-      body: JSON.stringify({
-        query: addNewCommentMutation,
-        variables: {
-          postId,
-          content,
-          author,
-        },
-      }),
+      headers: { ...headers(), Prefer: 'return=minimal' },
+      body: JSON.stringify({ post_id: postId, author, content }),
     })
-      .then(res => res.json())
       .then(res => {
-        if (res.errors && res.errors.length) {
-          setError({
-            error: errorMessage,
-            details: res.errors[0].message,
+        if (res.ok) {
+          setComments(prev =>
+            prev.map(x =>
+              x === optimistic ? { ...optimistic, status: 'delivered-awaiting-approval' } : x,
+            ),
+          );
+        } else {
+          return res.json().then(err => {
+            setError({ error: errorMessage, details: err?.message || 'Insert failed' });
           });
-          return;
         }
-        const remoteComment = res.data.insert_comments_one;
-        setComments(prev =>
-          prev.map(x =>
-            x === newComment
-              ? Object.assign(Object.assign({}, remoteComment), {
-                status: remoteComment.hidden ? 'delivered-awaiting-approval' : 'added',
-              })
-              : x,
-          ),
-        );
       })
       .catch(err => {
-        setError({
-          error: errorMessage,
-          details: err,
-        });
+        setError({ error: errorMessage, details: err.message || err });
         setComments(prev =>
-          prev.map(x =>
-            x === newComment
-              ? Object.assign(Object.assign({}, newComment), { status: 'failed' })
-              : x,
-          ),
+          prev.map(x => (x === optimistic ? { ...optimistic, status: 'failed' } : x)),
         );
       });
   };
 
-  return {
-    comments,
-    addComment,
-    refetch: fetchComments,
-    count,
-    loading,
-    error,
-  };
+  return { comments, addComment, refetch: fetchComments, count, loading, error };
 };
