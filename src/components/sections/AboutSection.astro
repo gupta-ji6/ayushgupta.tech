@@ -1,0 +1,145 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import SectionHeading from './SectionHeading.astro';
+
+const { entry, githubUrl } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<section id="about" class="section-shell" data-reveal>
+  <SectionHeading number="01" title={entry.data.title} />
+
+  <div class="about-grid">
+    <div class="rich-text about-copy">
+      <Content />
+
+      <ul class="skills-grid">
+        {entry.data.skills.map((skill: string) => <li>{skill}</li>)}
+      </ul>
+    </div>
+
+    <a
+      href={githubUrl}
+      class="about-photo-link"
+      target="_blank"
+      rel="noreferrer noopener"
+      aria-label="Visit Ayush Gupta on GitHub"
+    >
+      <span class="about-photo-frame">
+        <Image
+          src={entry.data.avatar}
+          alt="Ayush Gupta headshot"
+          widths={[300, 500]}
+          sizes="(max-width: 768px) 70vw, 300px"
+          class="about-photo"
+        />
+      </span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(240px, 300px);
+    gap: 56px;
+    align-items: start;
+  }
+
+  .about-copy {
+    max-width: 520px;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(140px, 200px));
+    gap: 0 12px;
+    margin-top: 24px;
+  }
+
+  .skills-grid li {
+    position: relative;
+    margin-bottom: 10px;
+    padding-left: 20px;
+    color: var(--color-slate);
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+
+  .skills-grid li::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--color-green);
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .about-photo-link {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .about-photo-frame {
+    position: relative;
+    display: block;
+    border-radius: 6px;
+    background: var(--color-green);
+    box-shadow: 0 10px 30px -15px var(--color-shadow-navy);
+  }
+
+  .about-photo-frame::before,
+  .about-photo-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .about-photo-frame::before {
+    background: var(--color-navy);
+    mix-blend-mode: screen;
+  }
+
+  .about-photo-frame::after {
+    top: 20px;
+    left: 20px;
+    border: 2px solid var(--color-green);
+    z-index: -1;
+  }
+
+  .about-photo-link:hover .about-photo-frame::after,
+  .about-photo-link:focus-visible .about-photo-frame::after {
+    top: 14px;
+    left: 14px;
+  }
+
+  .about-photo {
+    position: relative;
+    z-index: 1;
+    border-radius: 6px;
+    mix-blend-mode: multiply;
+    filter: grayscale(100%) contrast(1);
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .about-photo-link:hover .about-photo,
+  .about-photo-link:focus-visible .about-photo {
+    mix-blend-mode: normal;
+    filter: none;
+  }
+
+  @media (max-width: 768px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .about-photo-link {
+      margin: 0 auto;
+      width: 70%;
+    }
+  }
+</style>

@@ -180,6 +180,7 @@ Skip porting: `.gatsby-image-outer-wrapper`, PrismStyles (replaced by Shiki).
 ## Phase 3: Home Page
 
 **Goal**: Rebuild the homepage sections with the same structure and near the same presentation.
+**Status**: Completed on April 19, 2026.
 
 ### Sections
 - Hero
@@ -206,6 +207,12 @@ Skip porting: `.gatsby-image-outer-wrapper`, PrismStyles (replaced by Shiki).
 - Homepage content order and section behavior match the current site.
 - Anchored nav links still work.
 - Reveal and show-more behaviors work without a heavy client bundle.
+
+### Wrap-Up Notes
+- Rebuilt all homepage sections as Astro-first components backed by content collections instead of Gatsby GraphQL.
+- Replaced ScrollReveal with IntersectionObserver-driven reveal classes and kept interactions in a small inline script for tabs, project expansion, and fact shuffling.
+- Preserved `#projects` anchor behavior used by the global nav.
+- Kept the interaction layer progressive-enhancement friendly so the page still renders readable content without JavaScript.
 
 ---
 

@@ -1,0 +1,45 @@
+---
+import { render } from 'astro:content';
+import SectionHeading from './SectionHeading.astro';
+
+const { entry, email } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<section id="contact" class="section-shell contact-shell" data-reveal>
+  <div class="contact-inner">
+    <SectionHeading number="07" title="What's Next?" centered={true} />
+    <h2 class="contact-title">{entry.data.title}</h2>
+    <div class="rich-text contact-copy">
+      <Content />
+    </div>
+    <a href={`mailto:${email}`} class="button-link contact-button">
+      Say Hello
+    </a>
+  </div>
+</section>
+
+<style>
+  .contact-shell {
+    margin-bottom: 40px;
+  }
+
+  .contact-inner {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .contact-title {
+    margin: 0 0 20px;
+    font-size: clamp(40px, 8vw, 60px);
+  }
+
+  .contact-copy {
+    color: var(--color-light-slate);
+  }
+
+  .contact-button {
+    margin-top: 44px;
+  }
+</style>

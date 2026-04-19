@@ -1,0 +1,204 @@
+---
+import { render } from 'astro:content';
+import AppStoreIcon from '@components/icons/AppStoreIcon.astro';
+import ExternalIcon from '@components/icons/ExternalIcon.astro';
+import FolderIcon from '@components/icons/FolderIcon.astro';
+import GithubIcon from '@components/icons/GithubIcon.astro';
+import GooglePlayIcon from '@components/icons/GooglePlayIcon.astro';
+
+const { entries } = Astro.props;
+const initialCount = 4;
+
+const renderedEntries = await Promise.all(
+  entries.map(async (entry: any) => ({
+    entry,
+    Content: (await render(entry)).Content,
+  })),
+);
+---
+
+<section class="section-shell" data-reveal>
+  <div class="section-subheading">Other Noteworthy Projects</div>
+
+  <div
+    class="projects-root"
+    data-projects-root
+    data-projects-limit={initialCount}
+  >
+    <div class="projects-grid">
+      {
+        renderedEntries.map(({ entry, Content }, index) => (
+          <article
+            class="project-card"
+            data-project-card
+            data-overflow={index >= initialCount ? 'true' : 'false'}
+          >
+            <div class="card-surface project-card-inner">
+              <header class="project-card-header">
+                <div class="project-card-icon">
+                  <FolderIcon />
+                </div>
+                <div class="project-card-links">
+                  {entry.data.github && (
+                    <a
+                      href={entry.data.github}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      aria-label="GitHub"
+                    >
+                      <GithubIcon />
+                    </a>
+                  )}
+                  {entry.data.googleplay && (
+                    <a
+                      href={entry.data.googleplay}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      aria-label="Google Play"
+                    >
+                      <GooglePlayIcon />
+                    </a>
+                  )}
+                  {entry.data.appstore && (
+                    <a
+                      href={entry.data.appstore}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      aria-label="App Store"
+                    >
+                      <AppStoreIcon />
+                    </a>
+                  )}
+                  {entry.data.external && (
+                    <a
+                      href={entry.data.external}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      aria-label="External link"
+                    >
+                      <ExternalIcon />
+                    </a>
+                  )}
+                </div>
+              </header>
+
+              <h3 class="project-card-title">{entry.data.title}</h3>
+
+              <div class="rich-text project-card-copy">
+                <Content />
+              </div>
+
+              <ul class="project-card-tech-list">
+                {entry.data.tech.map((tech: string) => (
+                  <li>{tech}</li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    {
+      renderedEntries.length > initialCount && (
+        <button
+          type="button"
+          class="button-link projects-toggle"
+          data-projects-toggle
+          hidden
+        >
+          Show More Projects
+        </button>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .section-subheading {
+    margin: 0 auto 50px;
+    width: fit-content;
+    color: var(--color-lightest-slate);
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 600;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .project-card-inner {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem 1.75rem;
+    transition: transform 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .project-card:hover .project-card-inner,
+  .project-card:focus-within .project-card-inner {
+    transform: translateY(-5px);
+  }
+
+  .project-card-header {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .project-card-icon {
+    color: var(--color-green);
+  }
+
+  .project-card-icon svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .project-card-links {
+    display: flex;
+    margin-right: -10px;
+    color: var(--color-light-slate);
+  }
+
+  .project-card-links a {
+    display: inline-flex;
+    padding: 10px;
+  }
+
+  .project-card-links svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .project-card-title {
+    margin: 0 0 12px;
+    font-size: 22px;
+    color: var(--color-lightest-slate);
+  }
+
+  .project-card-copy {
+    font-size: 17px;
+  }
+
+  .project-card-tech-list {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 8px 15px;
+    margin-top: 22px;
+    color: var(--color-light-slate);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  .projects-toggle {
+    margin: 80px auto 0;
+  }
+</style>

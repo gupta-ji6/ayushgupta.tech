@@ -1,0 +1,77 @@
+---
+import { render } from 'astro:content';
+import SectionHeading from './SectionHeading.astro';
+
+const { entries } = Astro.props;
+
+const renderedEntries = await Promise.all(
+  entries.map(async (entry: any) => ({
+    entry,
+    Content: (await render(entry)).Content,
+  })),
+);
+---
+
+<section id="education" class="section-shell section-narrow" data-reveal>
+  <SectionHeading number="04" title="Education" />
+
+  <div class="tabs-shell" data-tabs-root>
+    <div class="tabs-list-wrap">
+      <div class="tabs-list" role="tablist" aria-label="Education tabs">
+        {
+          renderedEntries.map(({ entry }, index) => (
+            <button
+              type="button"
+              class:list={['tab-button', index === 0 && 'is-active']}
+              role="tab"
+              id={`education-tab-${index}`}
+              aria-selected={index === 0 ? 'true' : 'false'}
+              aria-controls={`education-panel-${index}`}
+              tabindex={index === 0 ? '0' : '-1'}
+              data-tab-button
+            >
+              {entry.data.school}
+            </button>
+          ))
+        }
+        <span class="tab-indicator" data-tab-indicator aria-hidden="true"
+        ></span>
+      </div>
+    </div>
+
+    <div class="tabs-panels">
+      {
+        renderedEntries.map(({ entry, Content }, index) => (
+          <section
+            class:list={['tab-panel', index === 0 && 'is-active']}
+            id={`education-panel-${index}`}
+            role="tabpanel"
+            aria-labelledby={`education-tab-${index}`}
+            data-tab-panel
+          >
+            <h3 class="tab-panel-title">
+              <span>{entry.data.level}</span>
+              <span class="tab-panel-company">
+                &nbsp;@&nbsp;
+                <a
+                  href={entry.data.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  {entry.data.school}
+                </a>
+              </span>
+            </h3>
+            <p class="tab-panel-meta">{entry.data.passingYear}</p>
+            <p class="tab-panel-meta tab-panel-location">
+              {entry.data.location}
+            </p>
+            <div class="rich-text tab-panel-copy">
+              <Content />
+            </div>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</section>
