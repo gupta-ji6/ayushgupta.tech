@@ -17,6 +17,7 @@ import {
 import { theme, mixins, media } from '@styles';
 import { siteUrl, srConfig } from '@config';
 import sr from '@utils/sr';
+import { pickSpotifyCoverImage } from '@utils/spotify';
 import ogImage from '@images/og-music.png';
 import { IconCheck } from '@components/icons';
 
@@ -336,19 +337,20 @@ const MusicPage = ({ location }) => {
         <Fragment>
           {topTracks.map(track => {
             const { album, artists, external_urls, name, id } = track;
-            const trackArtists = artists.map(artist => artist.name);
+            const trackArtists = (artists || []).map(artist => artist.name);
+            const cover = pickSpotifyCoverImage(album?.images);
             return (
               <TrackItem key={id}>
                 <StyledAlbumCover
-                  src={album.images[1].url}
-                  height={album.images[1].height}
-                  width={album.images[1].width}
-                  alt={`${album.name}'s album cover`}
+                  src={cover?.url}
+                  height={cover?.height}
+                  width={cover?.width}
+                  alt={`${album?.name ?? name}'s album cover`}
                   loading="lazy"
                 />
                 <TrackInfoContainer>
                   <ExternalLink
-                    url={external_urls.spotify}
+                    url={external_urls?.spotify}
                     eventName="Spotify"
                     eventType={`Top Tracks - ${name}`}>
                     {name}
@@ -379,7 +381,9 @@ const MusicPage = ({ location }) => {
         </RefetchContainer>
       );
     } else if (Object.keys(ayushFavouritePlaylist).length > 0) {
-      const { name, images, id, owner, tracks, external_urls } = ayushFavouritePlaylist;
+      const { name, images, id, owner, tracks, items, external_urls } = ayushFavouritePlaylist;
+      // Feb 2026 Dev Mode: playlist `tracks` summary → `items` (see Spotify migration guide).
+      const playlistTrackTotal = items?.total ?? tracks?.total;
       return (
         <TrackItem key={id}>
           <StyledAlbumCover
@@ -399,7 +403,9 @@ const MusicPage = ({ location }) => {
               </ExternalLink>
               <span> by {owner?.display_name}</span>
             </div>
-            <Artists>{tracks?.total} tracks</Artists>
+            <Artists>
+              {typeof playlistTrackTotal === 'number' ? `${playlistTrackTotal} tracks` : ''}
+            </Artists>
           </TrackInfoContainer>
         </TrackItem>
       );
@@ -426,23 +432,24 @@ const MusicPage = ({ location }) => {
         <Fragment>
           {topArtists.map(artist => {
             const { external_urls, name, id, images, genres } = artist;
+            const cover = pickSpotifyCoverImage(images);
             return (
               <TrackItem key={id}>
                 <StyledAlbumCover
-                  src={images[1].url}
-                  height={images[1].height}
-                  width={images[1].width}
+                  src={cover?.url}
+                  height={cover?.height}
+                  width={cover?.width}
                   alt={`${name}'s picture`}
                   loading="lazy"
                 />
                 <TrackInfoContainer>
                   <ExternalLink
-                    url={external_urls.spotify}
+                    url={external_urls?.spotify}
                     eventName="Spotify"
                     eventType={`Top Artists - ${name}`}>
                     {name}
                   </ExternalLink>
-                  <Artists>{genres.join(', ')}</Artists>
+                  <Artists>{(genres || []).join(', ')}</Artists>
                 </TrackInfoContainer>
               </TrackItem>
             );
@@ -473,19 +480,20 @@ const MusicPage = ({ location }) => {
           {recentlyPlayedTracks.map(trackData => {
             const { track } = trackData;
             const { album, artists, external_urls, name, id } = track;
-            const trackArtists = artists.map(artist => artist.name);
+            const trackArtists = (artists || []).map(artist => artist.name);
+            const cover = pickSpotifyCoverImage(album?.images);
             return (
               <TrackItem key={id}>
                 <StyledAlbumCover
-                  src={album.images[1].url}
-                  height={album.images[1].height}
-                  width={album.images[1].width}
-                  alt={`${album.name}'s album cover`}
+                  src={cover?.url}
+                  height={cover?.height}
+                  width={cover?.width}
+                  alt={`${album?.name ?? name}'s album cover`}
                   loading="lazy"
                 />
                 <TrackInfoContainer>
                   <ExternalLink
-                    url={external_urls.spotify}
+                    url={external_urls?.spotify}
                     eventName="Spotify"
                     eventType={`Recently Played - ${name}`}>
                     {name}
@@ -521,19 +529,20 @@ const MusicPage = ({ location }) => {
           {recentlySavedTracks.map(trackData => {
             const { track } = trackData;
             const { album, artists, external_urls, name, id } = track;
-            const trackArtists = artists.map(artist => artist.name);
+            const trackArtists = (artists || []).map(artist => artist.name);
+            const cover = pickSpotifyCoverImage(album?.images);
             return (
               <TrackItem key={id}>
                 <StyledAlbumCover
-                  src={album.images[1].url}
-                  height={album.images[1].height}
-                  width={album.images[1].width}
-                  alt={`${album.name}'s album cover`}
+                  src={cover?.url}
+                  height={cover?.height}
+                  width={cover?.width}
+                  alt={`${album?.name ?? name}'s album cover`}
                   loading="lazy"
                 />
                 <TrackInfoContainer>
                   <ExternalLink
-                    url={external_urls.spotify}
+                    url={external_urls?.spotify}
                     eventName="Spotify"
                     eventType={`Recently Saved - ${name}`}>
                     {name}
@@ -567,34 +576,32 @@ const MusicPage = ({ location }) => {
       return (
         <Fragment>
           {userPlaylists.map(playlistData => {
-            const {
-              name,
-              images,
-              id,
-              owner: { display_name },
-              tracks: { total },
-              external_urls,
-            } = playlistData;
+            const { name, images, id, owner, tracks, external_urls } = playlistData;
+            const display_name = owner?.display_name;
+            const total = tracks?.total;
+            const cover = pickSpotifyCoverImage(images);
             return (
               <TrackItem key={id}>
                 <StyledAlbumCover
-                  src={images[0].url}
-                  height={images[0].height}
-                  width={images[0].width}
+                  src={cover?.url}
+                  height={cover?.height}
+                  width={cover?.width}
                   alt={`${name}'s playlist cover`}
                   loading="lazy"
                 />
                 <TrackInfoContainer>
                   <div>
                     <ExternalLink
-                      url={external_urls.spotify}
+                      url={external_urls?.spotify}
                       eventName="Spotify"
                       eventType={`Recently Saved Playlist - ${name}`}>
                       {name}
                     </ExternalLink>
                     <span> by {display_name}</span>
                   </div>
-                  <Artists>{total} tracks</Artists>
+                  <Artists>
+                    {typeof total === 'number' ? `${total} tracks` : ''}
+                  </Artists>
                 </TrackInfoContainer>
               </TrackItem>
             );

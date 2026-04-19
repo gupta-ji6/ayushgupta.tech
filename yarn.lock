@@ -1868,11 +1868,6 @@
     escape-string-regexp "^2.0.0"
     lodash.deburr "^4.1.0"
 
-"@splitbee/web@0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@splitbee/web/-/web-0.2.4.tgz#173ffab42a9c4d22874d82cd580d2c114480b93f"
-  integrity sha512-LMXnN5X/jen4ssBZ8ULXckQgJVvv8Ox2brcK7g2aLrok8ISzO76+DC0b6Cierk8oIXcx/+aflbVuBaKKFqyBCg==
-
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-1.1.2.tgz#b1665e2c461a2cd92f4c1bbf50d5454de0d4b421"
