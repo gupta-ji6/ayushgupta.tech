@@ -9,15 +9,17 @@ const CURRENT_USER_SAVED_TRACKS_URL = 'https://api.spotify.com/v1/me/tracks';
 const CURRENT_USER_TOP_ARTISTS_TRACKS_URL = 'https://api.spotify.com/v1/me/top';
 const CURRENT_USER_PROFILE_URL = 'https://api.spotify.com/v1/me';
 
-let basic;
-if (typeof window !== 'undefined') {
-  basic = btoa(
-    `${process.env.GATSBY_SPOTIFY_CLIENT_ID}:${process.env.GATSBY_SPOTIFY_CLIENT_SECRET}`,
-  );
-} else {
-  basic = Buffer.from(
-    `${process.env.GATSBY_SPOTIFY_CLIENT_ID}:${process.env.GATSBY_SPOTIFY_CLIENT_SECRET}`,
-  ).toString('base64');
+function spotifyBasicAuthHeader() {
+  const id = process.env.GATSBY_SPOTIFY_CLIENT_ID;
+  const secret = process.env.GATSBY_SPOTIFY_CLIENT_SECRET;
+  if (!id || !secret) {
+    return null;
+  }
+  const pair = `${id}:${secret}`;
+  if (typeof window !== 'undefined') {
+    return btoa(pair);
+  }
+  return Buffer.from(pair).toString('base64');
 }
 
 // =============================== FUNCTIONS ===========================================================
@@ -28,9 +30,18 @@ if (typeof window !== 'undefined') {
  * @see {@link https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow}
  */
 export const getAccessToken = async () => {
+  const refresh = process.env.GATSBY_SPOTIFY_REFRESH_TOKEN;
+  const basic = spotifyBasicAuthHeader();
+  if (!basic || !refresh) {
+    console.error(
+      '[Spotify] Missing env: set GATSBY_SPOTIFY_CLIENT_ID, GATSBY_SPOTIFY_CLIENT_SECRET, and GATSBY_SPOTIFY_REFRESH_TOKEN in a project-root .env file (Gatsby only exposes vars prefixed with GATSBY_), then restart `gatsby develop`.',
+    );
+    return {};
+  }
+
   const urlencoded = new URLSearchParams();
   urlencoded.append('grant_type', 'refresh_token');
-  urlencoded.append('refresh_token', process.env.GATSBY_SPOTIFY_REFRESH_TOKEN);
+  urlencoded.append('refresh_token', refresh);
 
   const response = await fetch(TOKEN_ENDPOINT, {
     method: 'POST',
@@ -357,4 +368,16 @@ export const fetchCurrentUserProfile = async () => {
   } catch (error) {
     console.error(error);
   }
+};
+
+/**
+ * Spotify returns 0–N images; index 1 is often “medium” but may be missing.
+ * @param {Array<{ url: string; height?: number; width?: number }>|undefined} images
+ * @returns {{ url: string; height?: number; width?: number }|null}
+ */
+export const pickSpotifyCoverImage = images => {
+  if (!Array.isArray(images) || images.length === 0) {
+    return null;
+  }
+  return images[1] ?? images[0] ?? null;
 };

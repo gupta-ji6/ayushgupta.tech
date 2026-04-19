@@ -18,9 +18,8 @@ function useRecentlyPlayedTracks(limit = 20) {
     setRecentTracksLoading(true);
     const tracks = await fetchCurrentUsersRecentlyPlayed(limit);
     if (tracks !== undefined) {
-      const uniqueRecentTracks = uniqBy(tracks?.items, function (e) {
-        return e.track.id;
-      });
+      const itemsWithTrack = (tracks?.items || []).filter(e => e?.track?.id != null);
+      const uniqueRecentTracks = uniqBy(itemsWithTrack, e => e.track.id);
       setRecentlyPlayedTracks(uniqueRecentTracks);
       setRecentTracksLoading(false);
       setRecentTracksError(null);
