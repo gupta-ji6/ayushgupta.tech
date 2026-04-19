@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
 import toast from 'react-hot-toast';
-import { useComments } from 'use-comments';
+import { useComments } from '@hooks/useComments';
 
 import { Layout, ExternalLink, NowPlaying, DetailsAndSummary } from '@components';
 import {
@@ -300,7 +300,7 @@ const MusicPage = ({ location }) => {
     refetchUserPlaylists,
   } = useUserPlaylists(10);
 
-  const { addComment, count } = useComments(process.env.GATSBY_HASURA_URL, '/music/');
+  const { addComment, count } = useComments('/music/');
   const [songRecommendationData, setSongRecommendationData] = useState({
     authorName: '',
     comment: '',
