@@ -70,9 +70,9 @@
 @font-face {
   font-family: 'Calibre';
   src:
-    url('/src/fonts/Calibre/Calibre-Light.woff2') format('woff2'),
-    url('/src/fonts/Calibre/Calibre-Light.woff') format('woff'),
-    url('/src/fonts/Calibre/Calibre-Light.ttf') format('truetype');
+    url('../fonts/Calibre/Calibre-Light.woff2') format('woff2'),
+    url('../fonts/Calibre/Calibre-Light.woff') format('woff'),
+    url('../fonts/Calibre/Calibre-Light.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -80,9 +80,9 @@
 @font-face {
   font-family: 'Calibre';
   src:
-    url('/src/fonts/Calibre/Calibre-LightItalic.woff2') format('woff2'),
-    url('/src/fonts/Calibre/Calibre-LightItalic.woff') format('woff'),
-    url('/src/fonts/Calibre/Calibre-LightItalic.ttf') format('truetype');
+    url('../fonts/Calibre/Calibre-LightItalic.woff2') format('woff2'),
+    url('../fonts/Calibre/Calibre-LightItalic.woff') format('woff'),
+    url('../fonts/Calibre/Calibre-LightItalic.ttf') format('truetype');
   font-weight: 300;
   font-style: italic;
   font-display: swap;
@@ -92,9 +92,9 @@
 @font-face {
   font-family: 'Calibre';
   src:
-    url('/src/fonts/Calibre/Calibre-Regular.woff2') format('woff2'),
-    url('/src/fonts/Calibre/Calibre-Regular.woff') format('woff'),
-    url('/src/fonts/Calibre/Calibre-Regular.ttf') format('truetype');
+    url('../fonts/Calibre/Calibre-Regular.woff2') format('woff2'),
+    url('../fonts/Calibre/Calibre-Regular.woff') format('woff'),
+    url('../fonts/Calibre/Calibre-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -102,9 +102,9 @@
 @font-face {
   font-family: 'Calibre';
   src:
-    url('/src/fonts/Calibre/Calibre-RegularItalic.woff2') format('woff2'),
-    url('/src/fonts/Calibre/Calibre-RegularItalic.woff') format('woff'),
-    url('/src/fonts/Calibre/Calibre-RegularItalic.ttf') format('truetype');
+    url('../fonts/Calibre/Calibre-RegularItalic.woff2') format('woff2'),
+    url('../fonts/Calibre/Calibre-RegularItalic.woff') format('woff'),
+    url('../fonts/Calibre/Calibre-RegularItalic.ttf') format('truetype');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -114,9 +114,9 @@
 @font-face {
   font-family: 'Calibre';
   src:
-    url('/src/fonts/Calibre/Calibre-Medium.woff2') format('woff2'),
-    url('/src/fonts/Calibre/Calibre-Medium.woff') format('woff'),
-    url('/src/fonts/Calibre/Calibre-Medium.ttf') format('truetype');
+    url('../fonts/Calibre/Calibre-Medium.woff2') format('woff2'),
+    url('../fonts/Calibre/Calibre-Medium.woff') format('woff'),
+    url('../fonts/Calibre/Calibre-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -124,9 +124,9 @@
 @font-face {
   font-family: 'Calibre';
   src:
-    url('/src/fonts/Calibre/Calibre-MediumItalic.woff2') format('woff2'),
-    url('/src/fonts/Calibre/Calibre-MediumItalic.woff') format('woff'),
-    url('/src/fonts/Calibre/Calibre-MediumItalic.ttf') format('truetype');
+    url('../fonts/Calibre/Calibre-MediumItalic.woff2') format('woff2'),
+    url('../fonts/Calibre/Calibre-MediumItalic.woff') format('woff'),
+    url('../fonts/Calibre/Calibre-MediumItalic.ttf') format('truetype');
   font-weight: 500;
   font-style: italic;
   font-display: swap;
@@ -136,9 +136,9 @@
 @font-face {
   font-family: 'Calibre';
   src:
-    url('/src/fonts/Calibre/Calibre-Semibold.woff2') format('woff2'),
-    url('/src/fonts/Calibre/Calibre-Semibold.woff') format('woff'),
-    url('/src/fonts/Calibre/Calibre-Semibold.ttf') format('truetype');
+    url('../fonts/Calibre/Calibre-Semibold.woff2') format('woff2'),
+    url('../fonts/Calibre/Calibre-Semibold.woff') format('woff'),
+    url('../fonts/Calibre/Calibre-Semibold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -146,9 +146,9 @@
 @font-face {
   font-family: 'Calibre';
   src:
-    url('/src/fonts/Calibre/Calibre-SemiboldItalic.woff2') format('woff2'),
-    url('/src/fonts/Calibre/Calibre-SemiboldItalic.woff') format('woff'),
-    url('/src/fonts/Calibre/Calibre-SemiboldItalic.ttf') format('truetype');
+    url('../fonts/Calibre/Calibre-SemiboldItalic.woff2') format('woff2'),
+    url('../fonts/Calibre/Calibre-SemiboldItalic.woff') format('woff'),
+    url('../fonts/Calibre/Calibre-SemiboldItalic.ttf') format('truetype');
   font-weight: 600;
   font-style: italic;
   font-display: swap;
@@ -158,9 +158,9 @@
 @font-face {
   font-family: 'SF Mono';
   src:
-    url('/src/fonts/SFMono/SFMono-Regular.woff2') format('woff2'),
-    url('/src/fonts/SFMono/SFMono-Regular.woff') format('woff'),
-    url('/src/fonts/SFMono/SFMono-Regular.ttf') format('truetype');
+    url('../fonts/SFMono/SFMono-Regular.woff2') format('woff2'),
+    url('../fonts/SFMono/SFMono-Regular.woff') format('woff'),
+    url('../fonts/SFMono/SFMono-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -168,9 +168,9 @@
 @font-face {
   font-family: 'SF Mono';
   src:
-    url('/src/fonts/SFMono/SFMono-RegularItalic.woff2') format('woff2'),
-    url('/src/fonts/SFMono/SFMono-RegularItalic.woff') format('woff'),
-    url('/src/fonts/SFMono/SFMono-RegularItalic.ttf') format('truetype');
+    url('../fonts/SFMono/SFMono-RegularItalic.woff2') format('woff2'),
+    url('../fonts/SFMono/SFMono-RegularItalic.woff') format('woff'),
+    url('../fonts/SFMono/SFMono-RegularItalic.ttf') format('truetype');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -180,9 +180,9 @@
 @font-face {
   font-family: 'SF Mono';
   src:
-    url('/src/fonts/SFMono/SFMono-Medium.woff2') format('woff2'),
-    url('/src/fonts/SFMono/SFMono-Medium.woff') format('woff'),
-    url('/src/fonts/SFMono/SFMono-Medium.ttf') format('truetype');
+    url('../fonts/SFMono/SFMono-Medium.woff2') format('woff2'),
+    url('../fonts/SFMono/SFMono-Medium.woff') format('woff'),
+    url('../fonts/SFMono/SFMono-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -190,9 +190,9 @@
 @font-face {
   font-family: 'SF Mono';
   src:
-    url('/src/fonts/SFMono/SFMono-MediumItalic.woff2') format('woff2'),
-    url('/src/fonts/SFMono/SFMono-MediumItalic.woff') format('woff'),
-    url('/src/fonts/SFMono/SFMono-MediumItalic.ttf') format('truetype');
+    url('../fonts/SFMono/SFMono-MediumItalic.woff2') format('woff2'),
+    url('../fonts/SFMono/SFMono-MediumItalic.woff') format('woff'),
+    url('../fonts/SFMono/SFMono-MediumItalic.ttf') format('truetype');
   font-weight: 500;
   font-style: italic;
   font-display: swap;
@@ -202,9 +202,9 @@
 @font-face {
   font-family: 'SF Mono';
   src:
-    url('/src/fonts/SFMono/SFMono-Semibold.woff2') format('woff2'),
-    url('/src/fonts/SFMono/SFMono-Semibold.woff') format('woff'),
-    url('/src/fonts/SFMono/SFMono-Semibold.ttf') format('truetype');
+    url('../fonts/SFMono/SFMono-Semibold.woff2') format('woff2'),
+    url('../fonts/SFMono/SFMono-Semibold.woff') format('woff'),
+    url('../fonts/SFMono/SFMono-Semibold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -212,9 +212,9 @@
 @font-face {
   font-family: 'SF Mono';
   src:
-    url('/src/fonts/SFMono/SFMono-SemiboldItalic.woff2') format('woff2'),
-    url('/src/fonts/SFMono/SFMono-SemiboldItalic.woff') format('woff'),
-    url('/src/fonts/SFMono/SFMono-SemiboldItalic.ttf') format('truetype');
+    url('../fonts/SFMono/SFMono-SemiboldItalic.woff2') format('woff2'),
+    url('../fonts/SFMono/SFMono-SemiboldItalic.woff') format('woff'),
+    url('../fonts/SFMono/SFMono-SemiboldItalic.ttf') format('truetype');
   font-weight: 600;
   font-style: italic;
   font-display: swap;
@@ -228,6 +228,7 @@
   html {
     box-sizing: border-box;
     width: 100%;
+    scroll-behavior: smooth;
     scrollbar-width: thin;
     scrollbar-color: var(--color-dark-slate) var(--color-navy);
   }

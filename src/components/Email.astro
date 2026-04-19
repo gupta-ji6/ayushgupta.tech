@@ -1,0 +1,74 @@
+---
+import { siteConfig } from '@config/index';
+
+interface Props {
+  isHome?: boolean;
+}
+
+const { isHome = false } = Astro.props;
+---
+
+<div
+  class:list={['side-element', 'side-right', isHome && 'animate fade delay-5']}
+>
+  <div class="email-wrap">
+    <a href={`mailto:${siteConfig.email}`} class="email-link">
+      {siteConfig.email}
+    </a>
+  </div>
+</div>
+
+<style>
+  .side-element {
+    position: fixed;
+    bottom: 0;
+    z-index: 10;
+    width: 40px;
+  }
+
+  .side-right {
+    right: 40px;
+  }
+
+  .email-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .email-wrap::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 90px;
+    margin: 0 auto;
+    background: var(--color-light-slate);
+  }
+
+  .email-link {
+    margin: 20px auto;
+    padding: 10px;
+    color: var(--color-light-slate);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    writing-mode: vertical-rl;
+  }
+
+  .email-link:hover,
+  .email-link:focus-visible {
+    transform: translateY(-3px);
+  }
+
+  @media (max-width: 1080px) {
+    .side-right {
+      right: 20px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .side-element {
+      display: none;
+    }
+  }
+</style>

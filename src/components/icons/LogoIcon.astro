@@ -1,0 +1,17 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<img
+  src="/logo.png"
+  alt="Ayush Gupta logo"
+  width="50"
+  height="50"
+  loading="eager"
+  decoding="async"
+  class={className}
+/>

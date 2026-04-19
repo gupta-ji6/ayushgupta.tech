@@ -8,6 +8,32 @@ export interface NavLink {
   url: string;
 }
 
+export interface SiteConfig {
+  siteTitle: string;
+  siteDescription: string;
+  siteKeywords: string;
+  siteUrl: string;
+  siteLanguage: string;
+  googleVerification: string;
+  yandexVerification: string;
+  bingVerification: string;
+  name: string;
+  location: string;
+  email: string;
+  github: string;
+  socialMedia: SocialLink[];
+  navLinks: NavLink[];
+  twitterHandle: string;
+  googleAnalyticsID: string;
+  navHeight: number;
+  navScrollHeight: number;
+  navDelay: number;
+  loaderDelay: number;
+  greenColor: string;
+  navyColor: string;
+  darkNavyColor: string;
+}
+
 export const siteConfig = {
   siteTitle: 'Ayush Gupta - Frontend Engineer (GuptaJi)',
   siteDescription:
@@ -18,6 +44,8 @@ export const siteConfig = {
   siteLanguage: 'en_US',
 
   googleVerification: 'YSmK_1bLGe-6FRuzC7f3Qww3eSH2AHd2UC35Lrn8iEM',
+  yandexVerification: 'cc2cfdc322abe716',
+  bingVerification: '7E3E59B623CADFC4110A588C0E91DC65',
 
   name: 'Ayush Gupta',
   location: 'Bengaluru, India',
@@ -43,5 +71,24 @@ export const siteConfig = {
   googleAnalyticsID: 'G-XYDGVM2S3D',
 
   navHeight: 100,
+  navScrollHeight: 70,
   navDelay: 1000,
-} as const;
+  loaderDelay: 2000,
+
+  greenColor: '#64ffda',
+  navyColor: '#0a192f',
+  darkNavyColor: '#020c1b',
+} satisfies SiteConfig;
+
+export const resolveNavHref = ({ name, url }: NavLink) => {
+  switch (name) {
+    case 'Blog':
+      return '/blog';
+    case 'Uses':
+      return '/uses';
+    case 'Music':
+      return '/music';
+    default:
+      return url;
+  }
+};

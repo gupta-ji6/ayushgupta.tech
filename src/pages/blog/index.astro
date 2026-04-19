@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+
+const allPosts = await getCollection('blog');
+const posts = [];
+
+for (const entry of allPosts) {
+  if (!entry.data.draft) {
+    posts.push(entry);
+  }
+}
+---
+
+<BaseLayout title="Blog">
+  <section class="placeholder-page">
+    <p class="subtitle">Phase 2</p>
+    <h1 class="medium-heading">Blog route is preserved.</h1>
+    <p>
+      Published posts detected: <strong>{posts.length}</strong>. The actual
+      listing, tag pages, and post routes land in Phase 4.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .placeholder-page {
+    width: min(860px, calc(100vw - 50px));
+    margin: 0 auto;
+    padding: 140px 0 120px;
+  }
+
+  .placeholder-page p:last-child {
+    max-width: 620px;
+    color: var(--color-light-slate);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .placeholder-page {
+      width: min(860px, calc(100vw - 32px));
+    }
+  }
+</style>

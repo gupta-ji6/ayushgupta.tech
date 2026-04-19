@@ -1,0 +1,38 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+
+const usesEntries = await getCollection('uses');
+---
+
+<BaseLayout title="Uses" image="/og-uses.png">
+  <section class="placeholder-page">
+    <p class="subtitle">Phase 2</p>
+    <h1 class="medium-heading">Uses route is ready.</h1>
+    <p>
+      Uses entries detected: <strong>{usesEntries.length}</strong>. The real
+      setup page gets rebuilt in the dedicated content phase after the shell and
+      homepage are stable.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .placeholder-page {
+    width: min(860px, calc(100vw - 50px));
+    margin: 0 auto;
+    padding: 140px 0 120px;
+  }
+
+  .placeholder-page p:last-child {
+    max-width: 620px;
+    color: var(--color-light-slate);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .placeholder-page {
+      width: min(860px, calc(100vw - 32px));
+    }
+  }
+</style>

@@ -1,7 +1,6 @@
 ---
 export const prerender = true;
-import '@styles/global.css';
-import { siteConfig } from '@config/index';
+import BaseLayout from '@layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 const blog = await getCollection('blog');
@@ -16,35 +15,134 @@ const contact = await getCollection('contact');
 const funFacts = await getCollection('funFacts');
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{siteConfig.siteTitle}</title>
-    <meta name="description" content={siteConfig.siteDescription} />
-  </head>
-  <body>
-    <main class="min-h-screen flex items-center justify-center">
-      <div class="text-center">
-        <h1 class="text-white text-3xl font-semibold mb-4">
-          {siteConfig.name}
-        </h1>
-        <p class="text-green font-mono text-base mb-8">
-          Phase 1 — Content Collections loaded
-        </p>
-        <ul class="text-slate text-left font-mono text-sm space-y-1">
-          <li>blog: {blog.length} entries</li>
-          <li>projects: {projects.length} entries</li>
-          <li>featured: {featured.length} entries</li>
-          <li>jobs: {jobs.length} entries</li>
-          <li>education: {education.length} entries</li>
-          <li>uses: {uses.length} entries</li>
-          <li>about: {about.length} entries</li>
-          <li>hero: {hero.length} entries</li>
-          <li>contact: {contact.length} entries</li>
-          <li>funFacts: {funFacts.length} entries</li>
-        </ul>
-      </div>
-    </main>
-  </body>
-</html>
+<BaseLayout>
+  <section class="shell-hero">
+    <p class="subtitle animate fade">Phase 2</p>
+    <h1 class="big-heading animate fade delay-1">The Astro shell is live.</h1>
+    <p class="shell-copy animate fade delay-2">
+      Navigation, metadata, custom fonts, sidebars, footer, favicons, and
+      content collections are now wired into the new layout. The homepage
+      sections themselves are next in Phase 3.
+    </p>
+  </section>
+
+  <section
+    class="collection-grid animate fade delay-3"
+    aria-labelledby="collections-heading"
+  >
+    <div>
+      <p class="grid-label">Verification</p>
+      <h2 id="collections-heading" class="medium-heading">
+        Collections loaded cleanly.
+      </h2>
+    </div>
+
+    <ul class="collection-list">
+      <li><span>Blog</span><strong>{blog.length}</strong></li>
+      <li><span>Projects</span><strong>{projects.length}</strong></li>
+      <li><span>Featured</span><strong>{featured.length}</strong></li>
+      <li><span>Jobs</span><strong>{jobs.length}</strong></li>
+      <li><span>Education</span><strong>{education.length}</strong></li>
+      <li><span>Uses</span><strong>{uses.length}</strong></li>
+      <li><span>About</span><strong>{about.length}</strong></li>
+      <li><span>Hero</span><strong>{hero.length}</strong></li>
+      <li><span>Contact</span><strong>{contact.length}</strong></li>
+      <li><span>Fun Facts</span><strong>{funFacts.length}</strong></li>
+    </ul>
+  </section>
+
+  <section id="projects" tabindex="-1" class="phase-anchor">
+    <p class="grid-label">Anchor Check</p>
+    <h2 class="medium-heading">Projects anchor is already reserved.</h2>
+    <p>
+      The nav shell can now target the future homepage sections without pulling
+      Gatsby code forward. Phase 3 will replace this placeholder with the actual
+      home sections and interactions.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .shell-hero,
+  .collection-grid,
+  .phase-anchor {
+    width: min(1000px, calc(100vw - 50px));
+    margin: 0 auto;
+  }
+
+  .shell-hero {
+    display: grid;
+    gap: 1rem;
+    padding: clamp(80px, 16vh, 140px) 0 80px;
+  }
+
+  .shell-copy {
+    max-width: 720px;
+    margin: 0;
+    color: var(--color-light-slate);
+    font-size: clamp(18px, 2.4vw, 22px);
+    line-height: 1.5;
+  }
+
+  .collection-grid {
+    display: grid;
+    gap: 2rem;
+    padding: 0 0 80px;
+  }
+
+  .grid-label {
+    margin: 0 0 16px;
+    color: var(--color-green);
+    font-family: var(--font-mono);
+    font-size: 14px;
+  }
+
+  .collection-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .collection-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgba(100, 255, 218, 0.12);
+    border-radius: 8px;
+    background: linear-gradient(
+      180deg,
+      rgba(23, 42, 69, 0.92),
+      rgba(10, 25, 47, 0.96)
+    );
+    padding: 18px 20px;
+    color: var(--color-light-slate);
+  }
+
+  .collection-list strong {
+    color: var(--color-green);
+    font-family: var(--font-mono);
+    font-size: 16px;
+  }
+
+  .phase-anchor {
+    padding: 0 0 120px;
+  }
+
+  .phase-anchor p:last-child {
+    max-width: 680px;
+    color: var(--color-light-slate);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .shell-hero,
+    .collection-grid,
+    .phase-anchor {
+      width: min(1000px, calc(100vw - 32px));
+    }
+
+    .collection-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

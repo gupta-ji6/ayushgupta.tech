@@ -1,0 +1,90 @@
+---
+import { siteConfig } from '@config/index';
+import SocialIcon from './icons/SocialIcon.astro';
+
+interface Props {
+  isHome?: boolean;
+}
+
+const { isHome = false } = Astro.props;
+---
+
+<div
+  class:list={['side-element', 'side-left', isHome && 'animate fade delay-4']}
+>
+  <ul class="social-list" aria-label="Social links">
+    {
+      siteConfig.socialMedia.map(({ name, url }) => (
+        <li>
+          <a
+            href={url}
+            aria-label={name}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            <SocialIcon name={name} />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .side-element {
+    position: fixed;
+    bottom: 0;
+    z-index: 10;
+    width: 40px;
+  }
+
+  .side-left {
+    left: 40px;
+  }
+
+  .social-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .social-list::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 90px;
+    margin: 0 auto;
+    background: var(--color-light-slate);
+  }
+
+  .social-list li:last-of-type {
+    margin-bottom: 20px;
+  }
+
+  .social-list a {
+    display: inline-flex;
+    padding: 10px;
+  }
+
+  .social-list a:hover,
+  .social-list a:focus-visible {
+    transform: translateY(-3px);
+  }
+
+  .social-list svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  @media (max-width: 1080px) {
+    .side-left {
+      left: 20px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .side-element {
+      display: none;
+    }
+  }
+</style>
