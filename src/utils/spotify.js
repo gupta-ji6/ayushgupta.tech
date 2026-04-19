@@ -1,377 +1,108 @@
-// ================================ CONSTANTS ==========================================================
+// All Spotify API calls go through the Netlify Function at /.netlify/functions/spotify
+// so that client_secret and refresh_token never leave the server.
 
-const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
-const NOW_PLAYING_URL = 'https://api.spotify.com/v1/me/player/currently-playing';
-const CURRENT_USER_PLAYLISTS_URL = 'https://api.spotify.com/v1/me/playlists';
-const PLAYLISTS_URL = 'https://api.spotify.com/v1/playlists';
-const CURRENT_USER_RECENTLY_PLAYED_URL = 'https://api.spotify.com/v1/me/player/recently-played';
-const CURRENT_USER_SAVED_TRACKS_URL = 'https://api.spotify.com/v1/me/tracks';
-const CURRENT_USER_TOP_ARTISTS_TRACKS_URL = 'https://api.spotify.com/v1/me/top';
-const CURRENT_USER_PROFILE_URL = 'https://api.spotify.com/v1/me';
+const PROXY = '/.netlify/functions/spotify';
 
-function spotifyBasicAuthHeader() {
-  const id = process.env.GATSBY_SPOTIFY_CLIENT_ID;
-  const secret = process.env.GATSBY_SPOTIFY_CLIENT_SECRET;
-  if (!id || !secret) {
-    return null;
+async function spotifyGet(path, params = {}) {
+  const qs = new URLSearchParams({ path, ...params });
+  try {
+    const res = await fetch(`${PROXY}?${qs}`);
+    if (res.status === 200) {
+      return res.json();
+    }
+    return undefined;
+  } catch (err) {
+    console.error('[Spotify]', err);
+    return undefined;
   }
-  const pair = `${id}:${secret}`;
-  if (typeof window !== 'undefined') {
-    return btoa(pair);
-  }
-  return Buffer.from(pair).toString('base64');
 }
 
-// =============================== FUNCTIONS ===========================================================
+// ================================ PUBLIC API =====================================================
 
 /**
- * Get OAuth access token from Spotify Web API
- *
- * @see {@link https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow}
- */
-export const getAccessToken = async () => {
-  const refresh = process.env.GATSBY_SPOTIFY_REFRESH_TOKEN;
-  const basic = spotifyBasicAuthHeader();
-  if (!basic || !refresh) {
-    console.error(
-      '[Spotify] Missing env: set GATSBY_SPOTIFY_CLIENT_ID, GATSBY_SPOTIFY_CLIENT_SECRET, and GATSBY_SPOTIFY_REFRESH_TOKEN in a project-root .env file (Gatsby only exposes vars prefixed with GATSBY_), then restart `gatsby develop`.',
-    );
-    return {};
-  }
-
-  const urlencoded = new URLSearchParams();
-  urlencoded.append('grant_type', 'refresh_token');
-  urlencoded.append('refresh_token', refresh);
-
-  const response = await fetch(TOKEN_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      Authorization: `Basic ${basic}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: urlencoded,
-  });
-
-  return response.json();
-};
-
-// ==========================================================================================
-
-/**
- * Get the object currently being played on the user’s Spotify account.
- *
  * @see {@link https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-the-users-currently-playing-track}
- * @return {Promise}  A successful request will return a 200 OK response code with a json payload that contains information about the currently playing track or episode and its context.
  */
 export const fetchCurrentTrack = async () => {
-  const { access_token } = await getAccessToken();
-
-  try {
-    const response = await fetch(NOW_PLAYING_URL, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (response.status === 200) {
-      const jsonResponse = await response.json();
-
-      if (jsonResponse?.currently_playing_type === 'track' && jsonResponse?.item !== null) {
-        const { album, artists, external_urls, name, preview_url } = jsonResponse?.item;
-
-        return {
-          album,
-          artists,
-          external_urls,
-          name,
-          preview_url,
-        };
-      } else if (
-        jsonResponse?.currently_playing_type === 'episode' &&
-        jsonResponse?.item !== null
-      ) {
-        // TODO: the item is always null in the response as of now.
-        return undefined;
-      }
-    } else {
-      return undefined;
-    }
-  } catch (error) {
-    console.error(error);
+  const data = await spotifyGet('/me/player/currently-playing');
+  if (!data) {
+    return undefined;
   }
+  if (data.currently_playing_type === 'track' && data.item) {
+    const { album, artists, external_urls, name, preview_url } = data.item;
+    return { album, artists, external_urls, name, preview_url };
+  }
+  return undefined;
 };
 
-// ==========================================================================================
-
 /**
- * Get a playlist owned by a Spotify user.
- *
  * @see {@link https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-playlist}
- * @param {string} playlist_id The Spotify ID for the playlist.
- * @return {Promise}  a playlist object.
  */
 export const fetchPlaylistById = async playlist_id => {
-  const { access_token } = await getAccessToken();
-  const PLAYLISTS_URL_BY_ID = `${PLAYLISTS_URL}/${playlist_id}`;
-
-  try {
-    const response = await fetch(PLAYLISTS_URL_BY_ID, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (response.status === 200) {
-      const jsonResponse = await response.json();
-
-      if (jsonResponse !== null) {
-        return jsonResponse;
-      }
-    } else {
-      return undefined;
-    }
-  } catch (error) {
-    console.error(error);
-  }
+  const data = await spotifyGet(`/playlists/${playlist_id}`);
+  return data ?? undefined;
 };
 
-// ==========================================================================================
-
 /**
- * Get a list of the playlists owned or followed by the current Spotify user.
- *
  * @see {@link https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-a-list-of-current-users-playlists}
- *
- * @param {number} [limit] - The maximum number of playlists to return. Default: 20. Minimum: 1. Maximum: 50.
- * @return {Promise} contains an array of simplified playlist objects.
  */
 export const fetchCurrentUserPlaylists = async (limit = 20) => {
-  const { access_token } = await getAccessToken();
-  const url = new URL(CURRENT_USER_PLAYLISTS_URL);
-  const params = { limit };
-
-  url.search = new URLSearchParams(params).toString();
-
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (response.status === 200) {
-      const jsonResponse = await response.json();
-
-      if (jsonResponse?.total !== 0) {
-        const { items, href, total } = jsonResponse;
-
-        return {
-          items,
-          href,
-          total,
-        };
-      }
-    } else {
-      return undefined;
-    }
-  } catch (error) {
-    console.error(error);
+  const data = await spotifyGet('/me/playlists', { limit });
+  if (data && data.total !== 0) {
+    const { items, href, total } = data;
+    return { items, href, total };
   }
+  return undefined;
 };
 
-// ==========================================================================================
-
-const today = new Date();
-const yesterday = new Date(today);
-yesterday.setDate(yesterday.getDate() - 1);
-
 /**
- * Get tracks from the current user’s recently played tracks. Note: Currently doesn’t support podcast episodes.
- *
  * @see {@link https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-recently-played}
- * @param {number} [limit] - The maximum number of playlists to return. Default: 20. Minimum: 1. Maximum: 50.
- * @param {number} [before] - A Unix timestamp in milliseconds. Returns all items before (but not including) this cursor position. If before is specified, after must not be specified.
- * @return {Promise} contains an array of play history objects (wrapped in a cursor-based paging object) in JSON format
  */
 export const fetchCurrentUsersRecentlyPlayed = async (limit = 20) => {
-  const { access_token } = await getAccessToken();
-  const url = new URL(CURRENT_USER_RECENTLY_PLAYED_URL);
-  const params = {
-    limit,
-    // after: Math.round(new Date(yesterday).getTime() / 1000),
-    // before,
-  };
-
-  url.search = new URLSearchParams(params).toString();
-
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (response.status === 200) {
-      const jsonResponse = await response.json();
-
-      if (jsonResponse?.items.length !== 0) {
-        const { items, href, next } = jsonResponse;
-
-        return {
-          items,
-          href,
-          next,
-        };
-      }
-    } else {
-      return undefined;
-    }
-  } catch (error) {
-    console.error(error);
+  const data = await spotifyGet('/me/player/recently-played', { limit });
+  if (data && data.items?.length) {
+    const { items, href, next } = data;
+    return { items, href, next };
   }
+  return undefined;
 };
 
-// ==========================================================================================
-
 /**
- * Get a list of the songs saved in the current Spotify user’s ‘Your Music’ library.
- *
  * @see {@link https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-users-saved-tracks}
- * @param {number} [limit] - The maximum number of playlists to return. Default: 20. Minimum: 1. Maximum: 50.
- * @return {Promise}  contains an array of saved track objects (wrapped in a paging object) in JSON format.
  */
 export const fetchCurrentUsersSavedTracks = async (limit = 20) => {
-  const { access_token } = await getAccessToken();
-  const url = new URL(CURRENT_USER_SAVED_TRACKS_URL);
-  const params = { limit };
-
-  url.search = new URLSearchParams(params).toString();
-
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (response.status === 200) {
-      const jsonResponse = await response.json();
-
-      if (jsonResponse?.items.length !== 0) {
-        const { items, href, next, total } = jsonResponse;
-
-        return {
-          items,
-          href,
-          next,
-          total,
-        };
-      }
-    } else {
-      return undefined;
-    }
-  } catch (error) {
-    console.error(error);
+  const data = await spotifyGet('/me/tracks', { limit });
+  if (data && data.items?.length) {
+    const { items, href, next, total } = data;
+    return { items, href, next, total };
   }
+  return undefined;
 };
 
-// ==========================================================================================
-
 /**
- * Get the current user’s top artists or tracks based on calculated affinity.
- *
  * @see {@link https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-users-top-artists-and-tracks}
- * @param {string} type - The type of entity to return. Valid values: artists or tracks.
- * @param {string} time_range - Over what time frame the affinities are computed. Valid values: long_term (calculated from several years of data and including all new data as it becomes available), medium_term (approximately last 6 months), short_term (approximately last 4 weeks). Default: medium_term
- * @param {number} limit - The number of entities to return. Default: 20. Minimum: 1. Maximum: 50.
- * @return {Promise} contains a paging object of Artists or Tracks.
  */
 export const fetchCurrentUsersTopArtistsOrTracks = async (
   type = 'tracks',
   time_range = 'short_term',
   limit = 20,
 ) => {
-  const { access_token } = await getAccessToken();
-  const url = new URL(`${CURRENT_USER_TOP_ARTISTS_TRACKS_URL}/${type}`);
-  const params = {
-    time_range,
-    limit,
-  };
-
-  url.search = new URLSearchParams(params).toString();
-
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (response.status === 200) {
-      const jsonResponse = await response.json();
-
-      if (jsonResponse?.items.length !== 0) {
-        const { items, href, next, total } = jsonResponse;
-
-        return {
-          items,
-          href,
-          next,
-          total,
-        };
-      }
-    } else {
-      return undefined;
-    }
-  } catch (error) {
-    console.error(error);
+  const data = await spotifyGet(`/me/top/${type}`, { time_range, limit });
+  if (data && data.items?.length) {
+    const { items, href, next, total } = data;
+    return { items, href, next, total };
   }
+  return undefined;
 };
 
-// ==========================================================================================
-
 /**
- * Get detailed profile information about the current user (including the current user’s username).
- *
  * @see {@link https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-current-users-profile}
- * @return {Promise} contains a user object in JSON format.
  */
 export const fetchCurrentUserProfile = async () => {
-  const { access_token } = await getAccessToken();
-  const url = new URL(CURRENT_USER_PROFILE_URL);
-
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (response.status === 200) {
-      const jsonResponse = await response.json();
-      return jsonResponse;
-    }
-  } catch (error) {
-    console.error(error);
-  }
+  return spotifyGet('/me');
 };
 
 /**
- * Spotify returns 0–N images; index 1 is often “medium” but may be missing.
+ * Spotify returns 0–N images; index 1 is often "medium" but may be missing.
  * @param {Array<{ url: string; height?: number; width?: number }>|undefined} images
  * @returns {{ url: string; height?: number; width?: number }|null}
  */
