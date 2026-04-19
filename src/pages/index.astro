@@ -2,6 +2,18 @@
 export const prerender = true;
 import '@styles/global.css';
 import { siteConfig } from '@config/index';
+import { getCollection } from 'astro:content';
+
+const blog = await getCollection('blog');
+const projects = await getCollection('projects');
+const featured = await getCollection('featured');
+const jobs = await getCollection('jobs');
+const education = await getCollection('education');
+const uses = await getCollection('uses');
+const about = await getCollection('about');
+const hero = await getCollection('hero');
+const contact = await getCollection('contact');
+const funFacts = await getCollection('funFacts');
 ---
 
 <html lang="en">
@@ -17,9 +29,21 @@ import { siteConfig } from '@config/index';
         <h1 class="text-white text-3xl font-semibold mb-4">
           {siteConfig.name}
         </h1>
-        <p class="text-green font-mono text-base">
-          Astro scaffold working — Phase 0 complete
+        <p class="text-green font-mono text-base mb-8">
+          Phase 1 — Content Collections loaded
         </p>
+        <ul class="text-slate text-left font-mono text-sm space-y-1">
+          <li>blog: {blog.length} entries</li>
+          <li>projects: {projects.length} entries</li>
+          <li>featured: {featured.length} entries</li>
+          <li>jobs: {jobs.length} entries</li>
+          <li>education: {education.length} entries</li>
+          <li>uses: {uses.length} entries</li>
+          <li>about: {about.length} entries</li>
+          <li>hero: {hero.length} entries</li>
+          <li>contact: {contact.length} entries</li>
+          <li>funFacts: {funFacts.length} entries</li>
+        </ul>
       </div>
     </main>
   </body>
