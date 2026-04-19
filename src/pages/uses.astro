@@ -1,38 +1,260 @@
 ---
-import { getCollection } from 'astro:content';
+export const prerender = true;
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
+import { siteConfig } from '@config/index';
 
-const usesEntries = await getCollection('uses');
+const description =
+  "A living document of Ayush Gupta's setup, with apps he uses daily.";
+
+type UsesEntry = CollectionEntry<'uses'>;
+
+const usesEntries = (await getCollection('uses')).sort(
+  (left: UsesEntry, right: UsesEntry) => left.data.order - right.data.order,
+);
+
+const useSections = await Promise.all(
+  usesEntries.map(async (entry: UsesEntry) => ({
+    entry,
+    ...(await render(entry)),
+  })),
+);
 ---
 
-<BaseLayout title="Uses" image="/og-uses.png">
-  <section class="placeholder-page">
-    <p class="subtitle">Phase 2</p>
-    <h1 class="medium-heading">Uses route is ready.</h1>
-    <p>
-      Uses entries detected: <strong>{usesEntries.length}</strong>. The real
-      setup page gets rebuilt in the dedicated content phase after the shell and
-      homepage are stable.
-    </p>
+<BaseLayout title="Uses" description={description} image="/og-uses.png">
+  <section class="uses-page">
+    <header class="uses-header">
+      <h1 class="big-heading">Uses</h1>
+      <p class="subtitle">
+        a living document of my setup, with apps I use daily
+      </p>
+    </header>
+
+    <section class="uses-sections" aria-label="Setup categories">
+      {
+        useSections.map(({ entry, Content }) => (
+          <article class="uses-disclosure">
+            <details>
+              <summary>
+                <span class="medium-heading uses-section-title">
+                  {entry.data.title}
+                </span>
+                <p class="uses-section-subtitle">{entry.data.subtitle}</p>
+              </summary>
+
+              <div class="uses-section-body">
+                <Content />
+              </div>
+            </details>
+          </article>
+        ))
+      }
+    </section>
+
+    <section class="uses-footer">
+      <h2>Have more questions?</h2>
+      <p>
+        Feel free to ask away on{' '}
+        <a
+          href={siteConfig.socialMedia.find((item) => item.name === 'Twitter')
+            ?.url}
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          twitter
+        </a>
+        .
+      </p>
+      <small>Last Updated: Feb, 2025</small>
+    </section>
   </section>
 </BaseLayout>
 
 <style>
-  .placeholder-page {
-    width: min(860px, calc(100vw - 50px));
+  .uses-page {
+    width: min(1600px, calc(100vw - 100px));
     margin: 0 auto;
-    padding: 140px 0 120px;
+    padding: 100px 0 120px;
   }
 
-  .placeholder-page p:last-child {
-    max-width: 620px;
+  .uses-header {
+    margin-bottom: 100px;
+    text-align: center;
+  }
+
+  .uses-disclosure {
+    margin-bottom: 20px;
+  }
+
+  .uses-disclosure details {
+    padding: 10px 0;
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .uses-disclosure details:hover,
+  .uses-disclosure details:focus-within {
+    background: var(--color-light-navy);
+    border-radius: 4px;
+  }
+
+  .uses-disclosure details[open] {
+    background: var(--color-light-navy);
+    border-radius: 4px;
+    box-shadow: 0 10px 30px -15px var(--color-shadow-navy);
+  }
+
+  .uses-disclosure details[open] summary ~ * {
+    animation: uses-sweep 0.6s ease-in-out;
+  }
+
+  .uses-disclosure summary {
+    cursor: pointer;
+    padding: 10px;
+    color: var(--color-slate);
+    list-style-position: outside;
+    user-select: none;
+  }
+
+  .uses-disclosure summary::marker,
+  .uses-disclosure summary::-webkit-details-marker {
+    color: var(--color-green);
+  }
+
+  .uses-disclosure summary:focus-visible {
+    outline: 1px solid var(--color-green);
+  }
+
+  .uses-section-title {
+    color: var(--color-white);
+    font-size: clamp(28px, 5vw, 40px);
+  }
+
+  .uses-disclosure details[open] .uses-section-title {
+    color: var(--color-green);
+  }
+
+  .uses-section-subtitle {
+    margin: 10px 0 0;
+    color: var(--color-slate);
+    font-size: clamp(18px, 3vw, 22px);
+    line-height: 1.4;
+  }
+
+  .uses-section-body {
+    margin-left: 10px;
+    padding: 0 10px 10px;
+  }
+
+  .uses-section-body :global(h3),
+  .uses-section-body :global(h4) {
+    padding-left: 10px;
+    color: var(--color-lightest-slate);
+  }
+
+  .uses-section-body :global(p) {
     color: var(--color-light-slate);
-    line-height: 1.6;
+  }
+
+  .uses-section-body :global(a) {
+    color: var(--color-green);
+  }
+
+  .uses-section-body :global(ul),
+  .uses-section-body :global(ol) {
+    margin: 0;
+    padding-left: 10px;
+    font-size: 20px;
+  }
+
+  .uses-section-body :global(ul) {
+    list-style: none;
+  }
+
+  .uses-section-body :global(ul li),
+  .uses-section-body :global(ol li) {
+    position: relative;
+    margin-bottom: 10px;
+    padding-left: 30px;
+  }
+
+  .uses-section-body :global(ul li)::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--color-green);
+  }
+
+  .uses-section-body :global(ol) {
+    list-style: none;
+  }
+
+  .uses-section-body :global(ol li)::before {
+    content: '+';
+    position: absolute;
+    left: 0;
+    color: var(--color-green);
+  }
+
+  .uses-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px;
+    text-align: center;
+  }
+
+  .uses-footer h2 {
+    margin-bottom: 14px;
+    color: var(--color-lightest-slate);
+  }
+
+  .uses-footer p {
+    color: var(--color-light-slate);
+  }
+
+  .uses-footer a {
+    color: var(--color-green);
+  }
+
+  .uses-footer small {
+    color: var(--color-slate);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  @keyframes uses-sweep {
+    from {
+      margin-left: 0;
+      opacity: 0;
+    }
+
+    to {
+      margin-left: 10px;
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 1080px) {
+    .uses-page {
+      width: min(100%, calc(100vw - 100px));
+      padding-top: 100px;
+    }
   }
 
   @media (max-width: 768px) {
-    .placeholder-page {
-      width: min(860px, calc(100vw - 32px));
+    .uses-page {
+      width: min(100%, calc(100vw - 50px));
+      padding-top: 80px;
+    }
+
+    .uses-header {
+      margin-bottom: 70px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .uses-page {
+      width: min(100%, calc(100vw - 32px));
     }
   }
 </style>

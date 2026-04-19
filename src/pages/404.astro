@@ -1,0 +1,61 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="404" description="Page not found." noindex={true}>
+  <section class="not-found-page">
+    <p class="status-code">404</p>
+    <h1>Page Not Found</h1>
+    <a href="/" class="home-button">Go Home</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found-page {
+    display: flex;
+    min-height: calc(100vh - 170px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .status-code {
+    margin: 0;
+    color: var(--color-green);
+    font-family: var(--font-mono);
+    font-size: clamp(120px, 12vw, 200px);
+    line-height: 1;
+  }
+
+  .not-found-page h1 {
+    margin: 0;
+    font-size: clamp(30px, 3vw, 50px);
+    font-weight: 400;
+    color: var(--color-lightest-slate);
+  }
+
+  .home-button {
+    margin-top: 40px;
+    padding: 1.25rem 1.75rem;
+    border: 1px solid var(--color-green);
+    border-radius: 4px;
+    color: var(--color-green);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1;
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .home-button:hover,
+  .home-button:focus-visible {
+    background: var(--color-trans-green);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 480px) {
+    .not-found-page {
+      min-height: calc(100vh - 140px);
+    }
+  }
+</style>
