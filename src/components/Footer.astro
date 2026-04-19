@@ -1,5 +1,6 @@
 ---
 import { siteConfig } from '@config/index';
+import NowPlayingWidget from '@components/music/NowPlayingWidget';
 import SocialIcon from './icons/SocialIcon.astro';
 
 interface Props {
@@ -12,8 +13,8 @@ const { isMusicPage = false } = Astro.props;
 <footer class="site-footer">
   {
     !isMusicPage && (
-      <div class="now-playing-shell" aria-hidden="true">
-        <span>Now playing returns in Phase 5.</span>
+      <div class="now-playing-shell">
+        <NowPlayingWidget client:visible mode="footer" />
       </div>
     )
   }
@@ -66,10 +67,7 @@ const { isMusicPage = false } = Astro.props;
   }
 
   .now-playing-shell {
-    max-width: 85vw;
-    color: var(--color-light-slate);
-    font-family: var(--font-mono);
-    font-size: 12px;
+    width: min(85vw, 520px);
   }
 
   .footer-socials {

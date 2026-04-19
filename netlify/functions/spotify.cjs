@@ -110,7 +110,10 @@ exports.handler = async (event) => {
       body,
     };
   } catch (err) {
-    console.error('[spotify proxy]', err);
+    console.error(
+      '[spotify proxy]',
+      err instanceof Error ? err.message : String(err),
+    );
     return {
       statusCode: 502,
       headers,

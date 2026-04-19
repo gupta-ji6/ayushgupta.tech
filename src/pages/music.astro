@@ -1,35 +1,11 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
+import MusicExperience from '@components/music/MusicExperience';
+
+const description =
+  "Deep dive into Ayush Gupta's music library. Explore what is playing now, favourite playlists, top artists, and more.";
 ---
 
-<BaseLayout title="Music" image="/og-music.png">
-  <section class="placeholder-page">
-    <p class="subtitle">Phase 2</p>
-    <h1 class="medium-heading">Music route is reserved.</h1>
-    <p>
-      The dedicated music experience and live Spotify integration move in Phase
-      5. The footer already knows not to render its now-playing slot on this
-      route.
-    </p>
-  </section>
+<BaseLayout title="Music" description={description} image="/og-music.png">
+  <MusicExperience client:load />
 </BaseLayout>
-
-<style>
-  .placeholder-page {
-    width: min(860px, calc(100vw - 50px));
-    margin: 0 auto;
-    padding: 140px 0 120px;
-  }
-
-  .placeholder-page p:last-child {
-    max-width: 620px;
-    color: var(--color-light-slate);
-    line-height: 1.6;
-  }
-
-  @media (max-width: 768px) {
-    .placeholder-page {
-      width: min(860px, calc(100vw - 32px));
-    }
-  }
-</style>
