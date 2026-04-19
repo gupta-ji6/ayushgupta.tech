@@ -1,0 +1,32 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": ["src/**/*", "astro.config.mjs", "eslint.config.mjs"],
+  "exclude": [
+    "dist",
+    ".astro",
+    "node_modules",
+    "src-gatsby-ref",
+    "static",
+    "public",
+    "netlify",
+    "docs",
+    ".claude",
+    "gatsby-browser.js",
+    "gatsby-config.js",
+    "gatsby-node.js",
+    "gatsby-ssr.js"
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@config/*": ["src/config/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@images/*": ["src/images/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@styles/*": ["src/styles/*"],
+      "@utils/*": ["src/utils/*"]
+    },
+    "jsx": "react-jsx"
+  }
+}

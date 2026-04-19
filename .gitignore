@@ -1,15 +1,22 @@
-# Project dependencies
-.cache
+# Dependencies
 node_modules
-yarn-error.log
-package-lock.json
 
-# Build directory
-/public
-.DS_Store
+# Build output
+dist/
+.astro/
 
-.vscode/
+# Environment
+.env
 .env.production
 .env.development
-# Local Netlify folder
+
+# System
+.DS_Store
+.vscode/
+
+# Netlify
 .netlify
+
+# Legacy
+.cache
+yarn-error.log
