@@ -5,18 +5,14 @@ node_modules
 dist/
 .astro/
 
-# Environment
-.env
-.env.production
-.env.development
-
-# System
-.DS_Store
 .vscode/
-
-# Netlify
+.claude/
+.env
+.env.*
+!.env.example
 .netlify
+.DS_Store
 
-# Legacy
+# Legacy Gatsby artifacts
 .cache
 yarn-error.log

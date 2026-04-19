@@ -7,7 +7,6 @@
 // You can delete this file if you're not using it
 
 const React = require('react');
-const splitbee = require('@splitbee/web');
 const { toast } = require('react-hot-toast');
 const theme = require('./src/styles/theme');
 
@@ -25,15 +24,7 @@ const updateButtonStyles = {
 };
 
 // Called when the Gatsby browser runtime first starts
-exports.onClientEntry = () => {
-  if (process.env.NODE_ENV === 'production') {
-    splitbee.default.init({
-      disableCookie: true, // will disable the cookie usage
-      scriptUrl: 'https://ayushgupta.tech/bee.js',
-      apiUrl: 'https://ayushgupta.tech/_hive',
-    });
-  }
-};
+exports.onClientEntry = () => {};
 
 // Reference - https://www.gatsbyjs.com/docs/reference/config-files/gatsby-browser/#onServiceWorkerUpdateReady
 // Also see - https://github.com/gatsbyjs/gatsby/issues/9087#issuecomment-723294431

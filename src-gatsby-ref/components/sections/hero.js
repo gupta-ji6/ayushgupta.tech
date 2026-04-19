@@ -14,6 +14,9 @@ import ExternalLink from '../externalLink';
 
 const { colors, fontSizes, fonts } = theme;
 
+const SPOTIFY_PROFILE_FALLBACK =
+  'https://open.spotify.com/user/31yuvamoxkbmkpvhpunh6xwoshii';
+
 // --------------------------- STYLED COMPONENTS -----------------------------------
 
 const HeroContainer = styled(Section)`
@@ -150,7 +153,7 @@ const Hero = () => {
       <NowPlayingTrack>
         <TrackCopy>{`${trackCopy} `}</TrackCopy>
         <ExternalLink
-          url={nowPlayingTrack.external_urls.spotify}
+          url={nowPlayingTrack.external_urls?.spotify || SPOTIFY_PROFILE_FALLBACK}
           eventName="Spotify"
           eventType={`Hero - ${nowPlayingTrack.name}`}>
           {nowPlayingTrack.name}

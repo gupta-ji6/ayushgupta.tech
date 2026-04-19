@@ -8,12 +8,12 @@ import ExternalLink from './externalLink';
 import { Menu } from '@components';
 import { IconLogo } from '@components/icons';
 import { useScrollDirection } from '@hooks';
-import { navLinks } from '@config';
+import { navLinks, loaderDelay } from '@config';
 import { mixins, theme } from '@styles';
 
 // --------------------------- CONSTANTS ------------------------------------------
 
-const { colors, fontSizes, fonts, loaderDelay } = theme;
+const { colors, fontSizes, fonts } = theme;
 
 export const navLinkRedirection = (url, name) => {
   switch (name) {
