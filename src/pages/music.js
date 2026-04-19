@@ -576,9 +576,9 @@ const MusicPage = ({ location }) => {
       return (
         <Fragment>
           {userPlaylists.map(playlistData => {
-            const { name, images, id, owner, tracks, external_urls } = playlistData;
+            const { name, images, id, owner, tracks, items, external_urls } = playlistData;
             const display_name = owner?.display_name;
-            const total = tracks?.total;
+            const total = items?.total ?? tracks?.total;
             const cover = pickSpotifyCoverImage(images);
             return (
               <TrackItem key={id}>
