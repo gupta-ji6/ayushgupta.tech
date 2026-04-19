@@ -53,6 +53,10 @@ export const useComments = (hasuraUrl, postId, config) => {
   const [loading, setLoading] = useState(false);
 
   const fetchComments = () => {
+    if (!hasuraUrl) {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     fetch(hasuraUrl, {
       method: 'POST',
@@ -103,6 +107,9 @@ export const useComments = (hasuraUrl, postId, config) => {
   ]);
 
   const addComment = ({ content, author }) => {
+    if (!hasuraUrl) {
+      return;
+    }
     const createdAt = new Date().toDateString();
     const newComment = {
       author,

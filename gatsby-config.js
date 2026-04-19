@@ -1,3 +1,12 @@
+const path = require('path');
+
+// Load project-root `.env` before Gatsby builds webpack `GATSBY_*` replacements (avoids `undefined` in the client when the shell cwd or env ordering differs).
+try {
+  require('dotenv').config({ path: path.join(__dirname, '.env') });
+} catch {
+  /* dotenv may be unavailable in minimal installs */
+}
+
 const config = require('./src/config');
 
 module.exports = {
