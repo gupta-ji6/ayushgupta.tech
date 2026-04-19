@@ -38,7 +38,6 @@
   },
   "dependencies": {
     "@github/time-elements": "3.1.2",
-    "@splitbee/web": "0.2.4",
     "animejs": "3.0.1",
     "babel-plugin-styled-components": "1.13.2",
     "gatsby": "3.14.x",

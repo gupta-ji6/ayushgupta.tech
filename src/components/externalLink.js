@@ -6,28 +6,31 @@ const ExternalLink = ({
   url,
   children,
   className = '',
-  eventName = 'External Link',
-  eventType = '',
   ...otherProps
-}) => (
-  <OutboundLink
-    className={className}
-    href={url}
-    target="_blank"
-    rel="nofollow noopener noreferrer"
-    data-splitbee-event={eventName}
-    data-splitbee-event-type={eventType ? eventType : url}
-    {...otherProps}>
-    {children}
-  </OutboundLink>
-);
+}) => {
+  if (url == null || url === '') {
+    return (
+      <span className={className} {...otherProps}>
+        {children}
+      </span>
+    );
+  }
+  return (
+    <OutboundLink
+      className={className}
+      href={url}
+      target="_blank"
+      rel="nofollow noopener noreferrer"
+      {...otherProps}>
+      {children}
+    </OutboundLink>
+  );
+};
 
 ExternalLink.propTypes = {
-  url: PropTypes.string.isRequired,
+  url: PropTypes.string,
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
-  eventName: PropTypes.string,
-  eventType: PropTypes.string,
   otherProps: PropTypes.node,
 };
 
