@@ -1,0 +1,177 @@
+---
+import CheckIcon from '@components/icons/CheckIcon.astro';
+import CopyIcon from '@components/icons/CopyIcon.astro';
+import FacebookIcon from '@components/icons/FacebookIcon.astro';
+import ShareIcon from '@components/icons/ShareIcon.astro';
+import TwitterIcon from '@components/icons/TwitterIcon.astro';
+
+interface Props {
+  showText?: boolean;
+  tags?: string[];
+  title: string;
+  url: string;
+}
+
+const { showText = false, tags = [], title, url } = Astro.props;
+const encodedUrl = encodeURIComponent(url);
+const twitterText = encodeURIComponent(
+  `I recommend reading '${title}' by @_guptaji_.\n\nRead at - ${url}\n\n`,
+);
+const twitterTags = encodeURIComponent(tags.join(','));
+---
+
+<div
+  class:list={['social-share', showText && 'social-share-with-text']}
+  data-share-root
+  data-share-title={title}
+  data-share-url={url}
+>
+  <a
+    class="social-share-action"
+    href={`https://twitter.com/intent/tweet?text=${twitterText}&hashtags=${twitterTags}`}
+    target="_blank"
+    rel="noreferrer noopener"
+  >
+    <TwitterIcon />
+    {showText && <span>Share to Twitter</span>}
+  </a>
+
+  <a
+    class="social-share-action"
+    href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+    target="_blank"
+    rel="noreferrer noopener"
+  >
+    <FacebookIcon />
+    {showText && <span>Share to Facebook</span>}
+  </a>
+
+  <button
+    type="button"
+    class="social-share-action"
+    data-copy-link
+    aria-label="Copy article link"
+  >
+    <span class="social-share-icon-default"><CopyIcon /></span>
+    <span class="social-share-icon-success"><CheckIcon /></span>
+    {showText && <span data-copy-label>Copy Link</span>}
+  </button>
+
+  <button
+    type="button"
+    class="social-share-action"
+    data-native-share
+    hidden
+    aria-label="Share article"
+  >
+    <ShareIcon />
+    {showText && <span>Share</span>}
+  </button>
+</div>
+
+<script is:inline>
+  document.querySelectorAll('[data-share-root]').forEach((root) => {
+    if (!(root instanceof HTMLElement)) return;
+
+    const shareTitle = root.dataset.shareTitle || '';
+    const shareUrl = root.dataset.shareUrl || '';
+    const copyButton = root.querySelector('[data-copy-link]');
+    const copyLabel = root.querySelector('[data-copy-label]');
+    const nativeShareButton = root.querySelector('[data-native-share]');
+
+    if (copyButton instanceof HTMLButtonElement) {
+      copyButton.addEventListener('click', async () => {
+        if (!navigator.clipboard || !shareUrl) return;
+
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          copyButton.classList.add('is-copied');
+
+          if (copyLabel instanceof HTMLElement) {
+            copyLabel.textContent = 'Copied';
+          }
+
+          window.setTimeout(() => {
+            copyButton.classList.remove('is-copied');
+            if (copyLabel instanceof HTMLElement) {
+              copyLabel.textContent = 'Copy Link';
+            }
+          }, 1500);
+        } catch (error) {
+          console.error(error);
+        }
+      });
+    }
+
+    if (
+      nativeShareButton instanceof HTMLButtonElement &&
+      navigator.share &&
+      shareUrl
+    ) {
+      nativeShareButton.hidden = false;
+      nativeShareButton.addEventListener('click', async () => {
+        try {
+          await navigator.share({ title: shareTitle, url: shareUrl });
+        } catch (error) {
+          console.error(error);
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  .social-share {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0 20px;
+    color: var(--color-lightest-slate);
+  }
+
+  .social-share-with-text {
+    gap: 0 20px;
+  }
+
+  .social-share-action {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-size: 20px;
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .social-share-action:hover,
+  .social-share-action:focus-visible {
+    color: var(--color-green);
+  }
+
+  .social-share-action svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+  }
+
+  .social-share-icon-success {
+    display: none;
+  }
+
+  .social-share-action.is-copied .social-share-icon-default {
+    display: none;
+  }
+
+  .social-share-action.is-copied .social-share-icon-success {
+    display: inline-flex;
+  }
+
+  @media (max-width: 600px) {
+    .social-share-with-text {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

@@ -1,44 +1,131 @@
 ---
-import { getCollection } from 'astro:content';
+export const prerender = true;
 import BaseLayout from '@layouts/BaseLayout.astro';
+import AuthorCard from '@components/blog/AuthorCard.astro';
+import { getCollection } from 'astro:content';
+import {
+  formatBlogDate,
+  getBlogPath,
+  getPublishedBlogEntries,
+  slugifyTag,
+} from '@utils/blog';
 
 const allPosts = await getCollection('blog');
-const posts = [];
-
-for (const entry of allPosts) {
-  if (!entry.data.draft) {
-    posts.push(entry);
-  }
-}
+const posts = getPublishedBlogEntries(allPosts);
 ---
 
-<BaseLayout title="Blog">
-  <section class="placeholder-page">
-    <p class="subtitle">Phase 2</p>
-    <h1 class="medium-heading">Blog route is preserved.</h1>
-    <p>
-      Published posts detected: <strong>{posts.length}</strong>. The actual
-      listing, tag pages, and post routes land in Phase 4.
-    </p>
+<BaseLayout title="Blog" description="Articles, guides, and notes by Ayush Gupta.">
+  <section class="blog-page">
+    <header class="blog-header">
+      <p class="subtitle">The Blog</p>
+      <h1 class="medium-heading">Articles & Notes</h1>
+      <p class="blog-intro">
+        Thoughts on frontend engineering, web performance, CSS, tools, and
+        side projects.
+      </p>
+    </header>
+
+    <ol class="blog-list">
+      {
+        posts.map((entry) => (
+          <li class="blog-list-item">
+            <article>
+              <h2 class="blog-post-title">
+                <a href={getBlogPath(entry)}>{entry.data.title}</a>
+              </h2>
+
+              <p class="blog-post-meta">
+                <time>{formatBlogDate(entry.data.date)}</time>
+                <span>&nbsp;&middot;&nbsp;</span>
+                <span>{entry.data.tags.length} tags</span>
+              </p>
+
+              <p class="blog-post-description">{entry.data.description}</p>
+
+              <p class="blog-post-tags subtitle">
+                {entry.data.tags.map((tag: string) => (
+                  <a href={`/blog/tags/${slugifyTag(tag)}`} class="blog-tag">
+                    #{tag}
+                  </a>
+                ))}
+              </p>
+            </article>
+          </li>
+        ))
+      }
+    </ol>
+
+    <AuthorCard />
   </section>
 </BaseLayout>
 
 <style>
-  .placeholder-page {
-    width: min(860px, calc(100vw - 50px));
+  .blog-page {
+    width: min(1000px, calc(100vw - 50px));
     margin: 0 auto;
-    padding: 140px 0 120px;
+    padding: 120px 0;
   }
 
-  .placeholder-page p:last-child {
+  .blog-header {
+    margin-bottom: 72px;
+  }
+
+  .blog-intro {
     max-width: 620px;
     color: var(--color-light-slate);
+    font-size: 20px;
     line-height: 1.6;
   }
 
+  .blog-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .blog-list-item:not(:last-child) {
+    margin-bottom: 56px;
+    padding-bottom: 56px;
+    border-bottom: 1px solid rgba(136, 146, 176, 0.16);
+  }
+
+  .blog-post-title {
+    margin: 0 0 10px;
+    font-size: clamp(28px, 4vw, 36px);
+  }
+
+  .blog-post-title a {
+    color: var(--color-lightest-slate);
+  }
+
+  .blog-post-meta {
+    margin-bottom: 12px;
+    color: var(--color-slate);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  .blog-post-description {
+    max-width: 760px;
+    margin-bottom: 16px;
+    color: var(--color-light-slate);
+    font-size: 20px;
+    line-height: 1.65;
+  }
+
+  .blog-post-tags {
+    color: var(--color-slate);
+  }
+
+  .blog-tag {
+    margin-right: 12px;
+  }
+
   @media (max-width: 768px) {
-    .placeholder-page {
-      width: min(860px, calc(100vw - 32px));
+    .blog-page {
+      width: min(1000px, calc(100vw - 32px));
+      padding: 100px 0;
     }
   }
 </style>

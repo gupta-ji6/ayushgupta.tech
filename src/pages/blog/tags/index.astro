@@ -1,0 +1,82 @@
+---
+export const prerender = true;
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { getPublishedTagSummaries } from '@utils/blog';
+
+const allPosts = await getCollection('blog');
+const tags = getPublishedTagSummaries(allPosts);
+---
+
+<BaseLayout title="Tags" description="Browse blog posts by topic and tag.">
+  <section class="tags-page">
+    <span class="breadcrumb">
+      <span class="arrow">&larr;</span>
+      <a href="/blog">All Articles</a>
+    </span>
+
+    <h1 class="medium-heading">Tags</h1>
+
+    <ul class="tags-list fancy-list">
+      {
+        tags.map((tag) => (
+          <li>
+            <a href={`/blog/tags/${tag.slug}`}>
+              {tag.name} <span class="count">({tag.count})</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .tags-page {
+    width: min(1200px, calc(100vw - 50px));
+    margin: 0 auto;
+    padding: 120px 0;
+  }
+
+  .tags-page h1 {
+    margin-bottom: 50px;
+  }
+
+  .tags-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--color-light-slate);
+    font-size: 28px;
+  }
+
+  .tags-list li {
+    position: relative;
+    margin-bottom: 10px;
+    padding-left: 30px;
+  }
+
+  .tags-list li::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--color-green);
+  }
+
+  .tags-list a {
+    color: var(--color-light-slate);
+  }
+
+  .count {
+    color: var(--color-slate);
+    font-family: var(--font-mono);
+    font-size: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .tags-page {
+      width: min(1200px, calc(100vw - 32px));
+      padding: 100px 0;
+    }
+  }
+</style>

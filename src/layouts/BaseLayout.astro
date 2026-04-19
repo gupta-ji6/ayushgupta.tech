@@ -10,13 +10,14 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  type?: 'website' | 'article';
   noindex?: boolean;
 }
 
 const pathname = Astro.url.pathname;
 const isHome = pathname === '/';
 const isMusicPage = pathname === '/music';
-const { title, description, image, noindex = false } = Astro.props;
+const { title, description, image, type, noindex = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -27,6 +28,7 @@ const { title, description, image, noindex = false } = Astro.props;
       description={description}
       pathname={pathname}
       image={image}
+      type={type}
       noindex={noindex}
     />
     <slot name="head" />

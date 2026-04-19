@@ -1,0 +1,240 @@
+---
+export const prerender = true;
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import AuthorCard from '@components/blog/AuthorCard.astro';
+import SocialShare from '@components/blog/SocialShare.astro';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { siteConfig } from '@config/index';
+import {
+  type BlogEntry,
+  formatBlogDate,
+  getBlogPath,
+  getBlogSlugSegment,
+  slugifyTag,
+} from '@utils/blog';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('blog');
+
+  return entries.map((entry: BlogEntry) => ({
+    params: { slug: getBlogSlugSegment(entry) },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props as { entry: BlogEntry };
+const { Content } = await render(entry);
+const blogPath = getBlogPath(entry);
+const blogUrl = new URL(blogPath, siteConfig.siteUrl).toString();
+---
+
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  image={entry.data.cover.src}
+  type="article"
+  noindex={entry.data.draft}
+>
+  <article class="post-page">
+    <span class="breadcrumb">
+      <span class="arrow">&larr;</span>
+      <a href="/blog">All articles</a>
+    </span>
+
+    {
+      entry.data.draft && (
+        <blockquote class="draft-warning">
+          Note: This is a draft preview of the article yet to be published.
+          Kindly do not share it on social media.
+        </blockquote>
+      )
+    }
+
+    <header class="post-header">
+      <h1 class="medium-heading">{entry.data.title}</h1>
+      <p class="post-description">{entry.data.description}</p>
+
+      <Image
+        src={entry.data.cover}
+        alt={`${entry.data.title} cover image`}
+        widths={[900, 1200]}
+        sizes="(max-width: 768px) 100vw, 900px"
+        class="post-cover"
+      />
+
+      <p class="subtitle">
+        <time>{formatBlogDate(entry.data.date)}</time>
+      </p>
+
+      <p class="subtitle post-tags">
+        {entry.data.tags.map((tag: string) => (
+          <a href={`/blog/tags/${slugifyTag(tag)}`} class="post-tag">
+            #{tag}
+          </a>
+        ))}
+      </p>
+
+      <SocialShare title={entry.data.title} tags={entry.data.tags} url={blogUrl} />
+    </header>
+
+    <div class="post-content">
+      <Content />
+    </div>
+
+    <SocialShare
+      showText={true}
+      title={entry.data.title}
+      tags={entry.data.tags}
+      url={blogUrl}
+    />
+
+    <AuthorCard showBackground={true} />
+  </article>
+</BaseLayout>
+
+<style>
+  .post-page {
+    width: min(1200px, calc(100vw - 50px));
+    margin: 0 auto;
+    padding: 120px 0;
+  }
+
+  .draft-warning {
+    margin: 25px 0;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-green);
+    border-radius: 6px;
+    background: var(--color-light-navy);
+    color: var(--color-light-slate);
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .post-header {
+    margin-bottom: 25px;
+  }
+
+  .post-description {
+    margin: 1.2rem 0;
+    color: var(--color-slate);
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .post-cover {
+    margin-bottom: 1.2rem;
+    border-radius: 6px;
+  }
+
+  .post-tags {
+    margin-bottom: 20px;
+    color: var(--color-slate);
+  }
+
+  .post-tag {
+    margin-right: 10px;
+    color: var(--color-slate);
+  }
+
+  .post-content {
+    margin: 36px 0;
+  }
+
+  .post-content :global(h1),
+  .post-content :global(h2),
+  .post-content :global(h3),
+  .post-content :global(h4),
+  .post-content :global(h5),
+  .post-content :global(h6) {
+    margin: 2em 0 1em;
+  }
+
+  .post-content :global(p) {
+    margin: 1em 0;
+    color: var(--color-light-slate);
+    line-height: 1.7;
+  }
+
+  .post-content :global(a) {
+    color: var(--color-green);
+  }
+
+  .post-content :global(strong),
+  .post-content :global(em) {
+    color: var(--color-green);
+  }
+
+  .post-content :global(ul) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 20px;
+  }
+
+  .post-content :global(ul li) {
+    position: relative;
+    margin-bottom: 10px;
+    padding-left: 30px;
+  }
+
+  .post-content :global(ul li::before) {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--color-green);
+  }
+
+  .post-content :global(ol) {
+    margin: 0;
+    padding-left: 30px;
+    font-size: 20px;
+  }
+
+  .post-content :global(ol li) {
+    margin-bottom: 10px;
+    padding-left: 6px;
+  }
+
+  .post-content :global(blockquote) {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    border-left: 0.2rem solid var(--color-green);
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    background: var(--color-light-navy);
+    font-style: italic;
+  }
+
+  .post-content :global(hr) {
+    width: 100%;
+    height: 1px;
+    margin: 40px 0;
+    background: rgba(136, 146, 176, 0.2);
+  }
+
+  .post-content :global(img),
+  .post-content :global(picture) {
+    display: block;
+    margin: 1.5rem auto;
+    border-radius: 6px;
+  }
+
+  .post-content :global(iframe) {
+    width: 100%;
+    border: 0;
+    border-radius: 6px;
+  }
+
+  @media (max-width: 768px) {
+    .post-page {
+      width: min(1200px, calc(100vw - 32px));
+      padding: 100px 0;
+    }
+
+    .post-description {
+      font-size: 24px;
+    }
+  }
+</style>

@@ -1,0 +1,126 @@
+---
+export const prerender = true;
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import {
+  formatBlogDate,
+  getBlogPath,
+  getPublishedEntriesForTag,
+  getPublishedTagSummaries,
+  slugifyTag,
+} from '@utils/blog';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('blog');
+
+  return getPublishedTagSummaries(entries).map((tag) => ({
+    params: { tag: tag.slug },
+    props: { tagName: tag.name },
+  }));
+}
+
+const { tag } = Astro.params;
+const { tagName } = Astro.props;
+const allPosts = await getCollection('blog');
+const posts = getPublishedEntriesForTag(allPosts, tag || '');
+---
+
+<BaseLayout
+  title={`Tagged: #${tagName}`}
+  description={`Blog posts tagged with ${tagName}.`}
+>
+  <section class="tag-page">
+    <span class="breadcrumb">
+      <span class="arrow">&larr;</span>
+      <a href="/blog">All Articles</a>
+    </span>
+
+    <h1 class="tag-title">
+      <span>#{tagName}</span>
+      <span class="tag-title-link">
+        <a href="/blog/tags">View all tags</a>
+      </span>
+    </h1>
+
+    <ul class="tag-post-list fancy-list">
+      {
+        posts.map((entry) => (
+          <li>
+            <h2>
+              <a href={getBlogPath(entry)}>{entry.data.title}</a>
+            </h2>
+            <p class="subtitle">
+              <time>{formatBlogDate(entry.data.date)}</time>
+              <span>&nbsp;&middot;&nbsp;</span>
+              {entry.data.tags.map((entryTag: string) => (
+                <a href={`/blog/tags/${slugifyTag(entryTag)}`} class="tag-link">
+                  #{entryTag}
+                </a>
+              ))}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .tag-page {
+    width: min(1000px, calc(100vw - 50px));
+    margin: 0 auto;
+    padding: 120px 0;
+  }
+
+  .tag-title {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: baseline;
+    margin-bottom: 50px;
+  }
+
+  .tag-title-link a {
+    font-size: 18px;
+    font-weight: 400;
+  }
+
+  .tag-post-list li {
+    font-size: 24px;
+  }
+
+  .tag-post-list li:not(:last-child) {
+    margin-bottom: 28px;
+  }
+
+  .tag-post-list h2 {
+    margin: 0;
+    font-size: inherit;
+  }
+
+  .tag-post-list h2 a {
+    color: var(--color-light-slate);
+  }
+
+  .tag-post-list .subtitle {
+    color: var(--color-slate);
+    font-size: 14px;
+  }
+
+  .tag-link {
+    margin-right: 10px;
+    color: var(--color-slate);
+  }
+
+  @media (max-width: 768px) {
+    .tag-page {
+      width: min(1000px, calc(100vw - 32px));
+      padding: 100px 0;
+    }
+
+    .tag-title {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
