@@ -12,7 +12,7 @@ Source for [ayushgupta.tech](https://ayushgupta.tech), built with [Astro](https:
 
 ## Development
 
-Node `>=18.17.0` is required.
+Use Node `22.x`. Astro currently requires `>=22.12.0`, and this repo is pinned to `22.22.2` via `.nvmrc`.
 
 ```bash
 npm install
