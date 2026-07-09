@@ -110,25 +110,13 @@ export default function NowPlayingWidget({
     audio.play().catch(() => setIsPreviewPlaying(false));
   }, [isPreviewPlaying]);
 
-  const introLine = useMemo<WidgetContextLine>(() => {
-    if (loading) {
-      return {
-        emoji: '🎧',
-        copy: 'fetching live track from spotify',
-      };
-    }
-
-    if (error) {
-      return {
-        emoji: '⚠️',
-        copy: 'live spotify status is unavailable right now',
-      };
-    }
-
-    return isListening
-      ? randomItem(PLAYING_INTROS)
-      : randomItem(NOT_PLAYING_INTROS);
-  }, [error, isListening, loading]);
+  const introLine = useMemo<WidgetContextLine>(
+    () =>
+      isListening
+        ? randomItem(PLAYING_INTROS)
+        : randomItem(NOT_PLAYING_INTROS),
+    [isListening],
+  );
 
   const infoHref = mode === 'page' ? spotifyHref : '/music';
 
