@@ -4,7 +4,7 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 ## Project
 
-Gatsby 3.x static portfolio site (React 17, styled-components 5). Deployed on Netlify. Node 14.16.0 required (see `.nvmrc`).
+Gatsby 3.x static portfolio site (React 17, styled-components 5). Deployed on Netlify. Node >=16 required (see `.nvmrc`).
 
 ## Commands
 
@@ -40,7 +40,7 @@ CSS-in-JS with styled-components. Theme defined in `src/styles/theme.js` (colors
 
 ### Spotify integration
 
-Client-side API calls in `src/utils/spotify.js` with OAuth refresh token flow. Custom hooks in `src/hooks/` (`useTopTracks`, `useNowPlayingTrack`, `useRecentlyPlayedTracks`, etc.). Requires env vars: `GATSBY_SPOTIFY_CLIENT_ID`, `GATSBY_SPOTIFY_CLIENT_SECRET`, `GATSBY_SPOTIFY_REFRESH_TOKEN`.
+Spotify API calls are proxied through a Netlify Function (`netlify/functions/spotify.js`) to keep secrets server-side. The client-side utility (`src/utils/spotify.js`) calls `/.netlify/functions/spotify?path=...` instead of Spotify directly. Custom hooks in `src/hooks/` (`useTopTracks`, `useNowPlayingTrack`, `useRecentlyPlayedTracks`, etc.). Server-side env vars (not `GATSBY_` prefixed): `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN`.
 
 ### Animations
 
