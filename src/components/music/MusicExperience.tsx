@@ -71,14 +71,14 @@ function DisclosureSection({
   title,
 }: DisclosureSectionProps) {
   return (
-    <section className="music-disclosure">
+    <section className="disclosure">
       <details>
         <summary>
-          <span className="medium-heading music-section-title">{title}</span>
-          <p className="music-section-subtitle">{subtitle}</p>
+          <span className="medium-heading disclosure-title">{title}</span>
+          <p className="disclosure-subtitle">{subtitle}</p>
         </summary>
 
-        <div className="music-section-body">
+        <div className="disclosure-body">
           {controls}
           {children}
         </div>
@@ -410,6 +410,9 @@ export default function MusicExperience() {
         </DisclosureSection>
       </section>
 
+      {/* TODO: Re-add song recommendation form (original used Supabase via useComments hook).
+         Requires: install @supabase/supabase-js, create Astro API route to proxy writes,
+         port useComments hook, render form with name + song inputs below the CTA text. */}
       <section className="music-cta">
         <h2>Have similar music taste?</h2>
         <p>
@@ -431,8 +434,7 @@ export default function MusicExperience() {
           >
             Instagram
           </a>
-          . The old recommendation form and comments are intentionally retired
-          for the Astro launch.
+          .
         </p>
       </section>
     </div>

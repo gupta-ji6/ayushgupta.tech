@@ -2,6 +2,7 @@
 export const prerender = true;
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
+import Disclosure from '@components/Disclosure.astro';
 import { siteConfig } from '@config/index';
 
 const description =
@@ -33,20 +34,11 @@ const useSections = await Promise.all(
     <section class="uses-sections" aria-label="Setup categories">
       {
         useSections.map(({ entry, Content }) => (
-          <article class="uses-disclosure">
-            <details>
-              <summary>
-                <span class="medium-heading uses-section-title">
-                  {entry.data.title}
-                </span>
-                <p class="uses-section-subtitle">{entry.data.subtitle}</p>
-              </summary>
-
-              <div class="uses-section-body">
-                <Content />
-              </div>
-            </details>
-          </article>
+          <Disclosure title={entry.data.title} subtitle={entry.data.subtitle}>
+            <div class="uses-section-body">
+              <Content />
+            </div>
+          </Disclosure>
         ))
       }
     </section>
@@ -82,67 +74,8 @@ const useSections = await Promise.all(
     text-align: center;
   }
 
-  .uses-disclosure {
-    margin-bottom: 20px;
-  }
-
-  .uses-disclosure details {
-    padding: 10px 0;
-    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
-  }
-
-  .uses-disclosure details:hover,
-  .uses-disclosure details:focus-within {
-    background: var(--color-light-navy);
-    border-radius: 4px;
-  }
-
-  .uses-disclosure details[open] {
-    background: var(--color-light-navy);
-    border-radius: 4px;
-    box-shadow: 0 10px 30px -15px var(--color-shadow-navy);
-  }
-
-  .uses-disclosure details[open] summary ~ * {
-    animation: uses-sweep 0.6s ease-in-out;
-  }
-
-  .uses-disclosure summary {
-    cursor: pointer;
-    padding: 10px;
-    color: var(--color-slate);
-    list-style-position: outside;
-    user-select: none;
-  }
-
-  .uses-disclosure summary::marker,
-  .uses-disclosure summary::-webkit-details-marker {
-    color: var(--color-green);
-  }
-
-  .uses-disclosure summary:focus-visible {
-    outline: 1px solid var(--color-green);
-  }
-
-  .uses-section-title {
-    color: var(--color-white);
-    font-size: clamp(28px, 5vw, 40px);
-  }
-
-  .uses-disclosure details[open] .uses-section-title {
-    color: var(--color-green);
-  }
-
-  .uses-section-subtitle {
-    margin: 10px 0 0;
-    color: var(--color-slate);
-    font-size: clamp(18px, 3vw, 22px);
-    line-height: 1.4;
-  }
-
   .uses-section-body {
     margin-left: 10px;
-    padding: 0 10px 10px;
   }
 
   .uses-section-body :global(h3),
@@ -220,18 +153,6 @@ const useSections = await Promise.all(
     color: var(--color-slate);
     font-family: var(--font-mono);
     font-size: 12px;
-  }
-
-  @keyframes uses-sweep {
-    from {
-      margin-left: 0;
-      opacity: 0;
-    }
-
-    to {
-      margin-left: 10px;
-      opacity: 1;
-    }
   }
 
   @media (max-width: 1080px) {

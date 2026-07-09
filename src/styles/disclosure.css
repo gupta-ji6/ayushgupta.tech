@@ -1,0 +1,80 @@
+.disclosure {
+  margin-bottom: 20px;
+}
+
+.disclosure details {
+  padding: 10px 0;
+  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.disclosure details:hover,
+.disclosure details:focus-within {
+  background: var(--color-light-navy);
+  border-radius: 4px;
+}
+
+.disclosure details[open] {
+  background: var(--color-light-navy);
+  border-radius: 4px;
+  box-shadow: 0 10px 30px -15px var(--color-shadow-navy);
+}
+
+.disclosure details[open] summary ~ * {
+  animation: disclosure-sweep 0.6s ease-in-out;
+}
+
+.disclosure summary {
+  display: list-item;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 32px;
+  color: var(--color-slate);
+  list-style-position: outside;
+  user-select: none;
+  line-height: 1.1;
+}
+
+.disclosure summary::marker,
+.disclosure summary::-webkit-details-marker {
+  color: var(--color-green);
+}
+
+.disclosure summary:focus-visible {
+  outline: 1px solid var(--color-green);
+}
+
+.disclosure-title {
+  color: var(--color-white);
+  font-weight: 600;
+}
+
+.disclosure-title:hover {
+  color: var(--color-green);
+}
+
+.disclosure details[open] .disclosure-title {
+  color: var(--color-green);
+}
+
+.disclosure-subtitle {
+  margin: 10px 0 0;
+  color: var(--color-slate);
+  font-size: clamp(18px, 3vw, 22px);
+  line-height: 1.4;
+}
+
+.disclosure-body {
+  padding: 0 10px 10px;
+}
+
+@keyframes disclosure-sweep {
+  from {
+    margin-left: 0;
+    opacity: 0;
+  }
+
+  to {
+    margin-left: 10px;
+    opacity: 1;
+  }
+}

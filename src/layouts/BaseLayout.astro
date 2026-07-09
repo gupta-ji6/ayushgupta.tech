@@ -1,5 +1,6 @@
 ---
 import '@styles/global.css';
+import '@styles/disclosure.css';
 import BaseHead from '@components/BaseHead.astro';
 import Email from '@components/Email.astro';
 import Footer from '@components/Footer.astro';
@@ -46,7 +47,7 @@ const { title, description, image, type, noindex = false } = Astro.props;
       </main>
     </div>
 
-    <Footer isMusicPage={isMusicPage} />
+    <Footer isMusicPage={isMusicPage} isHome={isHome} />
   </body>
 </html>
 
@@ -82,5 +83,28 @@ const { title, description, image, type, noindex = false } = Astro.props;
   .site-main {
     min-height: 100vh;
     padding-top: 100px;
+    padding-left: 150px;
+    padding-right: 150px;
+  }
+
+  @media (max-width: 1000px) {
+    .site-main {
+      padding-left: 100px;
+      padding-right: 100px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .site-main {
+      padding-left: 50px;
+      padding-right: 50px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .site-main {
+      padding-left: 25px;
+      padding-right: 25px;
+    }
   }
 </style>
