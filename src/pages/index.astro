@@ -404,30 +404,6 @@ const contactEntry = contact[0];
     color: var(--color-light-slate);
   }
 
-  .home-page .rich-text a {
-    display: inline-block;
-    color: var(--color-green);
-    text-decoration: none;
-    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
-  }
-
-  .home-page .rich-text a::after {
-    content: '';
-    display: block;
-    width: 0;
-    height: 1px;
-    position: relative;
-    bottom: 0.22em;
-    background: var(--color-green);
-    opacity: 0.5;
-    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
-  }
-
-  .home-page .rich-text a:hover::after,
-  .home-page .rich-text a:focus-visible::after {
-    width: 100%;
-  }
-
   .home-page .rich-text strong {
     color: var(--color-green);
     font-weight: 400;
@@ -545,29 +521,6 @@ const contactEntry = contact[0];
   .home-page .tab-panel-company,
   .home-page .tab-panel-company a {
     color: var(--color-green);
-  }
-
-  .home-page .tab-panel-company a {
-    display: inline-block;
-    position: relative;
-    text-decoration: none;
-  }
-
-  .home-page .tab-panel-company a::after {
-    content: '';
-    display: block;
-    width: 0;
-    height: 1px;
-    position: relative;
-    bottom: 0.18em;
-    background: var(--color-green);
-    opacity: 0.5;
-    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
-  }
-
-  .home-page .tab-panel-company a:hover::after,
-  .home-page .tab-panel-company a:focus-visible::after {
-    width: 100%;
   }
 
   .home-page .tab-panel-meta {

@@ -346,6 +346,41 @@
     color: var(--color-green);
   }
 
+  .inline-link,
+  .inline-links a,
+  .rich-text a,
+  .tab-panel-company a {
+    display: inline-block;
+    position: relative;
+    color: var(--color-green);
+  }
+
+  .inline-link::after,
+  .inline-links a::after,
+  .rich-text a::after,
+  .tab-panel-company a::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 1px;
+    position: relative;
+    bottom: 0.37em;
+    background: var(--color-green);
+    opacity: 0.5;
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .inline-link:hover::after,
+  .inline-link:focus-visible::after,
+  .inline-links a:hover::after,
+  .inline-links a:focus-visible::after,
+  .rich-text a:hover::after,
+  .rich-text a:focus-visible::after,
+  .tab-panel-company a:hover::after,
+  .tab-panel-company a:focus-visible::after {
+    width: 100%;
+  }
+
   button {
     cursor: pointer;
     border: 0;

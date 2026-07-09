@@ -35,7 +35,7 @@ const useSections = await Promise.all(
       {
         useSections.map(({ entry, Content }) => (
           <Disclosure title={entry.data.title} subtitle={entry.data.subtitle}>
-            <div class="uses-section-body">
+            <div class="uses-section-body inline-links">
               <Content />
             </div>
           </Disclosure>
@@ -43,7 +43,7 @@ const useSections = await Promise.all(
       }
     </section>
 
-    <section class="uses-footer">
+    <section class="uses-footer inline-links">
       <h2>Have more questions?</h2>
       <p>
         Feel free to ask away on{' '}
@@ -178,4 +178,5 @@ const useSections = await Promise.all(
       width: min(100%, calc(100vw - 32px));
     }
   }
+
 </style>
