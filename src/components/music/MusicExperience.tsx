@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 
 import {
   useFavouritePlaylist,
@@ -272,6 +272,7 @@ export default function MusicExperience() {
     useState<SpotifyTimeRange>('short_term');
   const [topArtistsRange, setTopArtistsRange] =
     useState<SpotifyTimeRange>('short_term');
+  const [isRevealed, setIsRevealed] = useState(false);
 
   const topTracksQuery = useTopSpotifyItems('tracks', topTracksRange, 10);
   const favouritePlaylistQuery = useFavouritePlaylist();
@@ -280,14 +281,19 @@ export default function MusicExperience() {
   const topArtistsQuery = useTopSpotifyItems('artists', topArtistsRange, 10);
   const playlistsQuery = useUserPlaylists(10);
 
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setIsRevealed(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
   return (
     <div className="music-page">
-      <header className="music-header">
+      <header className={`music-header ${isRevealed ? 'is-revealed' : ''}`}>
         <h1 className="big-heading">Music</h1>
         <p className="subtitle">deep dive into my music library</p>
       </header>
 
-      <section className="music-content">
+      <section className={`music-content ${isRevealed ? 'is-revealed' : ''}`}>
         <div className="music-now-playing-panel">
           <NowPlayingWidget mode="page" />
         </div>
