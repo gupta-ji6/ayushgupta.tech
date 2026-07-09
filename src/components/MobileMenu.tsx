@@ -26,8 +26,34 @@ export default function MobileMenu({ items }: MobileMenuProps) {
   }, [menuOpen]);
 
   useEffect(() => {
-    document.body.classList.toggle('blur', menuOpen);
-    return () => document.body.classList.remove('blur');
+    const header = document.querySelector<HTMLElement>('[data-site-header]');
+    const previousBodyOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = menuOpen ? 'hidden' : previousBodyOverflow;
+    document.body.classList.toggle('menu-blur', menuOpen);
+    header?.classList.toggle('menu-open', menuOpen);
+
+    if (header) {
+      header.style.backgroundColor = menuOpen ? 'transparent' : '';
+      header.style.backdropFilter = menuOpen ? 'none' : '';
+      header.style.boxShadow = menuOpen ? 'none' : '';
+      header.style.setProperty(
+        '-webkit-backdrop-filter',
+        menuOpen ? 'none' : '',
+      );
+    }
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      document.body.classList.remove('menu-blur');
+      if (header) {
+        header.classList.remove('menu-open');
+        header.style.backgroundColor = '';
+        header.style.backdropFilter = '';
+        header.style.boxShadow = '';
+        header.style.removeProperty('-webkit-backdrop-filter');
+      }
+    };
   }, [menuOpen]);
 
   useEffect(() => {
@@ -96,22 +122,26 @@ export default function MobileMenu({ items }: MobileMenuProps) {
         aria-controls="mobile-nav"
         aria-expanded={menuOpen}
         onClick={() => setMenuOpen((value) => !value)}
-        className="relative z-[15] mr-[-15px] flex h-14 w-14 items-center justify-center border-0 bg-transparent p-3 text-inherit"
+        className="relative z-[15] mr-[-15px] flex h-[54px] w-[60px] items-center justify-center border-0 bg-transparent p-[15px] text-inherit"
       >
-        <span className="relative block h-6 w-8">
+        <span className="relative block h-6 w-[30px]">
           <span
             className={`absolute right-0 top-1/2 h-0.5 rounded bg-green transition-all duration-200 ${
-              menuOpen ? 'w-8 rotate-[225deg]' : 'w-8 -translate-y-1/2'
+              menuOpen
+                ? 'w-[30px] -translate-y-1/2 rotate-45'
+                : 'w-[30px] -translate-y-1/2'
             }`}
           />
           <span
             className={`absolute right-0 h-0.5 rounded bg-green transition-all duration-200 ${
-              menuOpen ? 'top-1/2 w-8 opacity-0' : 'top-[1px] w-[120%]'
+              menuOpen ? 'top-1/2 w-[30px] opacity-0' : 'top-[1px] w-[36px]'
             }`}
           />
           <span
             className={`absolute right-0 h-0.5 rounded bg-green transition-all duration-200 ${
-              menuOpen ? 'top-1/2 w-8 -rotate-90' : 'bottom-[1px] w-[80%]'
+              menuOpen
+                ? 'top-1/2 w-[30px] -translate-y-1/2 -rotate-45'
+                : 'bottom-[1px] w-[24px]'
             }`}
           />
         </span>
@@ -120,14 +150,14 @@ export default function MobileMenu({ items }: MobileMenuProps) {
       <aside
         id="mobile-nav"
         aria-hidden={!menuOpen}
-        className={`fixed inset-y-0 right-0 z-[14] flex w-[min(75vw,400px)] flex-col justify-center bg-light-navy px-6 py-12 shadow-[-10px_0px_30px_-15px_rgba(2,12,27,0.7)] transition duration-250 ease-[cubic-bezier(0.645,0.045,0.355,1)] ${
-          menuOpen ? 'translate-x-0 visible' : 'translate-x-full invisible'
+        className={`fixed top-0 right-0 z-[14] flex h-screen w-[min(75vw,400px)] flex-col justify-center overflow-y-auto bg-light-navy px-6 py-12 shadow-[-10px_0px_30px_-15px_rgba(2,12,27,0.7)] transition duration-250 ease-[cubic-bezier(0.645,0.045,0.355,1)] ${
+          menuOpen ? 'translate-x-0 visible' : 'hidden'
         }`}
       >
         <nav
           ref={navRef}
           aria-label="Mobile"
-          className="text-center font-mono text-lightest-slate"
+          className="font-mono text-center text-lightest-slate"
         >
           <ol className="space-y-4">
             {items.map((item, index) => (
