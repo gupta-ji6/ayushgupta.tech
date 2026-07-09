@@ -104,10 +104,10 @@ const contactEntry = contact[0];
     <AboutSection entry={aboutEntry} githubUrl={siteConfig.github} />
     <FunFactsSection entries={sortedFunFacts} />
     <JobsSection entries={visibleJobs} />
-    <EducationSection entries={sortedEducation} />
     <FeaturedSection entries={visibleFeatured} />
     <ProjectsSection entries={visibleProjects} />
     <BlogSection entries={publishedPopularArticles} />
+    <EducationSection entries={sortedEducation} />
     <ContactSection entry={contactEntry} email={siteConfig.email} />
   </div>
 
@@ -243,12 +243,14 @@ const contactEntry = contact[0];
 
       document.querySelectorAll('[data-fun-facts-root]').forEach((root) => {
         const button = root.querySelector('[data-fun-facts-button]');
+        const card = root.querySelector('[data-fun-facts-card]');
         const current = root.querySelector('[data-fun-facts-current]');
         const templates = Array.from(
           root.querySelectorAll('template[data-fun-facts-template]'),
         );
         if (
           !(button instanceof HTMLButtonElement) ||
+          !(card instanceof HTMLElement) ||
           !(current instanceof HTMLElement) ||
           !templates.length
         ) {
@@ -262,11 +264,34 @@ const contactEntry = contact[0];
             nextIndex = Math.floor(Math.random() * templates.length);
           }
 
+          const startHeight = card.offsetHeight;
+          card.style.height = `${startHeight}px`;
+
           current.innerHTML = templates[nextIndex].innerHTML;
           currentIndex = nextIndex;
           current.classList.remove('animate', 'slide');
           void current.offsetWidth;
           current.classList.add('animate', 'slide');
+
+          if (prefersReducedMotion) {
+            card.style.height = 'auto';
+            return;
+          }
+
+          requestAnimationFrame(() => {
+            const styles = window.getComputedStyle(card);
+            const paddingTop = Number.parseFloat(styles.paddingTop) || 0;
+            const paddingBottom = Number.parseFloat(styles.paddingBottom) || 0;
+            const endHeight = current.offsetHeight + paddingTop + paddingBottom;
+            card.style.height = `${endHeight}px`;
+          });
+
+          const resetHeight = () => {
+            card.style.height = 'auto';
+            card.removeEventListener('transitionend', resetHeight);
+          };
+
+          card.addEventListener('transitionend', resetHeight);
         });
       });
     })();
@@ -275,9 +300,14 @@ const contactEntry = contact[0];
 
 <style is:global>
   .home-page .section-shell {
-    width: min(1000px, calc(100vw - 50px));
+    width: 100%;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 120px 0;
+  }
+
+  .home-page .contact-shell {
+    padding-bottom: 0;
   }
 
   .home-page .section-heading {
@@ -289,6 +319,10 @@ const contactEntry = contact[0];
     color: var(--color-lightest-slate);
     font-size: clamp(24px, 3vw, 32px);
     white-space: nowrap;
+  }
+
+  .home-page .section-heading-title {
+    flex: 0 0 auto;
   }
 
   .home-page .section-heading-centered {
@@ -314,7 +348,8 @@ const contactEntry = contact[0];
 
   .home-page .section-heading-line {
     display: block;
-    width: min(300px, 100%);
+    flex: 0 0 300px;
+    width: 300px;
     height: 1px;
     margin-left: 10px;
     background: var(--color-medium-grey);
@@ -339,6 +374,24 @@ const contactEntry = contact[0];
   .home-page .button-link:focus-visible {
     background: var(--color-trans-green);
     transform: translateY(-2px);
+  }
+
+  .home-page .button-link.blog-read-more,
+  .home-page .button-link.projects-toggle {
+    display: flex;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .home-page .button-link.blog-read-more {
+    margin-top: 50px;
+  }
+
+  .home-page .button-link.projects-toggle {
+    margin-top: 80px;
   }
 
   .home-page .card-surface {
@@ -405,8 +458,8 @@ const contactEntry = contact[0];
     opacity: 0;
     transform: translateY(24px);
     transition:
-      opacity 0.55s cubic-bezier(0.645, 0.045, 0.355, 1),
-      transform 0.55s cubic-bezier(0.645, 0.045, 0.355, 1);
+      opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
+      transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
     transition-delay: var(--reveal-delay, 0ms);
   }
 
@@ -433,12 +486,19 @@ const contactEntry = contact[0];
 
   .home-page .tabs-list-wrap {
     position: relative;
+    min-width: 0;
   }
 
   .home-page .tabs-list {
     position: relative;
     display: flex;
     flex-direction: column;
+  }
+
+  .home-page .tabs-panels,
+  .home-page .tab-panel,
+  .home-page .tab-panel-copy {
+    min-width: 0;
   }
 
   .home-page .tab-button {
@@ -488,7 +548,26 @@ const contactEntry = contact[0];
   }
 
   .home-page .tab-panel-company a {
+    display: inline-block;
+    position: relative;
     text-decoration: none;
+  }
+
+  .home-page .tab-panel-company a::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 1px;
+    position: relative;
+    bottom: 0.18em;
+    background: var(--color-green);
+    opacity: 0.5;
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .home-page .tab-panel-company a:hover::after,
+  .home-page .tab-panel-company a:focus-visible::after {
+    width: 100%;
   }
 
   .home-page .tab-panel-meta {
@@ -505,21 +584,24 @@ const contactEntry = contact[0];
 
   @media (max-width: 1000px) {
     .home-page .section-heading-line {
+      flex-basis: 200px;
       width: 200px;
     }
   }
 
   @media (max-width: 768px) {
     .home-page .section-shell {
-      width: min(1000px, calc(100vw - 32px));
       padding: 100px 0;
     }
 
     .home-page .section-heading {
+      font-size: 24px;
       white-space: normal;
     }
 
     .home-page .section-heading-line {
+      flex: 1 1 auto;
+      width: auto;
       width: 100%;
     }
   }
@@ -530,9 +612,24 @@ const contactEntry = contact[0];
       gap: 20px;
     }
 
-    .home-page .tabs-list {
+    .home-page .tabs-list-wrap,
+    .home-page .tabs-panels,
+    .home-page .tab-panel {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    .home-page .tabs-list-wrap {
       overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .home-page .tabs-list {
       flex-direction: row;
+      width: max-content;
+      min-width: max-content;
       padding-bottom: 2px;
     }
 
@@ -550,6 +647,15 @@ const contactEntry = contact[0];
       bottom: 0;
       width: 120px;
       height: 2px;
+    }
+
+    .home-page .tab-panel-title,
+    .home-page .tab-panel-meta,
+    .home-page .tab-panel-copy,
+    .home-page .tab-panel-copy :global(ul),
+    .home-page .tab-panel-copy :global(li) {
+      width: 100%;
+      max-width: 100%;
     }
   }
 </style>

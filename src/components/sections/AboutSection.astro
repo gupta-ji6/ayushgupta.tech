@@ -77,6 +77,8 @@ const { Content } = await render(entry);
   }
 
   .about-photo-link {
+    position: relative;
+    display: block;
     width: 100%;
     max-width: 300px;
   }
@@ -84,21 +86,27 @@ const { Content } = await render(entry);
   .about-photo-frame {
     position: relative;
     display: block;
+    width: 100%;
     border-radius: 6px;
     background: var(--color-green);
     box-shadow: 0 10px 30px -15px var(--color-shadow-navy);
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
 
   .about-photo-frame::before,
   .about-photo-frame::after {
     content: '';
     position: absolute;
-    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
     border-radius: 6px;
     transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
 
   .about-photo-frame::before {
+    top: 0;
+    left: 0;
     background: var(--color-navy);
     mix-blend-mode: screen;
   }
@@ -110,13 +118,21 @@ const { Content } = await render(entry);
     z-index: -1;
   }
 
+  .about-photo-link:hover .about-photo-frame,
+  .about-photo-link:focus-visible .about-photo-frame {
+    background: transparent;
+    outline: 0;
+  }
+
   .about-photo-link:hover .about-photo-frame::after,
   .about-photo-link:focus-visible .about-photo-frame::after {
-    top: 14px;
-    left: 14px;
+    top: 15px;
+    left: 15px;
   }
 
   .about-photo {
+    display: block;
+    width: 100%;
     position: relative;
     z-index: 1;
     border-radius: 6px;

@@ -7,7 +7,7 @@ import GithubIcon from '@components/icons/GithubIcon.astro';
 import GooglePlayIcon from '@components/icons/GooglePlayIcon.astro';
 
 const { entries } = Astro.props;
-const initialCount = 4;
+const initialCount = 3;
 
 const renderedEntries = await Promise.all(
   entries.map(async (entry: any) => ({
@@ -167,13 +167,15 @@ const renderedEntries = await Promise.all(
   }
 
   .project-card-links a {
+    position: relative;
+    top: -10px;
     display: inline-flex;
     padding: 10px;
   }
 
-  .project-card-links svg {
-    width: 22px;
-    height: 22px;
+  .project-card-links a :global(svg) {
+    width: 24px;
+    height: 24px;
   }
 
   .project-card-title {
@@ -198,7 +200,4 @@ const renderedEntries = await Promise.all(
     font-size: 12px;
   }
 
-  .projects-toggle {
-    margin: 80px auto 0;
-  }
 </style>

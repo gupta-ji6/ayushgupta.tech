@@ -31,7 +31,11 @@ const { Content } = await render(entry);
     >
       <Content />
     </div>
-    <div class="reveal-item" data-reveal style="--reveal-delay: 400ms;">
+    <div
+      class="reveal-item hero-cta"
+      data-reveal
+      style="--reveal-delay: 400ms;"
+    >
       <a href="/resume" class="button-link">
         {entry.data.contactText}
       </a>
@@ -75,11 +79,19 @@ const { Content } = await render(entry);
     margin-bottom: 0;
   }
 
+  .hero-cta {
+    margin-top: 50px;
+  }
+
   @media (max-width: 768px) {
     .hero-shell {
       min-height: auto;
       padding-top: 90px;
       padding-bottom: 30px;
+    }
+
+    .hero-cta {
+      margin-top: 40px;
     }
   }
 </style>

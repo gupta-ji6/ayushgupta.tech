@@ -25,7 +25,7 @@ const InitialFactContent = renderedFacts[0].Content;
       Shuffle
     </button>
 
-    <div class="facts-card card-surface">
+    <div class="facts-card card-surface" data-fun-facts-card>
       <div class="rich-text facts-current animate slide" data-fun-facts-current>
         <InitialFactContent />
       </div>
@@ -58,11 +58,28 @@ const InitialFactContent = renderedFacts[0].Content;
   }
 
   .facts-card {
-    min-height: 170px;
-    padding: 26px 28px;
+    padding: 24px 28px;
+    overflow: hidden;
+    transition: height 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
 
   .facts-current {
     color: var(--color-light-slate);
+  }
+
+  .facts-current.animate {
+    animation-duration: 0.24s;
+    animation-delay: 0s;
+    animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .facts-current :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    .facts-card {
+      padding: 22px 22px 20px;
+    }
   }
 </style>

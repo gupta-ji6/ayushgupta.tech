@@ -12,27 +12,36 @@ interface NowPlayingWidgetProps {
   mode?: WidgetMode;
 }
 
+interface WidgetContextLine {
+  emoji: string;
+  copy: string;
+}
+
 const SPOTIFY_PROFILE =
   'https://open.spotify.com/user/31yuvamoxkbmkpvhpunh6xwoshii';
 
-const PLAYING_INTROS = [
-  'Vibing to',
-  'Listening to',
-  'Tripping on',
-  'Mushing over',
-  'Gushing over',
+const PLAYING_INTROS: WidgetContextLine[] = [
+  { emoji: '💫', copy: 'vibing to' },
+  { emoji: '🎵', copy: 'listening to' },
+  { emoji: '😇', copy: 'tripping on' },
+  { emoji: '🥰', copy: 'mushing over' },
+  { emoji: '🙈', copy: 'gushing over' },
+  { emoji: '🗣', copy: 'lip syncing to' },
+  { emoji: '👻', copy: 'quietly murmuring' },
 ];
 
-const NOT_PLAYING_INTROS = [
-  "Maybe I'm bored of my playlist",
-  "There's a high chance I'm sleeping",
-  'Probably my headphones died',
-  'Maybe I had to stop music for a meeting',
-  "I'm probably out with my camera",
+const NOT_PLAYING_INTROS: WidgetContextLine[] = [
+  { emoji: '🤷🏻‍♀️', copy: "maybe i'm bored of my playlist" },
+  { emoji: '💤', copy: "there's a high chance i'm sleeping" },
+  { emoji: '🎧', copy: 'probably my headphones died' },
+  { emoji: '📺', copy: 'chilling on netflix, maybe?' },
+  { emoji: '🥂', copy: "maybe today's the day to socialize" },
+  { emoji: '📸', copy: "probably i'm out with my camera" },
+  { emoji: '🤝🏻', copy: 'maybe i had to stop music to attend a meeting' },
 ];
 
-function randomItem(items: string[]) {
-  return items[Math.floor(Math.random() * items.length)] ?? items[0] ?? '';
+function randomItem<T>(items: T[]) {
+  return items[Math.floor(Math.random() * items.length)] ?? items[0]!;
 }
 
 function getSpotifyHref(track: SpotifyTrack | null) {
@@ -41,10 +50,10 @@ function getSpotifyHref(track: SpotifyTrack | null) {
 
 function getWidgetSubtitle(track: SpotifyTrack | null, mode: WidgetMode) {
   if (mode === 'page') {
-    return track?.album?.name ?? 'Open Spotify profile';
+    return track?.album?.name ?? 'View Spotify Profile';
   }
 
-  return track?.name ? 'Explore music page' : 'See the full music page';
+  return 'Explore Music Page';
 }
 
 export default function NowPlayingWidget({
@@ -101,13 +110,19 @@ export default function NowPlayingWidget({
     audio.play().catch(() => setIsPreviewPlaying(false));
   }, [isPreviewPlaying]);
 
-  const introCopy = useMemo(() => {
+  const introLine = useMemo<WidgetContextLine>(() => {
     if (loading) {
-      return 'Fetching live track from Spotify';
+      return {
+        emoji: '🎧',
+        copy: 'fetching live track from spotify',
+      };
     }
 
     if (error) {
-      return 'Live Spotify status is unavailable right now';
+      return {
+        emoji: '⚠️',
+        copy: 'live spotify status is unavailable right now',
+      };
     }
 
     return isListening
@@ -118,9 +133,20 @@ export default function NowPlayingWidget({
   const infoHref = mode === 'page' ? spotifyHref : '/music';
 
   return (
-    <div className="music-now-playing" data-mode={mode}>
+    <div
+      className="music-now-playing"
+      data-mode={mode}
+      data-listening={isListening ? 'true' : 'false'}
+    >
       <div className="music-now-playing-intro">
-        <span>{introCopy}</span>
+        <span
+          className="music-now-playing-intro-emoji"
+          role="img"
+          aria-label="music context"
+        >
+          {introLine.emoji}
+        </span>
+        <span className="music-now-playing-intro-copy">{introLine.copy}</span>
         {error && (
           <button
             type="button"

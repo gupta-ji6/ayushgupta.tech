@@ -5,12 +5,13 @@ import SocialIcon from './icons/SocialIcon.astro';
 
 interface Props {
   isMusicPage?: boolean;
+  isHome?: boolean;
 }
 
-const { isMusicPage = false } = Astro.props;
+const { isMusicPage = false, isHome = false } = Astro.props;
 ---
 
-<footer class="site-footer">
+<footer class:list={['site-footer', isHome && 'site-footer-home']}>
   {
     !isMusicPage && (
       <div class="now-playing-shell">
@@ -67,7 +68,12 @@ const { isMusicPage = false } = Astro.props;
   }
 
   .now-playing-shell {
-    width: min(85vw, 520px);
+    width: fit-content;
+    max-width: 85vw;
+  }
+
+  .site-footer-home .now-playing-shell {
+    margin-top: 95px;
   }
 
   .footer-socials {
@@ -88,7 +94,7 @@ const { isMusicPage = false } = Astro.props;
     padding: 10px;
   }
 
-  .footer-socials svg {
+  .footer-socials a :global(svg) {
     width: 20px;
     height: 20px;
   }

@@ -18,7 +18,7 @@ const renderedEntries = await Promise.all(
 ---
 
 <section id="projects" class="section-shell" data-reveal>
-  <SectionHeading number="05" title="Featured Projects" />
+  <SectionHeading number="04" title="Featured Projects" />
 
   <ul class="featured-grid">
     {
@@ -58,6 +58,7 @@ const renderedEntries = await Promise.all(
             <div class="featured-links">
               {entry.data.github && (
                 <a
+                  class="featured-link"
                   href={entry.data.github}
                   target="_blank"
                   rel="noreferrer noopener"
@@ -68,6 +69,7 @@ const renderedEntries = await Promise.all(
               )}
               {entry.data.googleplay && (
                 <a
+                  class="featured-link"
                   href={entry.data.googleplay}
                   target="_blank"
                   rel="noreferrer noopener"
@@ -78,6 +80,7 @@ const renderedEntries = await Promise.all(
               )}
               {entry.data.appstore && (
                 <a
+                  class="featured-link"
                   href={entry.data.appstore}
                   target="_blank"
                   rel="noreferrer noopener"
@@ -88,6 +91,7 @@ const renderedEntries = await Promise.all(
               )}
               {entry.data.external && (
                 <a
+                  class="featured-link featured-link-external"
                   href={entry.data.external}
                   target="_blank"
                   rel="noreferrer noopener"
@@ -238,22 +242,35 @@ const renderedEntries = await Promise.all(
   .featured-links {
     justify-content: flex-end;
     margin-top: 10px;
-    gap: 4px;
+    gap: 0;
+    margin-right: -10px;
     color: var(--color-lightest-slate);
   }
 
   .featured-project-reversed .featured-links {
     justify-content: flex-start;
+    margin-left: -10px;
+    margin-right: 0;
   }
 
-  .featured-links a {
+  .featured-link {
     display: inline-flex;
-    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
   }
 
-  .featured-links svg {
+  .featured-link :global(svg) {
     width: 20px;
     height: 20px;
+  }
+
+  .featured-link-external :global(svg) {
+    width: 20px;
+    height: 20px;
+    margin-top: 0;
   }
 
   @media (max-width: 768px) {
@@ -292,7 +309,7 @@ const renderedEntries = await Promise.all(
     }
 
     .featured-description {
-      padding: 18px 0;
+      padding: 18px 20px;
       background: transparent;
       box-shadow: none;
     }
