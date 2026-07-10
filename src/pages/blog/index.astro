@@ -2,6 +2,7 @@
 export const prerender = true;
 import BaseLayout from '@layouts/BaseLayout.astro';
 import AuthorCard from '@components/blog/AuthorCard.astro';
+import PageReveal from '@components/PageReveal.astro';
 import { getCollection } from 'astro:content';
 import {
   formatBlogDate,
@@ -16,116 +17,172 @@ const posts = getPublishedBlogEntries(allPosts);
 
 <BaseLayout title="Blog" description="Articles, guides, and notes by Ayush Gupta.">
   <section class="blog-page">
-    <header class="blog-header">
-      <p class="subtitle">The Blog</p>
-      <h1 class="medium-heading">Articles & Notes</h1>
-      <p class="blog-intro">
-        Thoughts on frontend engineering, web performance, CSS, tools, and
-        side projects.
-      </p>
+    <header class="blog-header page-reveal">
+      <h1 class="big-heading">thoughts</h1>
+      <p class="subtitle">documenting my learning journey, failures &amp; wins</p>
     </header>
 
-    <ol class="blog-list">
-      {
-        posts.map((entry) => (
-          <li class="blog-list-item">
-            <article>
-              <h2 class="blog-post-title">
-                <a href={getBlogPath(entry)}>{entry.data.title}</a>
-              </h2>
+    <section class="blog-content page-reveal">
+      <AuthorCard />
 
-              <p class="blog-post-meta">
-                <time>{formatBlogDate(entry.data.date)}</time>
-                <span>&nbsp;&middot;&nbsp;</span>
-                <span>{entry.data.tags.length} tags</span>
-              </p>
+      <h2 class="medium-heading blog-latest-heading">Latest Articles</h2>
 
-              <p class="blog-post-description">{entry.data.description}</p>
+      <ol class="blog-list">
+        {
+          posts.map((entry) => (
+            <li class="blog-list-item">
+              <div class="blog-post-card">
+                <header>
+                  <h2 class="blog-post-title">
+                    <a href={getBlogPath(entry)} class="inline-link">
+                      {entry.data.title}
+                    </a>
+                  </h2>
 
-              <p class="blog-post-tags subtitle">
-                {entry.data.tags.map((tag: string) => (
-                  <a href={`/blog/tags/${slugifyTag(tag)}`} class="blog-tag">
-                    #{tag}
-                  </a>
-                ))}
-              </p>
-            </article>
-          </li>
-        ))
-      }
-    </ol>
+                  <p class="blog-post-description">{entry.data.description}</p>
+                </header>
 
-    <AuthorCard />
+                <footer class="blog-post-footer">
+                  <span class="blog-post-date">
+                    {formatBlogDate(entry.data.date)}
+                  </span>
+
+                  <ul class="blog-post-tags">
+                    {entry.data.tags.map((tag: string) => (
+                      <li>
+                        <a
+                          href={`/blog/tags/${slugifyTag(tag)}`}
+                          class="inline-link"
+                        >
+                          #{tag}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </footer>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
   </section>
+
+  <PageReveal />
 </BaseLayout>
 
 <style>
   .blog-page {
-    width: min(1000px, calc(100vw - 50px));
+    width: 100%;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 120px 0;
   }
 
   .blog-header {
-    margin-bottom: 72px;
+    margin-bottom: 100px;
+    text-align: center;
   }
 
-  .blog-intro {
-    max-width: 620px;
-    color: var(--color-light-slate);
-    font-size: 20px;
-    line-height: 1.6;
+  .blog-latest-heading {
+    margin-top: 50px;
+    text-align: center;
   }
 
   .blog-list {
     list-style: none;
-    margin: 0;
+    margin: 50px 0 0;
     padding: 0;
   }
 
-  .blog-list-item:not(:last-child) {
-    margin-bottom: 56px;
-    padding-bottom: 56px;
-    border-bottom: 1px solid rgba(136, 146, 176, 0.16);
+  .blog-list-item {
+    margin-bottom: 25px;
+  }
+
+  .blog-post-card {
+    padding: 32px 28px;
+    border-radius: 3px;
+    background: var(--color-light-navy);
+    box-shadow: 0 10px 30px -15px var(--color-shadow-navy);
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .blog-post-card:hover,
+  .blog-post-card:focus-within {
+    box-shadow: 0 20px 30px -15px var(--color-shadow-navy);
+    transform: translateY(-5px);
   }
 
   .blog-post-title {
     margin: 0 0 10px;
-    font-size: clamp(28px, 4vw, 36px);
+    font-size: clamp(28px, 4vw, 32px);
   }
 
   .blog-post-title a {
     color: var(--color-lightest-slate);
+    transition: color 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
 
-  .blog-post-meta {
-    margin-bottom: 12px;
-    color: var(--color-slate);
-    font-family: var(--font-mono);
-    font-size: 13px;
-    letter-spacing: 0.04em;
+  .blog-post-card:hover .blog-post-title a,
+  .blog-post-card:focus-within .blog-post-title a {
+    color: var(--color-green);
+  }
+
+  .blog-post-card:hover .blog-post-title a::after,
+  .blog-post-card:focus-within .blog-post-title a::after {
+    width: 100%;
   }
 
   .blog-post-description {
-    max-width: 760px;
-    margin-bottom: 16px;
+    margin: 0;
     color: var(--color-light-slate);
     font-size: 20px;
-    line-height: 1.65;
+    line-height: 1.5;
+  }
+
+  .blog-post-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 20px;
+  }
+
+  .blog-post-date {
+    padding: 10px 0;
+    color: var(--color-light-slate);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    text-transform: uppercase;
   }
 
   .blog-post-tags {
-    color: var(--color-slate);
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
-  .blog-tag {
-    margin-right: 12px;
+  .blog-post-tags li {
+    color: var(--color-green);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  .blog-post-tags li:not(:last-child) {
+    margin-right: 15px;
   }
 
   @media (max-width: 768px) {
     .blog-page {
-      width: min(1000px, calc(100vw - 32px));
       padding: 100px 0;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .blog-latest-heading {
+      text-align: left;
     }
   }
 </style>

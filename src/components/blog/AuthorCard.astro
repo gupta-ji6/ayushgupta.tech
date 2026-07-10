@@ -15,7 +15,7 @@ const { showBackground = false } = Astro.props;
       src={authorImage}
       alt="Ayush Gupta portrait"
       widths={[240, 400]}
-      sizes="120px"
+      sizes="160px"
       class="author-card-photo"
     />
   </div>
@@ -35,6 +35,7 @@ const { showBackground = false } = Astro.props;
     display: flex;
     gap: 24px;
     align-items: center;
+    justify-content: center;
     margin-top: 40px;
   }
 
@@ -48,15 +49,19 @@ const { showBackground = false } = Astro.props;
 
   .author-card-image {
     flex-shrink: 0;
-    width: 120px;
+    width: 160px;
   }
 
   .author-card-photo {
     border: 2px solid var(--color-green);
-    border-radius: 999px;
+    border-radius: 3px;
     padding: 4px;
     background: var(--color-light-navy);
     object-fit: cover;
+  }
+
+  .author-card-with-background .author-card-photo {
+    border-radius: 999px;
   }
 
   .author-card-copy {
@@ -73,6 +78,10 @@ const { showBackground = false } = Astro.props;
     .author-card {
       flex-direction: column;
       align-items: flex-start;
+    }
+
+    .author-card-image {
+      align-self: center;
     }
   }
 </style>
