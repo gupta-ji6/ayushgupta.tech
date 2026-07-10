@@ -14,7 +14,11 @@ const items = siteConfig.navLinks.map((item) => ({
 }));
 ---
 
-<header class="site-header nav-scrolled-top" data-site-header>
+<header
+  class="site-header nav-scrolled-top"
+  data-site-header
+  transition:persist
+>
   <nav class="site-nav" aria-label="Primary">
     <div class:list={['logo-slot', isHome && 'animate fade']}>
       <a href="/" aria-label="Home" class="logo-link">

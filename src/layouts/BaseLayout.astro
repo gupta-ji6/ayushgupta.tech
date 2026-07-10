@@ -1,6 +1,7 @@
 ---
 import '@styles/global.css';
 import '@styles/disclosure.css';
+import { ClientRouter } from 'astro:transitions';
 import BaseHead from '@components/BaseHead.astro';
 import Email from '@components/Email.astro';
 import Footer from '@components/Footer.astro';
@@ -32,6 +33,7 @@ const { title, description, image, type, noindex = false } = Astro.props;
       type={type}
       noindex={noindex}
     />
+    <ClientRouter />
     <slot name="head" />
   </head>
 
@@ -42,7 +44,7 @@ const { title, description, image, type, noindex = false } = Astro.props;
     <Email isHome={isHome} />
 
     <div id="content">
-      <main id="main-content" class="site-main">
+      <main id="main-content" class="site-main" transition:animate="none">
         <slot />
       </main>
     </div>
