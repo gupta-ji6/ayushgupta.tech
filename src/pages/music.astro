@@ -4,8 +4,10 @@ import MusicExperience from '@components/music/MusicExperience';
 
 const description =
   "Deep dive into Ayush Gupta's music library. Explore what is playing now, favourite playlists, top artists, and more.";
+
+const introSeed = Math.random();
 ---
 
 <BaseLayout title="Music" description={description} image="/og-music.png">
-  <MusicExperience client:load />
+  <MusicExperience client:load introSeed={introSeed} />
 </BaseLayout>

@@ -267,7 +267,13 @@ function PlaylistList({
   );
 }
 
-export default function MusicExperience() {
+interface MusicExperienceProps {
+  introSeed?: number;
+}
+
+export default function MusicExperience({
+  introSeed = 0,
+}: MusicExperienceProps) {
   const [topTracksRange, setTopTracksRange] =
     useState<SpotifyTimeRange>('short_term');
   const [topArtistsRange, setTopArtistsRange] =
@@ -288,14 +294,18 @@ export default function MusicExperience() {
 
   return (
     <div className="music-page">
-      <header className={`music-header ${isRevealed ? 'is-revealed' : ''}`}>
+      <header
+        className={`music-header page-reveal ${isRevealed ? 'is-revealed' : ''}`}
+      >
         <h1 className="big-heading">Music</h1>
         <p className="subtitle">deep dive into my music library</p>
       </header>
 
-      <section className={`music-content ${isRevealed ? 'is-revealed' : ''}`}>
+      <section
+        className={`music-content page-reveal ${isRevealed ? 'is-revealed' : ''}`}
+      >
         <div className="music-now-playing-panel">
-          <NowPlayingWidget mode="page" />
+          <NowPlayingWidget mode="page" introSeed={introSeed} />
         </div>
 
         <DisclosureSection

@@ -9,13 +9,14 @@ interface Props {
 }
 
 const { isMusicPage = false, isHome = false } = Astro.props;
+const introSeed = Math.random();
 ---
 
 <footer class:list={['site-footer', isHome && 'site-footer-home']}>
   {
     !isMusicPage && (
       <div class="now-playing-shell">
-        <NowPlayingWidget client:visible mode="footer" />
+        <NowPlayingWidget client:visible mode="footer" introSeed={introSeed} />
       </div>
     )
   }

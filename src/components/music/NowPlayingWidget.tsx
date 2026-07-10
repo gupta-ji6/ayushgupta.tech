@@ -10,6 +10,7 @@ type WidgetMode = 'footer' | 'page';
 
 interface NowPlayingWidgetProps {
   mode?: WidgetMode;
+  introSeed?: number;
 }
 
 interface WidgetContextLine {
@@ -40,8 +41,9 @@ const NOT_PLAYING_INTROS: WidgetContextLine[] = [
   { emoji: '🤝🏻', copy: 'maybe i had to stop music to attend a meeting' },
 ];
 
-function randomItem<T>(items: T[]) {
-  return items[Math.floor(Math.random() * items.length)] ?? items[0]!;
+function itemFromSeed<T>(items: T[], seed: number) {
+  const index = Math.floor(seed * items.length) % items.length;
+  return items[index] ?? items[0]!;
 }
 
 function getSpotifyHref(track: SpotifyTrack | null) {
@@ -58,6 +60,7 @@ function getWidgetSubtitle(track: SpotifyTrack | null, mode: WidgetMode) {
 
 export default function NowPlayingWidget({
   mode = 'footer',
+  introSeed = 0,
 }: NowPlayingWidgetProps) {
   const { data: track, error, loading, refetch } = useNowPlayingTrack();
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
@@ -113,9 +116,9 @@ export default function NowPlayingWidget({
   const introLine = useMemo<WidgetContextLine>(
     () =>
       isListening
-        ? randomItem(PLAYING_INTROS)
-        : randomItem(NOT_PLAYING_INTROS),
-    [isListening],
+        ? itemFromSeed(PLAYING_INTROS, introSeed)
+        : itemFromSeed(NOT_PLAYING_INTROS, introSeed),
+    [isListening, introSeed],
   );
 
   const infoHref = mode === 'page' ? spotifyHref : '/music';
