@@ -38,7 +38,7 @@ const posts = getPublishedEntriesForTag(allPosts, tag || '');
     <h1 class="tag-title">
       <span>#{tagName}</span>
       <span class="tag-title-link">
-        <a href="/blog/tags">View all tags</a>
+        <a href="/blog/tags" class="inline-link">View all tags</a>
       </span>
     </h1>
 
@@ -47,13 +47,18 @@ const posts = getPublishedEntriesForTag(allPosts, tag || '');
         posts.map((entry) => (
           <li>
             <h2>
-              <a href={getBlogPath(entry)}>{entry.data.title}</a>
+              <a href={getBlogPath(entry)} class="inline-link">
+                {entry.data.title}
+              </a>
             </h2>
             <p class="subtitle">
               <time>{formatBlogDate(entry.data.date)}</time>
-              <span>&nbsp;&middot;&nbsp;</span>
+              <span>&nbsp;&mdash;&nbsp;</span>
               {entry.data.tags.map((entryTag: string) => (
-                <a href={`/blog/tags/${slugifyTag(entryTag)}`} class="tag-link">
+                <a
+                  href={`/blog/tags/${slugifyTag(entryTag)}`}
+                  class="inline-link tag-link"
+                >
                   #{entryTag}
                 </a>
               ))}
@@ -67,7 +72,8 @@ const posts = getPublishedEntriesForTag(allPosts, tag || '');
 
 <style>
   .tag-page {
-    width: min(1000px, calc(100vw - 50px));
+    width: 100%;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 120px 0;
   }
@@ -75,9 +81,10 @@ const posts = getPublishedEntriesForTag(allPosts, tag || '');
   .tag-title {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 20px;
-    align-items: baseline;
     margin-bottom: 50px;
+    font-size: 40px;
   }
 
   .tag-title-link a {
@@ -102,6 +109,11 @@ const posts = getPublishedEntriesForTag(allPosts, tag || '');
     color: var(--color-light-slate);
   }
 
+  .tag-post-list h2 a:hover,
+  .tag-post-list h2 a:focus-visible {
+    color: var(--color-green);
+  }
+
   .tag-post-list .subtitle {
     color: var(--color-slate);
     font-size: 14px;
@@ -109,18 +121,11 @@ const posts = getPublishedEntriesForTag(allPosts, tag || '');
 
   .tag-link {
     margin-right: 10px;
-    color: var(--color-slate);
   }
 
   @media (max-width: 768px) {
     .tag-page {
-      width: min(1000px, calc(100vw - 32px));
       padding: 100px 0;
-    }
-
-    .tag-title {
-      flex-direction: column;
-      align-items: flex-start;
     }
   }
 </style>

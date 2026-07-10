@@ -15,13 +15,13 @@ const tags = getPublishedTagSummaries(allPosts);
       <a href="/blog">All Articles</a>
     </span>
 
-    <h1 class="medium-heading">Tags</h1>
+    <h1 class="tags-title">Tags</h1>
 
     <ul class="tags-list fancy-list">
       {
         tags.map((tag) => (
           <li>
-            <a href={`/blog/tags/${tag.slug}`}>
+            <a href={`/blog/tags/${tag.slug}`} class="inline-link tags-list-link">
               {tag.name} <span class="count">({tag.count})</span>
             </a>
           </li>
@@ -33,13 +33,15 @@ const tags = getPublishedTagSummaries(allPosts);
 
 <style>
   .tags-page {
-    width: min(1200px, calc(100vw - 50px));
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 120px 0;
   }
 
-  .tags-page h1 {
+  .tags-title {
     margin-bottom: 50px;
+    font-size: 40px;
   }
 
   .tags-list {
@@ -47,13 +49,14 @@ const tags = getPublishedTagSummaries(allPosts);
     padding: 0;
     list-style: none;
     color: var(--color-light-slate);
-    font-size: 28px;
+    font-size: 20px;
   }
 
   .tags-list li {
     position: relative;
     margin-bottom: 10px;
     padding-left: 30px;
+    font-size: 22px;
   }
 
   .tags-list li::before {
@@ -63,8 +66,13 @@ const tags = getPublishedTagSummaries(allPosts);
     color: var(--color-green);
   }
 
-  .tags-list a {
+  .tags-list-link {
     color: var(--color-light-slate);
+  }
+
+  .tags-list-link:hover,
+  .tags-list-link:focus-visible {
+    color: var(--color-green);
   }
 
   .count {
@@ -75,7 +83,6 @@ const tags = getPublishedTagSummaries(allPosts);
 
   @media (max-width: 768px) {
     .tags-page {
-      width: min(1200px, calc(100vw - 32px));
       padding: 100px 0;
     }
   }
