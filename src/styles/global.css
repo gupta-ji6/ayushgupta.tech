@@ -447,6 +447,27 @@
   margin: 0 0 20px 0;
 }
 
+.page-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.4s cubic-bezier(0.645, 0.045, 0.355, 1),
+    transform 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.page-reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 .breadcrumb {
   display: flex;
   align-items: center;

@@ -1,0 +1,26 @@
+---
+---
+
+<script is:inline>
+  (() => {
+    const reveal = () => {
+      const prefersReducedMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches;
+
+      const targets = document.querySelectorAll('.page-reveal:not(.is-revealed)');
+
+      if (prefersReducedMotion) {
+        targets.forEach((el) => el.classList.add('is-revealed'));
+        return;
+      }
+
+      requestAnimationFrame(() => {
+        targets.forEach((el) => el.classList.add('is-revealed'));
+      });
+    };
+
+    reveal();
+    document.addEventListener('astro:page-load', reveal);
+  })();
+</script>

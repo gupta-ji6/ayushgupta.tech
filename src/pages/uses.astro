@@ -3,6 +3,7 @@ export const prerender = true;
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Disclosure from '@components/Disclosure.astro';
+import PageReveal from '@components/PageReveal.astro';
 import { siteConfig } from '@config/index';
 
 const description =
@@ -24,42 +25,46 @@ const useSections = await Promise.all(
 
 <BaseLayout title="Uses" description={description} image="/og-uses.png">
   <section class="uses-page">
-    <header class="uses-header">
+    <header class="uses-header page-reveal">
       <h1 class="big-heading">Uses</h1>
       <p class="subtitle">
         a living document of my setup, with apps I use daily
       </p>
     </header>
 
-    <section class="uses-sections" aria-label="Setup categories">
-      {
-        useSections.map(({ entry, Content }) => (
-          <Disclosure title={entry.data.title} subtitle={entry.data.subtitle}>
-            <div class="uses-section-body inline-links">
-              <Content />
-            </div>
-          </Disclosure>
-        ))
-      }
-    </section>
+    <section class="uses-content page-reveal">
+      <section class="uses-sections" aria-label="Setup categories">
+        {
+          useSections.map(({ entry, Content }) => (
+            <Disclosure title={entry.data.title} subtitle={entry.data.subtitle}>
+              <div class="uses-section-body inline-links">
+                <Content />
+              </div>
+            </Disclosure>
+          ))
+        }
+      </section>
 
-    <section class="uses-footer inline-links">
-      <h2>Have more questions?</h2>
-      <p>
-        Feel free to ask away on{' '}
-        <a
-          href={siteConfig.socialMedia.find((item) => item.name === 'Twitter')
-            ?.url}
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          twitter
-        </a>
-        .
-      </p>
-      <small>Last Updated: Feb, 2025</small>
+      <section class="uses-footer inline-links">
+        <h2>Have more questions?</h2>
+        <p>
+          Feel free to ask away on{' '}
+          <a
+            href={siteConfig.socialMedia.find((item) => item.name === 'Twitter')
+              ?.url}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            twitter
+          </a>
+          .
+        </p>
+        <small>Last Updated: Feb, 2025</small>
+      </section>
     </section>
   </section>
+
+  <PageReveal />
 </BaseLayout>
 
 <style>
