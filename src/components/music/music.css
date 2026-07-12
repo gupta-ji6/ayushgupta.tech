@@ -1,5 +1,6 @@
 .music-page {
-  width: min(1600px, calc(100vw - 100px));
+  width: 100%;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 100px 0 120px;
 }
