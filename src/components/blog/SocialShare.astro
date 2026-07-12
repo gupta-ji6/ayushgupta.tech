@@ -33,7 +33,7 @@ const twitterTags = encodeURIComponent(tags.join(','));
     rel="noreferrer noopener"
   >
     <TwitterIcon />
-    {showText && <span>Share to Twitter</span>}
+    {showText && <span class="social-share-label">Share to Twitter</span>}
   </a>
 
   <a
@@ -43,7 +43,7 @@ const twitterTags = encodeURIComponent(tags.join(','));
     rel="noreferrer noopener"
   >
     <FacebookIcon />
-    {showText && <span>Share to Facebook</span>}
+    {showText && <span class="social-share-label">Share to Facebook</span>}
   </a>
 
   <button
@@ -54,7 +54,11 @@ const twitterTags = encodeURIComponent(tags.join(','));
   >
     <span class="social-share-icon-default"><CopyIcon /></span>
     <span class="social-share-icon-success"><CheckIcon /></span>
-    {showText && <span data-copy-label>Copy Link</span>}
+    {showText && (
+      <span class="social-share-label" data-copy-label>
+        Copy Link
+      </span>
+    )}
   </button>
 
   <button
@@ -65,7 +69,7 @@ const twitterTags = encodeURIComponent(tags.join(','));
     aria-label="Share article"
   >
     <ShareIcon />
-    {showText && <span>Share</span>}
+    {showText && <span class="social-share-label">Share</span>}
   </button>
 </div>
 
@@ -150,7 +154,7 @@ const twitterTags = encodeURIComponent(tags.join(','));
     color: var(--color-green);
   }
 
-  .social-share-action svg {
+  .social-share-action :global(svg) {
     width: 20px;
     height: 20px;
     margin-right: 6px;
@@ -169,9 +173,12 @@ const twitterTags = encodeURIComponent(tags.join(','));
   }
 
   @media (max-width: 600px) {
-    .social-share-with-text {
-      flex-direction: column;
-      align-items: flex-start;
+    .social-share-with-text .social-share-label {
+      display: none;
+    }
+
+    .social-share-with-text .social-share-action :global(svg) {
+      margin-right: 0;
     }
   }
 </style>
