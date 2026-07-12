@@ -5,6 +5,7 @@ import { getCollection, render } from 'astro:content';
 import AuthorCard from '@components/blog/AuthorCard.astro';
 import SocialShare from '@components/blog/SocialShare.astro';
 import BaseLayout from '@layouts/BaseLayout.astro';
+import PageReveal from '@components/PageReveal.astro';
 import { siteConfig } from '@config/index';
 import {
   type BlogEntry,
@@ -36,7 +37,7 @@ const blogUrl = new URL(blogPath, siteConfig.siteUrl).toString();
   type="article"
   noindex={entry.data.draft}
 >
-  <article class="post-page">
+  <article class="post-page page-reveal">
     <span class="breadcrumb">
       <span class="arrow">&larr;</span>
       <a href="/blog">All articles</a>
@@ -46,7 +47,8 @@ const blogUrl = new URL(blogPath, siteConfig.siteUrl).toString();
       entry.data.draft && (
         <blockquote class="draft-warning">
           Note: This is a draft preview of the article yet to be published.
-          Kindly do not share it on social media.
+          Kindly do not share it on social media. Use this link for review
+          purpose only.
         </blockquote>
       )
     }
@@ -63,13 +65,16 @@ const blogUrl = new URL(blogPath, siteConfig.siteUrl).toString();
         class="post-cover"
       />
 
-      <p class="subtitle">
+      <p class="subtitle post-date">
         <time>{formatBlogDate(entry.data.date)}</time>
       </p>
 
       <p class="subtitle post-tags">
         {entry.data.tags.map((tag: string) => (
-          <a href={`/blog/tags/${slugifyTag(tag)}`} class="post-tag">
+          <a
+            href={`/blog/tags/${slugifyTag(tag)}`}
+            class="inline-link post-tag"
+          >
             #{tag}
           </a>
         ))}
@@ -91,11 +96,14 @@ const blogUrl = new URL(blogPath, siteConfig.siteUrl).toString();
 
     <AuthorCard showBackground={true} />
   </article>
+
+  <PageReveal />
 </BaseLayout>
 
 <style>
   .post-page {
-    width: min(1200px, calc(100vw - 50px));
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 120px 0;
   }
@@ -125,7 +133,10 @@ const blogUrl = new URL(blogPath, siteConfig.siteUrl).toString();
 
   .post-cover {
     margin-bottom: 1.2rem;
-    border-radius: 6px;
+  }
+
+  .post-date {
+    color: var(--color-slate);
   }
 
   .post-tags {
@@ -136,6 +147,11 @@ const blogUrl = new URL(blogPath, siteConfig.siteUrl).toString();
   .post-tag {
     margin-right: 10px;
     color: var(--color-slate);
+  }
+
+  .post-tag:hover,
+  .post-tag:focus-visible {
+    color: var(--color-green);
   }
 
   .post-content {
@@ -158,7 +174,26 @@ const blogUrl = new URL(blogPath, siteConfig.siteUrl).toString();
   }
 
   .post-content :global(a) {
+    display: inline-block;
+    position: relative;
     color: var(--color-green);
+  }
+
+  .post-content :global(a)::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 1px;
+    position: relative;
+    bottom: 0.1em;
+    background: var(--color-green);
+    opacity: 0.5;
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .post-content :global(a):hover::after,
+  .post-content :global(a):focus-visible::after {
+    width: 100%;
   }
 
   .post-content :global(strong),
@@ -190,6 +225,8 @@ const blogUrl = new URL(blogPath, siteConfig.siteUrl).toString();
     margin: 0;
     padding-left: 30px;
     font-size: 20px;
+    list-style-type: decimal;
+    list-style-position: outside;
   }
 
   .post-content :global(ol li) {
@@ -229,7 +266,6 @@ const blogUrl = new URL(blogPath, siteConfig.siteUrl).toString();
 
   @media (max-width: 768px) {
     .post-page {
-      width: min(1200px, calc(100vw - 32px));
       padding: 100px 0;
     }
 
