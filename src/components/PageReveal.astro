@@ -9,9 +9,11 @@
         '(prefers-reduced-motion: reduce)',
       ).matches;
 
-      const targets = document.querySelectorAll(
-        '.page-reveal:not(.is-revealed)',
-      );
+      // Skip elements inside React islands — they manage their own reveal
+      // state, and mutating them before hydration causes prop mismatches.
+      const targets = [
+        ...document.querySelectorAll('.page-reveal:not(.is-revealed)'),
+      ].filter((el) => !el.closest('astro-island'));
 
       if (prefersReducedMotion) {
         targets.forEach((el) => el.classList.add('is-revealed'));
