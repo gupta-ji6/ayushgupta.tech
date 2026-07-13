@@ -3,6 +3,7 @@ export const prerender = true;
 import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 import AuthorCard from '@components/blog/AuthorCard.astro';
+import Comments from '@components/blog/Comments';
 import SocialShare from '@components/blog/SocialShare.astro';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import PageReveal from '@components/PageReveal.astro';
@@ -101,6 +102,8 @@ const blogUrl = new URL(blogPath, siteConfig.siteUrl).toString();
     />
 
     <AuthorCard showBackground={true} />
+
+    <Comments client:visible postId={entry.data.slug} />
   </article>
 
   <PageReveal />
