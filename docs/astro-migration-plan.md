@@ -241,6 +241,8 @@ Skip porting: `.gatsby-image-outer-wrapper`, PrismStyles (replaced by Shiki).
 
 ## Phase 4: Blog System
 
+**Status**: Completed on April 20, 2026.
+
 **Goal**: Rebuild blog listing, tags, and post pages while preserving route behavior and content fidelity.
 
 ### Routes
@@ -290,6 +292,8 @@ Skip porting: `.gatsby-image-outer-wrapper`, PrismStyles (replaced by Shiki).
 ---
 
 ## Phase 5: Music Page & Spotify Integration
+
+**Status**: Completed on April 20, 2026.
 
 **Goal**: Keep the music experience live, but remove comment/form dependencies.
 
@@ -368,6 +372,8 @@ Remove:
 ---
 
 ## Phase 6: Uses, 404, and Remaining Pages
+
+**Status**: Completed on April 20, 2026.
 
 **Goal**: Finish the remaining non-blog routes.
 
