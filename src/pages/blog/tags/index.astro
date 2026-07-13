@@ -21,7 +21,10 @@ const tags = getPublishedTagSummaries(allPosts);
       {
         tags.map((tag) => (
           <li>
-            <a href={`/blog/tags/${tag.slug}`} class="inline-link tags-list-link">
+            <a
+              href={`/blog/tags/${tag.slug}`}
+              class="inline-link tags-list-link"
+            >
               {tag.name} <span class="count">({tag.count})</span>
             </a>
           </li>

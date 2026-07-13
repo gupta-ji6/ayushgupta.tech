@@ -15,11 +15,16 @@ const allPosts = await getCollection('blog');
 const posts = getPublishedBlogEntries(allPosts);
 ---
 
-<BaseLayout title="Blog" description="Articles, guides, and notes by Ayush Gupta.">
+<BaseLayout
+  title="Blog"
+  description="Articles, guides, and notes by Ayush Gupta."
+>
   <section class="blog-page">
     <header class="blog-header page-reveal">
       <h1 class="big-heading">thoughts</h1>
-      <p class="subtitle">documenting my learning journey, failures &amp; wins</p>
+      <p class="subtitle">
+        documenting my learning journey, failures &amp; wins
+      </p>
     </header>
 
     <section class="blog-content page-reveal">

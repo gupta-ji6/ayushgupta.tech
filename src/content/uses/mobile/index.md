@@ -12,18 +12,18 @@ order: 3
 - [TickTick](https://ticktick.com/?language=en_US)
 - [ChatGPT](https://apps.apple.com/us/app/chatgpt/id6448311069)
 - [Google One](https://one.google.com/about)
-<!-- - [Nova Launcher](https://play.google.com/store/apps/details?id=com.teslacoilsw.launcher.prime) -->
-<!-- - [Relay Pro for Reddit](https://play.google.com/store/apps/details?id=reddit.news) -->
-<!-- - [Crayon Icon Pack](https://play.google.com/store/apps/details?id=com.jndapp.cartoon.crayon.iconpack) -->
-<!-- - [Sync Pro for Reddit](https://play.google.com/store/apps/details?id=com.laurencedawson.reddit_sync.pro) -->
-<!-- - [PocketCasts](https://play.google.com/store/apps/details?id=au.com.shiftyjelly.pocketcasts) (it's now free!) -->
-<!-- - [SD Maid Pro](https://play.google.com/store/apps/details?id=eu.thedarken.sdm.unlocker) -->
-<!-- - [BlackPlayer EX Music Player](https://play.google.com/store/apps/details?id=com.kodarkooperativet.blackplayerex) -->
-<!-- - [TouchRetouch](https://play.google.com/store/apps/details?id=com.advasoft.touchretouch) -->
-<!-- - [LightFlow Pro - LED Control](https://play.google.com/store/apps/details?id=com.rageconsulting.android.lightflow) -->
-<!-- - [~~Fella for Facebook~~](https://play.google.com/store/apps/details?id=fellasocial.app) -->
-<!-- - [~~PowerAudio Pro~~](https://play.google.com/store/apps/details?id=xsoftstudio.musicplayer.pro) -->
-<!-- - [Hook](https://play.google.com/store/apps/details?id=com.rt.hook) -->
+  <!-- - [Nova Launcher](https://play.google.com/store/apps/details?id=com.teslacoilsw.launcher.prime) -->
+  <!-- - [Relay Pro for Reddit](https://play.google.com/store/apps/details?id=reddit.news) -->
+  <!-- - [Crayon Icon Pack](https://play.google.com/store/apps/details?id=com.jndapp.cartoon.crayon.iconpack) -->
+  <!-- - [Sync Pro for Reddit](https://play.google.com/store/apps/details?id=com.laurencedawson.reddit_sync.pro) -->
+  <!-- - [PocketCasts](https://play.google.com/store/apps/details?id=au.com.shiftyjelly.pocketcasts) (it's now free!) -->
+  <!-- - [SD Maid Pro](https://play.google.com/store/apps/details?id=eu.thedarken.sdm.unlocker) -->
+  <!-- - [BlackPlayer EX Music Player](https://play.google.com/store/apps/details?id=com.kodarkooperativet.blackplayerex) -->
+  <!-- - [TouchRetouch](https://play.google.com/store/apps/details?id=com.advasoft.touchretouch) -->
+  <!-- - [LightFlow Pro - LED Control](https://play.google.com/store/apps/details?id=com.rageconsulting.android.lightflow) -->
+  <!-- - [~~Fella for Facebook~~](https://play.google.com/store/apps/details?id=fellasocial.app) -->
+  <!-- - [~~PowerAudio Pro~~](https://play.google.com/store/apps/details?id=xsoftstudio.musicplayer.pro) -->
+  <!-- - [Hook](https://play.google.com/store/apps/details?id=com.rt.hook) -->
 
 ## Free Apps
 
@@ -32,6 +32,7 @@ order: 3
 All the apps I use to capture & edit photographs and create cinematic stories on [my Instagram](https://www.instagram.com/_.guptaji._/).
 
 <!-- - [GCam Mod](https://www.xda-developers.com/google-camera-port-hub/) -->
+
 - [VN - Video Editor](https://apps.apple.com/us/app/vn-video-editor/id1343581380)
 - [Snapseed](https://apps.apple.com/us/app/snapseed/id439438619)
 - [VSCO](https://apps.apple.com/us/app/vsco-photo-video-editor/id588013838)
@@ -41,10 +42,10 @@ All the apps I use to capture & edit photographs and create cinematic stories on
 - [Phonto](https://apps.apple.com/us/app/phonto-text-on-photos/id438429273)
 - Final Cut Camera
 - [FujiX Weekly](https://apps.apple.com/us/app/fuji-x-weekly-film-recipes/id1539047257)
-<!-- - [PicsArt](https://apps.apple.com/us/app/picsart-ai-photo-video-editor/id587366035) -->
-<!-- - [Pixaloop](https://play.google.com/store/apps/details?id=com.lightricks.pixaloop) -->
-<!-- - [Just A Line](https://play.google.com/store/apps/details?id=com.arexperiments.justaline) -->
-<!-- - [GBox for Instagram](https://play.google.com/store/apps/details?id=com.dageek.socialtoolbox_android) -->
+  <!-- - [PicsArt](https://apps.apple.com/us/app/picsart-ai-photo-video-editor/id587366035) -->
+  <!-- - [Pixaloop](https://play.google.com/store/apps/details?id=com.lightricks.pixaloop) -->
+  <!-- - [Just A Line](https://play.google.com/store/apps/details?id=com.arexperiments.justaline) -->
+  <!-- - [GBox for Instagram](https://play.google.com/store/apps/details?id=com.dageek.socialtoolbox_android) -->
 
 ### Music
 

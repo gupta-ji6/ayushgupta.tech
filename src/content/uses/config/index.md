@@ -14,6 +14,7 @@ order: 4
 
 <!-- - [Advanced New File](https://marketplace.visualstudio.com/items?itemName=dkundel.vscode-new-file) -->
 <!-- - [Apollo GraphQL](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) -->
+
 - [Auto Close Tag](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-close-tag)
 - [Babel ES6/ES7](https://marketplace.visualstudio.com/items?itemName=dzannotti.vscode-babel-coloring)
 - [Better Comments](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments)
@@ -27,10 +28,10 @@ order: 4
 - [GitHub Actions](https://marketplace.cursorapi.com/items?itemName=github.vscode-github-actions)
 - [GitHub Pull Requests and Issues](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github)
 - [GitLens — Git supercharged](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
-<!-- - [GraphQL](https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql) -->
-<!-- - [Import Cost](https://marketplace.visualstudio.com/items?itemName=wix.vscode-import-cost) -->
-<!-- - [Jest](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest) -->
-<!-- - [Jest Runner](https://marketplace.visualstudio.com/items?itemName=firsttris.vscode-jest-runner) -->
+  <!-- - [GraphQL](https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql) -->
+  <!-- - [Import Cost](https://marketplace.visualstudio.com/items?itemName=wix.vscode-import-cost) -->
+  <!-- - [Jest](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest) -->
+  <!-- - [Jest Runner](https://marketplace.visualstudio.com/items?itemName=firsttris.vscode-jest-runner) -->
 - [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
 - [markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
 - [Path Intellisense](https://marketplace.visualstudio.com/items?itemName=christian-kohler.path-intellisense)
@@ -41,10 +42,10 @@ order: 4
 - [React Native Tools](https://marketplace.visualstudio.com/items?itemName=msjsdiag.vscode-react-native)
 - [sort-imports](https://marketplace.visualstudio.com/items?itemName=amatiasq.sort-imports)
 - [SVG Preview](https://marketplace.cursorapi.com/items?itemName=SimonSiefke.svg-preview)
-<!-- - [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) -->
-<!-- - [Toggle Quotes](https://marketplace.visualstudio.com/items?itemName=BriteSnow.vscode-toggle-quotes) -->
-<!-- - [Visual Studio IntelliCode](https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode) -->
-<!-- - [vscode-styled-components](https://marketplace.visualstudio.com/items?itemName=jpoissonnier.vscode-styled-components) -->
+  <!-- - [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) -->
+  <!-- - [Toggle Quotes](https://marketplace.visualstudio.com/items?itemName=BriteSnow.vscode-toggle-quotes) -->
+  <!-- - [Visual Studio IntelliCode](https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode) -->
+  <!-- - [vscode-styled-components](https://marketplace.visualstudio.com/items?itemName=jpoissonnier.vscode-styled-components) -->
 - [WakaTime](https://marketplace.visualstudio.com/items?itemName=WakaTime.vscode-wakatime)
 
 <!-- ### Dotfiles

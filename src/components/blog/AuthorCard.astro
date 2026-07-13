@@ -9,7 +9,9 @@ interface Props {
 const { showBackground = false } = Astro.props;
 ---
 
-<div class:list={['author-card', showBackground && 'author-card-with-background']}>
+<div
+  class:list={['author-card', showBackground && 'author-card-with-background']}
+>
   <div class="author-card-image">
     <Image
       src={authorImage}
@@ -23,9 +25,9 @@ const { showBackground = false } = Astro.props;
   <div class="author-card-copy">
     <strong>Ayush Gupta </strong>
     <span>
-      is a frontend engineer who solo travels, photographs, crafts stories, writes blogs,
-      and occasionally designs. Currently working as a Senior Software Engineer at Circle
-      and fondly known as GuptaJi.
+      is a frontend engineer who solo travels, photographs, crafts stories,
+      writes blogs, and occasionally designs. Currently working as a Senior
+      Software Engineer at Circle and fondly known as GuptaJi.
     </span>
   </div>
 </div>

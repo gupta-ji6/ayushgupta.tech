@@ -45,9 +45,9 @@ order: 1
   2. [Marshall Willen 2](https://www.marshall.com/in/en/product/willen-ii?pid=1006714)
 - Backpack - [Tomtoc Navigator-T66 Travel Laptop Backpack](https://www.tomtoc.com/products/tomtoc-travel-backpack-40l)
 - Laptop Stand - [Proffisy Laptop Stand](https://www.amazon.in/gp/product/B08CGYYFRD)
-  <!-- 1. Wireless - [Realme Buds Wireless](https://www.realme.com/in/realme-buds-wireless) -->
-  <!-- 2. Wired - [Boat BassHeads 225](https://www.boat-lifestyle.com/products/bassheads-225) -->
-<!-- - Headphones - [Nu Republic Starboy 3](https://www.amazon.in/Nu-Republic-Starboy-Wireless-Headphones/dp/B07YL8SKMK) -->
+    <!-- 1. Wireless - [Realme Buds Wireless](https://www.realme.com/in/realme-buds-wireless) -->
+    <!-- 2. Wired - [Boat BassHeads 225](https://www.boat-lifestyle.com/products/bassheads-225) -->
+  <!-- - Headphones - [Nu Republic Starboy 3](https://www.amazon.in/Nu-Republic-Starboy-Wireless-Headphones/dp/B07YL8SKMK) -->
 - Phone Stand - [UltraProlink Butler Tabletop Stand](https://www.ultraprolink.com/products/ultraprolink-um1030-table-top-stand-for-tablets-smartphones-multi-angle-portable-universal-phone-holder)
 - Desk Mat - [Tukzer RGB Gaming Mousepad - Vivid](https://amzn.eu/d/7BLJLNL)
 <!-- - Power Bank - [Mi Power Bank 2i](https://www.mi.com/in/20000mah-mi-power-bank-2i/) (20000 mAh - Black) with [AWINNER Silicone Protector Case](https://www.amazon.in/gp/product/B07G47QXM1) -->

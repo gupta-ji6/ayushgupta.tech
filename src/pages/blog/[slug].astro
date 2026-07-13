@@ -70,17 +70,23 @@ const blogUrl = new URL(blogPath, siteConfig.siteUrl).toString();
       </p>
 
       <p class="subtitle post-tags">
-        {entry.data.tags.map((tag: string) => (
-          <a
-            href={`/blog/tags/${slugifyTag(tag)}`}
-            class="inline-link post-tag"
-          >
-            #{tag}
-          </a>
-        ))}
+        {
+          entry.data.tags.map((tag: string) => (
+            <a
+              href={`/blog/tags/${slugifyTag(tag)}`}
+              class="inline-link post-tag"
+            >
+              #{tag}
+            </a>
+          ))
+        }
       </p>
 
-      <SocialShare title={entry.data.title} tags={entry.data.tags} url={blogUrl} />
+      <SocialShare
+        title={entry.data.title}
+        tags={entry.data.tags}
+        url={blogUrl}
+      />
     </header>
 
     <div class="post-content">

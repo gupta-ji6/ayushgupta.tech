@@ -117,7 +117,9 @@ const contactEntry = contact[0];
         '(prefers-reduced-motion: reduce)',
       ).matches;
 
-      const revealItems = Array.from(document.querySelectorAll('[data-reveal]'));
+      const revealItems = Array.from(
+        document.querySelectorAll('[data-reveal]'),
+      );
       if (prefersReducedMotion) {
         revealItems.forEach((item) => item.classList.add('is-visible'));
       } else {
@@ -223,7 +225,10 @@ const contactEntry = contact[0];
         const sync = () => {
           cards.forEach((card, index) => {
             const isOverflow = index >= limit;
-            card.classList.toggle('project-card-hidden', isOverflow && !expanded);
+            card.classList.toggle(
+              'project-card-hidden',
+              isOverflow && !expanded,
+            );
           });
 
           button.textContent = expanded

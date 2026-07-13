@@ -15,11 +15,12 @@ order: 2
 <!-- ### Design & Development -->
 
 <!-- - [ColorZilla](https://chrome.google.com/webstore/detail/colorzilla/bhlhnicpbhignbdhedgjhgdocnmhomnp) -->
+
 - [Refined GitHub](https://chromewebstore.google.com/detail/refined-github/hlepfoohegkhhmjieoechaddaejaokhf)
 - [JSONVue](https://chromewebstore.google.com/detail/jsonvue/chklaanhfefbnpoihckbnefhakgolnmc)
 - [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
-<!-- - [Responsively Helper](https://chrome.google.com/webstore/detail/responsively-helper/jhphiidjkooiaollfiknkokgodbaddcj) -->
-<!-- - [VisBug](https://chrome.google.com/webstore/detail/visbug/cdockenadnadldjbbgcallicgledbeoc) -->
+  <!-- - [Responsively Helper](https://chrome.google.com/webstore/detail/responsively-helper/jhphiidjkooiaollfiknkokgodbaddcj) -->
+  <!-- - [VisBug](https://chrome.google.com/webstore/detail/visbug/cdockenadnadldjbbgcallicgledbeoc) -->
 - [WhatFont](https://chrome.google.com/webstore/detail/whatfont/jabopobgcpjmedljpbcaablpmlmfcogm)
 
 <!-- ### Productivity -->
@@ -28,15 +29,16 @@ order: 2
 <!-- - [Honey](https://chrome.google.com/webstore/detail/honey/bmnlcjabgnpnenekpadlanbbkooimhnj) -->
 <!-- - [Kill News Feed](https://chrome.google.com/webstore/detail/kill-news-feed/hjobfcedfgohjkaieocljfcppjbkglfd) -->
 <!-- - [Notion Web Clipper](https://chrome.google.com/webstore/detail/notion-web-clipper/knheggckgoiihginacbkhaalnibhilkk) -->
+
 - [OneTab](https://chrome.google.com/webstore/detail/onetab/chphlpgkkbolifaimnlloiipkdnihall)
 <!-- - [The Great Suspender](https://chrome.google.com/webstore/detail/the-great-suspender/klbibkeccnjlkjkiokjodocebajanakg?hl=en) -->
 - [Wikiwand: Wikipedia Modernized](https://chrome.google.com/webstore/detail/wikiwand-wikipedia-modern/emffkefkbkpkgpdeeooapgaicgmcbolj)
-<!-- - [Video Speed Controller](https://chrome.google.com/webstore/detail/video-speed-controller/nffaoalbilbmmfgbnbgppjihopabppdk) -->
-<!-- - [Save to Pocket](https://chrome.google.com/webstore/detail/save-to-pocket/niloccemoadcdkdjlinkgdfekeahmflj) -->
-<!-- - [Simplify Gmail](https://chrome.google.com/webstore/detail/simplify-gmail/pbmlfaiicoikhdbjagjbglnbfcbcojpj) -->
-<!-- - [Twitter Bookmarks Search](https://chrome.google.com/webstore/detail/twitter-bookmarks-search/okjjfejbomkalpiioiffppeiobahipon) -->
-<!-- - [Password Alert](https://chrome.google.com/webstore/detail/password-alert/noondiphcddnnabmjcihcjfbhfklnnep) -->
-<!-- - [Picture-in-Picture Extension (by Google)](https://chrome.google.com/webstore/detail/picture-in-picture-extens/hkgfoiooedgoejojocmhlaklaeopbecg) -->
+  <!-- - [Video Speed Controller](https://chrome.google.com/webstore/detail/video-speed-controller/nffaoalbilbmmfgbnbgppjihopabppdk) -->
+  <!-- - [Save to Pocket](https://chrome.google.com/webstore/detail/save-to-pocket/niloccemoadcdkdjlinkgdfekeahmflj) -->
+  <!-- - [Simplify Gmail](https://chrome.google.com/webstore/detail/simplify-gmail/pbmlfaiicoikhdbjagjbglnbfcbcojpj) -->
+  <!-- - [Twitter Bookmarks Search](https://chrome.google.com/webstore/detail/twitter-bookmarks-search/okjjfejbomkalpiioiffppeiobahipon) -->
+  <!-- - [Password Alert](https://chrome.google.com/webstore/detail/password-alert/noondiphcddnnabmjcihcjfbhfklnnep) -->
+  <!-- - [Picture-in-Picture Extension (by Google)](https://chrome.google.com/webstore/detail/picture-in-picture-extens/hkgfoiooedgoejojocmhlaklaeopbecg) -->
 
 ## Development
 
@@ -67,6 +69,7 @@ order: 2
 ## Others
 
 <!-- - Communication - [Discord](https://discord.com/download), [WhatsApp](https://www.whatsapp.com/download), [Telegram](https://desktop.telegram.org/) -->
+
 - [Raycast](https://www.raycast.com/)
 - [Shottr](https://shottr.cc/)
 - [Maccy](https://maccy.app/)
@@ -82,10 +85,10 @@ order: 2
 <!-- - [Krisp](https://krisp.ai/) -->
 - [Kap](https://getkap.co/)
 - [Gifski](https://gif.ski/)
-<!-- - [NetSpeedMonitor](https://filehippo.com/download_netspeedmonitor64) -->
-<!-- - [Recuva](https://www.ccleaner.com/recuva) -->
-<!-- - [DaVinci Resolve](https://www.blackmagicdesign.com/in/products/davinciresolve/) -->
-<!-- - [ScreenToGif](https://www.screentogif.com/) -->
-<!-- - [ShareX](https://getsharex.com/) -->
-<!-- - [CCleaner](https://www.ccleaner.com/) -->
-<!-- - [7Zip](https://www.7-zip.org/) -->
+  <!-- - [NetSpeedMonitor](https://filehippo.com/download_netspeedmonitor64) -->
+  <!-- - [Recuva](https://www.ccleaner.com/recuva) -->
+  <!-- - [DaVinci Resolve](https://www.blackmagicdesign.com/in/products/davinciresolve/) -->
+  <!-- - [ScreenToGif](https://www.screentogif.com/) -->
+  <!-- - [ShareX](https://getsharex.com/) -->
+  <!-- - [CCleaner](https://www.ccleaner.com/) -->
+  <!-- - [7Zip](https://www.7-zip.org/) -->

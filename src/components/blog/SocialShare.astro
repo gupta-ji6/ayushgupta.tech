@@ -54,11 +54,13 @@ const twitterTags = encodeURIComponent(tags.join(','));
   >
     <span class="social-share-icon-default"><CopyIcon /></span>
     <span class="social-share-icon-success"><CheckIcon /></span>
-    {showText && (
-      <span class="social-share-label" data-copy-label>
-        Copy Link
-      </span>
-    )}
+    {
+      showText && (
+        <span class="social-share-label" data-copy-label>
+          Copy Link
+        </span>
+      )
+    }
   </button>
 
   <button

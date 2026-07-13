@@ -1,4 +1,5 @@
 ---
+
 ---
 
 <script is:inline>
@@ -8,7 +9,9 @@
         '(prefers-reduced-motion: reduce)',
       ).matches;
 
-      const targets = document.querySelectorAll('.page-reveal:not(.is-revealed)');
+      const targets = document.querySelectorAll(
+        '.page-reveal:not(.is-revealed)',
+      );
 
       if (prefersReducedMotion) {
         targets.forEach((el) => el.classList.add('is-revealed'));

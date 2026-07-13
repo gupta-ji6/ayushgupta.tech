@@ -19,7 +19,9 @@ export const formatBlogDate = (date: string) =>
   });
 
 export const getBlogPath = (entry: BlogEntry) =>
-  entry.data.slug.endsWith('/') ? entry.data.slug.slice(0, -1) : entry.data.slug;
+  entry.data.slug.endsWith('/')
+    ? entry.data.slug.slice(0, -1)
+    : entry.data.slug;
 
 export const getBlogSlugSegment = (entry: BlogEntry) =>
   getBlogPath(entry).replace(/^\/blog\//, '');
@@ -60,7 +62,10 @@ export const getPublishedTagSummaries = (entries: BlogEntry[]) => {
   );
 };
 
-export const getPublishedEntriesForTag = (entries: BlogEntry[], tagSlug: string) =>
+export const getPublishedEntriesForTag = (
+  entries: BlogEntry[],
+  tagSlug: string,
+) =>
   getPublishedBlogEntries(entries).filter((entry) =>
     entry.data.tags.some((tag: string) => slugifyTag(tag) === tagSlug),
   );

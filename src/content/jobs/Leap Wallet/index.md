@@ -7,6 +7,7 @@ range: 'Apr 2024 - Mar 2026'
 url: 'https://leapwallet.io/'
 show: 'true'
 ---
+
 - Spearheaded a high-performing remote mobile team building Leap & Compass Wallet cross-platform mobile apps, achieving exceptional user satisfaction with 4.9 & 4.7 ratings (Google Play/App Store) and growing the user base to 800K+ active users.
 - Extensively focused on orchestrating comprehensive mobile performance optimization initiatives, resulting in significant improvements in app speed, stability, and user experience through data-driven production monitoring.
 - Delivered transformative performance gains including 90% reduction in chain switching times, optimized home page loading & scroll peformance, streamlined onboarding flow, and optimized core features (stake, swap, send, onboarding, and more) through strategic re-rendering optimization.
