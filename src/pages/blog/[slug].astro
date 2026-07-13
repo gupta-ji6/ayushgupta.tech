@@ -264,6 +264,33 @@ const blogUrl = new URL(blogPath, siteConfig.siteUrl).toString();
     padding-left: 6px;
   }
 
+  .post-content :global(pre) {
+    position: relative;
+    margin: 2em 0;
+    padding: 20px 20px 20px 20px;
+    padding-top: 44px;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .post-content :global(pre)::before {
+    content: attr(data-language);
+    position: absolute;
+    top: 0;
+    left: 20px;
+    padding: 0.25rem 0.5rem;
+    background: var(--color-lightest-navy);
+    color: var(--color-white);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 0 0 3px 3px;
+  }
+
   .post-content :global(blockquote) {
     margin: 0;
     padding: 0.75rem 1rem;
