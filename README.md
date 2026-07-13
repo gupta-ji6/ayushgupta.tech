@@ -9,6 +9,7 @@ Source for [ayushgupta.tech](https://ayushgupta.tech), built with [Astro](https:
 - Tailwind CSS 4 plus local CSS for parity-focused styling
 - Astro content collections for homepage content, blog posts, and uses data
 - Netlify adapter and Netlify Functions for deployment and Spotify proxying
+- Supabase (via an Astro API route proxy) for blog comments and song recommendations
 
 ## Development
 
@@ -37,11 +38,11 @@ Site content lives under `src/content/`:
 
 ## Environment Variables
 
-Spotify features use server-side environment variables for the Netlify function and Astro server output. See `.env.example` for the current keys.
+Spotify and Supabase features use server-side environment variables for the Netlify function and Astro server output. See `.env.example` for the current keys.
 
 ## Deployment
 
-The site is deployed on [Netlify](https://netlify.com). Static assets live in `public/`, and the Spotify proxy runs from `netlify/functions/spotify.cjs`.
+The site is deployed on [Netlify](https://netlify.com). Static assets live in `public/`, the Spotify proxy runs from `netlify/functions/spotify.cjs`, and the Supabase comments proxy runs from the Astro API route `src/pages/api/comments.ts`.
 
 ## Links
 

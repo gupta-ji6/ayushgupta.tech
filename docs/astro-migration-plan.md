@@ -471,7 +471,7 @@ Remove:
 
 ## Future TODOs (Post-Launch)
 
-- [ ] Comments system with Supabase (replace dropped Hasura integration)
+- [x] Comments system with Supabase — done pre-launch after all: blog comments island + music song-recommendation form, proxied through the `src/pages/api/comments.ts` Astro API route (server-side `SUPABASE_URL`/`SUPABASE_KEY`)
 - [ ] Dynamic OG image generation per blog post (via Satori/`@vercel/og`-style)
 - [ ] RSS feed (`@astrojs/rss` integration)
 - [ ] Dark/light theme toggle (currently dark-only)
