@@ -62,7 +62,7 @@ export default function NowPlayingWidget({
   mode = 'footer',
   introSeed = 0,
 }: NowPlayingWidgetProps) {
-  const { data: track, error, loading, refetch } = useNowPlayingTrack();
+  const { data: track, error, refetch } = useNowPlayingTrack();
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
