@@ -1,5 +1,14 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import {
+  useEffect,
+  useState,
+  type ChangeEvent,
+  type ReactNode,
+  type SubmitEvent,
+} from 'react';
+import { toast } from 'react-hot-toast';
 
+import Notifications from '@components/Notifications';
+import { useComments } from '@hooks/useComments';
 import {
   useFavouritePlaylist,
   useRecentlyPlayedTracks,
@@ -287,6 +296,44 @@ export default function MusicExperience({
   const topArtistsQuery = useTopSpotifyItems('artists', topArtistsRange, 10);
   const playlistsQuery = useUserPlaylists(10);
 
+  const { addComment, count } = useComments('/music/');
+  const [songRecommendationData, setSongRecommendationData] = useState({
+    authorName: '',
+    comment: '',
+  });
+
+  const onNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSongRecommendationData((oldCommentData) => ({
+      ...oldCommentData,
+      authorName: event.target.value,
+    }));
+  };
+
+  const onCommentChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSongRecommendationData((oldCommentData) => ({
+      ...oldCommentData,
+      comment: event.target.value,
+    }));
+  };
+
+  const onSongSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    addComment({
+      content: songRecommendationData.comment,
+      author: songRecommendationData.authorName,
+    });
+    toast.success(
+      'People who recommend songs are invaluable. You are my precious!',
+      {
+        duration: 5000,
+      },
+    );
+    setSongRecommendationData({
+      authorName: '',
+      comment: '',
+    });
+  };
+
   useEffect(() => {
     const frame = requestAnimationFrame(() => setIsRevealed(true));
     return () => cancelAnimationFrame(frame);
@@ -426,20 +473,17 @@ export default function MusicExperience({
         </DisclosureSection>
       </section>
 
-      {/* TODO: Re-add song recommendation form (original used Supabase via useComments hook).
-         Requires: install @supabase/supabase-js, create Astro API route to proxy writes,
-         port useComments hook, render form with name + song inputs below the CTA text. */}
       <section className="music-cta">
         <h2>Have similar music taste?</h2>
         <p>
-          Recommend a song on{' '}
+          Fill the form below or recommend me your favorite songs on{' '}
           <a
             className="music-inline-link"
             href="https://x.com/_guptaji_"
             target="_blank"
             rel="noreferrer noopener"
           >
-            Twitter
+            twitter
           </a>{' '}
           or{' '}
           <a
@@ -448,11 +492,47 @@ export default function MusicExperience({
             target="_blank"
             rel="noreferrer noopener"
           >
-            Instagram
+            instagram
           </a>
           .
         </p>
+
+        <form onSubmit={onSongSubmit}>
+          <fieldset className="music-recommendation-fieldset">
+            <legend>recommend a song to ayush</legend>
+            <div className="music-recommendation-count">
+              {count} people have suggested songs which ayush liked!
+            </div>
+            <div className="music-recommendation-entry">
+              <label htmlFor="name">Name</label>
+              <input
+                id="name"
+                type="text"
+                placeholder="Your name or handle"
+                onChange={onNameChange}
+                value={songRecommendationData.authorName}
+                required
+              />
+            </div>
+            <div className="music-recommendation-entry">
+              <label htmlFor="song">Song</label>
+              <input
+                id="song"
+                type="text"
+                placeholder="Track name or link"
+                onChange={onCommentChange}
+                value={songRecommendationData.comment}
+                required
+              />
+            </div>
+            <button type="submit" className="big-button">
+              Send Recommendation
+            </button>
+          </fieldset>
+        </form>
       </section>
+
+      <Notifications />
     </div>
   );
 }

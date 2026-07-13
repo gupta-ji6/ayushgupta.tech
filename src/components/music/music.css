@@ -319,6 +319,7 @@
 .music-cta h2 {
   margin-bottom: 14px;
   color: var(--color-lightest-slate);
+  font-size: 30px;
 }
 
 .music-cta p {
@@ -328,6 +329,76 @@
 
 .music-inline-link {
   color: var(--color-green);
+}
+
+.music-recommendation-fieldset {
+  margin-top: 5vh;
+  padding: 5vh;
+  border: none;
+  border-radius: 3px;
+  background-color: var(--color-dark-navy);
+  box-shadow: 0 10px 30px -15px var(--color-shadow-navy);
+  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.music-recommendation-fieldset:hover,
+.music-recommendation-fieldset:focus-within {
+  box-shadow: 0 20px 30px -15px var(--color-shadow-navy);
+}
+
+.music-recommendation-fieldset legend {
+  padding: 10px;
+  border-radius: 3px;
+  background-color: var(--color-light-navy);
+  color: var(--color-green);
+  font-family: var(--font-mono);
+}
+
+.music-recommendation-count {
+  margin-top: -3vh;
+  margin-bottom: 5vh;
+}
+
+.music-recommendation-entry {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.music-recommendation-entry label {
+  flex: 0.3;
+  flex-shrink: 0;
+  margin-bottom: 10px;
+  padding-right: 10px;
+  font-size: 22px;
+  vertical-align: middle;
+}
+
+.music-recommendation-entry input {
+  flex: 0.7;
+  width: 50vw;
+  max-width: 500px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid var(--color-trans-green);
+  border-radius: 3px;
+  background-color: var(--color-light-navy);
+  color: var(--color-white);
+  font-size: 18px;
+}
+
+.music-recommendation-entry input:focus {
+  border: 1px solid var(--color-green);
+  outline: none;
+}
+
+.music-recommendation-entry input::placeholder {
+  color: var(--color-slate);
+}
+
+.music-recommendation-fieldset .big-button {
+  margin-top: 5vh;
 }
 
 @keyframes music-rotation {
