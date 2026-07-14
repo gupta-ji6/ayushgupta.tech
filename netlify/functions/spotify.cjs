@@ -98,8 +98,10 @@ exports.handler = async (event) => {
       },
     });
 
+    // No body key: dev emulation converts these to `new Response(body, ...)`,
+    // and undici rejects any non-null body (even '') for 204 responses.
     if (spotifyRes.status === 204 || spotifyRes.status === 202) {
-      return { statusCode: spotifyRes.status, headers, body: '' };
+      return { statusCode: spotifyRes.status, headers };
     }
 
     const body = await spotifyRes.text();

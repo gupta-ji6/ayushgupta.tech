@@ -5,6 +5,15 @@ import sitemap from '@astrojs/sitemap';
 import netlify from '@astrojs/netlify';
 import tailwindcss from '@tailwindcss/vite';
 import rehypeExternalLinks from 'rehype-external-links';
+import { loadEnv } from 'vite';
+
+// Astro exposes .env values via import.meta.env only; the emulated Netlify
+// Functions (netlify/functions/*) read process.env, so mirror .env into it
+// for local dev. Existing process.env values (real Netlify builds) win.
+const fileEnv = loadEnv(process.env.NODE_ENV ?? 'development', process.cwd(), '');
+for (const [key, value] of Object.entries(fileEnv)) {
+  process.env[key] ??= value;
+}
 
 export default defineConfig({
   site: 'https://ayushgupta.tech',
