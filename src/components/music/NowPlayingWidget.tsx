@@ -87,6 +87,8 @@ export default function NowPlayingWidget({
     }
 
     const audio = new Audio(track.preview_url);
+    // Don't download the 30s preview MP3 until the user actually plays it.
+    audio.preload = 'none';
     const handleEnded = () => setIsPreviewPlaying(false);
     audio.addEventListener('ended', handleEnded);
     audioRef.current = audio;

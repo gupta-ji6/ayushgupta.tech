@@ -79,17 +79,31 @@ function DisclosureSection({
   subtitle,
   title,
 }: DisclosureSectionProps) {
+  // Sections start closed, so defer mounting their content (and the
+  // Spotify fetches inside) until the section is first opened.
+  const [hasOpened, setHasOpened] = useState(false);
+
   return (
     <section className="disclosure">
-      <details>
+      <details
+        onToggle={(event) => {
+          if (event.currentTarget.open) {
+            setHasOpened(true);
+          }
+        }}
+      >
         <summary>
           <span className="medium-heading disclosure-title">{title}</span>
           <p className="disclosure-subtitle">{subtitle}</p>
         </summary>
 
         <div className="disclosure-body">
-          {controls}
-          {children}
+          {hasOpened ? (
+            <>
+              {controls}
+              {children}
+            </>
+          ) : null}
         </div>
       </details>
     </section>
@@ -276,6 +290,111 @@ function PlaylistList({
   );
 }
 
+function TopTracksPanel({ range }: { range: SpotifyTimeRange }) {
+  const query = useTopSpotifyItems('tracks', range, 10);
+
+  return (
+    <ResourceState
+      query={query as QueryState<SpotifyTrack[]>}
+      loadingLabel="Loading Ayush's top tracks..."
+      emptyLabel="No top tracks are available right now."
+    >
+      {(tracks) => <TrackList prefix="top-track" tracks={tracks} />}
+    </ResourceState>
+  );
+}
+
+function FavouritePlaylistPanel() {
+  const query = useFavouritePlaylist();
+
+  return (
+    <ResourceState
+      query={query as QueryState<SpotifyPlaylist | null>}
+      loadingLabel="Loading favourite playlist..."
+      emptyLabel="Favourite playlist is unavailable right now."
+    >
+      {(playlist) => (
+        <PlaylistList
+          prefix="favourite-playlist"
+          playlists={playlist ? [playlist] : []}
+        />
+      )}
+    </ResourceState>
+  );
+}
+
+function RecentlyPlayedPanel() {
+  const query = useRecentlyPlayedTracks(10);
+
+  return (
+    <ResourceState
+      query={query as QueryState<SpotifyRecentlyPlayedItem[]>}
+      loadingLabel="Loading recently played tracks..."
+      emptyLabel="No recent listening history is available right now."
+    >
+      {(items) => (
+        <TrackList
+          prefix="recent-track"
+          tracks={items
+            .map((item) => item.track)
+            .filter((track): track is SpotifyTrack => Boolean(track?.name))}
+        />
+      )}
+    </ResourceState>
+  );
+}
+
+function SavedTracksPanel() {
+  const query = useSavedTracks(10);
+
+  return (
+    <ResourceState
+      query={query as QueryState<SpotifySavedTrackItem[]>}
+      loadingLabel="Loading recently saved tracks..."
+      emptyLabel="No recently saved tracks are available right now."
+    >
+      {(items) => (
+        <TrackList
+          prefix="saved-track"
+          tracks={items
+            .map((item) => item.track)
+            .filter((track): track is SpotifyTrack => Boolean(track?.name))}
+        />
+      )}
+    </ResourceState>
+  );
+}
+
+function TopArtistsPanel({ range }: { range: SpotifyTimeRange }) {
+  const query = useTopSpotifyItems('artists', range, 10);
+
+  return (
+    <ResourceState
+      query={query as QueryState<SpotifyArtist[]>}
+      loadingLabel="Loading Ayush's top artists..."
+      emptyLabel="No top artists are available right now."
+    >
+      {(artists) => <ArtistList artists={artists} />}
+    </ResourceState>
+  );
+}
+
+function SavedPlaylistsPanel() {
+  const query = useUserPlaylists(10);
+
+  return (
+    <ResourceState
+      query={query as QueryState<SpotifyPlaylist[]>}
+      loadingLabel="Loading saved playlists..."
+      emptyLabel="No saved playlists are available right now."
+    >
+      {(playlists) => (
+        <PlaylistList prefix="saved-playlist" playlists={playlists} />
+      )}
+    </ResourceState>
+  );
+}
+
 interface MusicExperienceProps {
   introSeed?: number;
 }
@@ -288,13 +407,6 @@ export default function MusicExperience({
   const [topArtistsRange, setTopArtistsRange] =
     useState<SpotifyTimeRange>('short_term');
   const [isRevealed, setIsRevealed] = useState(false);
-
-  const topTracksQuery = useTopSpotifyItems('tracks', topTracksRange, 10);
-  const favouritePlaylistQuery = useFavouritePlaylist();
-  const recentlyPlayedQuery = useRecentlyPlayedTracks(10);
-  const savedTracksQuery = useSavedTracks(10);
-  const topArtistsQuery = useTopSpotifyItems('artists', topArtistsRange, 10);
-  const playlistsQuery = useUserPlaylists(10);
 
   const { addComment, count } = useComments('/music/');
   const [songRecommendationData, setSongRecommendationData] = useState({
@@ -365,77 +477,28 @@ export default function MusicExperience({
             />
           }
         >
-          <ResourceState
-            query={topTracksQuery as QueryState<SpotifyTrack[]>}
-            loadingLabel="Loading Ayush's top tracks..."
-            emptyLabel="No top tracks are available right now."
-          >
-            {(tracks) => <TrackList prefix="top-track" tracks={tracks} />}
-          </ResourceState>
+          <TopTracksPanel range={topTracksRange} />
         </DisclosureSection>
 
         <DisclosureSection
           title="Favourite Playlist"
           subtitle="A playlist I would not share with just anyone. It started as a late-night companion and grew into a collection of feel-good and indie songs."
         >
-          <ResourceState
-            query={favouritePlaylistQuery as QueryState<SpotifyPlaylist | null>}
-            loadingLabel="Loading favourite playlist..."
-            emptyLabel="Favourite playlist is unavailable right now."
-          >
-            {(playlist) => (
-              <PlaylistList
-                prefix="favourite-playlist"
-                playlists={playlist ? [playlist] : []}
-              />
-            )}
-          </ResourceState>
+          <FavouritePlaylistPanel />
         </DisclosureSection>
 
         <DisclosureSection
           title="Recently Played"
           subtitle="Recent tracks I played while discovering new music, or maybe listening to the same old shiz for the nth time."
         >
-          <ResourceState
-            query={
-              recentlyPlayedQuery as QueryState<SpotifyRecentlyPlayedItem[]>
-            }
-            loadingLabel="Loading recently played tracks..."
-            emptyLabel="No recent listening history is available right now."
-          >
-            {(items) => (
-              <TrackList
-                prefix="recent-track"
-                tracks={items
-                  .map((item) => item.track)
-                  .filter((track): track is SpotifyTrack =>
-                    Boolean(track?.name),
-                  )}
-              />
-            )}
-          </ResourceState>
+          <RecentlyPlayedPanel />
         </DisclosureSection>
 
         <DisclosureSection
           title="Recently Saved Tracks"
           subtitle="Spotify still does not let us share liked songs as a playlist, so this is the next best thing."
         >
-          <ResourceState
-            query={savedTracksQuery as QueryState<SpotifySavedTrackItem[]>}
-            loadingLabel="Loading recently saved tracks..."
-            emptyLabel="No recently saved tracks are available right now."
-          >
-            {(items) => (
-              <TrackList
-                prefix="saved-track"
-                tracks={items
-                  .map((item) => item.track)
-                  .filter((track): track is SpotifyTrack =>
-                    Boolean(track?.name),
-                  )}
-              />
-            )}
-          </ResourceState>
+          <SavedTracksPanel />
         </DisclosureSection>
 
         <DisclosureSection
@@ -448,28 +511,14 @@ export default function MusicExperience({
             />
           }
         >
-          <ResourceState
-            query={topArtistsQuery as QueryState<SpotifyArtist[]>}
-            loadingLabel="Loading Ayush's top artists..."
-            emptyLabel="No top artists are available right now."
-          >
-            {(artists) => <ArtistList artists={artists} />}
-          </ResourceState>
+          <TopArtistsPanel range={topArtistsRange} />
         </DisclosureSection>
 
         <DisclosureSection
           title="Recently Saved Playlists"
           subtitle="Some playlists are too precious not to save."
         >
-          <ResourceState
-            query={playlistsQuery as QueryState<SpotifyPlaylist[]>}
-            loadingLabel="Loading saved playlists..."
-            emptyLabel="No saved playlists are available right now."
-          >
-            {(playlists) => (
-              <PlaylistList prefix="saved-playlist" playlists={playlists} />
-            )}
-          </ResourceState>
+          <SavedPlaylistsPanel />
         </DisclosureSection>
       </section>
 

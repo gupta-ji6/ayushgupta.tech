@@ -69,43 +69,92 @@ export interface SpotifyPlaylist {
   tracks?: { total?: number };
 }
 
+// Module-level cache: survives island remounts and ClientRouter soft
+// navigations, so widgets re-entering the page reuse recent data instead
+// of re-hitting the serverless proxy. In-flight dedupe collapses
+// concurrent identical requests (e.g. hero + footer now-playing).
+const SPOTIFY_NOW_PLAYING_TTL_MS = 30_000;
+const SPOTIFY_LIBRARY_TTL_MS = 5 * 60_000;
+
+interface SpotifyCacheEntry {
+  data: unknown;
+  expiresAt: number;
+}
+
+const spotifyResponseCache = new Map<string, SpotifyCacheEntry>();
+const spotifyInflightRequests = new Map<string, Promise<unknown>>();
+
+function cacheTtlForPath(path: string): number {
+  return path === '/me/player/currently-playing'
+    ? SPOTIFY_NOW_PLAYING_TTL_MS
+    : SPOTIFY_LIBRARY_TTL_MS;
+}
+
 async function spotifyGet<T>(
   path: string,
   params: Record<string, string | number> = {},
 ): Promise<T | undefined> {
-  if (spotifyBackoffUntil > Date.now()) {
-    return undefined;
-  }
-
   const qs = new URLSearchParams({
     path,
     ...Object.fromEntries(
       Object.entries(params).map(([key, value]) => [key, String(value)]),
     ),
   });
+  const cacheKey = qs.toString();
+
+  const cached = spotifyResponseCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) {
+    return cached.data as T | undefined;
+  }
+
+  const inflight = spotifyInflightRequests.get(cacheKey);
+  if (inflight) {
+    return (await inflight) as T | undefined;
+  }
+
+  if (spotifyBackoffUntil > Date.now()) {
+    return undefined;
+  }
+
+  const request = (async (): Promise<T | undefined> => {
+    try {
+      const response = await fetch(`${SPOTIFY_PROXY}?${qs.toString()}`, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        spotifyBackoffUntil = Date.now() + SPOTIFY_FAILURE_BACKOFF_MS;
+        return undefined;
+      }
+
+      const data =
+        response.status === 204 || response.status === 202
+          ? undefined
+          : ((await response.json()) as T);
+
+      spotifyBackoffUntil = 0;
+      // Cache 204s too ("nothing playing" is a valid, reusable answer).
+      spotifyResponseCache.set(cacheKey, {
+        data,
+        expiresAt: Date.now() + cacheTtlForPath(path),
+      });
+
+      return data;
+    } catch (error) {
+      spotifyBackoffUntil = Date.now() + SPOTIFY_FAILURE_BACKOFF_MS;
+      console.error('[spotify]', error);
+      return undefined;
+    }
+  })();
+
+  spotifyInflightRequests.set(cacheKey, request);
 
   try {
-    const response = await fetch(`${SPOTIFY_PROXY}?${qs.toString()}`, {
-      headers: {
-        Accept: 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      spotifyBackoffUntil = Date.now() + SPOTIFY_FAILURE_BACKOFF_MS;
-      return undefined;
-    }
-
-    if (response.status === 204 || response.status === 202) {
-      return undefined;
-    }
-
-    spotifyBackoffUntil = 0;
-    return (await response.json()) as T;
-  } catch (error) {
-    spotifyBackoffUntil = Date.now() + SPOTIFY_FAILURE_BACKOFF_MS;
-    console.error('[spotify]', error);
-    return undefined;
+    return await request;
+  } finally {
+    spotifyInflightRequests.delete(cacheKey);
   }
 }
 
