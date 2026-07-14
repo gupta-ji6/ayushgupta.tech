@@ -74,13 +74,15 @@ function cacheHeadersForPath(path) {
   if (isNowPlaying) {
     return {
       'Cache-Control': 'public, max-age=30',
-      'Netlify-CDN-Cache-Control': 'public, max-age=30, stale-while-revalidate=60',
+      'Netlify-CDN-Cache-Control':
+        'public, durable, max-age=30, stale-while-revalidate=60',
     };
   }
 
   return {
     'Cache-Control': 'public, max-age=300',
-    'Netlify-CDN-Cache-Control': 'public, max-age=300, stale-while-revalidate=900',
+    'Netlify-CDN-Cache-Control':
+      'public, durable, max-age=300, stale-while-revalidate=900',
   };
 }
 
