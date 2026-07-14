@@ -21,7 +21,7 @@ interface WidgetContextLine {
 const SPOTIFY_PROFILE =
   'https://open.spotify.com/user/31yuvamoxkbmkpvhpunh6xwoshii';
 
-const PLAYING_INTROS: WidgetContextLine[] = [
+export const PLAYING_INTROS: WidgetContextLine[] = [
   { emoji: '💫', copy: 'vibing to' },
   { emoji: '🎵', copy: 'listening to' },
   { emoji: '😇', copy: 'tripping on' },
@@ -41,12 +41,12 @@ const NOT_PLAYING_INTROS: WidgetContextLine[] = [
   { emoji: '🤝🏻', copy: 'maybe i had to stop music to attend a meeting' },
 ];
 
-function itemFromSeed<T>(items: T[], seed: number) {
+export function itemFromSeed<T>(items: T[], seed: number) {
   const index = Math.floor(seed * items.length) % items.length;
   return items[index] ?? items[0]!;
 }
 
-function getSpotifyHref(track: SpotifyTrack | null) {
+export function getSpotifyHref(track: SpotifyTrack | null) {
   return track?.external_urls?.spotify ?? SPOTIFY_PROFILE;
 }
 

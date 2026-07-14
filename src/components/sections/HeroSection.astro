@@ -1,8 +1,11 @@
 ---
 import { render } from 'astro:content';
 
+import HeroNowPlaying from '@components/HeroNowPlaying';
+
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const introSeed = Math.random();
 ---
 
 <section class="section-shell hero-shell">
@@ -32,9 +35,16 @@ const { Content } = await render(entry);
       <Content />
     </div>
     <div
-      class="reveal-item hero-cta"
+      class="hero-now-playing-slot reveal-item"
       data-reveal
       style="--reveal-delay: 400ms;"
+    >
+      <HeroNowPlaying client:load introSeed={introSeed} />
+    </div>
+    <div
+      class="reveal-item hero-cta"
+      data-reveal
+      style="--reveal-delay: 500ms;"
     >
       <a href="/resume" class="button-link">
         {entry.data.contactText}
@@ -77,6 +87,22 @@ const { Content } = await render(entry);
 
   .hero-copy :global(p:last-child) {
     margin-bottom: 0;
+  }
+
+  .hero-now-playing-slot :global(.hero-now-playing) {
+    max-width: 540px;
+    margin: 24px 0 0;
+    color: var(--color-light-slate);
+    font-size: clamp(18px, 2.25vw, 22px);
+    line-height: 1.55;
+  }
+
+  .hero-now-playing-slot :global(.hero-now-playing-copy) {
+    display: inline-block;
+  }
+
+  .hero-now-playing-slot :global(.hero-now-playing-copy::first-letter) {
+    text-transform: uppercase;
   }
 
   .hero-cta {
