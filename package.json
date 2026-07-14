@@ -15,7 +15,8 @@
     "preview": "npm run dev --",
     "check": "astro check",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx,astro}\" \"astro.config.mjs\" \"eslint.config.mjs\" \"prettier.config.js\"",
-    "format": "prettier --write \"src/**/*.{astro,ts,tsx,js,jsx,md,mdx,css}\""
+    "format": "prettier --write \"src/**/*.{astro,ts,tsx,js,jsx,md,mdx,css}\"",
+    "doctor": "npx react-doctor@latest"
   },
   "overrides": {
     "vite": "7.3.2"
@@ -51,6 +52,7 @@
     "eslint-plugin-astro": "1.7.0",
     "globals": "16.5.0",
     "node-addon-api": "8.7.0",
-    "node-gyp": "12.2.0"
+    "node-gyp": "12.2.0",
+    "react-doctor": "0.7.7"
   }
 }
