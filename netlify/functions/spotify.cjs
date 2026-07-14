@@ -3,7 +3,15 @@ const fetch = globalThis.fetch || require('node-fetch');
 const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token';
 const SPOTIFY_API_BASE = 'https://api.spotify.com/v1';
 
+// Reuse the access token across invocations of a warm function instance
+// instead of hitting Spotify's token endpoint on every request.
+let cachedToken = { value: null, expiresAt: 0 };
+
 async function getAccessToken() {
+  if (cachedToken.value && Date.now() < cachedToken.expiresAt) {
+    return cachedToken.value;
+  }
+
   const clientId = process.env.SPOTIFY_CLIENT_ID;
   const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
   const refreshToken = process.env.SPOTIFY_REFRESH_TOKEN;
@@ -31,7 +39,14 @@ async function getAccessToken() {
     throw new Error(`Token refresh failed: ${response.status}`);
   }
 
-  return response.json();
+  const data = await response.json();
+  const lifetimeSeconds = Math.max((data.expires_in ?? 3600) - 60, 0);
+  cachedToken = {
+    value: data.access_token,
+    expiresAt: Date.now() + lifetimeSeconds * 1000,
+  };
+
+  return cachedToken.value;
 }
 
 const ALLOWED_PATHS = [
@@ -41,7 +56,6 @@ const ALLOWED_PATHS = [
   '/me/tracks',
   '/me/top/tracks',
   '/me/top/artists',
-  '/me',
 ];
 
 function isAllowedPath(path) {
@@ -52,15 +66,32 @@ function isAllowedPath(path) {
   return /^\/playlists\/[A-Za-z0-9]+$/.test(path);
 }
 
+// Let Netlify's CDN serve repeat requests without invoking the function.
+// "Now playing" stays fresh (30s); the library endpoints change slowly.
+function cacheHeadersForPath(path) {
+  const isNowPlaying = path === '/me/player/currently-playing';
+
+  if (isNowPlaying) {
+    return {
+      'Cache-Control': 'public, max-age=30',
+      'Netlify-CDN-Cache-Control': 'public, max-age=30, stale-while-revalidate=60',
+    };
+  }
+
+  return {
+    'Cache-Control': 'public, max-age=300',
+    'Netlify-CDN-Cache-Control': 'public, max-age=300, stale-while-revalidate=900',
+  };
+}
+
 exports.handler = async (event) => {
   const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
     'Content-Type': 'application/json',
+    'Cache-Control': 'no-store',
   };
 
   if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 204, headers, body: '' };
+    return { statusCode: 204, headers };
   }
 
   if (event.httpMethod !== 'GET') {
@@ -89,7 +120,7 @@ exports.handler = async (event) => {
   const url = `${SPOTIFY_API_BASE}${path}${qs ? `?${qs}` : ''}`;
 
   try {
-    const { access_token } = await getAccessToken();
+    const access_token = await getAccessToken();
 
     const spotifyRes = await fetch(url, {
       headers: {
@@ -101,14 +132,19 @@ exports.handler = async (event) => {
     // No body key: dev emulation converts these to `new Response(body, ...)`,
     // and undici rejects any non-null body (even '') for 204 responses.
     if (spotifyRes.status === 204 || spotifyRes.status === 202) {
-      return { statusCode: spotifyRes.status, headers };
+      return {
+        statusCode: spotifyRes.status,
+        headers: { ...headers, ...cacheHeadersForPath(path) },
+      };
     }
 
     const body = await spotifyRes.text();
 
     return {
       statusCode: spotifyRes.status,
-      headers,
+      headers: spotifyRes.ok
+        ? { ...headers, ...cacheHeadersForPath(path) }
+        : headers,
       body,
     };
   } catch (err) {
