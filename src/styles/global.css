@@ -332,6 +332,12 @@
     vertical-align: middle;
   }
 
+  /* Stroke-based icons declare fill="none"; without this, the rule above
+     overrides that presentation attribute and fills their outlines solid. */
+  svg[fill='none'] {
+    fill: none;
+  }
+
   a {
     display: inline-block;
     text-decoration: none;
