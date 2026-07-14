@@ -105,52 +105,61 @@ const twitterTags = encodeURIComponent(tags.join(','));
     }
   }
 
-  document.querySelectorAll('[data-share-root]').forEach((root) => {
-    if (!(root instanceof HTMLElement)) return;
+  // Re-run per page arrival: Astro dedupes identical inline scripts on
+  // soft navigation, so navigating between posts would otherwise leave
+  // the new page's share buttons without listeners.
+  function initShareRoots() {
+    document.querySelectorAll('[data-share-root]').forEach((root) => {
+      if (!(root instanceof HTMLElement) || root.dataset.shareBound) return;
+      root.dataset.shareBound = 'true';
 
-    const shareTitle = root.dataset.shareTitle || '';
-    const shareUrl = root.dataset.shareUrl || '';
-    const copyButton = root.querySelector('[data-copy-link]');
-    const copyLabel = root.querySelector('[data-copy-label]');
-    const nativeShareButton = root.querySelector('[data-native-share]');
+      const shareTitle = root.dataset.shareTitle || '';
+      const shareUrl = root.dataset.shareUrl || '';
+      const copyButton = root.querySelector('[data-copy-link]');
+      const copyLabel = root.querySelector('[data-copy-label]');
+      const nativeShareButton = root.querySelector('[data-native-share]');
 
-    if (copyButton instanceof HTMLButtonElement) {
-      copyButton.addEventListener('click', async () => {
-        if (!shareUrl) return;
+      if (copyButton instanceof HTMLButtonElement) {
+        copyButton.addEventListener('click', async () => {
+          if (!shareUrl) return;
 
-        const copied = await copyTextToClipboard(shareUrl);
-        if (!copied) return;
+          const copied = await copyTextToClipboard(shareUrl);
+          if (!copied) return;
 
-        copyButton.classList.add('is-copied');
+          copyButton.classList.add('is-copied');
 
-        if (copyLabel instanceof HTMLElement) {
-          copyLabel.textContent = 'Copied';
-        }
-
-        window.setTimeout(() => {
-          copyButton.classList.remove('is-copied');
           if (copyLabel instanceof HTMLElement) {
-            copyLabel.textContent = 'Copy Link';
+            copyLabel.textContent = 'Copied';
           }
-        }, 1500);
-      });
-    }
 
-    if (
-      nativeShareButton instanceof HTMLButtonElement &&
-      navigator.share &&
-      shareUrl
-    ) {
-      nativeShareButton.hidden = false;
-      nativeShareButton.addEventListener('click', async () => {
-        try {
-          await navigator.share({ title: shareTitle, url: shareUrl });
-        } catch (error) {
-          console.error(error);
-        }
-      });
-    }
-  });
+          window.setTimeout(() => {
+            copyButton.classList.remove('is-copied');
+            if (copyLabel instanceof HTMLElement) {
+              copyLabel.textContent = 'Copy Link';
+            }
+          }, 1500);
+        });
+      }
+
+      if (
+        nativeShareButton instanceof HTMLButtonElement &&
+        navigator.share &&
+        shareUrl
+      ) {
+        nativeShareButton.hidden = false;
+        nativeShareButton.addEventListener('click', async () => {
+          try {
+            await navigator.share({ title: shareTitle, url: shareUrl });
+          } catch (error) {
+            console.error(error);
+          }
+        });
+      }
+    });
+  }
+
+  initShareRoots();
+  document.addEventListener('astro:page-load', initShareRoots);
 </script>
 
 <style>
