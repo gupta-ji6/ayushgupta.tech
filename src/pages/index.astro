@@ -454,6 +454,28 @@ const contactEntry = contact[0];
     display: none;
   }
 
+  html.home-enhanced .home-page [data-tab-panel].is-active {
+    animation: tab-panel-reveal 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) both;
+  }
+
+  @keyframes tab-panel-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.home-enhanced .home-page [data-tab-panel].is-active {
+      animation: none;
+    }
+  }
+
   html.home-enhanced .home-page .project-card-hidden {
     display: none;
   }
