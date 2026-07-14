@@ -20,6 +20,9 @@ const formatStatus = (status: CommentRecord['status']) => {
   }
 };
 
+const getCommentKey = (comment: CommentRecord) =>
+  `${comment.post_id}:${comment.created_at}:${comment.author}:${comment.content}`;
+
 function Comment({ data }: { data: CommentRecord }) {
   const { author, content, created_at, status } = data;
 
@@ -100,8 +103,8 @@ export default function Comments({ postId }: { postId: string }) {
           <div className="comments-count">
             {`${count} ${count > 1 ? 'comments' : 'comment'}`}
           </div>
-          {comments.map((comment, index) => (
-            <Comment key={index} data={comment} />
+          {comments.map((comment) => (
+            <Comment key={getCommentKey(comment)} data={comment} />
           ))}
         </>
       );
