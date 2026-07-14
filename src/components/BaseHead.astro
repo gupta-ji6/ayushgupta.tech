@@ -32,6 +32,20 @@ const googleAnalyticsScript = `
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', '${googleAnalyticsID}');
+
+  // gtag config only records the initial hard load; view-transition
+  // navigations would otherwise go untracked.
+  let gaInitialLoad = true;
+  document.addEventListener('astro:page-load', () => {
+    if (gaInitialLoad) {
+      gaInitialLoad = false;
+      return;
+    }
+    gtag('event', 'page_view', {
+      page_title: document.title,
+      page_location: window.location.href,
+    });
+  });
 `;
 ---
 
