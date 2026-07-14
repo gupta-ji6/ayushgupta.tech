@@ -1,0 +1,322 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import AppStoreIcon from '@components/icons/AppStoreIcon.astro';
+import ExternalIcon from '@components/icons/ExternalIcon.astro';
+import GithubIcon from '@components/icons/GithubIcon.astro';
+import GooglePlayIcon from '@components/icons/GooglePlayIcon.astro';
+import SectionHeading from './SectionHeading.astro';
+
+const { entries } = Astro.props;
+
+const renderedEntries = await Promise.all(
+  entries.map(async (entry: any) => ({
+    entry,
+    Content: (await render(entry)).Content,
+  })),
+);
+---
+
+<section id="projects" class="section-shell" data-reveal>
+  <SectionHeading number="04" title="Featured Projects" />
+
+  <ul class="featured-grid">
+    {
+      renderedEntries.map(({ entry, Content }, index) => (
+        <li
+          class:list={[
+            'featured-project',
+            index % 2 === 1 && 'featured-project-reversed',
+          ]}
+        >
+          <div class="featured-content">
+            <p class="featured-overline">Featured Project</p>
+            <h3 class="featured-title">
+              {entry.data.external ? (
+                <a
+                  href={entry.data.external}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  {entry.data.title}
+                </a>
+              ) : (
+                entry.data.title
+              )}
+            </h3>
+
+            <div class="featured-description card-surface rich-text">
+              <Content />
+            </div>
+
+            <ul class="featured-tech-list">
+              {entry.data.tech.map((tech: string) => (
+                <li>{tech}</li>
+              ))}
+            </ul>
+
+            <div class="featured-links">
+              {entry.data.github && (
+                <a
+                  class="featured-link"
+                  href={entry.data.github}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label="GitHub"
+                >
+                  <GithubIcon />
+                </a>
+              )}
+              {entry.data.googleplay && (
+                <a
+                  class="featured-link"
+                  href={entry.data.googleplay}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label="Google Play"
+                >
+                  <GooglePlayIcon />
+                </a>
+              )}
+              {entry.data.appstore && (
+                <a
+                  class="featured-link"
+                  href={entry.data.appstore}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label="App Store"
+                >
+                  <AppStoreIcon />
+                </a>
+              )}
+              {entry.data.external && (
+                <a
+                  class="featured-link featured-link-external"
+                  href={entry.data.external}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label="External link"
+                >
+                  <ExternalIcon />
+                </a>
+              )}
+            </div>
+          </div>
+
+          <div class="featured-image">
+            <a
+              href={entry.data.external || entry.data.github || '#'}
+              target={
+                entry.data.external || entry.data.github ? '_blank' : undefined
+              }
+              rel={
+                entry.data.external || entry.data.github
+                  ? 'noreferrer noopener'
+                  : undefined
+              }
+              aria-label={`${entry.data.title} preview`}
+            >
+              <Image
+                src={entry.data.cover}
+                alt={`${entry.data.title} preview`}
+                widths={[600, 900]}
+                sizes="(max-width: 768px) 100vw, 50vw"
+                class="featured-image-asset"
+              />
+            </a>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .featured-grid {
+    display: grid;
+    gap: 90px;
+  }
+
+  .featured-project {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: center;
+    gap: 10px;
+  }
+
+  .featured-content {
+    position: relative;
+    z-index: 2;
+    grid-column: 7 / -1;
+    grid-row: 1 / -1;
+    text-align: right;
+  }
+
+  .featured-project-reversed .featured-content {
+    grid-column: 1 / 7;
+    text-align: left;
+  }
+
+  .featured-image {
+    position: relative;
+    grid-column: 1 / 8;
+    grid-row: 1 / -1;
+    box-shadow: 0 10px 30px -15px var(--color-shadow-navy);
+  }
+
+  .featured-project-reversed .featured-image {
+    grid-column: 6 / -1;
+  }
+
+  .featured-image a {
+    display: block;
+    border-radius: 6px;
+    background: var(--color-green);
+  }
+
+  .featured-image a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: 6px;
+    background: var(--color-navy);
+    mix-blend-mode: screen;
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .featured-image a:hover::before,
+  .featured-image a:focus-visible::before {
+    opacity: 0;
+  }
+
+  .featured-image-asset {
+    border-radius: 6px;
+    mix-blend-mode: multiply;
+    filter: grayscale(100%) contrast(1) brightness(90%);
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .featured-image a:hover .featured-image-asset,
+  .featured-image a:focus-visible .featured-image-asset {
+    mix-blend-mode: normal;
+    filter: none;
+  }
+
+  .featured-overline {
+    margin: 0 0 10px;
+    color: var(--color-green);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  .featured-title {
+    margin: 0 0 20px;
+    font-size: clamp(24px, 5vw, 28px);
+  }
+
+  .featured-description {
+    padding: 24px;
+    font-size: 18px;
+  }
+
+  .featured-tech-list,
+  .featured-links {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .featured-tech-list {
+    justify-content: flex-end;
+    gap: 8px 20px;
+    margin-top: 22px;
+    color: var(--color-light-slate);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  .featured-project-reversed .featured-tech-list {
+    justify-content: flex-start;
+  }
+
+  .featured-links {
+    justify-content: flex-end;
+    margin-top: 10px;
+    gap: 0;
+    margin-right: -10px;
+    color: var(--color-lightest-slate);
+  }
+
+  .featured-project-reversed .featured-links {
+    justify-content: flex-start;
+    margin-left: -10px;
+    margin-right: 0;
+  }
+
+  .featured-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+  }
+
+  .featured-link :global(svg) {
+    width: 20px;
+    height: 20px;
+  }
+
+  .featured-link-external :global(svg) {
+    width: 20px;
+    height: 20px;
+    margin-top: 0;
+  }
+
+  @media (max-width: 768px) {
+    .featured-grid {
+      gap: 50px;
+    }
+
+    .featured-project,
+    .featured-project-reversed {
+      position: relative;
+      border-radius: 6px;
+      box-shadow: 0 10px 30px -15px var(--color-shadow-navy);
+      overflow: hidden;
+    }
+
+    .featured-content,
+    .featured-project-reversed .featured-content {
+      grid-column: 1 / -1;
+      padding: 38px 28px 28px;
+      text-align: left;
+    }
+
+    .featured-image,
+    .featured-project-reversed .featured-image {
+      grid-column: 1 / -1;
+      grid-row: 1 / -1;
+      height: 100%;
+      opacity: 0.22;
+      box-shadow: none;
+    }
+
+    .featured-image-asset {
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) contrast(1) brightness(75%);
+    }
+
+    .featured-description {
+      padding: 18px 20px;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .featured-tech-list,
+    .featured-links {
+      justify-content: flex-start;
+    }
+  }
+</style>

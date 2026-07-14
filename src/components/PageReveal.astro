@@ -1,0 +1,31 @@
+---
+
+---
+
+<script is:inline>
+  (() => {
+    const reveal = () => {
+      const prefersReducedMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches;
+
+      // Skip elements inside React islands — they manage their own reveal
+      // state, and mutating them before hydration causes prop mismatches.
+      const targets = [
+        ...document.querySelectorAll('.page-reveal:not(.is-revealed)'),
+      ].filter((el) => !el.closest('astro-island'));
+
+      if (prefersReducedMotion) {
+        targets.forEach((el) => el.classList.add('is-revealed'));
+        return;
+      }
+
+      requestAnimationFrame(() => {
+        targets.forEach((el) => el.classList.add('is-revealed'));
+      });
+    };
+
+    reveal();
+    document.addEventListener('astro:page-load', reveal);
+  })();
+</script>

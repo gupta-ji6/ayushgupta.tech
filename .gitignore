@@ -1,17 +1,18 @@
-# Project dependencies
-.cache
+# Dependencies
 node_modules
-yarn-error.log
-package-lock.json
 
-# Build directory
-/public
-.DS_Store
+# Build output
+dist/
+.astro/
 
 .vscode/
 .claude/
 .env
 .env.*
 !.env.example
-# Local Netlify folder
 .netlify
+.DS_Store
+
+# Legacy Gatsby artifacts
+.cache
+yarn-error.log

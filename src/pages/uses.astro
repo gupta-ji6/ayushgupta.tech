@@ -1,0 +1,181 @@
+---
+export const prerender = true;
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Disclosure from '@components/Disclosure.astro';
+import PageReveal from '@components/PageReveal.astro';
+import { siteConfig } from '@config/index';
+
+const description =
+  "A living document of Ayush Gupta's setup, with apps he uses daily.";
+
+type UsesEntry = CollectionEntry<'uses'>;
+
+const usesEntries = (await getCollection('uses')).sort(
+  (left: UsesEntry, right: UsesEntry) => left.data.order - right.data.order,
+);
+
+const useSections = await Promise.all(
+  usesEntries.map(async (entry: UsesEntry) => ({
+    entry,
+    ...(await render(entry)),
+  })),
+);
+---
+
+<BaseLayout title="Uses" description={description} image="/og-uses.png">
+  <section class="uses-page">
+    <header class="uses-header page-reveal">
+      <h1 class="big-heading">Uses</h1>
+      <p class="subtitle">
+        a living document of my setup, with apps I use daily
+      </p>
+    </header>
+
+    <section class="uses-content page-reveal">
+      <section class="uses-sections" aria-label="Setup categories">
+        {
+          useSections.map(({ entry, Content }) => (
+            <Disclosure title={entry.data.title} subtitle={entry.data.subtitle}>
+              <div class="uses-section-body inline-links">
+                <Content />
+              </div>
+            </Disclosure>
+          ))
+        }
+      </section>
+
+      <section class="uses-footer inline-links">
+        <h2>Have more questions?</h2>
+        <p>
+          Feel free to ask away on{' '}
+          <a
+            href={siteConfig.socialMedia.find((item) => item.name === 'Twitter')
+              ?.url}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            twitter
+          </a>
+          .
+        </p>
+        <small>Last Updated: Feb, 2025</small>
+      </section>
+    </section>
+  </section>
+
+  <PageReveal />
+</BaseLayout>
+
+<style>
+  .uses-page {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 100px 0 120px;
+  }
+
+  .uses-header {
+    margin-bottom: 100px;
+    text-align: center;
+  }
+
+  .uses-section-body {
+    margin-left: 10px;
+  }
+
+  .uses-section-body :global(h3),
+  .uses-section-body :global(h4) {
+    padding-left: 10px;
+    color: var(--color-lightest-slate);
+  }
+
+  .uses-section-body :global(p) {
+    color: var(--color-light-slate);
+  }
+
+  .uses-section-body :global(a) {
+    color: var(--color-green);
+  }
+
+  .uses-section-body :global(ul),
+  .uses-section-body :global(ol) {
+    margin: 0;
+    padding-left: 10px;
+    font-size: 20px;
+  }
+
+  .uses-section-body :global(ul) {
+    list-style: none;
+  }
+
+  .uses-section-body :global(ul li),
+  .uses-section-body :global(ol li) {
+    position: relative;
+    margin-bottom: 10px;
+    padding-left: 30px;
+  }
+
+  .uses-section-body :global(ul li)::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--color-green);
+  }
+
+  .uses-section-body :global(ol) {
+    list-style: none;
+  }
+
+  .uses-section-body :global(ol li)::before {
+    content: '+';
+    position: absolute;
+    left: 0;
+    color: var(--color-green);
+  }
+
+  .uses-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px;
+    text-align: center;
+  }
+
+  .uses-footer h2 {
+    margin-bottom: 14px;
+    color: var(--color-lightest-slate);
+    font-size: 30px;
+  }
+
+  .uses-footer p {
+    color: var(--color-light-slate);
+  }
+
+  .uses-footer a {
+    color: var(--color-green);
+  }
+
+  .uses-footer small {
+    color: var(--color-slate);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  @media (max-width: 1080px) {
+    .uses-page {
+      width: 100%;
+      padding-top: 100px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .uses-page {
+      padding-top: 80px;
+    }
+
+    .uses-header {
+      margin-bottom: 70px;
+    }
+  }
+</style>

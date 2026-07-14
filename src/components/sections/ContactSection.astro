@@ -1,0 +1,87 @@
+---
+import { render } from 'astro:content';
+
+const { entry, email } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<section id="contact" class="section-shell contact-shell" data-reveal>
+  <div class="contact-inner">
+    <h3 class="contact-kicker">
+      <span class="contact-kicker-index">07.</span>
+      <span>What's Next?</span>
+    </h3>
+    <h2 class="contact-title">{entry.data.title}</h2>
+    <div class="rich-text contact-copy">
+      <Content />
+    </div>
+    <a href={`mailto:${email}`} class="button-link contact-button">
+      Say Hello
+      <span role="img" aria-label="wave"> 👋🏻 </span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .contact-shell {
+    margin-bottom: 100px;
+  }
+
+  .contact-inner {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .contact-kicker {
+    display: block;
+    width: fit-content;
+    margin: 0 auto 20px;
+    color: var(--color-green);
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.1;
+  }
+
+  .contact-kicker-index {
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 14px;
+    transform: translateY(-1px);
+  }
+
+  .contact-title {
+    margin: 0 0 20px;
+    font-size: 60px;
+    line-height: 1.1;
+  }
+
+  .contact-copy {
+    color: var(--color-light-slate);
+  }
+
+  .contact-button {
+    margin-top: 50px;
+  }
+
+  @media (max-width: 1000px) {
+    .contact-kicker {
+      font-size: 13px;
+    }
+
+    .contact-kicker-index {
+      font-size: 12px;
+    }
+
+    .contact-title {
+      font-size: 50px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .contact-title {
+      font-size: 40px;
+    }
+  }
+</style>

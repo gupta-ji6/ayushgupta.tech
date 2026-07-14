@@ -1,0 +1,15 @@
+---
+interface Props {
+  number: string;
+  title: string;
+  centered?: boolean;
+}
+
+const { number, title, centered = false } = Astro.props;
+---
+
+<h2 class:list={['section-heading', centered && 'section-heading-centered']}>
+  <span class="section-heading-index">{number}.</span>
+  <span class="section-heading-title">{title}</span>
+  {!centered && <span class="section-heading-line" aria-hidden="true" />}
+</h2>

@@ -1,0 +1,101 @@
+---
+import ArticleIcon from '@components/icons/ArticleIcon.astro';
+import SectionHeading from './SectionHeading.astro';
+
+const { entries } = Astro.props;
+---
+
+<section id="blog" class="section-shell" data-reveal>
+  <SectionHeading number="05" title="Popular Articles" />
+
+  <div class="blog-grid">
+    {
+      entries.map((entry: any) => (
+        <article class="blog-card">
+          <a
+            href={entry.data.slug}
+            class="card-surface blog-card-link"
+            aria-label={entry.data.title}
+          >
+            <header class="blog-card-header">
+              <div class="blog-card-icon">
+                <ArticleIcon />
+              </div>
+            </header>
+
+            <h3 class="blog-card-title">{entry.data.title}</h3>
+            <p class="blog-card-description">{entry.data.description}</p>
+
+            <ul class="blog-card-tags">
+              {entry.data.tags.map((tag: string) => (
+                <li>{tag}</li>
+              ))}
+            </ul>
+          </a>
+        </article>
+      ))
+    }
+  </div>
+
+  <a href="/blog" class="button-link blog-read-more"> Read More Articles </a>
+</section>
+
+<style>
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .blog-card-link {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem 1.75rem;
+    transition: transform 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .blog-card:hover .blog-card-link,
+  .blog-card:focus-within .blog-card-link {
+    transform: translateY(-5px);
+  }
+
+  .blog-card-header {
+    margin-bottom: 28px;
+  }
+
+  .blog-card-icon {
+    color: var(--color-green);
+  }
+
+  .blog-card-icon :global(svg) {
+    width: 40px;
+    height: 40px;
+  }
+
+  .blog-card-title {
+    margin: 0 0 12px;
+    color: var(--color-lightest-slate);
+    font-size: 22px;
+  }
+
+  .blog-card-description {
+    margin: 0;
+    color: var(--color-light-slate);
+    font-size: 17px;
+    line-height: 1.55;
+  }
+
+  .blog-card-tags {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 8px 15px;
+    margin-top: 22px;
+    color: var(--color-light-slate);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+</style>

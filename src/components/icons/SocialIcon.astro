@@ -1,0 +1,27 @@
+---
+import GithubIcon from './GithubIcon.astro';
+import InstagramIcon from './InstagramIcon.astro';
+import LinkedinIcon from './LinkedinIcon.astro';
+import MediumIcon from './MediumIcon.astro';
+import TwitterIcon from './TwitterIcon.astro';
+
+interface Props {
+  name: string;
+}
+
+const { name } = Astro.props;
+---
+
+{
+  name === 'Github' ? (
+    <GithubIcon />
+  ) : name === 'Linkedin' ? (
+    <LinkedinIcon />
+  ) : name === 'Instagram' ? (
+    <InstagramIcon />
+  ) : name === 'Twitter' ? (
+    <TwitterIcon />
+  ) : (
+    <MediumIcon />
+  )
+}

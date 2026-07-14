@@ -1,0 +1,184 @@
+---
+import { siteConfig } from '@config/index';
+import calibreRegularWoff2 from '../fonts/Calibre/Calibre-Regular.woff2';
+import calibreSemiboldWoff2 from '../fonts/Calibre/Calibre-Semibold.woff2';
+
+interface Props {
+  title?: string;
+  description?: string;
+  pathname?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = siteConfig.siteDescription,
+  pathname = '/',
+  image = '/og.png',
+  type = 'website',
+  noindex = false,
+} = Astro.props;
+
+const pageTitle = title
+  ? `${title} | ${siteConfig.name}`
+  : siteConfig.siteTitle;
+const canonicalUrl = new URL(pathname, siteConfig.siteUrl).toString();
+const socialImage = new URL(image, siteConfig.siteUrl).toString();
+const googleAnalyticsID = siteConfig.googleAnalyticsID;
+const googleAnalyticsScript = `
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '${googleAnalyticsID}');
+
+  // gtag config only records the initial hard load; view-transition
+  // navigations would otherwise go untracked.
+  let gaInitialLoad = true;
+  document.addEventListener('astro:page-load', () => {
+    if (gaInitialLoad) {
+      gaInitialLoad = false;
+      return;
+    }
+    gtag('event', 'page_view', {
+      page_title: document.title,
+      page_location: window.location.href,
+    });
+  });
+`;
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+{/* Preload the two fonts that shape first paint (body copy + headings). */}
+<link
+  rel="preload"
+  href={calibreRegularWoff2}
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+<link
+  rel="preload"
+  href={calibreSemiboldWoff2}
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<meta name="keywords" content={siteConfig.siteKeywords} />
+<meta name="google-site-verification" content={siteConfig.googleVerification} />
+<meta name="yandex-verification" content={siteConfig.yandexVerification} />
+<meta name="msvalidate.01" content={siteConfig.bingVerification} />
+<meta name="theme-color" content={siteConfig.navyColor} />
+<meta name="msapplication-TileColor" content={siteConfig.navyColor} />
+<meta name="msapplication-TileImage" content="/favicons/ms-icon-144x144.png" />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+<link rel="canonical" href={canonicalUrl} />
+<link rel="manifest" href="/manifest.webmanifest" />
+<link rel="shortcut icon" href="/favicons/favicon.ico?v=2" />
+<link
+  rel="icon"
+  type="image/png"
+  sizes="16x16"
+  href="/favicons/favicon-16x16.png"
+/>
+<link
+  rel="icon"
+  type="image/png"
+  sizes="32x32"
+  href="/favicons/favicon-32x32.png"
+/>
+<link
+  rel="icon"
+  type="image/png"
+  sizes="96x96"
+  href="/favicons/favicon-96x96.png"
+/>
+<link
+  rel="icon"
+  type="image/png"
+  sizes="192x192"
+  href="/favicons/android-icon-192x192.png"
+/>
+<link
+  rel="apple-touch-icon"
+  sizes="57x57"
+  href="/favicons/apple-icon-57x57.png"
+/>
+<link
+  rel="apple-touch-icon"
+  sizes="60x60"
+  href="/favicons/apple-icon-60x60.png"
+/>
+<link
+  rel="apple-touch-icon"
+  sizes="72x72"
+  href="/favicons/apple-icon-72x72.png"
+/>
+<link
+  rel="apple-touch-icon"
+  sizes="76x76"
+  href="/favicons/apple-icon-76x76.png"
+/>
+<link
+  rel="apple-touch-icon"
+  sizes="114x114"
+  href="/favicons/apple-icon-114x114.png"
+/>
+<link
+  rel="apple-touch-icon"
+  sizes="120x120"
+  href="/favicons/apple-icon-120x120.png"
+/>
+<link
+  rel="apple-touch-icon"
+  sizes="144x144"
+  href="/favicons/apple-icon-144x144.png"
+/>
+<link
+  rel="apple-touch-icon"
+  sizes="152x152"
+  href="/favicons/apple-icon-152x152.png"
+/>
+<link
+  rel="apple-touch-icon"
+  sizes="180x180"
+  href="/favicons/apple-icon-180x180.png"
+/>
+
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:site_name" content={siteConfig.siteTitle} />
+<meta property="og:image" content={socialImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:locale" content={siteConfig.siteLanguage} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalUrl} />
+<meta name="twitter:site" content={siteConfig.twitterHandle} />
+<meta name="twitter:creator" content={siteConfig.twitterHandle} />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={socialImage} />
+<meta name="twitter:image:alt" content={pageTitle} />
+
+{
+  googleAnalyticsID && (
+    <>
+      <script
+        is:inline
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsID}`}
+      />
+      <script is:inline set:html={googleAnalyticsScript} />
+    </>
+  )
+}

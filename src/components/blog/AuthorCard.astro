@@ -1,0 +1,85 @@
+---
+import { Image } from 'astro:assets';
+import authorImage from '../../content/about/ayush.png';
+
+interface Props {
+  showBackground?: boolean;
+}
+
+const { showBackground = false } = Astro.props;
+---
+
+<div
+  class:list={['author-card', showBackground && 'author-card-with-background']}
+>
+  <div class="author-card-image">
+    <Image
+      src={authorImage}
+      alt="Ayush Gupta portrait"
+      widths={[240, 400]}
+      sizes="160px"
+      class="author-card-photo"
+    />
+  </div>
+
+  <div class="author-card-copy">
+    <strong>Ayush Gupta </strong>
+    <span>
+      is a frontend engineer who solo travels, photographs, crafts stories,
+      writes blogs, and occasionally designs. Currently working as a Senior
+      Software Engineer at Circle and fondly known as GuptaJi.
+    </span>
+  </div>
+</div>
+
+<style>
+  .author-card {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+  }
+
+  .author-card-with-background {
+    margin-top: 48px;
+    padding: 24px;
+    border-radius: 6px;
+    background: var(--color-light-navy);
+    box-shadow: 0 10px 30px -15px var(--color-shadow-navy);
+  }
+
+  .author-card-image {
+    flex-shrink: 0;
+    width: 160px;
+  }
+
+  .author-card-photo {
+    border: 2px solid var(--color-green);
+    border-radius: 3px;
+    padding: 4px;
+    background: var(--color-light-navy);
+    object-fit: cover;
+  }
+
+  .author-card-copy {
+    color: var(--color-slate);
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .author-card-copy strong {
+    color: var(--color-lightest-slate);
+  }
+
+  @media (max-width: 768px) {
+    .author-card {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .author-card-image {
+      align-self: center;
+    }
+  }
+</style>

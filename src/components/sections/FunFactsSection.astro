@@ -1,0 +1,85 @@
+---
+import { render } from 'astro:content';
+import SectionHeading from './SectionHeading.astro';
+
+const { entries } = Astro.props;
+
+const renderedFacts = await Promise.all(
+  entries.map(async (entry: any) => ({
+    entry,
+    Content: (await render(entry)).Content,
+  })),
+);
+const InitialFactContent = renderedFacts[0].Content;
+---
+
+<section id="facts" class="section-shell section-narrow" data-reveal>
+  <SectionHeading number="02" title="Fun Facts" />
+
+  <div class="facts-layout" data-fun-facts-root>
+    <button
+      type="button"
+      class="button-link facts-button"
+      data-fun-facts-button
+    >
+      Shuffle
+    </button>
+
+    <div class="facts-card card-surface" data-fun-facts-card>
+      <div class="rich-text facts-current animate slide" data-fun-facts-current>
+        <InitialFactContent />
+      </div>
+    </div>
+
+    {
+      renderedFacts.map(({ Content }, index) => (
+        <template data-fun-facts-template={index}>
+          <div class="rich-text">
+            <Content />
+          </div>
+        </template>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .section-narrow {
+    max-width: 700px;
+  }
+
+  .facts-layout {
+    display: grid;
+    gap: 24px;
+  }
+
+  .facts-button {
+    width: fit-content;
+  }
+
+  .facts-card {
+    padding: 24px 28px;
+    overflow: hidden;
+    transition: height 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .facts-current {
+    color: var(--color-light-slate);
+  }
+
+  .facts-current.animate {
+    animation-duration: 0.24s;
+    animation-delay: 0s;
+    animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .facts-current :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    .facts-card {
+      padding: 22px 22px 20px;
+    }
+  }
+</style>

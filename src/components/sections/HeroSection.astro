@@ -1,0 +1,123 @@
+---
+import { render } from 'astro:content';
+
+import HeroNowPlaying from '@components/HeroNowPlaying';
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const introSeed = Math.random();
+---
+
+<section class="section-shell hero-shell">
+  <div class="hero-stack">
+    <p class="subtitle reveal-item" data-reveal style="--reveal-delay: 0ms;">
+      {entry.data.title}
+    </p>
+    <h1
+      class="big-heading reveal-item"
+      data-reveal
+      style="--reveal-delay: 100ms;"
+    >
+      {entry.data.name}
+    </h1>
+    <h2
+      class="hero-subtitle reveal-item"
+      data-reveal
+      style="--reveal-delay: 200ms;"
+    >
+      {entry.data.subtitle}
+    </h2>
+    <div
+      class="rich-text hero-copy reveal-item"
+      data-reveal
+      style="--reveal-delay: 300ms;"
+    >
+      <Content />
+    </div>
+    <div
+      class="hero-now-playing-slot reveal-item"
+      data-reveal
+      style="--reveal-delay: 400ms;"
+    >
+      <HeroNowPlaying client:idle introSeed={introSeed} />
+    </div>
+    <div
+      class="reveal-item hero-cta"
+      data-reveal
+      style="--reveal-delay: 500ms;"
+    >
+      <a href="/resume" class="button-link">
+        {entry.data.contactText}
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-shell {
+    min-height: calc(100vh - 100px);
+    display: flex;
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .hero-stack {
+    width: 100%;
+    max-width: 1000px;
+  }
+
+  .hero-subtitle {
+    margin: 0;
+    color: var(--color-slate);
+    font-size: clamp(30px, 7vw, 70px);
+    line-height: 1.08;
+  }
+
+  .hero-copy {
+    max-width: 540px;
+    margin-top: 24px;
+  }
+
+  .hero-copy :global(p) {
+    color: var(--color-light-slate);
+    font-size: clamp(18px, 2.25vw, 22px);
+    line-height: 1.55;
+  }
+
+  .hero-copy :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .hero-now-playing-slot :global(.hero-now-playing) {
+    max-width: 540px;
+    margin: 24px 0 0;
+    color: var(--color-light-slate);
+    font-size: clamp(18px, 2.25vw, 22px);
+    line-height: 1.55;
+  }
+
+  .hero-now-playing-slot :global(.hero-now-playing-copy) {
+    display: inline-block;
+  }
+
+  .hero-now-playing-slot :global(.hero-now-playing-copy::first-letter) {
+    text-transform: uppercase;
+  }
+
+  .hero-cta {
+    margin-top: 50px;
+  }
+
+  @media (max-width: 768px) {
+    .hero-shell {
+      min-height: auto;
+      padding-top: 90px;
+      padding-bottom: 30px;
+    }
+
+    .hero-cta {
+      margin-top: 40px;
+    }
+  }
+</style>

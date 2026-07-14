@@ -1,0 +1,669 @@
+---
+export const prerender = true;
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import AboutSection from '@components/sections/AboutSection.astro';
+import BlogSection from '@components/sections/BlogSection.astro';
+import ContactSection from '@components/sections/ContactSection.astro';
+import EducationSection from '@components/sections/EducationSection.astro';
+import FeaturedSection from '@components/sections/FeaturedSection.astro';
+import FunFactsSection from '@components/sections/FunFactsSection.astro';
+import HeroSection from '@components/sections/HeroSection.astro';
+import JobsSection from '@components/sections/JobsSection.astro';
+import ProjectsSection from '@components/sections/ProjectsSection.astro';
+import { siteConfig } from '@config/index';
+
+const [
+  blog,
+  projects,
+  featured,
+  jobs,
+  education,
+  about,
+  hero,
+  contact,
+  funFacts,
+] = await Promise.all([
+  getCollection('blog'),
+  getCollection('projects'),
+  getCollection('featured'),
+  getCollection('jobs'),
+  getCollection('education'),
+  getCollection('about'),
+  getCollection('hero'),
+  getCollection('contact'),
+  getCollection('funFacts'),
+]);
+
+const publishedPopularArticles = [];
+for (const entry of blog) {
+  if (entry.data.popular && !entry.data.draft) {
+    publishedPopularArticles.push(entry);
+  }
+}
+publishedPopularArticles.sort(
+  (left, right) =>
+    new Date(right.data.date).getTime() - new Date(left.data.date).getTime(),
+);
+
+const visibleProjects = [];
+for (const entry of projects) {
+  if (entry.data.show) {
+    visibleProjects.push(entry);
+  }
+}
+visibleProjects.sort(
+  (left, right) =>
+    new Date(right.data.date).getTime() - new Date(left.data.date).getTime(),
+);
+
+const visibleFeatured = [];
+for (const entry of featured) {
+  if (entry.data.show) {
+    visibleFeatured.push(entry);
+  }
+}
+visibleFeatured.sort(
+  (left, right) => Number(right.data.date) - Number(left.data.date),
+);
+
+const visibleJobs = [];
+for (const entry of jobs) {
+  if (entry.data.show) {
+    visibleJobs.push(entry);
+  }
+}
+visibleJobs.sort(
+  (left, right) =>
+    new Date(right.data.date).getTime() - new Date(left.data.date).getTime(),
+);
+
+const sortedEducation = [...education];
+sortedEducation.sort(
+  (left, right) =>
+    Number(right.data.passingYear) - Number(left.data.passingYear),
+);
+
+const sortedFunFacts = [...funFacts];
+sortedFunFacts.sort((left, right) =>
+  left.id.localeCompare(right.id, undefined, { numeric: true }),
+);
+
+const aboutEntry = about[0];
+const heroEntry = hero[0];
+const contactEntry = contact[0];
+---
+
+<BaseLayout>
+  <script is:inline>
+    document.documentElement.classList.add('home-enhanced');
+  </script>
+
+  <div class="home-page">
+    <HeroSection entry={heroEntry} />
+    <AboutSection entry={aboutEntry} githubUrl={siteConfig.github} />
+    <FunFactsSection entries={sortedFunFacts} />
+    <JobsSection entries={visibleJobs} />
+    <FeaturedSection entries={visibleFeatured} />
+    <ProjectsSection entries={visibleProjects} />
+    <BlogSection entries={publishedPopularArticles} />
+    <EducationSection entries={sortedEducation} />
+    <ContactSection entry={contactEntry} email={siteConfig.email} />
+  </div>
+
+  <script is:inline>
+    (() => {
+      // Runs on initial load AND after every view-transition swap: Astro
+      // does not re-execute identical inline scripts on soft navigation,
+      // and the swap strips the runtime-added html class — without this,
+      // arriving at the homepage via client-side nav leaves the no-JS
+      // fallback (all tab panels visible, no listeners).
+      const initHomePage = () => {
+        const homeRoot = document.querySelector('.home-page');
+        if (!(homeRoot instanceof HTMLElement) || homeRoot.dataset.enhanced) {
+          return;
+        }
+        homeRoot.dataset.enhanced = 'true';
+        document.documentElement.classList.add('home-enhanced');
+
+        const prefersReducedMotion = window.matchMedia(
+          '(prefers-reduced-motion: reduce)',
+        ).matches;
+
+        const revealItems = Array.from(
+          document.querySelectorAll('[data-reveal]'),
+        );
+        if (prefersReducedMotion) {
+          revealItems.forEach((item) => item.classList.add('is-visible'));
+        } else {
+          const revealObserver = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-visible');
+                  revealObserver.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.2, rootMargin: '0px 0px -10% 0px' },
+          );
+
+          revealItems.forEach((item) => revealObserver.observe(item));
+        }
+
+        document.querySelectorAll('[data-tabs-root]').forEach((root) => {
+          const buttons = Array.from(
+            root.querySelectorAll('[data-tab-button]'),
+          );
+          const panels = Array.from(root.querySelectorAll('[data-tab-panel]'));
+          const indicator = root.querySelector('[data-tab-indicator]');
+          if (!buttons.length || !panels.length) return;
+
+          let activeIndex = buttons.findIndex(
+            (button) => button.getAttribute('aria-selected') === 'true',
+          );
+          if (activeIndex < 0) activeIndex = 0;
+
+          const syncIndicator = () => {
+            if (!(indicator instanceof HTMLElement)) return;
+
+            const button = buttons[activeIndex];
+            if (!(button instanceof HTMLElement)) return;
+
+            const horizontal = window.matchMedia('(max-width: 600px)').matches;
+            if (horizontal) {
+              indicator.style.width = `${button.offsetWidth}px`;
+              indicator.style.height = '2px';
+              indicator.style.transform = `translateX(${button.offsetLeft}px)`;
+            } else {
+              indicator.style.width = '2px';
+              indicator.style.height = `${button.offsetHeight}px`;
+              indicator.style.transform = `translateY(${button.offsetTop}px)`;
+            }
+          };
+
+          const activate = (index, shouldFocus = false) => {
+            activeIndex = index;
+
+            buttons.forEach((button, buttonIndex) => {
+              const isActive = buttonIndex === index;
+              button.classList.toggle('is-active', isActive);
+              button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+              button.tabIndex = isActive ? 0 : -1;
+
+              if (shouldFocus && isActive) {
+                button.focus();
+              }
+            });
+
+            panels.forEach((panel, panelIndex) => {
+              panel.classList.toggle('is-active', panelIndex === index);
+            });
+
+            syncIndicator();
+          };
+
+          buttons.forEach((button, index) => {
+            button.addEventListener('click', () => activate(index));
+            button.addEventListener('keydown', (event) => {
+              if (
+                event.key !== 'ArrowUp' &&
+                event.key !== 'ArrowDown' &&
+                event.key !== 'ArrowLeft' &&
+                event.key !== 'ArrowRight'
+              ) {
+                return;
+              }
+
+              event.preventDefault();
+
+              const direction =
+                event.key === 'ArrowUp' || event.key === 'ArrowLeft' ? -1 : 1;
+              const nextIndex =
+                (activeIndex + direction + buttons.length) % buttons.length;
+              activate(nextIndex, true);
+            });
+          });
+
+          activate(activeIndex);
+          window.addEventListener('resize', syncIndicator);
+          document.addEventListener(
+            'astro:before-swap',
+            () => window.removeEventListener('resize', syncIndicator),
+            { once: true },
+          );
+        });
+
+        document.querySelectorAll('[data-projects-root]').forEach((root) => {
+          const limit = Number(root.getAttribute('data-projects-limit') || '4');
+          const button = root.querySelector('[data-projects-toggle]');
+          const cards = Array.from(
+            root.querySelectorAll('[data-project-card]'),
+          );
+          if (!(button instanceof HTMLButtonElement)) return;
+
+          let expanded = false;
+
+          const sync = () => {
+            cards.forEach((card, index) => {
+              const isOverflow = index >= limit;
+              card.classList.toggle(
+                'project-card-hidden',
+                isOverflow && !expanded,
+              );
+            });
+
+            button.textContent = expanded
+              ? 'Show Fewer Projects'
+              : 'Show More Projects';
+            button.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+          };
+
+          button.hidden = false;
+          button.addEventListener('click', () => {
+            expanded = !expanded;
+            sync();
+          });
+
+          sync();
+        });
+
+        document.querySelectorAll('[data-fun-facts-root]').forEach((root) => {
+          const button = root.querySelector('[data-fun-facts-button]');
+          const card = root.querySelector('[data-fun-facts-card]');
+          const current = root.querySelector('[data-fun-facts-current]');
+          const templates = Array.from(
+            root.querySelectorAll('template[data-fun-facts-template]'),
+          );
+          if (
+            !(button instanceof HTMLButtonElement) ||
+            !(card instanceof HTMLElement) ||
+            !(current instanceof HTMLElement) ||
+            !templates.length
+          ) {
+            return;
+          }
+
+          let currentIndex = 0;
+          button.addEventListener('click', () => {
+            let nextIndex = currentIndex;
+            while (templates.length > 1 && nextIndex === currentIndex) {
+              nextIndex = Math.floor(Math.random() * templates.length);
+            }
+
+            const startHeight = card.offsetHeight;
+            card.style.height = `${startHeight}px`;
+
+            current.innerHTML = templates[nextIndex].innerHTML;
+            currentIndex = nextIndex;
+            current.classList.remove('animate', 'slide');
+            void current.offsetWidth;
+            current.classList.add('animate', 'slide');
+
+            if (prefersReducedMotion) {
+              card.style.height = 'auto';
+              return;
+            }
+
+            requestAnimationFrame(() => {
+              const styles = window.getComputedStyle(card);
+              const paddingTop = Number.parseFloat(styles.paddingTop) || 0;
+              const paddingBottom =
+                Number.parseFloat(styles.paddingBottom) || 0;
+              const endHeight =
+                current.offsetHeight + paddingTop + paddingBottom;
+              card.style.height = `${endHeight}px`;
+            });
+
+            const resetHeight = () => {
+              card.style.height = 'auto';
+              card.removeEventListener('transitionend', resetHeight);
+            };
+
+            card.addEventListener('transitionend', resetHeight);
+          });
+        });
+      };
+
+      initHomePage();
+      document.addEventListener('astro:after-swap', initHomePage);
+    })();
+  </script>
+</BaseLayout>
+
+<style is:global>
+  .home-page .section-shell {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 120px 0;
+  }
+
+  .home-page .contact-shell {
+    padding-bottom: 0;
+  }
+
+  .home-page .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin: 0 0 40px;
+    color: var(--color-lightest-slate);
+    font-size: clamp(24px, 3vw, 32px);
+    white-space: nowrap;
+  }
+
+  .home-page .section-heading-title {
+    flex: 0 0 auto;
+  }
+
+  .home-page .section-heading-centered {
+    justify-content: center;
+    margin-bottom: 20px;
+    color: var(--color-green);
+    font-family: var(--font-mono);
+    font-size: 16px;
+  }
+
+  .home-page .section-heading-index {
+    position: relative;
+    bottom: 4px;
+    color: var(--color-green);
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+  .home-page .section-heading-centered .section-heading-index {
+    font-size: 14px;
+  }
+
+  .home-page .section-heading-line {
+    display: block;
+    flex: 0 0 300px;
+    width: 300px;
+    height: 1px;
+    margin-left: 10px;
+    background: var(--color-medium-grey);
+  }
+
+  .home-page .button-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-green);
+    border-radius: 3px;
+    padding: 1.25rem 1.75rem;
+    color: var(--color-green);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1;
+    text-decoration: none;
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .home-page .button-link:hover,
+  .home-page .button-link:focus-visible {
+    background: var(--color-trans-green);
+    transform: translateY(-2px);
+  }
+
+  .home-page .button-link.blog-read-more,
+  .home-page .button-link.projects-toggle {
+    display: flex;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .home-page .button-link.blog-read-more {
+    margin-top: 50px;
+  }
+
+  .home-page .button-link.projects-toggle {
+    margin-top: 80px;
+  }
+
+  .home-page .card-surface {
+    border-radius: 6px;
+    background: var(--color-light-navy);
+    box-shadow: 0 10px 30px -15px var(--color-shadow-navy);
+  }
+
+  .home-page .rich-text {
+    color: var(--color-light-slate);
+  }
+
+  .home-page .rich-text strong {
+    color: var(--color-green);
+    font-weight: 400;
+  }
+
+  .home-page .rich-text ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .home-page .rich-text ul li {
+    position: relative;
+    margin-bottom: 10px;
+    padding-left: 28px;
+    color: var(--color-light-slate);
+  }
+
+  .home-page .rich-text ul li::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--color-green);
+  }
+
+  html.home-enhanced .home-page .reveal-item,
+  html.home-enhanced .home-page [data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
+      transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  html.home-enhanced .home-page .reveal-item.is-visible,
+  html.home-enhanced .home-page [data-reveal].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  html.home-enhanced .home-page [data-tab-panel]:not(.is-active) {
+    display: none;
+  }
+
+  html.home-enhanced .home-page [data-tab-panel].is-active {
+    animation: tab-panel-reveal 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) both;
+  }
+
+  @keyframes tab-panel-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.home-enhanced .home-page [data-tab-panel].is-active {
+      animation: none;
+    }
+  }
+
+  html.home-enhanced .home-page .project-card-hidden {
+    display: none;
+  }
+
+  .home-page .tabs-shell {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+  }
+
+  .home-page .tabs-list-wrap {
+    position: relative;
+    min-width: 0;
+  }
+
+  .home-page .tabs-list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home-page .tabs-panels,
+  .home-page .tab-panel,
+  .home-page .tab-panel-copy {
+    min-width: 0;
+  }
+
+  .home-page .tab-button {
+    display: flex;
+    align-items: center;
+    min-height: 42px;
+    padding: 0 20px 2px;
+    border: 0;
+    border-left: 2px solid var(--color-dark-grey);
+    background: transparent;
+    color: var(--color-light-grey);
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    white-space: nowrap;
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .home-page .tab-button:hover,
+  .home-page .tab-button:focus-visible,
+  .home-page .tab-button.is-active {
+    color: var(--color-green);
+    background: var(--color-light-navy);
+  }
+
+  .home-page .tab-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 42px;
+    border-radius: 999px;
+    background: var(--color-green);
+    transition: transform 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  .home-page .tab-panel-title {
+    margin: 0 0 5px;
+    color: var(--color-lightest-slate);
+    font-size: 22px;
+    font-weight: 500;
+  }
+
+  .home-page .tab-panel-company,
+  .home-page .tab-panel-company a {
+    color: var(--color-green);
+  }
+
+  .home-page .tab-panel-meta {
+    margin: 0 0 10px;
+    color: var(--color-light-slate);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.5px;
+  }
+
+  .home-page .tab-panel-location {
+    margin-bottom: 28px;
+  }
+
+  @media (max-width: 1000px) {
+    .home-page .section-heading-line {
+      flex-basis: 200px;
+      width: 200px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .home-page .section-shell {
+      padding: 100px 0;
+    }
+
+    .home-page .section-heading {
+      font-size: 24px;
+      white-space: normal;
+    }
+
+    .home-page .section-heading-line {
+      flex: 1 1 auto;
+      width: auto;
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .home-page .tabs-shell {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .home-page .tabs-list-wrap,
+    .home-page .tabs-panels,
+    .home-page .tab-panel {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    .home-page .tabs-list-wrap {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .home-page .tabs-list {
+      flex-direction: row;
+      width: max-content;
+      min-width: max-content;
+      padding-bottom: 2px;
+    }
+
+    .home-page .tab-button {
+      justify-content: center;
+      min-width: 120px;
+      border-left: 0;
+      border-bottom: 2px solid var(--color-dark-grey);
+      padding: 0 15px;
+      text-align: center;
+    }
+
+    .home-page .tab-indicator {
+      top: auto;
+      bottom: 0;
+      width: 120px;
+      height: 2px;
+    }
+
+    .home-page .tab-panel-title,
+    .home-page .tab-panel-meta,
+    .home-page .tab-panel-copy,
+    .home-page .tab-panel-copy :global(ul),
+    .home-page .tab-panel-copy :global(li) {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+</style>

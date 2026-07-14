@@ -1,0 +1,122 @@
+---
+import { siteConfig } from '@config/index';
+import NowPlayingWidget from '@components/music/NowPlayingWidget';
+import SocialIcon from './icons/SocialIcon.astro';
+
+interface Props {
+  isMusicPage?: boolean;
+  isHome?: boolean;
+}
+
+const { isMusicPage = false, isHome = false } = Astro.props;
+const introSeed = Math.random();
+---
+
+<footer class:list={['site-footer', isHome && 'site-footer-home']}>
+  {
+    !isMusicPage && (
+      <div class="now-playing-shell">
+        <NowPlayingWidget client:visible mode="footer" introSeed={introSeed} />
+      </div>
+    )
+  }
+
+  <div class="footer-socials">
+    <ul>
+      {
+        siteConfig.socialMedia.map(({ name, url }) => (
+          <li>
+            <a
+              href={url}
+              aria-label={name}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              <SocialIcon name={name} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="footer-copy">
+    <a href={siteConfig.github} target="_blank" rel="noreferrer noopener">
+      <small>Customized with ☕ and ❤ by Ayush Gupta</small>
+    </a>
+    <a
+      href="https://github.com/bchiang7"
+      target="_blank"
+      rel="noreferrer noopener"
+    >
+      <small>Template by Brittany Chiang</small>
+    </a>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    display: flex;
+    min-height: 70px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 16px 24px;
+    background: var(--color-navy);
+    color: var(--color-slate);
+    text-align: center;
+  }
+
+  .now-playing-shell {
+    width: fit-content;
+    max-width: 85vw;
+  }
+
+  .site-footer-home .now-playing-shell {
+    margin-top: 95px;
+  }
+
+  .footer-socials {
+    display: none;
+    width: 100%;
+    max-width: 270px;
+    margin: 0 auto 6px;
+  }
+
+  .footer-socials ul {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-socials a {
+    display: inline-flex;
+    padding: 10px;
+  }
+
+  .footer-socials a :global(svg) {
+    width: 20px;
+    height: 20px;
+  }
+
+  .footer-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  .footer-copy a {
+    color: var(--color-slate);
+  }
+
+  @media (max-width: 768px) {
+    .footer-socials {
+      display: block;
+    }
+  }
+</style>

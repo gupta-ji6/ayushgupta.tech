@@ -1,0 +1,239 @@
+---
+import { resolveNavHref, siteConfig } from '@config/index';
+import LogoIcon from './icons/LogoIcon.astro';
+import MobileMenu from './MobileMenu';
+
+interface Props {
+  isHome?: boolean;
+}
+
+const { isHome = false } = Astro.props;
+const items = siteConfig.navLinks.map((item) => ({
+  ...item,
+  href: resolveNavHref(item),
+}));
+---
+
+<header
+  class="site-header nav-scrolled-top"
+  data-site-header
+  transition:persist
+>
+  <nav class="site-nav" aria-label="Primary">
+    <div class:list={['logo-slot', isHome && 'animate fade']}>
+      <a href="/" aria-label="Home" class="logo-link">
+        <LogoIcon class="logo-image" />
+      </a>
+    </div>
+
+    <div class="desktop-links">
+      <ol>
+        {
+          items.map((item, index) => (
+            <li
+              class:list={[isHome && 'home-nav-link-entry']}
+              style={isHome ? `--nav-delay: ${index * 100}ms;` : undefined}
+            >
+              <a href={item.href}>{item.name}</a>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div
+        class:list={[isHome && 'home-nav-link-entry']}
+        style={isHome ? `--nav-delay: ${items.length * 100}ms;` : undefined}
+      >
+        <a class="resume-button" href="/resume"> Resume </a>
+      </div>
+    </div>
+
+    <MobileMenu client:load items={items} />
+  </nav>
+</header>
+
+<script is:inline>
+  (() => {
+    const header = document.querySelector('[data-site-header]');
+    if (!header) return;
+
+    let lastScrollTop = window.pageYOffset;
+
+    const syncHeader = () => {
+      const scrollTop = window.pageYOffset;
+      const nearTop = scrollTop < 50;
+
+      header.classList.toggle('nav-scrolled-top', nearTop);
+
+      if (nearTop) {
+        header.classList.remove('nav-scroll-up', 'nav-scroll-down');
+        lastScrollTop = scrollTop;
+        return;
+      }
+
+      if (scrollTop > lastScrollTop && scrollTop > 100) {
+        header.classList.add('nav-scroll-down');
+        header.classList.remove('nav-scroll-up');
+      } else if (scrollTop < lastScrollTop) {
+        header.classList.add('nav-scroll-up');
+        header.classList.remove('nav-scroll-down');
+      }
+
+      lastScrollTop = scrollTop;
+    };
+
+    syncHeader();
+    window.addEventListener('scroll', syncHeader, { passive: true });
+  })();
+</script>
+
+<style>
+  .site-header {
+    position: fixed;
+    top: 0;
+    z-index: 11;
+    width: 100%;
+    height: 100px;
+    padding: 0 50px;
+    background: rgba(10, 25, 47, 0.85);
+    backdrop-filter: blur(10px);
+    transition:
+      transform 0.25s cubic-bezier(0.645, 0.045, 0.355, 1),
+      height 0.25s cubic-bezier(0.645, 0.045, 0.355, 1),
+      box-shadow 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+    filter: none !important;
+    pointer-events: auto !important;
+    user-select: auto !important;
+  }
+
+  .site-header.nav-scroll-up,
+  .site-header.nav-scroll-down {
+    height: 70px;
+    box-shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
+  }
+
+  .site-header.nav-scroll-down {
+    transform: translateY(-70px);
+  }
+
+  .site-header.menu-open {
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    font-family: var(--font-mono);
+    color: var(--color-lightest-slate);
+    counter-reset: nav-link;
+  }
+
+  .logo-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    color: var(--color-green);
+  }
+
+  .logo-image {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+  }
+
+  .desktop-links {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .desktop-links ol {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .desktop-links li {
+    counter-increment: nav-link;
+    font-size: 14px;
+  }
+
+  .desktop-links li a {
+    padding: 10px;
+  }
+
+  .desktop-links li a::before {
+    content: '0' counter(nav-link) '.';
+    margin-right: 5px;
+    color: var(--color-green);
+    font-size: 12px;
+  }
+
+  .resume-button {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-green);
+    border-radius: 4px;
+    color: var(--color-green);
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .resume-button:hover,
+  .resume-button:focus-visible {
+    background: var(--color-trans-green);
+    transform: translateY(-2px);
+  }
+
+  .home-nav-link-entry {
+    animation: nav-fade-down 300ms cubic-bezier(0.645, 0.045, 0.355, 1)
+      backwards;
+    animation-delay: var(--nav-delay, 0ms);
+  }
+
+  @keyframes nav-fade-down {
+    from {
+      opacity: 0.01;
+      transform: translateY(-20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-nav-link-entry {
+      animation: none !important;
+    }
+  }
+
+  @media (max-width: 1080px) {
+    .site-header {
+      padding: 0 40px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .site-header {
+      padding: 0 25px;
+    }
+
+    .desktop-links {
+      display: none;
+    }
+  }
+</style>

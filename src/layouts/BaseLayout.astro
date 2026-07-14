@@ -1,0 +1,112 @@
+---
+import '@styles/global.css';
+import '@styles/disclosure.css';
+import { ClientRouter } from 'astro:transitions';
+import BaseHead from '@components/BaseHead.astro';
+import Email from '@components/Email.astro';
+import Footer from '@components/Footer.astro';
+import Nav from '@components/Nav.astro';
+import Social from '@components/Social.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+}
+
+const pathname = Astro.url.pathname;
+const isHome = pathname === '/';
+const isMusicPage = pathname === '/music';
+const { title, description, image, type, noindex = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={title}
+      description={description}
+      pathname={pathname}
+      image={image}
+      type={type}
+      noindex={noindex}
+    />
+    <ClientRouter />
+    <slot name="head" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#content">Skip to Content</a>
+    <Nav isHome={isHome} />
+    <Social isHome={isHome} />
+    <Email isHome={isHome} />
+
+    <div id="content">
+      <main id="main-content" class="site-main" transition:animate="none">
+        <slot />
+      </main>
+    </div>
+
+    <Footer isMusicPage={isMusicPage} isHome={isHome} />
+  </body>
+</html>
+
+<style>
+  .skip-link {
+    position: absolute;
+    top: auto;
+    left: -999px;
+    z-index: -99;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    border-radius: 4px;
+    border: 1px solid var(--color-green);
+    background: var(--color-green);
+    color: var(--color-navy);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1;
+    padding: 1rem 1.25rem;
+  }
+
+  .skip-link:focus,
+  .skip-link:active {
+    top: 16px;
+    left: 16px;
+    z-index: 99;
+    width: auto;
+    height: auto;
+    overflow: visible;
+  }
+
+  .site-main {
+    min-height: 100vh;
+    padding-top: 100px;
+    padding-left: 150px;
+    padding-right: 150px;
+  }
+
+  @media (max-width: 1000px) {
+    .site-main {
+      padding-left: 100px;
+      padding-right: 100px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .site-main {
+      padding-left: 50px;
+      padding-right: 50px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .site-main {
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+  }
+</style>
