@@ -3,7 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 export type BlogEntry = CollectionEntry<'blog'>;
 
 export const sortBlogEntriesByDate = (entries: BlogEntry[]) =>
-  [...entries].sort(
+  entries.toSorted(
     (left, right) =>
       new Date(right.data.date).getTime() - new Date(left.data.date).getTime(),
   );
@@ -57,7 +57,7 @@ export const getPublishedTagSummaries = (entries: BlogEntry[]) => {
     }
   }
 
-  return [...tagMap.values()].sort((left, right) =>
+  return Array.from(tagMap.values()).sort((left, right) =>
     left.name.localeCompare(right.name),
   );
 };
