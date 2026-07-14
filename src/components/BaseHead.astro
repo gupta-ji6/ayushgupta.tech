@@ -1,5 +1,7 @@
 ---
 import { siteConfig } from '@config/index';
+import calibreRegularWoff2 from '../fonts/Calibre/Calibre-Regular.woff2';
+import calibreSemiboldWoff2 from '../fonts/Calibre/Calibre-Semibold.woff2';
 
 interface Props {
   title?: string;
@@ -35,6 +37,22 @@ const googleAnalyticsScript = `
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+{/* Preload the two fonts that shape first paint (body copy + headings). */}
+<link
+  rel="preload"
+  href={calibreRegularWoff2}
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+<link
+  rel="preload"
+  href={calibreSemiboldWoff2}
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
 <title>{pageTitle}</title>
 <meta name="description" content={description} />
 <meta name="keywords" content={siteConfig.siteKeywords} />
