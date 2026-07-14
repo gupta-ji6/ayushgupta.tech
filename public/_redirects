@@ -26,3 +26,8 @@
 
 # Others
 /ch-session https://www.clubhouse.com/event/mZgd8KZw
+
+# Old Gatsby tag slugs (lodash kebabCase) → current slugs
+/blog/tags/next-js       /blog/tags/nextjs       301
+/blog/tags/type-script   /blog/tags/typescript   301
+/blog/tags/java-script   /blog/tags/javascript   301
