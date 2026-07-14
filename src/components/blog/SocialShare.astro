@@ -76,6 +76,35 @@ const twitterTags = encodeURIComponent(tags.join(','));
 </div>
 
 <script is:inline>
+  // Copy with a legacy fallback: the async Clipboard API is unavailable in
+  // insecure contexts (e.g. LAN dev) and rejects on some mobile browsers.
+  async function copyTextToClipboard(text) {
+    if (navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    try {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      const copied = document.execCommand('copy');
+      textarea.remove();
+      return copied;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
   document.querySelectorAll('[data-share-root]').forEach((root) => {
     if (!(root instanceof HTMLElement)) return;
 
@@ -87,25 +116,23 @@ const twitterTags = encodeURIComponent(tags.join(','));
 
     if (copyButton instanceof HTMLButtonElement) {
       copyButton.addEventListener('click', async () => {
-        if (!navigator.clipboard || !shareUrl) return;
+        if (!shareUrl) return;
 
-        try {
-          await navigator.clipboard.writeText(shareUrl);
-          copyButton.classList.add('is-copied');
+        const copied = await copyTextToClipboard(shareUrl);
+        if (!copied) return;
 
-          if (copyLabel instanceof HTMLElement) {
-            copyLabel.textContent = 'Copied';
-          }
+        copyButton.classList.add('is-copied');
 
-          window.setTimeout(() => {
-            copyButton.classList.remove('is-copied');
-            if (copyLabel instanceof HTMLElement) {
-              copyLabel.textContent = 'Copy Link';
-            }
-          }, 1500);
-        } catch (error) {
-          console.error(error);
+        if (copyLabel instanceof HTMLElement) {
+          copyLabel.textContent = 'Copied';
         }
+
+        window.setTimeout(() => {
+          copyButton.classList.remove('is-copied');
+          if (copyLabel instanceof HTMLElement) {
+            copyLabel.textContent = 'Copy Link';
+          }
+        }, 1500);
       });
     }
 
