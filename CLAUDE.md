@@ -69,6 +69,8 @@ CSS-only reveal system: `.page-reveal`/`.is-revealed` classes in `global.css`, t
 - **Identical inline scripts are deduped across soft navigations** — Astro won't re-execute them on `ClientRouter` page swaps; hook `astro:page-load` instead of relying on script re-runs.
 - **Tailwind preflight zeroes default heading sizes and list styles** — restore explicitly where markdown/content renders (see `.post-content` rules in `blog/[slug].astro`).
 - **Page containers**: use `width: 100%; max-width: NNNpx` — `calc(100vw - Xpx)` widths stack on `site-main`'s responsive padding and overflow.
+- **Fresh installs fail on machines with a global (Homebrew) libvips**: sharp's installer prefers global libvips and demands a from-source build (node-gyp). Install with `SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm ci` to use prebuilt binaries. Netlify is unaffected (no global libvips there) — do not re-add node-gyp to fix this.
+- **Dependabot bumps of `@astrojs/*` packages can break the build despite passing peer ranges** (e.g. the netlify adapter's `^6.0.0` claim vs. its actual use of newer astro internals). Always run a local build against a bumped adapter/integration before merging.
 
 ## Environment & deployment
 
