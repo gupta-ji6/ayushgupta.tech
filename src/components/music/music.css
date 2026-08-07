@@ -291,6 +291,13 @@
   color: var(--color-light-slate);
 }
 
+.music-spotify-privacy {
+  margin: 40px 10px 0;
+  color: var(--color-slate);
+  font-size: 15px;
+  text-align: center;
+}
+
 .music-cta {
   display: flex;
   flex-direction: column;

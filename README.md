@@ -65,7 +65,7 @@ Spotify and Supabase features use server-side environment variables for the Netl
 
 ## Deployment
 
-The site is deployed on [Netlify](https://netlify.com). Static assets live in `public/`, the Spotify proxy runs from `netlify/functions/spotify.cjs`, and the Supabase comments proxy runs from the Astro API route `src/pages/api/comments.ts`.
+The site is deployed on [Netlify](https://netlify.com). Static assets live in `public/`, the fixed Spotify presentation API at `/api/spotify` runs from `netlify/functions/spotify.cjs`, and the Supabase comments proxy runs from the Astro API route `src/pages/api/comments.ts`. Production Spotify requests are restricted to traffic authenticated by the Cloudflare edge; see `docs/spotify-security-runbook.md` before changing or deploying that integration.
 
 ## Links
 
