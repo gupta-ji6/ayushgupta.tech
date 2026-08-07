@@ -62,7 +62,7 @@ export default function NowPlayingWidget({
   mode = 'footer',
   introSeed = 0,
 }: NowPlayingWidgetProps) {
-  const { data: track, error, refetch } = useNowPlayingTrack();
+  const { data: track } = useNowPlayingTrack();
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -140,15 +140,6 @@ export default function NowPlayingWidget({
           {introLine.emoji}
         </span>
         <span className="music-now-playing-intro-copy">{introLine.copy}</span>
-        {error && (
-          <button
-            type="button"
-            className="music-inline-button"
-            onClick={() => void refetch()}
-          >
-            Retry
-          </button>
-        )}
       </div>
 
       <div className="music-now-playing-card">

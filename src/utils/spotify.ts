@@ -3,6 +3,36 @@ const SPOTIFY_FAILURE_BACKOFF_MS = 10_000;
 
 let spotifyBackoffUntil = 0;
 
+function startSpotifyBackoff(): boolean {
+  const now = Date.now();
+  const shouldLog = now >= spotifyBackoffUntil;
+
+  spotifyBackoffUntil = now + SPOTIFY_FAILURE_BACKOFF_MS;
+  return shouldLog;
+}
+
+function hasSpotifyErrorCode(value: unknown, code: string): boolean {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    'error' in value &&
+    value.error === code
+  );
+}
+
+async function logSpotifyResponseFailure(response: Response) {
+  const body: unknown = await response.json().catch(() => null);
+
+  if (hasSpotifyErrorCode(body, 'reauthorization_required')) {
+    console.warn(
+      '[spotify] Authorization needs renewal. Update SPOTIFY_REFRESH_TOKEN and redeploy.',
+    );
+    return;
+  }
+
+  console.warn(`[spotify] Request failed with HTTP ${response.status}.`);
+}
+
 interface SpotifyExternalUrls {
   spotify?: string;
 }
@@ -125,7 +155,9 @@ async function spotifyGet<T>(
       });
 
       if (!response.ok) {
-        spotifyBackoffUntil = Date.now() + SPOTIFY_FAILURE_BACKOFF_MS;
+        if (startSpotifyBackoff()) {
+          await logSpotifyResponseFailure(response);
+        }
         return undefined;
       }
 
@@ -143,8 +175,12 @@ async function spotifyGet<T>(
 
       return data;
     } catch (error) {
-      spotifyBackoffUntil = Date.now() + SPOTIFY_FAILURE_BACKOFF_MS;
-      console.error('[spotify]', error);
+      if (startSpotifyBackoff()) {
+        console.warn(
+          '[spotify] Request failed before Spotify responded.',
+          error,
+        );
+      }
       return undefined;
     }
   })();

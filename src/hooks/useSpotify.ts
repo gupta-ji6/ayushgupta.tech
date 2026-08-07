@@ -18,20 +18,16 @@ type SpotifyTimeRange = 'short_term' | 'medium_term' | 'long_term';
 
 interface ResourceState<T> {
   data: T;
-  error: string | null;
   loading: boolean;
-  refetch: () => Promise<void>;
 }
 
 function useSpotifyResource<T>(
   fetcher: () => Promise<T | undefined>,
   initialValue: T,
-  errorMessage: string,
 ): ResourceState<T> {
   const initialValueRef = useRef(initialValue);
   const [data, setData] = useState<T>(initialValue);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const run = useCallback(async () => {
     setLoading(true);
@@ -40,15 +36,13 @@ function useSpotifyResource<T>(
 
     if (nextData === undefined) {
       setData(initialValueRef.current);
-      setError(errorMessage);
       setLoading(false);
       return;
     }
 
     setData(nextData);
-    setError(null);
     setLoading(false);
-  }, [errorMessage, fetcher]);
+  }, [fetcher]);
 
   useEffect(() => {
     void run();
@@ -56,9 +50,7 @@ function useSpotifyResource<T>(
 
   return {
     data,
-    error,
     loading,
-    refetch: run,
   };
 }
 
@@ -85,11 +77,7 @@ export function useNowPlayingTrack(): ResourceState<SpotifyTrack | null> {
     [],
   );
 
-  return useSpotifyResource(
-    fetcher,
-    null,
-    "Couldn't fetch Ayush's now playing track.",
-  );
+  return useSpotifyResource(fetcher, null);
 }
 
 export function useTopSpotifyItems(
@@ -102,13 +90,7 @@ export function useTopSpotifyItems(
     return response?.items ?? undefined;
   }, [limit, timeRange, type]);
 
-  return useSpotifyResource(
-    fetcher,
-    [],
-    type === 'artists'
-      ? "Couldn't fetch Ayush's top artists."
-      : "Couldn't fetch Ayush's top tracks.",
-  );
+  return useSpotifyResource(fetcher, []);
 }
 
 export function useFavouritePlaylist(
@@ -119,11 +101,7 @@ export function useFavouritePlaylist(
     [playlistId],
   );
 
-  return useSpotifyResource(
-    fetcher,
-    null,
-    "Couldn't fetch Ayush's favourite playlist.",
-  );
+  return useSpotifyResource(fetcher, null);
 }
 
 export function useRecentlyPlayedTracks(
@@ -135,11 +113,7 @@ export function useRecentlyPlayedTracks(
     return items.length ? getUniqueRecentlyPlayedTracks(items) : undefined;
   }, [limit]);
 
-  return useSpotifyResource(
-    fetcher,
-    [],
-    "Couldn't fetch recently played tracks.",
-  );
+  return useSpotifyResource(fetcher, []);
 }
 
 export function useSavedTracks(
@@ -150,11 +124,7 @@ export function useSavedTracks(
     return response?.items ?? undefined;
   }, [limit]);
 
-  return useSpotifyResource(
-    fetcher,
-    [],
-    "Couldn't fetch recently saved tracks.",
-  );
+  return useSpotifyResource(fetcher, []);
 }
 
 export function useUserPlaylists(limit = 20): ResourceState<SpotifyPlaylist[]> {
@@ -163,5 +133,5 @@ export function useUserPlaylists(limit = 20): ResourceState<SpotifyPlaylist[]> {
     return response?.items ?? undefined;
   }, [limit]);
 
-  return useSpotifyResource(fetcher, [], "Couldn't fetch Ayush's playlists.");
+  return useSpotifyResource(fetcher, []);
 }

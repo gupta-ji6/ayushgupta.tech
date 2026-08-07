@@ -34,9 +34,7 @@ type SpotifyTimeRange = 'short_term' | 'medium_term' | 'long_term';
 
 interface QueryState<T> {
   data: T;
-  error: string | null;
   loading: boolean;
-  refetch: () => Promise<void>;
 }
 
 interface DisclosureSectionProps {
@@ -151,17 +149,6 @@ function ResourceState<T>({
 }) {
   if (query.loading) {
     return <div className="music-feedback">{loadingLabel}</div>;
-  }
-
-  if (query.error) {
-    return (
-      <div className="music-feedback music-feedback-error">
-        <p>{query.error}</p>
-        <button type="button" onClick={() => void query.refetch()}>
-          Retry
-        </button>
-      </div>
-    );
   }
 
   if (

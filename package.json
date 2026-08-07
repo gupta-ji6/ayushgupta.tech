@@ -13,6 +13,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "npm run dev --",
+    "test": "node --test test/spotify-proxy.test.cjs",
     "check": "astro check",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx,astro}\" \"astro.config.mjs\" \"eslint.config.mjs\" \"prettier.config.js\"",
     "format": "prettier --write \"src/**/*.{astro,ts,tsx,js,jsx,md,mdx,css}\"",

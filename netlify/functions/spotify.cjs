@@ -7,6 +7,16 @@ const SPOTIFY_API_BASE = 'https://api.spotify.com/v1';
 // instead of hitting Spotify's token endpoint on every request.
 let cachedToken = { value: null, expiresAt: 0 };
 
+class SpotifyAuthorizationError extends Error {}
+
+async function isInvalidGrant(response) {
+  const data = await response.json().catch(() => null);
+
+  return (
+    typeof data === 'object' && data !== null && data.error === 'invalid_grant'
+  );
+}
+
 async function getAccessToken() {
   if (cachedToken.value && Date.now() < cachedToken.expiresAt) {
     return cachedToken.value;
@@ -34,6 +44,12 @@ async function getAccessToken() {
     },
     body,
   });
+
+  if (!response.ok && (await isInvalidGrant(response))) {
+    throw new SpotifyAuthorizationError(
+      'Spotify authorization requires reauthentication',
+    );
+  }
 
   if (!response.ok) {
     throw new Error(`Token refresh failed: ${response.status}`);
@@ -97,18 +113,30 @@ exports.handler = async (event) => {
   }
 
   if (event.httpMethod !== 'GET') {
-    return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
+    return {
+      statusCode: 405,
+      headers,
+      body: JSON.stringify({ error: 'Method not allowed' }),
+    };
   }
 
   const params = event.queryStringParameters || {};
   const path = params.path;
 
   if (!path) {
-    return { statusCode: 400, headers, body: JSON.stringify({ error: 'Missing ?path= parameter' }) };
+    return {
+      statusCode: 400,
+      headers,
+      body: JSON.stringify({ error: 'Missing ?path= parameter' }),
+    };
   }
 
   if (!isAllowedPath(path)) {
-    return { statusCode: 403, headers, body: JSON.stringify({ error: 'Path not allowed' }) };
+    return {
+      statusCode: 403,
+      headers,
+      body: JSON.stringify({ error: 'Path not allowed' }),
+    };
   }
 
   // Build upstream query string from all params except "path"
@@ -154,10 +182,16 @@ exports.handler = async (event) => {
       '[spotify proxy]',
       err instanceof Error ? err.message : String(err),
     );
+    const requiresReauthorization = err instanceof SpotifyAuthorizationError;
+
     return {
-      statusCode: 502,
+      statusCode: requiresReauthorization ? 503 : 502,
       headers,
-      body: JSON.stringify({ error: 'Failed to proxy Spotify request' }),
+      body: JSON.stringify({
+        error: requiresReauthorization
+          ? 'reauthorization_required'
+          : 'Failed to proxy Spotify request',
+      }),
     };
   }
 };
