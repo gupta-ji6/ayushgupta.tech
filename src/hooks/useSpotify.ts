@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import {
   fetchCurrentTrack,
@@ -7,6 +7,7 @@ import {
   fetchCurrentUsersSavedTracks,
   fetchCurrentUsersTopItems,
   fetchPlaylistById,
+  type SpotifyResult,
   type SpotifyArtist,
   type SpotifyPlaylist,
   type SpotifyRecentlyPlayedItem,
@@ -15,51 +16,30 @@ import {
 } from '@utils/spotify';
 
 type SpotifyTimeRange = 'short_term' | 'medium_term' | 'long_term';
+type SpotifyTopItemType = 'artists' | 'tracks';
+type SpotifyTopItem<T extends SpotifyTopItemType> = T extends 'artists'
+  ? SpotifyArtist
+  : SpotifyTrack;
 
-interface ResourceState<T> {
-  data: T;
-  error: string | null;
-  loading: boolean;
-  refetch: () => Promise<void>;
-}
+export type SpotifyResourceState<T> = { kind: 'loading' } | SpotifyResult<T>;
 
 function useSpotifyResource<T>(
-  fetcher: () => Promise<T | undefined>,
-  initialValue: T,
-  errorMessage: string,
-): ResourceState<T> {
-  const initialValueRef = useRef(initialValue);
-  const [data, setData] = useState<T>(initialValue);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  fetcher: () => Promise<SpotifyResult<T>>,
+): SpotifyResourceState<T> {
+  const [state, setState] = useState<SpotifyResourceState<T>>({
+    kind: 'loading',
+  });
 
   const run = useCallback(async () => {
-    setLoading(true);
-
-    const nextData = await fetcher();
-
-    if (nextData === undefined) {
-      setData(initialValueRef.current);
-      setError(errorMessage);
-      setLoading(false);
-      return;
-    }
-
-    setData(nextData);
-    setError(null);
-    setLoading(false);
-  }, [errorMessage, fetcher]);
+    setState({ kind: 'loading' });
+    setState(await fetcher());
+  }, [fetcher]);
 
   useEffect(() => {
     void run();
   }, [run]);
 
-  return {
-    data,
-    error,
-    loading,
-    refetch: run,
-  };
+  return state;
 }
 
 function getUniqueRecentlyPlayedTracks(
@@ -79,89 +59,96 @@ function getUniqueRecentlyPlayedTracks(
   });
 }
 
-export function useNowPlayingTrack(): ResourceState<SpotifyTrack | null> {
-  const fetcher = useCallback(
-    async () => (await fetchCurrentTrack()) ?? null,
-    [],
-  );
+export function useNowPlayingTrack(): SpotifyResourceState<SpotifyTrack> {
+  const fetcher = useCallback(() => fetchCurrentTrack(), []);
 
-  return useSpotifyResource(
-    fetcher,
-    null,
-    "Couldn't fetch Ayush's now playing track.",
-  );
+  return useSpotifyResource(fetcher);
 }
 
-export function useTopSpotifyItems(
-  type: 'artists' | 'tracks',
+export function useTopSpotifyItems<T extends SpotifyTopItemType>(
+  type: T,
   timeRange: SpotifyTimeRange,
   limit = 20,
-): ResourceState<SpotifyArtist[] | SpotifyTrack[]> {
-  const fetcher = useCallback(async () => {
+): SpotifyResourceState<SpotifyTopItem<T>[]> {
+  const fetcher = useCallback(async (): Promise<
+    SpotifyResult<SpotifyTopItem<T>[]>
+  > => {
     const response = await fetchCurrentUsersTopItems(type, timeRange, limit);
-    return response?.items ?? undefined;
+
+    if (response.kind !== 'success') {
+      return response;
+    }
+
+    return { kind: 'success', data: response.data.items ?? [] };
   }, [limit, timeRange, type]);
 
-  return useSpotifyResource(
-    fetcher,
-    [],
-    type === 'artists'
-      ? "Couldn't fetch Ayush's top artists."
-      : "Couldn't fetch Ayush's top tracks.",
-  );
+  return useSpotifyResource(fetcher);
 }
 
 export function useFavouritePlaylist(
   playlistId = '3qWhbV6ul3Bfl2iHrN4TYn',
-): ResourceState<SpotifyPlaylist | null> {
+): SpotifyResourceState<SpotifyPlaylist> {
   const fetcher = useCallback(
-    async () => (await fetchPlaylistById(playlistId)) ?? null,
+    () => fetchPlaylistById(playlistId),
     [playlistId],
   );
 
-  return useSpotifyResource(
-    fetcher,
-    null,
-    "Couldn't fetch Ayush's favourite playlist.",
-  );
+  return useSpotifyResource(fetcher);
 }
 
 export function useRecentlyPlayedTracks(
   limit = 20,
-): ResourceState<SpotifyRecentlyPlayedItem[]> {
-  const fetcher = useCallback(async () => {
+): SpotifyResourceState<SpotifyRecentlyPlayedItem[]> {
+  const fetcher = useCallback(async (): Promise<
+    SpotifyResult<SpotifyRecentlyPlayedItem[]>
+  > => {
     const response = await fetchCurrentUsersRecentlyPlayed(limit);
-    const items = response?.items ?? [];
-    return items.length ? getUniqueRecentlyPlayedTracks(items) : undefined;
+
+    if (response.kind !== 'success') {
+      return response;
+    }
+
+    const items = getUniqueRecentlyPlayedTracks(response.data.items ?? []);
+    return items.length > 0
+      ? { kind: 'success', data: items }
+      : { kind: 'empty' };
   }, [limit]);
 
-  return useSpotifyResource(
-    fetcher,
-    [],
-    "Couldn't fetch recently played tracks.",
-  );
+  return useSpotifyResource(fetcher);
 }
 
 export function useSavedTracks(
   limit = 20,
-): ResourceState<SpotifySavedTrackItem[]> {
-  const fetcher = useCallback(async () => {
+): SpotifyResourceState<SpotifySavedTrackItem[]> {
+  const fetcher = useCallback(async (): Promise<
+    SpotifyResult<SpotifySavedTrackItem[]>
+  > => {
     const response = await fetchCurrentUsersSavedTracks(limit);
-    return response?.items ?? undefined;
+
+    if (response.kind !== 'success') {
+      return response;
+    }
+
+    return { kind: 'success', data: response.data.items ?? [] };
   }, [limit]);
 
-  return useSpotifyResource(
-    fetcher,
-    [],
-    "Couldn't fetch recently saved tracks.",
-  );
+  return useSpotifyResource(fetcher);
 }
 
-export function useUserPlaylists(limit = 20): ResourceState<SpotifyPlaylist[]> {
-  const fetcher = useCallback(async () => {
+export function useUserPlaylists(
+  limit = 20,
+): SpotifyResourceState<SpotifyPlaylist[]> {
+  const fetcher = useCallback(async (): Promise<
+    SpotifyResult<SpotifyPlaylist[]>
+  > => {
     const response = await fetchCurrentUserPlaylists(limit);
-    return response?.items ?? undefined;
+
+    if (response.kind !== 'success') {
+      return response;
+    }
+
+    return { kind: 'success', data: response.data.items ?? [] };
   }, [limit]);
 
-  return useSpotifyResource(fetcher, [], "Couldn't fetch Ayush's playlists.");
+  return useSpotifyResource(fetcher);
 }

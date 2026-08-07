@@ -15,14 +15,13 @@ import {
   useSavedTracks,
   useTopSpotifyItems,
   useUserPlaylists,
+  type SpotifyResourceState,
 } from '@hooks/useSpotify';
 import {
   getPlaylistTrackTotal,
   pickSpotifyCoverImage,
   type SpotifyArtist,
   type SpotifyPlaylist,
-  type SpotifyRecentlyPlayedItem,
-  type SpotifySavedTrackItem,
   type SpotifyTrack,
 } from '@utils/spotify';
 
@@ -31,13 +30,6 @@ import NowPlayingWidget from './NowPlayingWidget';
 import './music.css';
 
 type SpotifyTimeRange = 'short_term' | 'medium_term' | 'long_term';
-
-interface QueryState<T> {
-  data: T;
-  error: string | null;
-  loading: boolean;
-  refetch: () => Promise<void>;
-}
 
 interface DisclosureSectionProps {
   children: ReactNode;
@@ -142,36 +134,29 @@ function ResourceState<T>({
   emptyLabel,
   loadingLabel,
   query,
+  unavailableLabel,
   children,
 }: {
   children: (_data: T) => ReactNode;
   emptyLabel: string;
   loadingLabel: string;
-  query: QueryState<T>;
+  query: SpotifyResourceState<T>;
+  unavailableLabel: string;
 }) {
-  if (query.loading) {
-    return <div className="music-feedback">{loadingLabel}</div>;
+  switch (query.kind) {
+    case 'loading':
+      return <div className="music-feedback">{loadingLabel}</div>;
+    case 'empty':
+      return <div className="music-feedback">{emptyLabel}</div>;
+    case 'unavailable':
+      return <div className="music-feedback">{unavailableLabel}</div>;
+    case 'success':
+      return <>{children(query.data)}</>;
+    default: {
+      const _exhaustive: never = query;
+      return _exhaustive;
+    }
   }
-
-  if (query.error) {
-    return (
-      <div className="music-feedback music-feedback-error">
-        <p>{query.error}</p>
-        <button type="button" onClick={() => void query.refetch()}>
-          Retry
-        </button>
-      </div>
-    );
-  }
-
-  if (
-    query.data == null ||
-    (Array.isArray(query.data) && query.data.length === 0)
-  ) {
-    return <div className="music-feedback">{emptyLabel}</div>;
-  }
-
-  return <>{children(query.data)}</>;
 }
 
 function MusicRow({
@@ -295,9 +280,10 @@ function TopTracksPanel({ range }: { range: SpotifyTimeRange }) {
 
   return (
     <ResourceState
-      query={query as QueryState<SpotifyTrack[]>}
+      query={query}
       loadingLabel="Loading Ayush's top tracks..."
       emptyLabel="No top tracks are available right now."
+      unavailableLabel="Top tracks are unavailable right now."
     >
       {(tracks) => <TrackList prefix="top-track" tracks={tracks} />}
     </ResourceState>
@@ -309,9 +295,10 @@ function FavouritePlaylistPanel() {
 
   return (
     <ResourceState
-      query={query as QueryState<SpotifyPlaylist | null>}
+      query={query}
       loadingLabel="Loading favourite playlist..."
-      emptyLabel="Favourite playlist is unavailable right now."
+      emptyLabel="No favourite playlist is available right now."
+      unavailableLabel="Favourite playlist is unavailable right now."
     >
       {(playlist) => (
         <PlaylistList
@@ -328,9 +315,10 @@ function RecentlyPlayedPanel() {
 
   return (
     <ResourceState
-      query={query as QueryState<SpotifyRecentlyPlayedItem[]>}
+      query={query}
       loadingLabel="Loading recently played tracks..."
       emptyLabel="No recent listening history is available right now."
+      unavailableLabel="Recently played tracks are unavailable right now."
     >
       {(items) => (
         <TrackList
@@ -349,9 +337,10 @@ function SavedTracksPanel() {
 
   return (
     <ResourceState
-      query={query as QueryState<SpotifySavedTrackItem[]>}
+      query={query}
       loadingLabel="Loading recently saved tracks..."
       emptyLabel="No recently saved tracks are available right now."
+      unavailableLabel="Saved tracks are unavailable right now."
     >
       {(items) => (
         <TrackList
@@ -370,9 +359,10 @@ function TopArtistsPanel({ range }: { range: SpotifyTimeRange }) {
 
   return (
     <ResourceState
-      query={query as QueryState<SpotifyArtist[]>}
+      query={query}
       loadingLabel="Loading Ayush's top artists..."
       emptyLabel="No top artists are available right now."
+      unavailableLabel="Top artists are unavailable right now."
     >
       {(artists) => <ArtistList artists={artists} />}
     </ResourceState>
@@ -384,9 +374,10 @@ function SavedPlaylistsPanel() {
 
   return (
     <ResourceState
-      query={query as QueryState<SpotifyPlaylist[]>}
+      query={query}
       loadingLabel="Loading saved playlists..."
       emptyLabel="No saved playlists are available right now."
+      unavailableLabel="Saved playlists are unavailable right now."
     >
       {(playlists) => (
         <PlaylistList prefix="saved-playlist" playlists={playlists} />
