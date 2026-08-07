@@ -1,0 +1,124 @@
+---
+export const prerender = true;
+
+import PageReveal from '@components/PageReveal.astro';
+import { siteConfig } from '@config/index';
+import BaseLayout from '@layouts/BaseLayout.astro';
+
+const description =
+  'How the Spotify data displayed on Ayush Gupta’s portfolio is accessed, used, and disconnected.';
+---
+
+<BaseLayout title="Spotify Privacy" description={description}>
+  <article class="spotify-privacy-page inline-links">
+    <header class="spotify-privacy-header page-reveal">
+      <h1 class="big-heading">Spotify Privacy</h1>
+      <p class="subtitle">how Spotify data is used on this portfolio</p>
+    </header>
+
+    <div class="spotify-privacy-content page-reveal">
+      <p>
+        This portfolio connects only to Ayush Gupta’s own Spotify account. It
+        uses read-only access to show what Ayush is playing, recently played and
+        saved tracks, top tracks and artists, and selected or saved playlists.
+      </p>
+
+      <h2>What is public</h2>
+      <p>
+        The music page makes small, fixed slices of these categories public.
+        Track, album, artist, and playlist names, artwork, artist names,
+        playlist owners and visible track counts may be displayed. Each item
+        links to its corresponding content on Spotify. No visitor’s Spotify
+        account or listening data is accessed.
+      </p>
+
+      <h2>How the data is used</h2>
+      <p>
+        Spotify remains the source of the displayed metadata and artwork.
+        Responses may be cached temporarily when Spotify permits it, to keep the
+        site reliable and reduce repeated requests. This data is not sold, used
+        to advertise to visitors, or used to build visitor profiles.
+      </p>
+
+      <h2>Disconnecting Spotify</h2>
+      <p>
+        Ayush can disconnect this portfolio from Spotify at any time from the
+        <a
+          href="https://www.spotify.com/account/apps/"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          Spotify Apps page
+        </a>
+        by removing the app’s access. Disconnecting stops future Spotify data updates
+        on this site.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about this Spotify integration can be sent to
+        <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.
+      </p>
+
+      <p class="spotify-privacy-date">Effective: 8 August 2026</p>
+    </div>
+  </article>
+
+  <PageReveal />
+</BaseLayout>
+
+<style>
+  .spotify-privacy-page {
+    width: 100%;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 100px 0 120px;
+  }
+
+  .spotify-privacy-header {
+    margin-bottom: 70px;
+    text-align: center;
+  }
+
+  .spotify-privacy-content {
+    color: var(--color-light-slate);
+    font-size: 19px;
+    line-height: 1.65;
+  }
+
+  .spotify-privacy-content h2 {
+    margin: 44px 0 12px;
+    color: var(--color-lightest-slate);
+    font-size: 28px;
+    font-weight: 500;
+  }
+
+  .spotify-privacy-content p {
+    margin: 0 0 18px;
+  }
+
+  .spotify-privacy-content a {
+    color: var(--color-green);
+  }
+
+  .spotify-privacy-date {
+    margin-top: 50px !important;
+    color: var(--color-slate);
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+
+  @media (max-width: 768px) {
+    .spotify-privacy-page {
+      padding: 80px 0 100px;
+    }
+
+    .spotify-privacy-header {
+      margin-bottom: 50px;
+    }
+
+    .spotify-privacy-content {
+      font-size: 18px;
+    }
+  }
+</style>

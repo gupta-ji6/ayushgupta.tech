@@ -13,14 +13,14 @@ import {
   useFavouritePlaylist,
   useRecentlyPlayedTracks,
   useSavedTracks,
-  useTopSpotifyItems,
+  useTopSpotifyArtists,
+  useTopSpotifyTracks,
   useUserPlaylists,
   type SpotifyResourceState,
 } from '@hooks/useSpotify';
 import {
-  getPlaylistTrackTotal,
-  pickSpotifyCoverImage,
   type SpotifyArtist,
+  type SpotifyImage,
   type SpotifyPlaylist,
   type SpotifyTrack,
 } from '@utils/spotify';
@@ -166,7 +166,7 @@ function MusicRow({
 }: {
   children: ReactNode;
   coverAlt: string;
-  coverImage: ReturnType<typeof pickSpotifyCoverImage>;
+  coverImage: SpotifyImage | null;
 }) {
   return (
     <article className="music-row">
@@ -201,19 +201,15 @@ function TrackList({
   return (
     <div className="music-list">
       {tracks.map((track, index) => {
-        const artists = (track.artists ?? [])
-          .map((artist) => artist.name)
-          .join(', ');
+        const artists = track.artists.join(', ');
 
         return (
           <MusicRow
-            key={track.id ?? `${prefix}-${index}`}
-            coverAlt={`${track.album?.name ?? track.name} album cover`}
-            coverImage={pickSpotifyCoverImage(track.album?.images)}
+            key={track.id || `${prefix}-${index}`}
+            coverAlt={`${track.albumName} album cover`}
+            coverImage={track.image}
           >
-            <ExternalLink href={track.external_urls?.spotify}>
-              {track.name}
-            </ExternalLink>
+            <ExternalLink href={track.spotifyUrl}>{track.name}</ExternalLink>
             <p>{artists}</p>
           </MusicRow>
         );
@@ -227,14 +223,12 @@ function ArtistList({ artists }: { artists: SpotifyArtist[] }) {
     <div className="music-list">
       {artists.map((artist, index) => (
         <MusicRow
-          key={artist.id ?? `artist-${index}`}
+          key={artist.id || `artist-${index}`}
           coverAlt={`${artist.name} artist image`}
-          coverImage={pickSpotifyCoverImage(artist.images)}
+          coverImage={artist.image}
         >
-          <ExternalLink href={artist.external_urls?.spotify}>
-            {artist.name}
-          </ExternalLink>
-          <p>{(artist.genres ?? []).join(', ')}</p>
+          <ExternalLink href={artist.spotifyUrl}>{artist.name}</ExternalLink>
+          <p>{artist.genres.join(', ')}</p>
         </MusicRow>
       ))}
     </div>
@@ -251,23 +245,23 @@ function PlaylistList({
   return (
     <div className="music-list">
       {playlists.map((playlist, index) => {
-        const total = getPlaylistTrackTotal(playlist);
-
         return (
           <MusicRow
-            key={playlist.id ?? `${prefix}-${index}`}
+            key={playlist.id || `${prefix}-${index}`}
             coverAlt={`${playlist.name} playlist cover`}
-            coverImage={pickSpotifyCoverImage(playlist.images)}
+            coverImage={playlist.image}
           >
             <div className="music-card-heading">
-              <ExternalLink href={playlist.external_urls?.spotify}>
+              <ExternalLink href={playlist.spotifyUrl}>
                 {playlist.name}
               </ExternalLink>
-              {playlist.owner?.display_name && (
-                <span> by {playlist.owner.display_name}</span>
-              )}
+              {playlist.ownerName && <span> by {playlist.ownerName}</span>}
             </div>
-            <p>{total == null ? '' : `${total} tracks`}</p>
+            <p>
+              {playlist.trackCount == null
+                ? ''
+                : `${playlist.trackCount} tracks`}
+            </p>
           </MusicRow>
         );
       })}
@@ -276,7 +270,7 @@ function PlaylistList({
 }
 
 function TopTracksPanel({ range }: { range: SpotifyTimeRange }) {
-  const query = useTopSpotifyItems('tracks', range, 10);
+  const query = useTopSpotifyTracks(range);
 
   return (
     <ResourceState
@@ -311,7 +305,7 @@ function FavouritePlaylistPanel() {
 }
 
 function RecentlyPlayedPanel() {
-  const query = useRecentlyPlayedTracks(10);
+  const query = useRecentlyPlayedTracks();
 
   return (
     <ResourceState
@@ -320,20 +314,13 @@ function RecentlyPlayedPanel() {
       emptyLabel="No recent listening history is available right now."
       unavailableLabel="Recently played tracks are unavailable right now."
     >
-      {(items) => (
-        <TrackList
-          prefix="recent-track"
-          tracks={items
-            .map((item) => item.track)
-            .filter((track): track is SpotifyTrack => Boolean(track?.name))}
-        />
-      )}
+      {(tracks) => <TrackList prefix="recent-track" tracks={tracks} />}
     </ResourceState>
   );
 }
 
 function SavedTracksPanel() {
-  const query = useSavedTracks(10);
+  const query = useSavedTracks();
 
   return (
     <ResourceState
@@ -342,20 +329,13 @@ function SavedTracksPanel() {
       emptyLabel="No recently saved tracks are available right now."
       unavailableLabel="Saved tracks are unavailable right now."
     >
-      {(items) => (
-        <TrackList
-          prefix="saved-track"
-          tracks={items
-            .map((item) => item.track)
-            .filter((track): track is SpotifyTrack => Boolean(track?.name))}
-        />
-      )}
+      {(tracks) => <TrackList prefix="saved-track" tracks={tracks} />}
     </ResourceState>
   );
 }
 
 function TopArtistsPanel({ range }: { range: SpotifyTimeRange }) {
-  const query = useTopSpotifyItems('artists', range, 10);
+  const query = useTopSpotifyArtists(range);
 
   return (
     <ResourceState
@@ -370,7 +350,7 @@ function TopArtistsPanel({ range }: { range: SpotifyTimeRange }) {
 }
 
 function SavedPlaylistsPanel() {
-  const query = useUserPlaylists(10);
+  const query = useUserPlaylists();
 
   return (
     <ResourceState
@@ -511,6 +491,14 @@ export default function MusicExperience({
         >
           <SavedPlaylistsPanel />
         </DisclosureSection>
+
+        <p className="music-spotify-privacy">
+          Spotify supplies the music data shown here. Read the{' '}
+          <a className="music-inline-link" href="/spotify-privacy">
+            Spotify privacy notice
+          </a>
+          .
+        </p>
       </section>
 
       <section className="music-cta">

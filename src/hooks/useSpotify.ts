@@ -2,24 +2,18 @@ import { useCallback, useEffect, useState } from 'react';
 
 import {
   fetchCurrentTrack,
-  fetchCurrentUserPlaylists,
-  fetchCurrentUsersRecentlyPlayed,
-  fetchCurrentUsersSavedTracks,
-  fetchCurrentUsersTopItems,
-  fetchPlaylistById,
-  type SpotifyResult,
+  fetchFavouritePlaylist,
+  fetchRecentlyPlayedTracks,
+  fetchSavedPlaylists,
+  fetchSavedTracks,
+  fetchTopArtists,
+  fetchTopTracks,
   type SpotifyArtist,
   type SpotifyPlaylist,
-  type SpotifyRecentlyPlayedItem,
-  type SpotifySavedTrackItem,
+  type SpotifyResult,
+  type SpotifyTimeRange,
   type SpotifyTrack,
 } from '@utils/spotify';
-
-type SpotifyTimeRange = 'short_term' | 'medium_term' | 'long_term';
-type SpotifyTopItemType = 'artists' | 'tracks';
-type SpotifyTopItem<T extends SpotifyTopItemType> = T extends 'artists'
-  ? SpotifyArtist
-  : SpotifyTrack;
 
 export type SpotifyResourceState<T> = { kind: 'loading' } | SpotifyResult<T>;
 
@@ -42,113 +36,67 @@ function useSpotifyResource<T>(
   return state;
 }
 
-function getUniqueRecentlyPlayedTracks(
-  items: SpotifyRecentlyPlayedItem[],
-): SpotifyRecentlyPlayedItem[] {
-  const seen = new Set<string>();
-
-  return items.filter((item) => {
-    const trackId = item.track?.id;
-
-    if (!trackId || seen.has(trackId)) {
-      return false;
-    }
-
-    seen.add(trackId);
-    return true;
-  });
-}
-
 export function useNowPlayingTrack(): SpotifyResourceState<SpotifyTrack> {
   const fetcher = useCallback(() => fetchCurrentTrack(), []);
 
   return useSpotifyResource(fetcher);
 }
 
-export function useTopSpotifyItems<T extends SpotifyTopItemType>(
-  type: T,
+export function useTopSpotifyTracks(
   timeRange: SpotifyTimeRange,
-  limit = 20,
-): SpotifyResourceState<SpotifyTopItem<T>[]> {
-  const fetcher = useCallback(async (): Promise<
-    SpotifyResult<SpotifyTopItem<T>[]>
-  > => {
-    const response = await fetchCurrentUsersTopItems(type, timeRange, limit);
-
-    if (response.kind !== 'success') {
-      return response;
-    }
-
-    return { kind: 'success', data: response.data.items ?? [] };
-  }, [limit, timeRange, type]);
+): SpotifyResourceState<SpotifyTrack[]> {
+  const fetcher = useCallback(() => fetchTopTracks(timeRange), [timeRange]);
 
   return useSpotifyResource(fetcher);
 }
 
-export function useFavouritePlaylist(
-  playlistId = '3qWhbV6ul3Bfl2iHrN4TYn',
-): SpotifyResourceState<SpotifyPlaylist> {
-  const fetcher = useCallback(
-    () => fetchPlaylistById(playlistId),
-    [playlistId],
-  );
+export function useTopSpotifyArtists(
+  timeRange: SpotifyTimeRange,
+): SpotifyResourceState<SpotifyArtist[]> {
+  const fetcher = useCallback(() => fetchTopArtists(timeRange), [timeRange]);
 
   return useSpotifyResource(fetcher);
 }
 
-export function useRecentlyPlayedTracks(
-  limit = 20,
-): SpotifyResourceState<SpotifyRecentlyPlayedItem[]> {
-  const fetcher = useCallback(async (): Promise<
-    SpotifyResult<SpotifyRecentlyPlayedItem[]>
-  > => {
-    const response = await fetchCurrentUsersRecentlyPlayed(limit);
-
-    if (response.kind !== 'success') {
-      return response;
-    }
-
-    const items = getUniqueRecentlyPlayedTracks(response.data.items ?? []);
-    return items.length > 0
-      ? { kind: 'success', data: items }
-      : { kind: 'empty' };
-  }, [limit]);
+export function useFavouritePlaylist(): SpotifyResourceState<SpotifyPlaylist> {
+  const fetcher = useCallback(() => fetchFavouritePlaylist(), []);
 
   return useSpotifyResource(fetcher);
 }
 
-export function useSavedTracks(
-  limit = 20,
-): SpotifyResourceState<SpotifySavedTrackItem[]> {
+export function useRecentlyPlayedTracks(): SpotifyResourceState<
+  SpotifyTrack[]
+> {
   const fetcher = useCallback(async (): Promise<
-    SpotifyResult<SpotifySavedTrackItem[]>
+    SpotifyResult<SpotifyTrack[]>
   > => {
-    const response = await fetchCurrentUsersSavedTracks(limit);
-
-    if (response.kind !== 'success') {
-      return response;
+    const result = await fetchRecentlyPlayedTracks();
+    if (result.kind !== 'success') {
+      return result;
     }
 
-    return { kind: 'success', data: response.data.items ?? [] };
-  }, [limit]);
+    const seen = new Set<string>();
+    return {
+      kind: 'success',
+      data: result.data.filter((track) => {
+        if (seen.has(track.id)) return false;
+        seen.add(track.id);
+        return true;
+      }),
+    };
+  }, []);
 
   return useSpotifyResource(fetcher);
 }
 
-export function useUserPlaylists(
-  limit = 20,
-): SpotifyResourceState<SpotifyPlaylist[]> {
-  const fetcher = useCallback(async (): Promise<
-    SpotifyResult<SpotifyPlaylist[]>
-  > => {
-    const response = await fetchCurrentUserPlaylists(limit);
+export function useSavedTracks(): SpotifyResourceState<SpotifyTrack[]> {
+  const fetcher = useCallback(() => fetchSavedTracks(), []);
 
-    if (response.kind !== 'success') {
-      return response;
-    }
+  return useSpotifyResource(fetcher);
+}
 
-    return { kind: 'success', data: response.data.items ?? [] };
-  }, [limit]);
+export function useUserPlaylists(): SpotifyResourceState<SpotifyPlaylist[]> {
+  const fetcher = useCallback(() => fetchSavedPlaylists(), []);
 
   return useSpotifyResource(fetcher);
 }

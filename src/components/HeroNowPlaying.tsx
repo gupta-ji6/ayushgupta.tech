@@ -4,7 +4,7 @@ import {
   PLAYING_INTROS,
   getSpotifyHref,
   itemFromSeed,
-} from '@components/music/NowPlayingWidget';
+} from '@components/music/nowPlaying';
 import { useNowPlayingTrack } from '@hooks/useSpotify';
 
 interface HeroNowPlayingProps {
