@@ -1,0 +1,116 @@
+name: Spotify Health
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+    inputs:
+      simulate_failure:
+        description: Create a simulated failed health check for workflow verification.
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: spotify-health
+  cancel-in-progress: false
+
+env:
+  HEALTH_URL: https://ayushgupta.tech/.netlify/functions/spotify?path=%2Fme%2Ftop%2Ftracks&limit=1
+  ISSUE_TITLE: '[Spotify Health] Production check failing'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - id: health
+        name: Check production Spotify endpoint
+        env:
+          SIMULATE_FAILURE: ${{ github.event.inputs.simulate_failure || 'false' }}
+        run: |
+          response_file="${RUNNER_TEMP}/spotify-health-response.json"
+
+          set +e
+          status="$(curl --silent --show-error --location --max-time 30 --output "$response_file" --write-out '%{http_code}' "$HEALTH_URL")"
+          curl_exit=$?
+          set -e
+
+          category="none"
+          if [ -s "$response_file" ]; then
+            category="$(jq -r 'if type == "object" and (.error | type == "string") then .error else "none" end' "$response_file" 2>/dev/null || echo none)"
+          fi
+
+          if [ "$SIMULATE_FAILURE" = 'true' ]; then
+            status=599
+            curl_exit=1
+            category=simulated_failure
+          fi
+
+          healthy=false
+          if [ "$curl_exit" -eq 0 ] && [ "$status" = '200' ]; then
+            healthy=true
+          fi
+
+          {
+            echo "healthy=$healthy"
+            echo "status=${status:-000}"
+            echo "category=$category"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Open or resolve health issue
+        uses: actions/github-script@v8
+        env:
+          HEALTHY: ${{ steps.health.outputs.healthy }}
+          STATUS: ${{ steps.health.outputs.status }}
+          CATEGORY: ${{ steps.health.outputs.category }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const title = process.env.ISSUE_TITLE;
+            const healthy = process.env.HEALTHY === 'true';
+            const status = process.env.STATUS;
+            const category = process.env.CATEGORY;
+            const checkedAt = new Date().toISOString();
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner,
+              repo,
+              state: 'all',
+              per_page: 100,
+            });
+            const issue = issues.find(
+              (candidate) =>
+                candidate.title === title && !candidate.pull_request,
+            );
+
+            if (healthy) {
+              if (issue?.state === 'open') {
+                await github.rest.issues.update({
+                  owner,
+                  repo,
+                  issue_number: issue.number,
+                  state: 'closed',
+                  body: `## Spotify health recovered\n\n- Checked: ${checkedAt}\n- HTTP status: ${status}`,
+                });
+              }
+              return;
+            }
+
+            const body = `## Spotify health check failed\n\n- Checked: ${checkedAt}\n- HTTP status: ${status}\n- Response category: \`${category}\``;
+
+            if (issue) {
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: issue.number,
+                state: 'open',
+                body,
+              });
+              return;
+            }
+
+            await github.rest.issues.create({ owner, repo, title, body });
