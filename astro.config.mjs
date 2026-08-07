@@ -3,6 +3,7 @@ import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import netlify from '@astrojs/netlify';
+import partytown from '@astrojs/partytown';
 import tailwindcss from '@tailwindcss/vite';
 import rehypeExternalLinks from 'rehype-external-links';
 import { loadEnv } from 'vite';
@@ -25,6 +26,9 @@ export default defineConfig({
     react(),
     mdx(),
     sitemap(),
+    // Runs Google Tag Manager's gtag.js in a web worker instead of main
+    // thread. dataLayer.push must stay forwarded for gtag() calls to reach it.
+    partytown({ config: { forward: ['dataLayer.push'] } }),
   ],
 
   vite: {
