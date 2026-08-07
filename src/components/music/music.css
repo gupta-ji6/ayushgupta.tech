@@ -218,23 +218,6 @@
   color: var(--color-light-slate);
 }
 
-.music-feedback-error {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-.music-feedback-error button {
-  padding: 0.85rem 1.1rem;
-  border: 1px solid var(--color-green);
-  border-radius: 4px;
-  background: transparent;
-  color: var(--color-green);
-  font-family: var(--font-mono);
-  font-size: 13px;
-}
-
 .music-list {
   display: flex;
   flex-direction: column;

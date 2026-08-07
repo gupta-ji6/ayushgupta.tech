@@ -62,14 +62,18 @@ export default function NowPlayingWidget({
   mode = 'footer',
   introSeed = 0,
 }: NowPlayingWidgetProps) {
-  const { data: track } = useNowPlayingTrack();
+  const query = useNowPlayingTrack();
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  const track = query.kind === 'success' ? query.data : null;
+  const isUnavailable = query.kind === 'unavailable';
   const isListening = Boolean(track?.name);
   const spotifyHref = getSpotifyHref(track);
   const albumArt = pickSpotifyCoverImage(track?.album?.images);
-  const title = track?.name ?? 'Not Playing';
+  const title = isUnavailable
+    ? 'Now playing is unavailable right now.'
+    : (track?.name ?? 'Not Playing');
   const subtitle = getWidgetSubtitle(track, mode);
 
   useEffect(() => {
@@ -117,10 +121,12 @@ export default function NowPlayingWidget({
 
   const introLine = useMemo<WidgetContextLine>(
     () =>
-      isListening
-        ? itemFromSeed(PLAYING_INTROS, introSeed)
-        : itemFromSeed(NOT_PLAYING_INTROS, introSeed),
-    [isListening, introSeed],
+      isUnavailable
+        ? { emoji: '🎧', copy: 'music is temporarily unavailable' }
+        : isListening
+          ? itemFromSeed(PLAYING_INTROS, introSeed)
+          : itemFromSeed(NOT_PLAYING_INTROS, introSeed),
+    [isListening, introSeed, isUnavailable],
   );
 
   const infoHref = mode === 'page' ? spotifyHref : '/music';

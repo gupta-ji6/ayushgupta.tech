@@ -3,6 +3,23 @@ const SPOTIFY_FAILURE_BACKOFF_MS = 10_000;
 
 let spotifyBackoffUntil = 0;
 
+export type SpotifyResult<T> =
+  | { kind: 'success'; data: T }
+  | { kind: 'empty' }
+  | { kind: 'unavailable' };
+
+function spotifySuccess<T>(data: T): SpotifyResult<T> {
+  return { kind: 'success', data };
+}
+
+function spotifyEmpty<T>(): SpotifyResult<T> {
+  return { kind: 'empty' };
+}
+
+function spotifyUnavailable<T>(): SpotifyResult<T> {
+  return { kind: 'unavailable' };
+}
+
 function startSpotifyBackoff(): boolean {
   const now = Date.now();
   const shouldLog = now >= spotifyBackoffUntil;
@@ -52,6 +69,12 @@ interface SpotifyCurrentTrackResponse {
   currently_playing_type?: string;
   item?: SpotifyTrack;
 }
+
+type SpotifyTopItemType = 'artists' | 'tracks';
+
+type SpotifyTopItem<T extends SpotifyTopItemType> = T extends 'artists'
+  ? SpotifyArtist
+  : SpotifyTrack;
 
 export interface SpotifyImage {
   url: string;
@@ -107,12 +130,15 @@ const SPOTIFY_NOW_PLAYING_TTL_MS = 30_000;
 const SPOTIFY_LIBRARY_TTL_MS = 5 * 60_000;
 
 interface SpotifyCacheEntry {
-  data: unknown;
+  result: SpotifyResult<unknown>;
   expiresAt: number;
 }
 
 const spotifyResponseCache = new Map<string, SpotifyCacheEntry>();
-const spotifyInflightRequests = new Map<string, Promise<unknown>>();
+const spotifyInflightRequests = new Map<
+  string,
+  Promise<SpotifyResult<unknown>>
+>();
 
 function cacheTtlForPath(path: string): number {
   return path === '/me/player/currently-playing'
@@ -123,7 +149,7 @@ function cacheTtlForPath(path: string): number {
 async function spotifyGet<T>(
   path: string,
   params: Record<string, string | number> = {},
-): Promise<T | undefined> {
+): Promise<SpotifyResult<T>> {
   const qs = new URLSearchParams({
     path,
     ...Object.fromEntries(
@@ -134,19 +160,19 @@ async function spotifyGet<T>(
 
   const cached = spotifyResponseCache.get(cacheKey);
   if (cached && cached.expiresAt > Date.now()) {
-    return cached.data as T | undefined;
+    return cached.result as SpotifyResult<T>;
   }
 
   const inflight = spotifyInflightRequests.get(cacheKey);
   if (inflight) {
-    return (await inflight) as T | undefined;
+    return (await inflight) as SpotifyResult<T>;
   }
 
   if (spotifyBackoffUntil > Date.now()) {
-    return undefined;
+    return spotifyUnavailable();
   }
 
-  const request = (async (): Promise<T | undefined> => {
+  const request = (async (): Promise<SpotifyResult<T>> => {
     try {
       const response = await fetch(`${SPOTIFY_PROXY}?${qs.toString()}`, {
         headers: {
@@ -158,22 +184,22 @@ async function spotifyGet<T>(
         if (startSpotifyBackoff()) {
           await logSpotifyResponseFailure(response);
         }
-        return undefined;
+        return spotifyUnavailable();
       }
 
-      const data =
+      const result =
         response.status === 204 || response.status === 202
-          ? undefined
-          : ((await response.json()) as T);
+          ? spotifyEmpty<T>()
+          : spotifySuccess((await response.json()) as T);
 
       spotifyBackoffUntil = 0;
       // Cache 204s too ("nothing playing" is a valid, reusable answer).
       spotifyResponseCache.set(cacheKey, {
-        data,
+        result,
         expiresAt: Date.now() + cacheTtlForPath(path),
       });
 
-      return data;
+      return result;
     } catch (error) {
       if (startSpotifyBackoff()) {
         console.warn(
@@ -181,7 +207,7 @@ async function spotifyGet<T>(
           error,
         );
       }
-      return undefined;
+      return spotifyUnavailable();
     }
   })();
 
@@ -194,82 +220,107 @@ async function spotifyGet<T>(
   }
 }
 
-export async function fetchCurrentTrack(): Promise<SpotifyTrack | undefined> {
-  const data = await spotifyGet<SpotifyCurrentTrackResponse>(
+export async function fetchCurrentTrack(): Promise<
+  SpotifyResult<SpotifyTrack>
+> {
+  const result = await spotifyGet<SpotifyCurrentTrackResponse>(
     '/me/player/currently-playing',
   );
 
-  if (data?.currently_playing_type === 'track' && data.item) {
-    return data.item;
+  if (result.kind !== 'success') {
+    return result;
   }
 
-  return undefined;
+  const { data } = result;
+
+  if (data.currently_playing_type === 'track' && data.item) {
+    return spotifySuccess(data.item);
+  }
+
+  return spotifyEmpty();
 }
 
 export async function fetchPlaylistById(
   playlistId: string,
-): Promise<SpotifyPlaylist | undefined> {
+): Promise<SpotifyResult<SpotifyPlaylist>> {
   return spotifyGet<SpotifyPlaylist>(`/playlists/${playlistId}`);
 }
 
 export async function fetchCurrentUserPlaylists(
   limit = 20,
-): Promise<SpotifyPagingResponse<SpotifyPlaylist> | undefined> {
-  const data = await spotifyGet<SpotifyPagingResponse<SpotifyPlaylist>>(
+): Promise<SpotifyResult<SpotifyPagingResponse<SpotifyPlaylist>>> {
+  const result = await spotifyGet<SpotifyPagingResponse<SpotifyPlaylist>>(
     '/me/playlists',
     { limit },
   );
 
-  if (data?.items?.length) {
-    return data;
+  if (result.kind !== 'success') {
+    return result;
   }
 
-  return undefined;
+  if (result.data.items?.length) {
+    return result;
+  }
+
+  return spotifyEmpty();
 }
 
 export async function fetchCurrentUsersRecentlyPlayed(
   limit = 20,
-): Promise<SpotifyPagingResponse<SpotifyRecentlyPlayedItem> | undefined> {
-  const data = await spotifyGet<
+): Promise<SpotifyResult<SpotifyPagingResponse<SpotifyRecentlyPlayedItem>>> {
+  const result = await spotifyGet<
     SpotifyPagingResponse<SpotifyRecentlyPlayedItem>
   >('/me/player/recently-played', { limit });
 
-  if (data?.items?.length) {
-    return data;
+  if (result.kind !== 'success') {
+    return result;
   }
 
-  return undefined;
+  if (result.data.items?.length) {
+    return result;
+  }
+
+  return spotifyEmpty();
 }
 
 export async function fetchCurrentUsersSavedTracks(
   limit = 20,
-): Promise<SpotifyPagingResponse<SpotifySavedTrackItem> | undefined> {
-  const data = await spotifyGet<SpotifyPagingResponse<SpotifySavedTrackItem>>(
+): Promise<SpotifyResult<SpotifyPagingResponse<SpotifySavedTrackItem>>> {
+  const result = await spotifyGet<SpotifyPagingResponse<SpotifySavedTrackItem>>(
     '/me/tracks',
     { limit },
   );
 
-  if (data?.items?.length) {
-    return data;
+  if (result.kind !== 'success') {
+    return result;
   }
 
-  return undefined;
+  if (result.data.items?.length) {
+    return result;
+  }
+
+  return spotifyEmpty();
 }
 
-export async function fetchCurrentUsersTopItems(
-  type: 'artists' | 'tracks' = 'tracks',
+export async function fetchCurrentUsersTopItems<T extends SpotifyTopItemType>(
+  type: T,
   timeRange: 'short_term' | 'medium_term' | 'long_term' = 'short_term',
   limit = 20,
-): Promise<SpotifyPagingResponse<SpotifyArtist | SpotifyTrack> | undefined> {
-  const data = await spotifyGet<
-    SpotifyPagingResponse<SpotifyArtist | SpotifyTrack>
-  >(`/me/top/${type}`, { time_range: timeRange, limit });
+): Promise<SpotifyResult<SpotifyPagingResponse<SpotifyTopItem<T>>>> {
+  const result = await spotifyGet<SpotifyPagingResponse<SpotifyTopItem<T>>>(
+    `/me/top/${type}`,
+    { time_range: timeRange, limit },
+  );
 
-  if (data?.items?.length) {
-    return data;
+  if (result.kind !== 'success') {
+    return result;
   }
 
-  return undefined;
+  if (result.data.items?.length) {
+    return result;
+  }
+
+  return spotifyEmpty();
 }
 
 export function pickSpotifyCoverImage(

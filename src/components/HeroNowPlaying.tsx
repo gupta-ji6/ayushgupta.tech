@@ -12,7 +12,8 @@ interface HeroNowPlayingProps {
 }
 
 export default function HeroNowPlaying({ introSeed = 0 }: HeroNowPlayingProps) {
-  const { data: track } = useNowPlayingTrack();
+  const query = useNowPlayingTrack();
+  const track = query.kind === 'success' ? query.data : null;
   const intro = useMemo(
     () => itemFromSeed(PLAYING_INTROS, introSeed),
     [introSeed],
