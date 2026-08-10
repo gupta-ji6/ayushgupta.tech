@@ -1,3 +1,9 @@
 [build]
 command = "npm run build"
 publish = "dist/"
+
+# Astro emits slashless canonical URLs and sitemap entries. Keep Netlify from
+# rewriting prerendered routes such as /blog to /blog/, so those URLs resolve
+# directly instead of becoming sitemap/canonical redirects.
+[build.processing.html]
+pretty_urls = false
