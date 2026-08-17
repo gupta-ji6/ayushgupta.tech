@@ -8,7 +8,11 @@ const allPosts = await getCollection('blog');
 const tags = getPublishedTagSummaries(allPosts);
 ---
 
-<BaseLayout title="Tags" description="Browse blog posts by topic and tag.">
+<BaseLayout
+  title="Tags"
+  description="Browse blog posts by topic and tag."
+  noindex
+>
   <section class="tags-page">
     <span class="breadcrumb">
       <span class="arrow">&larr;</span>
