@@ -28,6 +28,7 @@ const posts = getPublishedEntriesForTag(allPosts, tag || '');
 <BaseLayout
   title={`Tagged: #${tagName}`}
   description={`Blog posts tagged with ${tagName}.`}
+  noindex
 >
   <section class="tag-page">
     <span class="breadcrumb">

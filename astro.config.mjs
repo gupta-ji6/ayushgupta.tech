@@ -25,7 +25,14 @@ export default defineConfig({
   integrations: [
     react(),
     mdx(),
-    sitemap(),
+    sitemap({
+      // Tag archives are useful visitor navigation but intentionally not
+      // search landing pages, so keep them out of the submitted sitemap.
+      filter: (page) => {
+        const pathname = new URL(page).pathname;
+        return pathname !== '/blog/tags' && !pathname.startsWith('/blog/tags/');
+      },
+    }),
     // Runs Google Tag Manager's gtag.js in a web worker instead of main
     // thread. dataLayer.push must stay forwarded for gtag() calls to reach it.
     partytown({ config: { forward: ['dataLayer.push'] } }),
