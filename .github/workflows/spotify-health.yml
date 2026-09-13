@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  HEALTH_URL: https://ayushgupta.tech/.netlify/functions/spotify?path=%2Fme%2Ftop%2Ftracks&limit=1
+  HEALTH_URL: https://ayushgupta.tech/api/spotify?resource=top-tracks&range=short_term
   ISSUE_TITLE: '[Spotify Health] Production check failing'
 
 jobs:

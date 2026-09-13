@@ -22,6 +22,7 @@ There are no automated tests; verification is done by building plus checking pag
 ### Content → Pages pipeline
 
 Content collections are defined in `src/content.config.ts` and live in `src/content/` (blog MDX, jobs, featured/projects, uses, hero, about, etc.). Pages in `src/pages/`:
+
 - Blog post pages from `src/content/blog/` via `src/pages/blog/[slug].astro` (routed by frontmatter `slug`, helpers in `src/utils/blog.ts`)
 - Tag pages at `/blog/tags/{tag}` via `src/pages/blog/tags/[tag].astro`
 
@@ -40,11 +41,13 @@ Tailwind v4 + plain CSS. Design tokens (colors, fonts) are CSS custom properties
 
 ### Spotify integration
 
-Spotify API calls are proxied through a Netlify Function (`netlify/functions/spotify.cjs`) with a strict path allowlist. Server-side env vars: `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN`. Serverless invocation count is a deliberate constraint, kept low by four cache layers — don't add refetching without considering them:
-1. The function caches its OAuth token across warm invocations and sends `Netlify-CDN-Cache-Control: ... durable ...` so the CDN serves repeats without invoking it (30s for now-playing, 5min for library endpoints).
-2. `spotifyGet` in `src/utils/spotify.ts` has a module-level TTL cache + in-flight dedupe that survives island remounts and soft navigations.
+Spotify API calls are exposed as a fixed, least-privilege presentation API at `/api/spotify` by `netlify/functions/spotify.cjs`. The function accepts resource keys rather than arbitrary Spotify paths, returns purpose-built public DTOs, and requires a Cloudflare-injected origin key in production. Server-side env vars: `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN`, `SPOTIFY_ORIGIN_KEY_CURRENT`, and optional `SPOTIFY_ORIGIN_KEY_NEXT`. Never configure `SPOTIFY_LOCAL_DEV_BYPASS` in Netlify; the local scripts set it only for the Netlify emulator.
+
+Serverless invocation count is a deliberate constraint, kept low by three layers — don't add refetching without considering them:
+
+1. The function caches its OAuth token across warm invocations and uses Netlify's CDN only when Spotify's upstream cache policy permits it, capped at 30s for now-playing and 5min for collections.
+2. `spotifyGet` in `src/utils/spotify.ts` has a response-header-aware module cache plus in-flight dedupe that survives island remounts and soft navigations.
 3. The music page's `<details>` sections mount their query panels only on first open (see `DisclosureSection` in `MusicExperience.tsx`).
-4. Track preview audio uses `preload='none'`.
 
 React hooks live in `src/hooks/useSpotify.ts`; now-playing render appears in the footer widget, the homepage hero line, and the music page.
 

@@ -36,23 +36,6 @@ export function MusicNoteIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function PauseIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <IconBase {...props}>
-      <path d="M9 6v12" />
-      <path d="M15 6v12" />
-    </IconBase>
-  );
-}
-
-export function PlayIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <IconBase {...props}>
-      <path d="m8 6 10 6-10 6Z" fill="currentColor" stroke="none" />
-    </IconBase>
-  );
-}
-
 export function SpotifyIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 168 168" aria-hidden="true" {...props}>

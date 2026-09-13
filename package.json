@@ -10,7 +10,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "SPOTIFY_LOCAL_DEV_BYPASS=true astro dev",
     "build": "astro build",
     "preview": "npm run dev --",
     "test": "node --experimental-strip-types --test test/spotify-proxy.test.cjs test/spotify-client.test.mjs",

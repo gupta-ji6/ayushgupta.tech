@@ -300,7 +300,7 @@ Skip porting: `.gatsby-image-outer-wrapper`, PrismStyles (replaced by Shiki).
 ### Current Main Branch Baseline (April 20, 2026)
 
 - Spotify secrets are already server-side on `main` via `netlify/functions/spotify.cjs`; the old direct client-secret flow is no longer the source of truth.
-- The current client utility calls `/.netlify/functions/spotify?path=...` and the server-side proxy enforces an allowlist of Spotify paths instead of exposing arbitrary upstream access.
+- The Spotify client calls the fixed `/api/spotify?resource=...` presentation endpoint; the server owns every upstream path, parameter, limit, and response DTO.
 - The current music route surface on `main` is:
   - live now playing widget
   - top tracks with short / medium / long term toggle
