@@ -15,9 +15,9 @@
     "preview": "npm run dev --",
     "test": "node --experimental-strip-types --test test/spotify-proxy.test.cjs test/spotify-client.test.mjs",
     "check": "astro check",
-    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx,astro}\" \"astro.config.mjs\" \"eslint.config.mjs\" \"prettier.config.js\"",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx,astro}\" \"netlify/**/*.cjs\" \"astro.config.mjs\" \"eslint.config.mjs\" \"prettier.config.js\"",
     "format": "prettier --write \"src/**/*.{astro,ts,tsx,js,jsx,md,mdx,css}\"",
-    "doctor": "npx react-doctor@latest"
+    "doctor": "react-doctor"
   },
   "overrides": {
     "vite": "7.3.2"
@@ -26,32 +26,35 @@
     "node": ">=22.12.0 <23"
   },
   "dependencies": {
-    "@astrojs/check": "0.9.8",
     "@astrojs/mdx": "5.0.3",
     "@astrojs/netlify": "7.0.13",
     "@astrojs/partytown": "2.1.7",
     "@astrojs/react": "5.0.3",
     "@astrojs/sitemap": "3.7.2",
     "@tailwindcss/vite": "4.2.2",
-    "@types/lodash": "4.17.24",
-    "@types/react": "19.2.14",
-    "@types/react-dom": "19.2.3",
     "astro": "6.4.8",
-    "prettier": "3.8.3",
-    "prettier-plugin-astro": "0.14.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-hot-toast": "2.6.0",
     "rehype-external-links": "3.0.0",
-    "tailwindcss": "4.2.2",
-    "typescript": "5.9.3"
+    "tailwindcss": "4.2.2"
   },
   "devDependencies": {
+    "@astrojs/check": "0.9.8",
     "@eslint/js": "9.39.4",
-    "@typescript-eslint/parser": "8.58.2",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
     "eslint": "9.39.4",
+    "eslint-config-prettier": "10.1.8",
     "eslint-plugin-astro": "1.7.0",
+    "eslint-plugin-jsx-a11y": "6.10.2",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "7.1.1",
     "globals": "16.5.0",
-    "react-doctor": "0.7.7"
+    "prettier": "3.8.3",
+    "prettier-plugin-astro": "0.14.1",
+    "react-doctor": "0.7.7",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.58.2"
   }
 }
