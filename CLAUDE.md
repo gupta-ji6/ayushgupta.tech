@@ -28,7 +28,7 @@ Content collections are defined in `src/content.config.ts` and live in `src/cont
 ### Import aliases
 
 Configured in `astro.config.mjs` (Vite) and `tsconfig.json` — always use these in imports:
-`@components`, `@config`, `@hooks`, `@images`, `@layouts`, `@styles`, `@utils`
+`@components`, `@config`, `@hooks`, `@layouts`, `@styles`, `@utils`
 
 ### Styling
 
