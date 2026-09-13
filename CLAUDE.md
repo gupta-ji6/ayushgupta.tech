@@ -48,9 +48,9 @@ Spotify API calls are proxied through a Netlify Function (`netlify/functions/spo
 
 React hooks live in `src/hooks/useSpotify.ts`; now-playing render appears in the footer widget, the homepage hero line, and the music page.
 
-### Supabase comments
+### Supabase comments and music recommendations
 
-Blog comments and the music song-recommendation form are stored in a Supabase `comments` table (columns: `post_id`, `author`, `content`, `hidden`, `created_at`; new rows default to `hidden = true` pending approval). The browser never talks to Supabase directly — the Astro API route `src/pages/api/comments.ts` (`prerender = false`, deployed as a serverless function) proxies GET/POST using server-side env vars `SUPABASE_URL` and `SUPABASE_KEY` (publishable key; RLS restricts reads to `hidden = false`). Client hook: `src/hooks/useComments.ts`. `post_id` values are load-bearing: blog posts use the raw frontmatter slug (e.g. `/blog/grid-vs-flex`), the music page uses `/music/`.
+Blog comments and the music song-recommendation form are shipped through a Supabase `comments` table (columns: `post_id`, `author`, `content`, `hidden`, `created_at`; new rows default to `hidden = true` pending approval). The browser never talks to Supabase directly — the Astro API route `src/pages/api/comments.ts` (`prerender = false`, deployed as a serverless function) proxies GET/POST using server-side env vars `SUPABASE_URL` and `SUPABASE_KEY` (publishable key; RLS restricts reads to `hidden = false`). Client hook: `src/hooks/useComments.ts`. `post_id` values are load-bearing: blog posts use the raw frontmatter slug (e.g. `/blog/grid-vs-flex`), the music page uses `/music/`.
 
 ### Analytics
 
