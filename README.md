@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://ayushgupta.tech">
-        <img src="src/images/pwa-logo.png" alt="Panda Logo" height="150">
+        <img src="public/pwa-logo.png" alt="Panda Logo" height="150">
     </a>
 </p>
 
@@ -21,7 +21,7 @@
     </a>
 </div>
 
-[![View Portfolio](https://raw.githubusercontent.com/gupta-ji6/gupta-ji6.github.io/master/src/images/og.png)](https://ayushgupta.tech)
+[![View Portfolio](public/og.png)](https://ayushgupta.tech)
 
 Source for [ayushgupta.tech](https://ayushgupta.tech), built with [Astro](https://astro.build/), React islands, Tailwind CSS, MDX, and Netlify Functions.
 

@@ -45,7 +45,6 @@ export default defineConfig({
         '@components': '/src/components',
         '@config': '/src/config',
         '@hooks': '/src/hooks',
-        '@images': '/src/images',
         '@layouts': '/src/layouts',
         '@styles': '/src/styles',
         '@utils': '/src/utils',
