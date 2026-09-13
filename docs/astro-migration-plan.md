@@ -4,6 +4,8 @@
 
 Migrate `ayushgupta.tech` from Gatsby 3.x to Astro in the same repository, preserving current URLs, information architecture, and near visual parity at launch. This is a framework migration with targeted simplifications, not a redesign.
 
+> Historical document: This migration plan records the original launch intent and is not the source of truth for current behavior. Refer to the live Astro implementation and current repository docs for shipped features; blog comments and music recommendations are currently enabled through Supabase.
+
 ### Locked Decisions
 
 - **Framework**: Astro
