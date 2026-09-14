@@ -1,5 +1,5 @@
 ---
-date: '2020-08-20'
+date: 2020-08-20
 title: 'Panda'
 image: ''
 github: 'https://github.com/gupta-ji6/panda'
@@ -8,7 +8,7 @@ tech:
   - JavaScript
   - REST API
   - HTML & CSS
-show: 'true'
+show: true
 ---
 
 A random panda GIF generator to fix your mood.

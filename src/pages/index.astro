@@ -43,7 +43,7 @@ for (const entry of blog) {
 }
 publishedPopularArticles.sort(
   (left, right) =>
-    new Date(right.data.date).getTime() - new Date(left.data.date).getTime(),
+    right.data.date.getTime() - left.data.date.getTime(),
 );
 
 const visibleProjects = [];
@@ -54,7 +54,7 @@ for (const entry of projects) {
 }
 visibleProjects.sort(
   (left, right) =>
-    new Date(right.data.date).getTime() - new Date(left.data.date).getTime(),
+    right.data.date.getTime() - left.data.date.getTime(),
 );
 
 const visibleFeatured = [];
@@ -64,7 +64,7 @@ for (const entry of featured) {
   }
 }
 visibleFeatured.sort(
-  (left, right) => Number(right.data.date) - Number(left.data.date),
+  (left, right) => right.data.date - left.data.date,
 );
 
 const visibleJobs = [];
@@ -75,13 +75,13 @@ for (const entry of jobs) {
 }
 visibleJobs.sort(
   (left, right) =>
-    new Date(right.data.date).getTime() - new Date(left.data.date).getTime(),
+    right.data.date.getTime() - left.data.date.getTime(),
 );
 
 const sortedEducation = [...education];
 sortedEducation.sort(
   (left, right) =>
-    Number(right.data.passingYear) - Number(left.data.passingYear),
+    right.data.passingYear - left.data.passingYear,
 );
 
 const sortedFunFacts = [...funFacts];

@@ -1,5 +1,5 @@
 ---
-date: '3'
+date: 3
 title: 'Audrix'
 cover: './audrix.png'
 # github: 'https://github.com/bchiang7/spotify-profile'
@@ -9,7 +9,7 @@ tech:
   - React Navigation
   - NativeBase
   - Firebase
-show: 'true'
+show: true
 ---
 
 Online music streaming app starter template with cross-platform tested proficient UI having authentication, storage & real-time database connectivity; sold 110+ times.

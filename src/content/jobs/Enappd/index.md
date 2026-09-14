@@ -1,11 +1,11 @@
 ---
-date: '2018-05-14'
+date: 2018-05-14
 title: 'React Native Developer Intern'
 company: 'Enappd'
 location: 'Jaipur, India'
 range: 'May 2018 - July 2018'
 url: 'https://enappd.com'
-show: 'true'
+show: true
 ---
 
 - Quickly learned [React Native](https://facebook.github.io/react-native/) and it’s concepts from the ground up.

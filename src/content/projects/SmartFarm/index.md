@@ -1,5 +1,5 @@
 ---
-date: '2017-12-01'
+date: 2017-12-01
 title: 'Smart Farm'
 image: ''
 github: 'https://github.com/prateek3255/smartfarm'
@@ -11,7 +11,7 @@ tech:
   - Firebase
   - JavaScript
   - HTML & CSS
-show: 'true'
+show: true
 ---
 
 Smart Farm is a crop management system that allots crops to farmers on the basis of the highest requirement crop predicted using machine learning from the crops that are suitable for their area.

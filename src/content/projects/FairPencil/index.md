@@ -1,5 +1,5 @@
 ---
-date: '2017-08-30'
+date: 2017-08-30
 title: 'FairPencil'
 image: ''
 googleplay: 'http://bit.ly/fpAndroid'
@@ -10,7 +10,7 @@ tech:
   - WordPress API
   - Git
   - Android Studio
-show: 'true'
+show: true
 ---
 
 Remotely worked for 3 months on building a hybrid application integrated with client's WordPress website from wireframe provided.

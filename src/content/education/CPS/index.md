@@ -2,7 +2,7 @@
 level: 'Senior Secondary Education'
 school: 'Central Public School'
 location: 'Kota, India'
-passingYear: '2015'
+passingYear: 2015
 url: 'http://www.cpskota.edu.in/'
 ---
 

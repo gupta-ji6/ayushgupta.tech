@@ -5,14 +5,14 @@ export type BlogEntry = CollectionEntry<'blog'>;
 export const sortBlogEntriesByDate = (entries: BlogEntry[]) =>
   entries.toSorted(
     (left, right) =>
-      new Date(right.data.date).getTime() - new Date(left.data.date).getTime(),
+      right.data.date.getTime() - left.data.date.getTime(),
   );
 
 export const getPublishedBlogEntries = (entries: BlogEntry[]) =>
   sortBlogEntriesByDate(entries.filter((entry) => !entry.data.draft));
 
-export const formatBlogDate = (date: string) =>
-  new Date(date).toLocaleDateString('en-US', {
+export const formatBlogDate = (date: Date) =>
+  date.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
