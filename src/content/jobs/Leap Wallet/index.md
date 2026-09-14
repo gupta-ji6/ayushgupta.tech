@@ -1,11 +1,11 @@
 ---
-date: '2024-04-12'
+date: 2024-04-12
 title: 'Mobile App Lead'
 company: 'Leap Wallet'
 location: 'Remote'
 range: 'Apr 2024 - Mar 2026'
 url: 'https://leapwallet.io/'
-show: 'true'
+show: true
 ---
 
 - Spearheaded a high-performing remote mobile team building Leap & Compass Wallet cross-platform mobile apps, achieving exceptional user satisfaction with 4.9 & 4.7 ratings (Google Play/App Store) and growing the user base to 800K+ active users.

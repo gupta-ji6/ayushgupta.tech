@@ -1,5 +1,5 @@
 ---
-date: '2019-03-29'
+date: 2019-03-29
 title: 'Smart Apart'
 cover: './smart-apart.png'
 github: 'https://github.com/gupta-ji6/Smart-Apart-Prototype'
@@ -10,7 +10,7 @@ tech:
   - AngularJS
   - REST API
   - localForage
-show: 'true'
+show: true
 ---
 
 Deployed an informative knowledge gaining application with 500+ organic installations on the Google Play Store.
