@@ -1,4 +1,5 @@
 ---
+import type { CollectionEntry } from 'astro:content';
 import { render } from 'astro:content';
 import AppStoreIcon from '@components/icons/AppStoreIcon.astro';
 import ExternalIcon from '@components/icons/ExternalIcon.astro';
@@ -6,11 +7,15 @@ import FolderIcon from '@components/icons/FolderIcon.astro';
 import GithubIcon from '@components/icons/GithubIcon.astro';
 import GooglePlayIcon from '@components/icons/GooglePlayIcon.astro';
 
+interface Props {
+  entries: CollectionEntry<'projects'>[];
+}
+
 const { entries } = Astro.props;
 const initialCount = 3;
 
 const renderedEntries = await Promise.all(
-  entries.map(async (entry: any) => ({
+  entries.map(async (entry) => ({
     entry,
     Content: (await render(entry)).Content,
   })),

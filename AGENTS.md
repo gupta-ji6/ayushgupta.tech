@@ -15,7 +15,7 @@ Astro 6 portfolio site with React islands and Tailwind CSS v4. `output: 'server'
 - **Lint:** `npm run lint`
 - **Format:** `npm run format` (scope is `src/**` — `netlify/functions/` and root configs are not covered)
 
-There are no automated tests; verification is done by building plus checking pages in a browser against production (https://ayushgupta.tech).
+Automated tests live in `test/` and run with `npm test`; verification also includes building plus checking pages in a browser against production (https://ayushgupta.tech).
 
 ## Architecture
 

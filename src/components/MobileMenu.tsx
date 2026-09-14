@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface NavItem {
   href: string;
@@ -17,13 +17,6 @@ export default function MobileMenu({ items }: MobileMenuProps) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const navRef = useRef<HTMLElement | null>(null);
-
-  const menuFocusables = useMemo(() => {
-    const links = navRef.current
-      ? Array.from(navRef.current.querySelectorAll<HTMLAnchorElement>('a'))
-      : [];
-    return [buttonRef.current, ...links].filter(Boolean) as HTMLElement[];
-  }, [menuOpen]);
 
   useEffect(() => {
     const header = document.querySelector<HTMLElement>('[data-site-header]');
@@ -61,8 +54,21 @@ export default function MobileMenu({ items }: MobileMenuProps) {
       return;
     }
 
+    const getMenuFocusables = () => {
+      const links = navRef.current
+        ? Array.from(navRef.current.querySelectorAll<HTMLAnchorElement>('a'))
+        : [];
+      return [buttonRef.current, ...links].filter(
+        (element): element is HTMLButtonElement | HTMLAnchorElement =>
+          element !== null,
+      );
+    };
+
     const onPointerDown = (event: MouseEvent) => {
-      if (!wrapperRef.current?.contains(event.target as Node)) {
+      if (
+        !(event.target instanceof Node) ||
+        !wrapperRef.current?.contains(event.target)
+      ) {
         setMenuOpen(false);
       }
     };
@@ -74,6 +80,7 @@ export default function MobileMenu({ items }: MobileMenuProps) {
         return;
       }
 
+      const menuFocusables = getMenuFocusables();
       if (event.key !== KEY_TAB || menuFocusables.length === 0) {
         return;
       }
@@ -105,7 +112,7 @@ export default function MobileMenu({ items }: MobileMenuProps) {
       document.removeEventListener('keydown', onKeyDown);
       window.removeEventListener('resize', onResize);
     };
-  }, [menuFocusables, menuOpen]);
+  }, [menuOpen]);
 
   useEffect(() => {
     if (menuOpen) {

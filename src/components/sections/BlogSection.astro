@@ -1,6 +1,11 @@
 ---
+import type { CollectionEntry } from 'astro:content';
 import ArticleIcon from '@components/icons/ArticleIcon.astro';
 import SectionHeading from './SectionHeading.astro';
+
+interface Props {
+  entries: CollectionEntry<'blog'>[];
+}
 
 const { entries } = Astro.props;
 ---
@@ -10,7 +15,7 @@ const { entries } = Astro.props;
 
   <div class="blog-grid">
     {
-      entries.map((entry: any) => (
+      entries.map((entry) => (
         <article class="blog-card">
           <a
             href={entry.data.slug}

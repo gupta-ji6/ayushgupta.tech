@@ -63,7 +63,9 @@ export default function NowPlayingWidget({
   introSeed = 0,
 }: NowPlayingWidgetProps) {
   const query = useNowPlayingTrack();
-  const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
+  const [playingPreviewUrl, setPlayingPreviewUrl] = useState<string | null>(
+    null,
+  );
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const track = query.kind === 'success' ? query.data : null;
@@ -71,6 +73,9 @@ export default function NowPlayingWidget({
   const isListening = Boolean(track?.name);
   const spotifyHref = getSpotifyHref(track);
   const albumArt = pickSpotifyCoverImage(track?.album?.images);
+  const previewUrl = track?.preview_url ?? null;
+  const isPreviewPlaying =
+    previewUrl !== null && playingPreviewUrl === previewUrl;
   const title = isUnavailable
     ? 'Now playing is unavailable right now.'
     : (track?.name ?? 'Not Playing');
@@ -83,8 +88,6 @@ export default function NowPlayingWidget({
       previousAudio.pause();
     }
 
-    setIsPreviewPlaying(false);
-
     if (!track?.preview_url) {
       audioRef.current = null;
       return;
@@ -93,7 +96,7 @@ export default function NowPlayingWidget({
     const audio = new Audio(track.preview_url);
     // Don't download the 30s preview MP3 until the user actually plays it.
     audio.preload = 'none';
-    const handleEnded = () => setIsPreviewPlaying(false);
+    const handleEnded = () => setPlayingPreviewUrl(null);
     audio.addEventListener('ended', handleEnded);
     audioRef.current = audio;
 
@@ -116,7 +119,7 @@ export default function NowPlayingWidget({
       return;
     }
 
-    audio.play().catch(() => setIsPreviewPlaying(false));
+    audio.play().catch(() => setPlayingPreviewUrl(null));
   }, [isPreviewPlaying]);
 
   const introLine = useMemo<WidgetContextLine>(
@@ -178,7 +181,7 @@ export default function NowPlayingWidget({
           </span>
         </a>
 
-        {track?.preview_url ? (
+          {previewUrl ? (
           <button
             type="button"
             className="music-now-playing-action"
@@ -186,7 +189,11 @@ export default function NowPlayingWidget({
               isPreviewPlaying ? 'Pause track preview' : 'Play track preview'
             }
             aria-pressed={isPreviewPlaying}
-            onClick={() => setIsPreviewPlaying((value) => !value)}
+            onClick={() =>
+              setPlayingPreviewUrl((value) =>
+                value === previewUrl ? null : previewUrl,
+              )
+            }
           >
             {isPreviewPlaying ? <PauseIcon /> : <PlayIcon />}
           </button>
