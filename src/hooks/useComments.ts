@@ -80,10 +80,13 @@ export const useComments = (postId: string, config?: UseCommentsConfig) => {
         });
       }
     } finally {
-      if (fetchControllerRef.current === controller) {
-        setLoading(false);
+      const isCurrentRequest = fetchControllerRef.current === controller;
+      if (isCurrentRequest) {
         fetchControllerRef.current = null;
       }
+      setLoading((currentLoading) =>
+        isCurrentRequest ? false : currentLoading,
+      );
     }
   }, [postId, config?.limit, config?.offset]);
 
