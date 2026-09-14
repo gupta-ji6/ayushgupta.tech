@@ -71,3 +71,31 @@ test('keeps Spotify empty, successful, and unavailable results distinct', async 
     },
   );
 });
+
+test('treats malformed Spotify payloads as unavailable', async () => {
+  const spotify = await loadSpotifyClient();
+  mockSpotifyResponse({ items: [{ name: 42 }] });
+  console.warn = () => {};
+
+  assert.deepEqual(await spotify.fetchCurrentUsersTopItems('tracks'), {
+    kind: 'unavailable',
+  });
+});
+
+test('silently propagates cancellation to the active consumer', async () => {
+  const spotify = await loadSpotifyClient();
+  const controller = new AbortController();
+  globalThis.fetch = (_input, init) =>
+    new Promise((_, reject) => {
+      init?.signal?.addEventListener(
+        'abort',
+        () => reject(new DOMException('Aborted', 'AbortError')),
+        { once: true },
+      );
+    });
+
+  const request = spotify.fetchCurrentTrack({ signal: controller.signal });
+  controller.abort();
+
+  await assert.rejects(request, (error) => error?.name === 'AbortError');
+});

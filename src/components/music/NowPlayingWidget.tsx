@@ -1,4 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { useNowPlayingTrack } from '@hooks/useSpotify';
 import { pickSpotifyCoverImage, type SpotifyTrack } from '@utils/spotify';
@@ -58,23 +64,98 @@ function getWidgetSubtitle(track: SpotifyTrack | null, mode: WidgetMode) {
   return 'Explore Music Page';
 }
 
-export default function NowPlayingWidget({
-  mode = 'footer',
-  introSeed = 0,
-}: NowPlayingWidgetProps) {
-  const query = useNowPlayingTrack();
-  const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+function getWidgetTitle(
+  track: SpotifyTrack | null,
+  isUnavailable: boolean,
+): string {
+  if (isUnavailable) {
+    return 'Now playing is unavailable right now.';
+  }
 
-  const track = query.kind === 'success' ? query.data : null;
-  const isUnavailable = query.kind === 'unavailable';
-  const isListening = Boolean(track?.name);
-  const spotifyHref = getSpotifyHref(track);
-  const albumArt = pickSpotifyCoverImage(track?.album?.images);
-  const title = isUnavailable
-    ? 'Now playing is unavailable right now.'
-    : (track?.name ?? 'Not Playing');
-  const subtitle = getWidgetSubtitle(track, mode);
+  return track?.name ?? 'Not Playing';
+}
+
+interface TrackArtworkProps {
+  albumArt: ReturnType<typeof pickSpotifyCoverImage>;
+}
+
+function TrackArtwork({ albumArt }: TrackArtworkProps) {
+  if (albumArt) {
+    return (
+      <img
+        src={albumArt.url}
+        width={albumArt.width ?? 48}
+        height={albumArt.height ?? 48}
+        loading="lazy"
+        alt=""
+      />
+    );
+  }
+
+  return (
+    <span className="music-now-playing-fallback" aria-hidden="true">
+      <MusicNoteIcon />
+    </span>
+  );
+}
+
+interface NowPlayingActionProps {
+  isListening: boolean;
+  isPreviewPlaying: boolean;
+  onTogglePreview: () => void;
+  previewUrl: string | null;
+  spotifyHref: string;
+  trackName?: string;
+}
+
+function NowPlayingAction({
+  isListening,
+  isPreviewPlaying,
+  onTogglePreview,
+  previewUrl,
+  spotifyHref,
+  trackName,
+}: NowPlayingActionProps) {
+  if (previewUrl) {
+    return (
+      <button
+        type="button"
+        className="music-now-playing-action"
+        aria-label={
+          isPreviewPlaying ? 'Pause track preview' : 'Play track preview'
+        }
+        aria-pressed={isPreviewPlaying}
+        onClick={onTogglePreview}
+      >
+        {isPreviewPlaying ? <PauseIcon /> : <PlayIcon />}
+      </button>
+    );
+  }
+
+  return (
+    <a
+      href={spotifyHref}
+      className="music-now-playing-action music-now-playing-action-link"
+      target="_blank"
+      rel="noreferrer noopener"
+      aria-label={
+        isListening
+          ? `Open ${trackName} on Spotify`
+          : 'Open Spotify profile'
+      }
+    >
+      <SpotifyIcon />
+    </a>
+  );
+}
+
+function useTrackPreview(previewUrl: string | null) {
+  const [playingPreviewUrl, setPlayingPreviewUrl] = useState<string | null>(
+    null,
+  );
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const isPreviewPlaying =
+    previewUrl !== null && playingPreviewUrl === previewUrl;
 
   useEffect(() => {
     const previousAudio = audioRef.current;
@@ -83,17 +164,15 @@ export default function NowPlayingWidget({
       previousAudio.pause();
     }
 
-    setIsPreviewPlaying(false);
-
-    if (!track?.preview_url) {
+    if (!previewUrl) {
       audioRef.current = null;
       return;
     }
 
-    const audio = new Audio(track.preview_url);
+    const audio = new Audio(previewUrl);
     // Don't download the 30s preview MP3 until the user actually plays it.
     audio.preload = 'none';
-    const handleEnded = () => setIsPreviewPlaying(false);
+    const handleEnded = () => setPlayingPreviewUrl(null);
     audio.addEventListener('ended', handleEnded);
     audioRef.current = audio;
 
@@ -101,7 +180,7 @@ export default function NowPlayingWidget({
       audio.pause();
       audio.removeEventListener('ended', handleEnded);
     };
-  }, [track?.preview_url]);
+  }, [previewUrl]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -116,8 +195,37 @@ export default function NowPlayingWidget({
       return;
     }
 
-    audio.play().catch(() => setIsPreviewPlaying(false));
+    audio.play().catch(() => setPlayingPreviewUrl(null));
   }, [isPreviewPlaying]);
+
+  const togglePreview = useCallback(() => {
+    if (!previewUrl) {
+      return;
+    }
+
+    setPlayingPreviewUrl((value) =>
+      value === previewUrl ? null : previewUrl,
+    );
+  }, [previewUrl]);
+
+  return { isPreviewPlaying, togglePreview };
+}
+
+export default function NowPlayingWidget({
+  mode = 'footer',
+  introSeed = 0,
+}: NowPlayingWidgetProps) {
+  const query = useNowPlayingTrack();
+
+  const track = query.kind === 'success' ? query.data : null;
+  const isUnavailable = query.kind === 'unavailable';
+  const isListening = Boolean(track?.name);
+  const spotifyHref = getSpotifyHref(track);
+  const albumArt = pickSpotifyCoverImage(track?.album?.images);
+  const previewUrl = track?.preview_url ?? null;
+  const { isPreviewPlaying, togglePreview } = useTrackPreview(previewUrl);
+  const title = getWidgetTitle(track, isUnavailable);
+  const subtitle = getWidgetSubtitle(track, mode);
 
   const introLine = useMemo<WidgetContextLine>(
     () =>
@@ -157,19 +265,7 @@ export default function NowPlayingWidget({
             : {})}
         >
           <span className="music-now-playing-art">
-            {albumArt ? (
-              <img
-                src={albumArt.url}
-                width={albumArt.width ?? 48}
-                height={albumArt.height ?? 48}
-                loading="lazy"
-                alt=""
-              />
-            ) : (
-              <span className="music-now-playing-fallback" aria-hidden="true">
-                <MusicNoteIcon />
-              </span>
-            )}
+            <TrackArtwork albumArt={albumArt} />
           </span>
 
           <span className="music-now-playing-copy">
@@ -178,33 +274,14 @@ export default function NowPlayingWidget({
           </span>
         </a>
 
-        {track?.preview_url ? (
-          <button
-            type="button"
-            className="music-now-playing-action"
-            aria-label={
-              isPreviewPlaying ? 'Pause track preview' : 'Play track preview'
-            }
-            aria-pressed={isPreviewPlaying}
-            onClick={() => setIsPreviewPlaying((value) => !value)}
-          >
-            {isPreviewPlaying ? <PauseIcon /> : <PlayIcon />}
-          </button>
-        ) : (
-          <a
-            href={spotifyHref}
-            className="music-now-playing-action music-now-playing-action-link"
-            target="_blank"
-            rel="noreferrer noopener"
-            aria-label={
-              isListening
-                ? `Open ${track?.name} on Spotify`
-                : 'Open Spotify profile'
-            }
-          >
-            <SpotifyIcon />
-          </a>
-        )}
+        <NowPlayingAction
+          isListening={isListening}
+          isPreviewPlaying={isPreviewPlaying}
+          onTogglePreview={togglePreview}
+          previewUrl={previewUrl}
+          spotifyHref={spotifyHref}
+          trackName={track?.name}
+        />
       </div>
     </div>
   );

@@ -13,7 +13,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "npm run dev --",
-    "test": "node --experimental-strip-types --test test/spotify-proxy.test.cjs test/spotify-client.test.mjs",
+    "test": "node --experimental-strip-types --test",
     "check": "astro check",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx,astro}\" \"netlify/**/*.cjs\" \"astro.config.mjs\" \"eslint.config.mjs\" \"prettier.config.js\"",
     "format": "prettier --write \"src/**/*.{astro,ts,tsx,js,jsx,md,mdx,css}\"",
@@ -37,7 +37,8 @@
     "react-dom": "18.3.1",
     "react-hot-toast": "2.6.0",
     "rehype-external-links": "3.0.0",
-    "tailwindcss": "4.2.2"
+    "tailwindcss": "4.2.2",
+    "zod": "4.3.6"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.8",

@@ -1,7 +1,14 @@
-const fetch = globalThis.fetch || require('node-fetch');
+const { z } = require('zod');
 
 const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token';
 const SPOTIFY_API_BASE = 'https://api.spotify.com/v1';
+const spotifyTokenResponseSchema = z.object({
+  access_token: z.string().min(1),
+  expires_in: z.number().nonnegative().optional(),
+});
+const spotifyErrorResponseSchema = z.object({
+  error: z.string().optional(),
+});
 
 // Reuse the access token across invocations of a warm function instance
 // instead of hitting Spotify's token endpoint on every request.
@@ -10,11 +17,11 @@ let cachedToken = { value: null, expiresAt: 0 };
 class SpotifyAuthorizationError extends Error {}
 
 async function isInvalidGrant(response) {
-  const data = await response.json().catch(() => null);
-
-  return (
-    typeof data === 'object' && data !== null && data.error === 'invalid_grant'
+  const result = spotifyErrorResponseSchema.safeParse(
+    await response.json().catch(() => null),
   );
+
+  return result.success && result.data.error === 'invalid_grant';
 }
 
 async function getAccessToken() {
@@ -55,7 +62,7 @@ async function getAccessToken() {
     throw new Error(`Token refresh failed: ${response.status}`);
   }
 
-  const data = await response.json();
+  const data = spotifyTokenResponseSchema.parse(await response.json());
   const lifetimeSeconds = Math.max((data.expires_in ?? 3600) - 60, 0);
   cachedToken = {
     value: data.access_token,

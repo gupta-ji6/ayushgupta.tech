@@ -1,16 +1,22 @@
 export const prerender = false;
 import type { APIRoute } from 'astro';
+import { z } from 'zod';
+
+import {
+  MAX_AUTHOR_LENGTH,
+  MAX_CONTENT_LENGTH,
+  POST_ID_PATTERN,
+  commentInputSchema,
+  commentRecordSchema,
+  commentsResponseSchema,
+} from '@utils/comments';
+import { request } from '@utils/http';
 
 const SUPABASE_URL = import.meta.env.SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.SUPABASE_KEY;
 
-const MAX_AUTHOR_LENGTH = 100;
-const MAX_CONTENT_LENGTH = 2000;
-// Matches the post_id values stored in Supabase: '/blog/<slug>' and '/music/'.
-const POST_ID_PATTERN = /^\/(blog\/[a-z0-9-]+|music\/)$/;
-
 const supabaseHeaders = {
-  apikey: SUPABASE_KEY,
+  apikey: SUPABASE_KEY ?? '',
   'Content-Type': 'application/json',
 };
 
@@ -28,7 +34,7 @@ function missingConfigResponse(): Response {
   );
 }
 
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ url, request: astroRequest }) => {
   if (!SUPABASE_URL || !SUPABASE_KEY) {
     return missingConfigResponse();
   }
@@ -51,75 +57,78 @@ export const GET: APIRoute = async ({ url }) => {
   if (offset && /^\d+$/.test(offset)) params.set('offset', offset);
 
   try {
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/comments?${params}`, {
-      headers: { ...supabaseHeaders, Prefer: 'count=exact' },
-    });
+    const response = await request(
+      `${SUPABASE_URL}/rest/v1/comments?${params}`,
+      {
+        headers: { ...supabaseHeaders, Prefer: 'count=exact' },
+        signal: astroRequest.signal,
+      },
+    );
+    const commentsResult = z
+      .array(commentRecordSchema)
+      .safeParse(await response.json());
 
-    if (!response.ok) {
+    if (!commentsResult.success) {
       return json({ error: 'Failed to fetch comments.' }, 502);
     }
 
-    const comments = await response.json();
     const range = response.headers.get('content-range');
     const total = range ? Number.parseInt(range.split('/')[1], 10) : NaN;
-    const count = Number.isNaN(total)
-      ? Array.isArray(comments)
-        ? comments.length
-        : 0
-      : total;
+    const count = Number.isNaN(total) ? commentsResult.data.length : total;
 
-    return json({ comments, count }, 200);
+    return json(
+      commentsResponseSchema.parse({ comments: commentsResult.data, count }),
+      200,
+    );
   } catch {
     return json({ error: 'Failed to fetch comments.' }, 502);
   }
 };
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request: astroRequest }) => {
   if (!SUPABASE_URL || !SUPABASE_KEY) {
     return missingConfigResponse();
   }
 
   let body: unknown;
   try {
-    body = await request.json();
+    body = await astroRequest.json();
   } catch {
     return json({ error: 'Invalid JSON body.' }, 400);
   }
 
-  const { postId, author, content } = (body ?? {}) as Record<string, unknown>;
-  const trimmedAuthor = typeof author === 'string' ? author.trim() : '';
-  const trimmedContent = typeof content === 'string' ? content.trim() : '';
+  const parsedBody = commentInputSchema.safeParse(body);
+  if (!parsedBody.success) {
+    const invalidField = parsedBody.error.issues[0]?.path[0];
 
-  if (typeof postId !== 'string' || !POST_ID_PATTERN.test(postId)) {
+    if (invalidField === 'author') {
+      return json(
+        { error: `Author is required (max ${MAX_AUTHOR_LENGTH} characters).` },
+        400,
+      );
+    }
+
+    if (invalidField === 'content') {
+      return json(
+        {
+          error: `Content is required (max ${MAX_CONTENT_LENGTH} characters).`,
+        },
+        400,
+      );
+    }
+
     return json({ error: 'Invalid postId.' }, 400);
   }
-  if (!trimmedAuthor || trimmedAuthor.length > MAX_AUTHOR_LENGTH) {
-    return json(
-      { error: `Author is required (max ${MAX_AUTHOR_LENGTH} characters).` },
-      400,
-    );
-  }
-  if (!trimmedContent || trimmedContent.length > MAX_CONTENT_LENGTH) {
-    return json(
-      { error: `Content is required (max ${MAX_CONTENT_LENGTH} characters).` },
-      400,
-    );
-  }
+
+  const { postId, author, content } = parsedBody.data;
 
   try {
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/comments`, {
+    await request(`${SUPABASE_URL}/rest/v1/comments`, {
       method: 'POST',
       headers: { ...supabaseHeaders, Prefer: 'return=minimal' },
-      body: JSON.stringify({
-        post_id: postId,
-        author: trimmedAuthor,
-        content: trimmedContent,
-      }),
+      body: JSON.stringify({ post_id: postId, author, content }),
+      signal: astroRequest.signal,
     });
-
-    if (!response.ok) {
-      return json({ error: 'Failed to add comment.' }, 502);
-    }
 
     return json({ ok: true }, 201);
   } catch {

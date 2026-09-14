@@ -1,4 +1,5 @@
 ---
+import type { CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import { render } from 'astro:content';
 import AppStoreIcon from '@components/icons/AppStoreIcon.astro';
@@ -7,10 +8,14 @@ import GithubIcon from '@components/icons/GithubIcon.astro';
 import GooglePlayIcon from '@components/icons/GooglePlayIcon.astro';
 import SectionHeading from './SectionHeading.astro';
 
+interface Props {
+  entries: CollectionEntry<'featured'>[];
+}
+
 const { entries } = Astro.props;
 
 const renderedEntries = await Promise.all(
-  entries.map(async (entry: any) => ({
+  entries.map(async (entry) => ({
     entry,
     Content: (await render(entry)).Content,
   })),

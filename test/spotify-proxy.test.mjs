@@ -1,7 +1,9 @@
-const { afterEach, test } = require('node:test');
-const assert = require('node:assert/strict');
+import assert from 'node:assert/strict';
+import { afterEach, test } from 'node:test';
 
-const functionPath = require.resolve('../netlify/functions/spotify.cjs');
+import spotifyFunction from '../netlify/functions/spotify.cjs';
+
+const { handler } = spotifyFunction;
 const originalFetch = globalThis.fetch;
 const originalConsoleError = console.error;
 const originalEnvironment = {
@@ -10,7 +12,7 @@ const originalEnvironment = {
   refreshToken: process.env.SPOTIFY_REFRESH_TOKEN,
 };
 
-function loadHandler(tokenError) {
+function configureTokenError(tokenError) {
   process.env.SPOTIFY_CLIENT_ID = 'client-id';
   process.env.SPOTIFY_CLIENT_SECRET = 'client-secret';
   process.env.SPOTIFY_REFRESH_TOKEN = 'refresh-token';
@@ -20,9 +22,6 @@ function loadHandler(tokenError) {
       headers: { 'Content-Type': 'application/json' },
     });
   console.error = () => {};
-  delete require.cache[functionPath];
-
-  return require(functionPath).handler;
 }
 
 afterEach(() => {
@@ -39,11 +38,10 @@ afterEach(() => {
       process.env[key] = value;
     }
   }
-  delete require.cache[functionPath];
 });
 
 test('reports a safe reauthorization error when Spotify revokes the refresh token', async () => {
-  const handler = loadHandler({ error: 'invalid_grant' });
+  configureTokenError({ error: 'invalid_grant' });
 
   const response = await handler({
     httpMethod: 'GET',
@@ -57,8 +55,26 @@ test('reports a safe reauthorization error when Spotify revokes the refresh toke
 });
 
 test('keeps other token failures generic', async () => {
-  const handler = loadHandler({ error: 'invalid_client' });
+  configureTokenError({ error: 'invalid_client' });
 
+  const response = await handler({
+    httpMethod: 'GET',
+    queryStringParameters: { path: '/me/top/tracks' },
+  });
+
+  assert.equal(response.statusCode, 502);
+  assert.deepEqual(JSON.parse(response.body), {
+    error: 'Failed to proxy Spotify request',
+  });
+});
+
+test('keeps malformed successful token responses generic', async () => {
+  process.env.SPOTIFY_CLIENT_ID = 'client-id';
+  process.env.SPOTIFY_CLIENT_SECRET = 'client-secret';
+  process.env.SPOTIFY_REFRESH_TOKEN = 'refresh-token';
+  globalThis.fetch = async () =>
+    new Response(JSON.stringify({ expires_in: 3600 }), { status: 200 });
+  console.error = () => {};
   const response = await handler({
     httpMethod: 'GET',
     queryStringParameters: { path: '/me/top/tracks' },

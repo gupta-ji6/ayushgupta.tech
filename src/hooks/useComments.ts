@@ -1,22 +1,19 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+
+import {
+  apiErrorSchema,
+  commentCreatedResponseSchema,
+  commentsResponseSchema,
+  type CommentRecord,
+} from '@utils/comments';
+import { HttpResponseError, isAbortError, requestJson } from '@utils/http';
 
 const COMMENTS_ENDPOINT = '/api/comments';
 
 const errorMessage =
   'Oops! Fetching comments was unsuccessful. Try again later.';
 
-export type CommentStatus =
-  | 'sending'
-  | 'delivered-awaiting-approval'
-  | 'failed';
-
-export interface CommentRecord {
-  post_id: string;
-  author: string;
-  content: string;
-  created_at: string;
-  status?: CommentStatus;
-}
+export type { CommentRecord, CommentStatus } from '@utils/comments';
 
 export interface CommentsError {
   error: string;
@@ -26,6 +23,15 @@ export interface CommentsError {
 interface UseCommentsConfig {
   limit?: number;
   offset?: number;
+}
+
+function getErrorDetails(error: unknown, fallback: string): string {
+  if (error instanceof HttpResponseError) {
+    const parsed = apiErrorSchema.safeParse(error.body);
+    return parsed.success ? parsed.data.error : fallback;
+  }
+
+  return error instanceof Error ? error.message : fallback;
 }
 
 /**
@@ -40,8 +46,14 @@ export const useComments = (postId: string, config?: UseCommentsConfig) => {
   const [count, setCount] = useState(0);
   const [error, setError] = useState<CommentsError | null>(null);
   const [loading, setLoading] = useState(false);
+  const fetchControllerRef = useRef<AbortController | null>(null);
+  const submissionControllersRef = useRef(new Set<AbortController>());
 
-  const fetchComments = useCallback(() => {
+  const fetchComments = useCallback(async () => {
+    fetchControllerRef.current?.abort();
+    const controller = new AbortController();
+    fetchControllerRef.current = controller;
+
     setLoading(true);
     setError(null);
 
@@ -49,87 +61,100 @@ export const useComments = (postId: string, config?: UseCommentsConfig) => {
     if (config?.limit) params.set('limit', String(config.limit));
     if (config?.offset) params.set('offset', String(config.offset));
 
-    fetch(`${COMMENTS_ENDPOINT}?${params}`)
-      .then((res) => res.json().then((data) => ({ data, ok: res.ok })))
-      .then(({ data, ok }) => {
-        if (ok && Array.isArray(data?.comments)) {
-          setComments(data.comments);
-          setCount(data.count ?? data.comments.length);
-        } else {
-          setError({
-            error: errorMessage,
-            details: data?.error ?? 'Unknown error',
-          });
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError({ error: errorMessage, details: err?.message ?? String(err) });
-        setLoading(false);
-      });
+    try {
+      const data = await requestJson(
+        `${COMMENTS_ENDPOINT}?${params}`,
+        commentsResponseSchema,
+        { signal: controller.signal },
+      );
+
+      if (!controller.signal.aborted) {
+        setComments(data.comments);
+        setCount(data.count);
+      }
+    } catch (requestError: unknown) {
+      if (!controller.signal.aborted && !isAbortError(requestError)) {
+        setError({
+          error: errorMessage,
+          details: getErrorDetails(requestError, 'Unknown error'),
+        });
+      }
+    } finally {
+      const isCurrentRequest = fetchControllerRef.current === controller;
+      if (isCurrentRequest) {
+        fetchControllerRef.current = null;
+      }
+      setLoading((currentLoading) =>
+        isCurrentRequest ? false : currentLoading,
+      );
+    }
   }, [postId, config?.limit, config?.offset]);
 
-  useEffect(fetchComments, [fetchComments]);
+  useEffect(() => {
+    void fetchComments();
 
-  const addComment = ({
-    content,
-    author,
-  }: {
-    content: string;
-    author: string;
-  }) => {
-    const optimistic: CommentRecord = {
-      author,
-      content,
-      post_id: postId,
-      created_at: new Date().toISOString(),
-      status: 'sending',
+    return () => {
+      fetchControllerRef.current?.abort();
+      for (const controller of submissionControllersRef.current) {
+        controller.abort();
+      }
     };
-    setComments((prev) => [optimistic, ...prev]);
-    setCount((prev) => prev + 1);
+  }, [fetchComments]);
 
-    fetch(COMMENTS_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ postId, author, content }),
-    })
-      .then((res) => {
-        if (res.ok) {
+  const addComment = useCallback(
+    async ({ content, author }: { content: string; author: string }) => {
+      const optimistic: CommentRecord = {
+        author,
+        content,
+        post_id: postId,
+        created_at: new Date().toISOString(),
+        status: 'sending',
+      };
+      const controller = new AbortController();
+      submissionControllersRef.current.add(controller);
+
+      setComments((prev) => [optimistic, ...prev]);
+      setCount((prev) => prev + 1);
+
+      try {
+        await requestJson(COMMENTS_ENDPOINT, commentCreatedResponseSchema, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ postId, author, content }),
+          signal: controller.signal,
+        });
+
+        if (!controller.signal.aborted) {
           setComments((prev) =>
-            prev.map((x) =>
-              x === optimistic
-                ? {
-                    ...optimistic,
-                    status: 'delivered-awaiting-approval' as const,
-                  }
-                : x,
+            prev.map((comment) =>
+              comment === optimistic
+                ? { ...optimistic, status: 'delivered-awaiting-approval' }
+                : comment,
             ),
           );
-        } else {
-          return res.json().then((err) => {
-            setError({
-              error: errorMessage,
-              details: err?.error ?? 'Insert failed',
-            });
-            setComments((prev) =>
-              prev.map((x) =>
-                x === optimistic
-                  ? { ...optimistic, status: 'failed' as const }
-                  : x,
-              ),
-            );
-          });
         }
-      })
-      .catch((err) => {
-        setError({ error: errorMessage, details: err?.message ?? String(err) });
+      } catch (requestError: unknown) {
+        if (controller.signal.aborted || isAbortError(requestError)) {
+          return;
+        }
+
+        setError({
+          error: errorMessage,
+          details: getErrorDetails(requestError, 'Insert failed'),
+        });
         setComments((prev) =>
-          prev.map((x) =>
-            x === optimistic ? { ...optimistic, status: 'failed' as const } : x,
+          prev.map((comment) =>
+            comment === optimistic
+              ? { ...optimistic, status: 'failed' }
+              : comment,
           ),
         );
-      });
-  };
+      } finally {
+        submissionControllersRef.current.delete(controller);
+      }
+    },
+    [postId],
+  );
 
   return {
     comments,

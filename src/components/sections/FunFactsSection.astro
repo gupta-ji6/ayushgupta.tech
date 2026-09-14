@@ -1,11 +1,16 @@
 ---
+import type { CollectionEntry } from 'astro:content';
 import { render } from 'astro:content';
 import SectionHeading from './SectionHeading.astro';
+
+interface Props {
+  entries: CollectionEntry<'funFacts'>[];
+}
 
 const { entries } = Astro.props;
 
 const renderedFacts = await Promise.all(
-  entries.map(async (entry: any) => ({
+  entries.map(async (entry) => ({
     entry,
     Content: (await render(entry)).Content,
   })),
