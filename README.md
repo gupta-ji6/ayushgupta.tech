@@ -51,6 +51,7 @@ Available scripts:
 - `npm run check` runs `astro check`
 - `npm run lint` runs ESLint on the Astro app
 - `npm run format` runs Prettier on source files
+- `npm test` runs the Node.js test suite
 
 ## Content
 
